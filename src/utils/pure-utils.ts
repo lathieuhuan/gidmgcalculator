@@ -35,9 +35,9 @@ export const toArray = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];
 };
 
-export const pickOne = <T>(subject: T | T[], index: number): T => {
-  return Array.isArray(subject) ? subject[index] : subject;
-};
+// export const pickOne = <T>(subject: T | T[], index: number): T => {
+//   return Array.isArray(subject) ? subject[index] : subject;
+// };
 
 export const applyToOneOrMany = <T>(base: T | T[], callback: (base: T, index?: number) => T) => {
   return Array.isArray(base) ? base.map(callback) : callback(base);
@@ -80,20 +80,6 @@ export const genNumberSequenceOptions = (max: number | undefined = 0, startsAt0:
     return { label: value, value };
   });
   return startsAt0 ? [{ label: 0, value: 0 }].concat(result) : result;
-};
-
-export const processNumInput = (input: string, before: number, max: number = 9999) => {
-  if (input === "") {
-    return 0;
-  }
-  const numInput = +input;
-  if (typeof numInput === "number" && numInput >= 0 && numInput <= max) {
-    if (input.slice(-1) === ".") {
-      return input as unknown as number;
-    }
-    return Math.round(numInput * 10) / 10;
-  }
-  return before;
 };
 
 const destructName = (name: string) => {

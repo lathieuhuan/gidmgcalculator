@@ -1,5 +1,6 @@
-import { DescriptionSeedGetter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "./pure-utils";
+import { getIntialBonusValue, getLevelScale } from "@Src/calculation";
+import { AbilityEffectLevelScale, AppCharacter, CharInfo, AbilityEffectValueOption, PartyData } from "@Src/types";
+import { round, toArray, toMult } from "./pure-utils";
 
 const typeToCls: Record<string, string> = {
   k: "text-green-300", // key
@@ -20,32 +21,66 @@ const wrapText = (text: string | number, type = "") => {
   return `<span class="${typeToCls[type] || ""}">${text}</span>`;
 };
 
-export const parseCharacterDescription = (
-  description: string | number,
-  getterArgs: DescriptionSeedGetterArgs,
-  dsGetters: DescriptionSeedGetter[] = []
+type Effect = {
+  value: number | AbilityEffectValueOption;
+  lvScale?: AbilityEffectLevelScale;
+  preExtra?: any;
+  max?: any;
+};
+
+export const parseAbilityDescription = (
+  ability: {
+    description: string;
+    effects?: Effect | Effect[];
+  },
+  obj: {
+    char: CharInfo;
+    charData: AppCharacter;
+    partyData: PartyData;
+  },
+  inputs: number[],
+  fromSelf: boolean
 ) => {
-  if (typeof description === "string") {
-    const pattern = /\{[\w \-/,%^"@\.\[\]]+\}#\[\w*\]/g;
+  const pattern = /\{[\w \-/,%^"'*@\.\[\]]+\}#\[\w*\]/g;
 
-    return description.replace(pattern, (match) => {
-      let [body, type = ""] = match.split("#");
-      body = body.slice(1, -1);
-      type = type.slice(1, -1);
+  return ability.description.replace(pattern, (match) => {
+    let [body, type = ""] = match.split("#");
+    body = body.slice(1, -1);
+    type = type.slice(1, -1);
 
-      if (body.includes("@")) {
-        body = body.slice(1);
+    if (body[0] === "@") {
+      const effect = toArray(ability.effects)[+body[1]];
 
-        if (!isNaN(+body)) {
-          body = dsGetters[+body]?.(getterArgs) || "?";
-        } else {
-          body = "?";
+      if (effect) {
+        const { value, preExtra, max } = effect;
+        let result = typeof value === "number" ? value : getIntialBonusValue(value, obj, inputs, fromSelf);
+
+        result *= getLevelScale(effect.lvScale, obj, inputs, fromSelf);
+        if (typeof preExtra === "number") result += preExtra;
+        if (typeof max === "number" && result > max) result = max;
+
+        const decimal = +body[3];
+        if (!isNaN(decimal)) {
+          if (body[2] === "'") result *= 100;
+          result = round(result, decimal);
+        }
+
+        switch (body[body.length - 1]) {
+          case "%":
+            body = result + "%";
+            break;
+          case "*":
+            body = `${round(toMult(result), 3)}`;
+            break;
+          default:
+            body = `${result}`;
         }
       }
-      return wrapText(body, type);
-    });
-  }
-  return "";
+    }
+    if (body[0] === "@") body = "?";
+
+    return wrapText(body, type);
+  });
 };
 
 export const parseArtifactDescription = (description: string) => {

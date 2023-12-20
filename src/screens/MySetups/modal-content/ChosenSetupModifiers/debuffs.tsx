@@ -14,7 +14,7 @@ import type {
 import { useTranslation } from "@Src/pure-hooks";
 
 // Util
-import { findByIndex, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, parseAbilityDescription } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Component
@@ -71,13 +71,9 @@ export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuff
           key={ctrl.index}
           mutable={false}
           heading={debuff.src}
-          description={parseCharacterDescription(
-            debuff.description,
-            { fromSelf: true, char, partyData, inputs },
-            charData.dsGetters
-          )}
+          description={parseAbilityDescription(debuff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
-          inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "teammate")}
+          inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "team")}
         />
       );
     }
@@ -121,11 +117,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
             key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={debuff.src}
-            description={parseCharacterDescription(
-              debuff.description,
-              { fromSelf: false, char, partyData, inputs },
-              teammateData.dsGetters
-            )}
+            description={parseAbilityDescription(debuff, { char, charData: teammateData, partyData }, inputs, false)}
             inputs={inputs}
             inputConfigs={debuff.inputConfigs}
           />

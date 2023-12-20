@@ -4,12 +4,9 @@ import { EModAffect } from "@Src/constants";
 
 // export type DefaultAppWeapon = Pick<
 //   AppWeapon,
-//   "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
+//   "code" | "beta" | "name" | "rarity" | "icon" | "buffs"
 // >;
 
-/**
- * Weapon in app data
- */
 export type AppWeapon = {
   /** This is id */
   code: number;
@@ -25,27 +22,14 @@ export type AppWeapon = {
   };
   passiveName?: string;
   descriptions?: string[];
-  autoBuffs?: WeaponBonus[];
+  bonuses?: WeaponBonus[];
   buffs?: WeaponBuff[];
 };
 
-type VisionStack = {
-  type: "vision";
-  element: "same_included" | "same_excluded" | "different";
-  max?: number;
-};
-
-type AttributeStack = {
-  type: "attribute";
-  field: "hp" | "base_atk" | "def" | "em" | "er_";
-  convertRate?: number;
-  minus?: number;
-};
-
-/** Only on Tulaytullah's Remembrance */
 type InputIndex = {
+  /** Only on Tulaytullah's Remembrance */
   value: number;
-  convertRate?: number;
+  ratio?: number;
 };
 
 type InputStack = {
@@ -53,10 +37,22 @@ type InputStack = {
   /** Default to 0 */
   index?: number | InputIndex[];
   /**
-   * The index of the input which when activated (equal to 1), buffValue is doubled.
+   * Input's index when activated (equal to 1), value is doubled.
    * Only on Liyue Series.
    */
-  doubledAtInput?: number;
+  doubledAt?: number;
+};
+
+type AttributeStack = {
+  type: "attribute";
+  field: "hp" | "base_atk" | "def" | "em" | "er_";
+  requiredBase?: number;
+};
+
+type VisionStack = {
+  type: "vision";
+  element: "same_included" | "same_excluded" | "different";
+  max?: number;
 };
 
 /** Only on Watatsumi series */
@@ -69,47 +65,57 @@ type NationStack = {
   type: "nation";
 };
 
-export type WeaponStackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
+export type WeaponBonusStack = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
 
-type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
+type WeaponEffectValueOption = {
+  options: number[];
+  /** Input's index for options. Default to 0 */
+  inpIndex?: number;
+};
 
 export type WeaponBonus = {
-  base?: number;
-  /** Need [stacks], number of stacks - 1 = index of options. Each option scale off refi, increment is 1/3 */
-  options?: number[];
-  /** Only on Fading Twilight, also scale off refi, increment is 1/3 */
-  initialBonus?: number;
-  /** Default to 1/3 [base]. Fixed buff type has increment = 0 */
-  increment?: number;
-  stacks?: WeaponStackConfig | WeaponStackConfig[];
-  targetAttribute?: TargetAttribute;
-  targetAttPatt?: AttackPatternPath | AttackPatternPath[];
+  value: number | WeaponEffectValueOption;
+  /**
+   * Increment to value after each refinement.
+   * Default to 1/3 of [value]. Fixed buff type has increment = 0
+   */
+  incre?: number;
+  stacks?: WeaponBonusStack | WeaponBonusStack[];
+  /** Apply after stacks */
+  sufExtra?: number;
+  targets: {
+    /** totalAttr */
+    ATTR?: "own_elmt" | AttributeStat | AttributeStat[];
+    /** attPattBonus */
+    PATT?: AttackPatternPath | AttackPatternPath[];
+  };
   max?:
     | number
     // Only on Jadefall's Splendor
     | {
-        base: number;
-        increment: number;
+        value: number;
+        incre: number;
       };
   /**
-   * For this buff to available, the input at the [index] must meet [compareValue] by [compareType].
-   * If number, it's [compareValue], [index] default to 0.
+   * For this buff to available, the input at the [source] must meet [value] by [type].
+   * If number, it's [value], [source] is 0, [type] is [equal]
    */
   checkInput?:
     | number
     // Only on Ballad of the Fjords
     | {
-        /** Default to 0 */
-        index?: number;
-        /** Only on Ballad of the Fjords. No [index] when there's [source] */
-        source?: "various_vision";
-        compareValue: number;
-        /** Default to equal */
-        compareType?: "equal" | "atleast";
+        value: number;
+        /**
+         * When number, it's the input's index. [various_vision] only on Ballad of the Fjords.
+         * Default to 0.
+         */
+        source?: number | "various_vision";
+        /** Default to [equal] */
+        type?: "equal" | "min" | "max";
       };
 };
 
-export type WeaponBuff = WeaponBonus & {
+export type WeaponBuff = {
   /** This is id */
   index: number;
   affect: EModAffect;
@@ -119,6 +125,6 @@ export type WeaponBuff = WeaponBonus & {
    * Default to 0.
    */
   description?: number | string;
-  /** buffBonus use outside [base] (WeaponBonus.base) and [stacks] (WeaponBonus.stacks) as default */
-  wpBonuses?: WeaponBonus[];
+  cmnStacks?: WeaponBonus["stacks"];
+  effects: WeaponBonus | WeaponBonus[];
 };

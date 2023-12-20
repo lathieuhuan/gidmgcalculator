@@ -1,22 +1,22 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import {
   FaBars,
-  FaDonate,
   FaCog,
+  FaDonate,
   FaDownload,
   FaInfoCircle,
   FaQuestionCircle,
-  FaUpload,
   FaSearch,
+  FaUpload,
 } from "react-icons/fa";
-import type { UIState } from "@Store/uiSlice/types";
 
-// Hook
+import { EScreen } from "@Src/constants";
 import { useClickOutside } from "@Src/pure-hooks";
-import { useDispatch, useSelector } from "@Store/hooks";
 
-// Action
+// Store
+import { useDispatch, useSelector } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
+import { UIState } from "@Store/uiSlice/types";
 
 // Component
 import { Button } from "@Src/pure-components";
@@ -25,6 +25,7 @@ import { ActionButton, NavTabs } from "./components";
 export function NavBar() {
   const dispatch = useDispatch();
   const trackerState = useSelector((state) => state.ui.trackerState);
+  const appReady = useSelector((state) => state.ui.ready);
   const ref = useRef<HTMLDivElement>(null);
   const [menuDropped, setMenuDropped] = useState(false);
 
@@ -37,6 +38,10 @@ export function NavBar() {
   const openModal = (type: UIState["appModalType"]) => () => {
     dispatch(updateUI({ appModalType: type }));
     closeMenu();
+  };
+
+  const onClickTab = (tab: EScreen) => {
+    dispatch(updateUI({ atScreen: tab }));
   };
 
   const onClickTrackerIcon = () => {
@@ -52,6 +57,8 @@ export function NavBar() {
               className="px-2 py-1"
               activeClassName="bg-dark-900 text-orange-500"
               idleClassName="bg-dark-500 hover:text-yellow-400"
+              ready={appReady}
+              onClickTab={onClickTab}
             />
           ) : null}
         </div>
@@ -89,12 +96,21 @@ export function NavBar() {
                   <NavTabs
                     className="px-4 py-2"
                     activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
-                    onClickTab={closeMenu}
+                    ready={appReady}
+                    onClickTab={(tab) => {
+                      onClickTab(tab);
+                      closeMenu();
+                    }}
                   />
                 )}
                 <ActionButton label="Settings" icon={<FaCog />} onClick={openModal("SETTINGS")} />
-                <ActionButton label="Download" icon={<FaDownload />} onClick={openModal("DOWNLOAD")} />
-                <ActionButton label="Upload" icon={<FaUpload />} onClick={openModal("UPLOAD")} />
+                <ActionButton
+                  label="Download"
+                  disabled={!appReady}
+                  icon={<FaDownload />}
+                  onClick={openModal("DOWNLOAD")}
+                />
+                <ActionButton label="Upload" disabled={!appReady} icon={<FaUpload />} onClick={openModal("UPLOAD")} />
               </div>
             </div>
           </div>

@@ -10,10 +10,10 @@ import { decodeSetup } from "@Src/components/setup-porter/utils";
 export const SetupTransshipmentPort = () => {
   const dispatch = useDispatch();
   const importCode = useRef(getSearchParam("importCode"));
-  const ready = useSelector((state) => state.ui.ready);
+  const appReady = useSelector((state) => state.ui.ready);
 
   useEffect(() => {
-    if (ready) {
+    if (appReady) {
       if (importCode.current) {
         try {
           dispatch(
@@ -35,7 +35,7 @@ export const SetupTransshipmentPort = () => {
     } else {
       window.history.replaceState(null, "", window.location.origin);
     }
-  }, [ready]);
+  }, [appReady]);
 
   return null;
 };

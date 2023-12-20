@@ -1,26 +1,26 @@
-import type { ActualAttackElement, CalcItemType } from "./character";
-import type {
-  AttackElement,
-  AttackPattern,
-  Vision,
-  WeaponType,
-  Reaction,
-  CharInfo,
-  CoreStat,
-  AttributeStat,
-  PartiallyRequired,
-  NormalAttack,
-  Weapon,
-  Artifact,
-  TotalAttributeStat,
-} from "./global";
 import {
   ATTACK_ELEMENT_INFO_KEYS,
   ATTACK_PATTERN_INFO_KEYS,
   REACTION_BONUS_INFO_KEYS,
   TALENT_TYPES,
 } from "@Src/constants";
-import { AppCharacter } from "./character";
+import type { AttackElementPath, AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
+import type { ActualAttackElement, AppCharacter, CalcItemType } from "./character";
+import type {
+  Artifact,
+  AttackElement,
+  AttackPattern,
+  AttributeStat,
+  CharInfo,
+  CoreStat,
+  NormalAttack,
+  PartiallyRequired,
+  Reaction,
+  TotalAttributeStat,
+  Vision,
+  Weapon,
+  WeaponType,
+} from "./global";
 
 export type SetupType = "original" | "combined" | "complex";
 
@@ -179,7 +179,7 @@ export type Infusion = {
 
 export type Talent = (typeof TALENT_TYPES)[number];
 
-export type CalculatedDamage = {
+type CalculatedDamage = {
   nonCrit: number | number[];
   crit: number | number[];
   average: number | number[];
@@ -194,7 +194,7 @@ type TeammateData = Pick<AppCharacter, "code" | "name" | "icon" | "nation" | "vi
 
 export type PartyData = (TeammateData | null)[];
 
-export type BuffModifierArgsWrapper = {
+export type BuffInfoWrap = {
   char: CharInfo;
   charData: AppCharacter;
   partyData: PartyData;
@@ -207,10 +207,9 @@ export type BuffModifierArgsWrapper = {
   tracker?: Tracker;
 };
 
-export type DebuffModifierArgsWrapper = {
+export type DebuffInfoWrap = {
   char: CharInfo;
   resistReduct: ResistanceReduction;
-  attPattBonus: AttackPatternBonus;
   charData: AppCharacter;
   partyData: PartyData;
   tracker?: Tracker;
@@ -246,9 +245,9 @@ export type TrackerCalcItemRecord = {
 
 export type Tracker = {
   totalAttr: Record<TotalAttributeStat, TrackerRecord[]>;
-  attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
-  attElmtBonus: Record<`${AttackElement}.${AttackElementInfoKey}`, TrackerRecord[]>;
-  rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;
+  attPattBonus: Record<AttackPatternPath, TrackerRecord[]>;
+  attElmtBonus: Record<AttackElementPath, TrackerRecord[]>;
+  rxnBonus: Record<ReactionBonusPath, TrackerRecord[]>;
   resistReduct: Record<ResistanceReductionKey, TrackerRecord[]>;
   NAs: Record<string, TrackerCalcItemRecord>;
   ES: Record<string, TrackerCalcItemRecord>;

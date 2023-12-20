@@ -3,27 +3,25 @@ import type {
   AttackElementInfoKey,
   AttackPatternBonusKey,
   AttributeStat,
-  BuffModifierArgsWrapper,
+  BuffInfoWrap,
   Reaction,
   ReactionBonusInfoKey,
   Teammate,
 } from "@Src/types";
-import type { GetStatsArgs, UsedMod } from "../types";
+import type { GetCalculationStatsArgs } from "../types";
 
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
+// Util
 import { appData } from "@Src/data";
-import { applyPercent, findByIndex, realParty, toArray, weaponSubStatValue } from "@Src/utils";
-import {
-  applyModifier,
-  getArtifactSetBonuses,
-  getQuickenBuffDamage,
-  getRxnBonusesFromEM,
-} from "@Src/utils/calculation";
-import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, checkFinal, initiateBonuses } from "./utils";
-import { applyWeaponBuff } from "./buffs-weapon";
-import { applyArtifactBuff } from "./buffs-artifact";
+import { applyPercent, findByIndex, isGranted, realParty, weaponSubStatValue } from "@Src/utils";
+import { getArtifactSetBonuses, getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/utils/calculation";
+import { applyModifier } from "../utils";
+import { addArtifactAttributes, addTrackerRecord, initiateBonuses, initiateTotalAttr } from "./utils";
+import applyAbilityBuff from "./applyAbilityBuff";
+import applyArtifactBuff from "./applyArtifactBuff";
+import applyWeaponBuff from "./applyWeaponBuff";
 
 export const getCalculationStats = ({
   char,
@@ -39,7 +37,7 @@ export const getCalculationStats = ({
   customBuffCtrls,
   infusedElement,
   tracker,
-}: GetStatsArgs) => {
+}: GetCalculationStatsArgs) => {
   const { resonances = [], reaction, infuse_reaction } = elmtModCtrls || {};
   const { refi } = weapon;
   const setBonuses = getArtifactSetBonuses(artifacts);
@@ -63,7 +61,7 @@ export const getCalculationStats = ({
   //   return false;
   // };
 
-  const modifierArgs: BuffModifierArgsWrapper = {
+  const infoWrap: BuffInfoWrap = {
     char,
     charData,
     partyData,
@@ -81,69 +79,63 @@ export const getCalculationStats = ({
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
-      if (buff.isGranted(char)) {
-        const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-        applyFn?.({
-          desc: `Self / ${buff.src}`,
-          charBuffCtrls,
-          ...modifierArgs,
+      if (isGranted(buff, char)) {
+        applyAbilityBuff({
+          description: `Self / ${buff.src}`,
+          buff,
+          infoWrap,
+          inputs: [],
+          fromSelf: true,
+          isFinal,
         });
       }
     }
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
-      if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
-        const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-        applyFn?.({
-          desc: `Self / ${buff.src}`,
-          fromSelf: true,
-          charBuffCtrls,
+      if (ctrl.activated && buff && isGranted(buff, char)) {
+        applyAbilityBuff({
+          description: `Self / ${buff.src}`,
+          buff,
+          infoWrap,
           inputs: ctrl.inputs || [],
-          ...modifierArgs,
+          fromSelf: true,
+          isFinal,
         });
       }
     }
   };
 
-  const APPLY_WEAPON_AUTO_BUFFS = (isFinal: boolean) => {
-    for (const autoBuff of weaponData.autoBuffs || []) {
-      if (isFinal === checkFinal(autoBuff.stacks)) {
-        applyWeaponBuff({
-          description: `${weaponData.name} bonus`,
-          buff: autoBuff,
-          refi,
-          inputs: [],
-          modifierArgs,
-        });
-      }
+  const APPLY_WEAPON_BONUSES = (isFinal: boolean) => {
+    if (weaponData.bonuses) {
+      applyWeaponBuff({
+        description: `${weaponData.name} bonus`,
+        buff: {
+          effects: weaponData.bonuses,
+        },
+        refi,
+        inputs: [],
+        infoWrap,
+        isFinal,
+      });
     }
   };
 
   const APPLY_MAIN_WEAPON_BUFFS = (isFinal: boolean) => {
     if (!weaponData.buffs || !wpBuffCtrls?.length) return;
-    const description = `${weaponData.name} activated`;
 
-    // #to-do: check if buff exist
-    for (const { activated, index, inputs = [] } of wpBuffCtrls) {
-      const buff = findByIndex(weaponData.buffs, index);
-      if (!activated || !buff) continue;
+    for (const ctrl of wpBuffCtrls) {
+      const buff = findByIndex(weaponData.buffs, ctrl.index);
 
-      if (isFinal === checkFinal(buff.stacks)) {
-        applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
-      }
-      for (const buffBonus of buff.wpBonuses || []) {
-        const bonus = {
-          ...buffBonus,
-          base: buffBonus.base ?? buff.base,
-          stacks: buffBonus.stacks ?? buff.stacks,
-        };
-
-        if (isFinal === checkFinal(bonus.stacks)) {
-          applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs });
-        }
+      if (ctrl.activated && buff) {
+        applyWeaponBuff({
+          description: `${weaponData.name} activated`,
+          buff,
+          infoWrap,
+          inputs: ctrl.inputs ?? [],
+          refi,
+          isFinal,
+        });
       }
     }
   };
@@ -153,21 +145,18 @@ export const getCalculationStats = ({
       //
       for (let i = 0; i <= bonusLv; i++) {
         const data = appData.getArtifactSetData(code);
+        const buff = data?.setBonuses?.[i];
 
-        if (!data) {
-          console.log(`artifact #${code} not found`);
-          continue;
-        }
-        const { artBonuses } = data.setBonuses?.[i] || {};
-
-        if (artBonuses) {
-          const description = `${data.name} / ${i * 2 + 2}-piece bonus`;
-
-          for (const bonus of toArray(artBonuses)) {
-            if (isFinal === checkFinal(bonus.stacks)) {
-              applyArtifactBuff({ description, buff: bonus, modifierArgs });
-            }
-          }
+        if (buff && buff.effects) {
+          applyArtifactBuff({
+            description: `${data.name} / ${i * 2 + 2}-piece bonus`,
+            buff: {
+              effects: buff.effects,
+            },
+            infoWrap,
+            inputs: [],
+            isFinal,
+          });
         }
       }
     }
@@ -175,7 +164,7 @@ export const getCalculationStats = ({
 
   const APPLY_CUSTOM_BUFFS = () => {
     if (!customBuffCtrls?.length) return;
-    const { totalAttr, attElmtBonus, attPattBonus, rxnBonus } = modifierArgs;
+    const { totalAttr, attElmtBonus, attPattBonus, rxnBonus } = infoWrap;
 
     const applyToTotalAttr = (type: string, value: number) => {
       const key = type as AttributeStat;
@@ -227,27 +216,15 @@ export const getCalculationStats = ({
       const { name, buffs = [] } = appData.getCharData(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
-        if (!activated) continue;
         const buff = findByIndex(buffs, index);
+        if (!activated || !buff) continue;
 
-        if (!buff) {
-          console.log(`buff #${index} of teammate ${name} not found`);
-          continue;
-        }
-
-        buff.applyBuff?.({
-          desc: `${name} / ${buff.src}`,
-          fromSelf: false,
+        applyAbilityBuff({
+          description: `${name} / ${buff.src}`,
+          buff,
+          infoWrap,
           inputs,
-          charBuffCtrls: teammate.buffCtrls,
-          ...modifierArgs,
-        });
-        buff.applyFinalBuff?.({
-          desc: `${name} / ${buff.src}`,
           fromSelf: false,
-          inputs,
-          charBuffCtrls: teammate.buffCtrls,
-          ...modifierArgs,
         });
       }
 
@@ -256,24 +233,17 @@ export const getCalculationStats = ({
         const { code, refi } = teammate.weapon;
         const { name, buffs = [] } = appData.getWeaponData(code) || {};
 
-        for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
-          if (!activated) continue;
-          const buff = findByIndex(buffs, index);
+        for (const ctrl of teammate.weapon.buffCtrls) {
+          const buff = findByIndex(buffs, ctrl.index);
 
-          if (!buff) {
-            console.log(`buff #${index} of weapon #${code} not found`);
-            continue;
-          }
-
-          applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
-
-          for (const buffBonus of buff.wpBonuses || []) {
-            const bonus = {
-              ...buffBonus,
-              base: buffBonus.base ?? buff.base,
-              stacks: buffBonus.stacks ?? buff.stacks,
-            };
-            applyWeaponBuff({ description: `${name} activated`, buff: bonus, inputs, refi, modifierArgs });
+          if (ctrl.activated && buff) {
+            applyWeaponBuff({
+              description: `${name} activated`,
+              buff,
+              infoWrap,
+              inputs: ctrl.inputs ?? [],
+              refi,
+            });
           }
         }
       })();
@@ -282,21 +252,16 @@ export const getCalculationStats = ({
         const { code } = teammate.artifact;
         const { name, buffs = [] } = appData.getArtifactSetData(code) || {};
 
-        for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
-          if (!activated) continue;
-          const buff = findByIndex(buffs, index);
+        for (const ctrl of teammate.artifact.buffCtrls) {
+          const buff = findByIndex(buffs, ctrl.index);
 
-          if (!buff) {
-            console.log(`buff #${index} of artifact #${code} not found`);
-            continue;
-          }
-
-          if (buff.artBonuses) {
-            const description = `${name} / 4-Piece activated`;
-
-            for (const bonus of toArray(buff.artBonuses)) {
-              applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs });
-            }
+          if (ctrl.activated && buff) {
+            applyArtifactBuff({
+              description: `${name} / 4-Piece activated`,
+              buff,
+              infoWrap,
+              inputs: ctrl.inputs ?? [],
+            });
           }
         }
       })();
@@ -308,17 +273,16 @@ export const getCalculationStats = ({
     if (!mainArtifactData) return;
 
     for (const ctrl of artBuffCtrls || []) {
-      if (!ctrl.activated) continue;
       const buff = mainArtifactData.buffs?.[ctrl.index];
 
-      if (buff) {
-        const description = `${mainArtifactData.name} (self) / 4-piece activated`;
-
-        for (const bonus of toArray(buff.artBonuses)) {
-          if (isFinal === checkFinal(bonus.stacks)) {
-            applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
-          }
-        }
+      if (ctrl.activated && buff) {
+        applyArtifactBuff({
+          description: `${mainArtifactData.name} (self) / 4-piece activated`,
+          buff,
+          infoWrap,
+          inputs: ctrl.inputs ?? [],
+          isFinal,
+        });
       }
     }
   };
@@ -332,17 +296,16 @@ export const getCalculationStats = ({
 
   APPLY_SELF_BUFFS(false);
 
-  const artAttr = addArtifactAttributes({ artifacts, totalAttr, tracker });
+  const artAttr = addArtifactAttributes(artifacts, totalAttr, tracker);
 
   // ========== ADD WEAPON SUBSTAT ==========
   if (weaponData.subStat) {
     const { type, scale } = weaponData.subStat;
     const value = weaponSubStatValue(scale, weapon.level);
-
     applyModifier(`${weaponData.name} sub-stat`, totalAttr, type, value, tracker);
   }
 
-  APPLY_WEAPON_AUTO_BUFFS(false);
+  APPLY_WEAPON_BONUSES(false);
   APPLY_ARTIFACTS_AUTO_BUFFS(false);
   APPLY_CUSTOM_BUFFS();
 
@@ -378,7 +341,7 @@ export const getCalculationStats = ({
 
   CALC_FINAL_TOTAL_ATTRIBUTES();
   APPLY_ARTIFACTS_AUTO_BUFFS(true);
-  APPLY_WEAPON_AUTO_BUFFS(true);
+  APPLY_WEAPON_BONUSES(true);
   APPLY_MAIN_WEAPON_BUFFS(true);
   CALC_FINAL_TOTAL_ATTRIBUTES();
   APPLY_SELF_BUFFS(true);

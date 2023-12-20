@@ -1,10 +1,10 @@
 import type {
-  DamageResult,
-  ResistanceReduction,
-  DebuffModifierArgsWrapper,
-  TrackerCalcItemRecord,
-  NormalAttack,
   CalcItemBonus,
+  DamageResult,
+  DebuffInfoWrap,
+  NormalAttack,
+  ResistanceReduction,
+  TrackerCalcItemRecord,
 } from "@Src/types";
 import type { GetDamageArgs } from "../types";
 
@@ -12,8 +12,8 @@ import type { GetDamageArgs } from "../types";
 import {
   ATTACK_ELEMENTS,
   ATTACK_PATTERNS,
-  TRANSFORMATIVE_REACTIONS,
   BASE_REACTION_DAMAGE,
+  TRANSFORMATIVE_REACTIONS,
   VISION_TYPES,
 } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -21,10 +21,12 @@ import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 
 // Util
 import { appData } from "@Src/data";
-import { bareLv, findByIndex, getTalentDefaultInfo, realParty, toArray } from "@Src/utils";
-import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { bareLv, findByIndex, getTalentDefaultInfo, isGranted, realParty, toArray } from "@Src/utils";
+import { finalTalentLv, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { applyModifier } from "../utils";
 import { getExclusiveBonus } from "./utils";
-import { calculateItem } from "./calculateItem";
+import applyAbilityDebuff from "./applyAbilityDebuff";
+import calculateItem from "./calculateItem";
 
 export default function getDamage({
   char,
@@ -51,12 +53,11 @@ export default function getDamage({
     resistReduct[key] = 0;
   }
   const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
-  const modifierArgs: DebuffModifierArgsWrapper = {
+  const infoWrap: DebuffInfoWrap = {
     char,
-    resistReduct,
-    attPattBonus,
     charData,
     partyData,
+    resistReduct,
     tracker,
   };
 
@@ -69,12 +70,13 @@ export default function getDamage({
   for (const { activated, inputs = [], index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
-    if (activated && debuff && (!debuff.isGranted || debuff.isGranted(char)) && debuff.applyDebuff) {
-      debuff.applyDebuff({
-        desc: `Self / ${debuff.src}`,
-        fromSelf: true,
+    if (activated && debuff?.effects && isGranted(debuff, char)) {
+      applyAbilityDebuff({
+        description: `Self / ${debuff.src}`,
+        effects: debuff.effects,
         inputs,
-        ...modifierArgs,
+        infoWrap,
+        fromSelf: true,
       });
     }
   }
@@ -82,15 +84,17 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of realParty(party)) {
     const { debuffs = [] } = appData.getCharData(teammate.name);
+
     for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);
 
-      if (activated && debuff?.applyDebuff) {
-        debuff.applyDebuff({
-          desc: `${teammate.name} / ${debuff.src}`,
-          fromSelf: false,
+      if (activated && debuff?.effects) {
+        applyAbilityDebuff({
+          description: `Self / ${debuff.src}`,
+          effects: debuff.effects,
           inputs,
-          ...modifierArgs,
+          infoWrap,
+          fromSelf: false,
         });
       }
     }
@@ -102,9 +106,9 @@ export default function getDamage({
       const { name, debuffs = [] } = appData.getArtifactSetData(code) || {};
 
       if (debuffs[index]) {
-        const { value, path, inputIndex = 0 } = debuffs[index].penalties;
-        const elementIndex = inputs?.[inputIndex] ?? 0;
-        const finalPath = path === "input_element" ? VISION_TYPES[elementIndex] : path;
+        const { value, path, inpIndex = 0 } = debuffs[index].effects;
+        const elementIndex = inputs?.[inpIndex] ?? 0;
+        const finalPath = path === "inp_elmt" ? VISION_TYPES[elementIndex] : path;
         applyModifier(`${name} / 4-piece activated`, resistReduct, finalPath, value, tracker);
       }
     }
@@ -197,8 +201,8 @@ export default function getDamage({
       for (const factor of toArray(stat.multFactors)) {
         const {
           root,
-          attributeType = multAttributeType,
           scale = multScale,
+          attributeType = multAttributeType,
         } = typeof factor === "number" ? { root: factor } : factor;
 
         const finalMult =

@@ -14,6 +14,8 @@ import type {
   WeaponType,
   Teammate,
   Party,
+  CharInfo,
+  CharacterMilestone,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
@@ -39,6 +41,14 @@ export const ascsFromLv = (lv: Level) => {
 };
 
 export const isUserWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
+
+export const isGranted = ({ grantedAt }: { grantedAt?: CharacterMilestone }, char: CharInfo) => {
+  if (grantedAt) {
+    const [prefix, level] = grantedAt;
+    return (prefix === "A" ? ascsFromLv(char.level) : char.cons) >= +level;
+  }
+  return true;
+};
 
 export function countVision(partyData: PartyData, charData?: AppCharacter) {
   const result: Partial<Record<Vision, number>> = {};

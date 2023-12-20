@@ -72,7 +72,7 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   const scaleIndex = Math.max(ascsFromLv(char.level) - 1, 0);
   const bonusScale = [0, 1, 2, 2, 3, 4][scaleIndex];
 
-  addOrInit(innerStats, charData.bonusStat.type, charData.bonusStat.value * bonusScale);
+  addOrInit(innerStats, charData.statBonus.type, charData.statBonus.value * bonusScale);
   addOrInit(innerStats, "cRate_", 5);
   addOrInit(innerStats, "cDmg_", 50);
   addOrInit(innerStats, "er_", 100);
@@ -144,12 +144,11 @@ export const initiateBonuses = () => {
   };
 };
 
-interface AddArtAttrArgs {
-  artifacts: CalcArtifacts;
-  totalAttr: TotalAttribute;
-  tracker?: Tracker;
-}
-export const addArtifactAttributes = ({ artifacts, totalAttr, tracker }: AddArtAttrArgs): ArtifactAttribute => {
+export const addArtifactAttributes = (
+  artifacts: CalcArtifacts,
+  totalAttr: TotalAttribute,
+  tracker?: Tracker
+): ArtifactAttribute => {
   const artAttr = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
 
   for (const artifact of artifacts) {
@@ -182,10 +181,12 @@ export const addArtifactAttributes = ({ artifacts, totalAttr, tracker }: AddArtA
 
 type Stack = {
   type: string;
+  field?: string;
 };
-export const checkFinal = (stacks?: Stack | Stack[]) => {
-  if (!stacks) {
-    return false;
+export const isFinalBonus = (bonusStacks?: Stack | Stack[]) => {
+  if (bonusStacks) {
+    const isFinal = (stack: Stack) => stack.type === "attribute" && stack.field !== "base_atk";
+    return Array.isArray(bonusStacks) ? bonusStacks.some(isFinal) : isFinal(bonusStacks);
   }
-  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
+  return false;
 };

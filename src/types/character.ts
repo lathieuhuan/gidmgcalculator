@@ -1,41 +1,30 @@
+import { EModAffect } from "@Src/constants";
+import type { AttackElementPath, AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
+import type { AttackPatternInfoKey, ResistanceReductionKey, Talent } from "./calculator";
 import type {
   AttackElement,
   AttackPattern,
-  Vision,
+  AttributeStat,
+  ModInputConfig,
   Nation,
   Rarity,
+  Vision,
   WeaponType,
-  CharInfo,
-  NormalAttack,
-  ModInputConfig,
-  AttributeStat,
 } from "./global";
-import type {
-  ModifierCtrl,
-  ModifierInput,
-  BuffModifierArgsWrapper,
-  Talent,
-  DebuffModifierArgsWrapper,
-} from "./calculator";
-import { EModAffect } from "@Src/constants";
 
-export type DefaultAppCharacter = Pick<
-  AppCharacter,
-  | "code"
-  | "name"
-  | "icon"
-  | "sideIcon"
-  | "rarity"
-  | "nation"
-  | "vision"
-  | "weaponType"
-  | "EBcost"
-  | "talentLvBonusAtCons"
-  | "dsGetters"
-  | "innateBuffs"
-  | "buffs"
-  | "debuffs"
->;
+// export type DefaultAppCharacter = Pick<
+//   AppCharacter,
+//   | "code"
+//   | "name"
+//   | "icon"
+//   | "sideIcon"
+//   | "rarity"
+//   | "nation"
+//   | "vision"
+//   | "weaponType"
+//   | "EBcost"
+//   | "talentLvBonus"
+// >;
 
 export type AppCharacter = {
   code: number;
@@ -49,9 +38,9 @@ export type AppCharacter = {
   vision: Vision;
   weaponType: WeaponType;
   EBcost: number;
-  talentLvBonusAtCons?: Partial<Record<Talent, number>>;
+  talentLvBonus?: Partial<Record<Talent, number>>;
   stats: number[][];
-  bonusStat: {
+  statBonus: {
     type: AttributeStat;
     value: number;
   };
@@ -77,16 +66,12 @@ export type AppCharacter = {
   };
   passiveTalents: Ability[];
   constellation: Ability[];
-  /** ds: description seed */
-  dsGetters?: DescriptionSeedGetter[];
-  innateBuffs?: InnateBuff[];
+  innateBuffs?: AbilityInnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
 
-export type DescriptionSeedGetterArgs = Pick<ApplyCharBuffArgs, "fromSelf" | "char" | "partyData" | "inputs">;
-
-export type DescriptionSeedGetter = (args: DescriptionSeedGetterArgs) => string;
+export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
 type CalcListConfig = {
   multScale?: number;
@@ -98,8 +83,6 @@ type Ability = {
   image?: string;
   description?: string;
 };
-
-export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
 export type ActualAttackPattern = AttackPattern | "none";
 
@@ -135,67 +118,225 @@ export type CalcItem = {
     | number
     | {
         root: number;
-        /** Calc default to getTalentDefaultInfo's return.flatFactorScale.
+        /**
+         * Calc default to getTalentDefaultInfo's return.flatFactorScale.
          * When 0 not scale off talent level.
          */
         scale?: number;
       };
 };
 
-// ============ BUFFS ============
-export type BuffDescriptionArgs = Pick<
-  ApplyCharBuffArgs,
-  "fromSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
->;
+// ============ MODIFIERS COMMON ============
 
-type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
-  charBuffCtrls: ModifierCtrl[];
-  desc: string;
-};
-
-export type InnateBuff = {
-  src: string;
-  isGranted: (char: CharInfo) => boolean;
-  description: number | string;
-  applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
-};
+export type CharacterMilestone = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
 
 type AbilityModifier = {
+  src: string;
+  grantedAt?: CharacterMilestone;
+  description: string;
+};
+
+export type AbilityEffectAvailableCondition = {
+  grantedAt?: CharacterMilestone;
+  /** When this bonus is from teammate, this is input's index to check granted. */
+  alterIndex?: number;
+};
+
+type InputCheck = {
+  value: number;
+  /** Default to 0 */
+  index?: number;
+  /** Default to 'equal' */
+  type?: "equal" | "min" | "max" | "included";
+};
+
+export type AbilityEffectApplyCondition = {
+  checkInput?: number | InputCheck;
+  /** On Chongyun */
+  forWeapons?: WeaponType[];
+  /** On Chevreuse */
+  forElmts?: Vision[];
+  /** On Gorou, Nilou, Chevreuse */
+  partyElmtCount?: Partial<Record<Vision, number>>;
+  /** On Nilou, Chevreuse */
+  partyOnlyElmts?: Vision[];
+};
+
+export type AbilityEffectLevelScale = {
+  talent: Talent;
+  /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level]. */
+  value: number;
+  /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
+  alterIndex?: number;
+};
+
+// ============ BUFFS ============
+
+export type DynamicMax = {
+  value: number;
+  extras: Array<{
+    grantedAt?: CharacterMilestone;
+    checkInput?: InputCheck;
+    value: number;
+  }>;
+};
+
+type InputStack = {
+  type: "input";
+  /** Default to 0 */
+  index?: number;
+  /** When this bonus is from teammate, this is input's index to get stacks. */
+  alterIndex?: number;
+  /** On Wanderer */
+  capacity?: {
+    value: number;
+    extra: {
+      grantedAt: CharacterMilestone;
+      checkInput: InputCheck;
+      value: number;
+    };
+  };
+};
+
+type AttributeStack = {
+  type: "attribute";
+  field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_" | "healB_";
+  /** When this bonus is from teammate, this is input's index to get value. Default to 0 */
+  alterIndex?: number;
+};
+
+type NationStack = {
+  /** On Charlotte */
+  type: "nation";
+  nation: "same" | "different";
+};
+
+type EnergyStack = {
+  /** On Raiden Shogun */
+  type: "energy";
+};
+
+type ResolveStack = {
+  /** On Raiden Shogun */
+  type: "resolve";
+};
+
+export type AbilityBonusStack = (InputStack | AttributeStack | NationStack | EnergyStack | ResolveStack) & {
+  /** Final stack = stack - required base */
+  requiredBase?: number;
+  /** On Furina */
+  extra?: AbilityEffectAvailableCondition & {
+    value: number;
+  };
+  /** Dynamic on Mika */
+  max?: number | DynamicMax;
+};
+
+export type AbilityEffectValueOption = {
+  /** On Navia */
+  preOptions?: number[];
+  options: number[];
+  indexSrc:
+    | {
+        type: "vision";
+        visionType: "various" | Vision | Vision[];
+      }
+    | {
+        /** On Neuvillette */
+        type: "input";
+        index?: number;
+      }
+    | {
+        /** On Razor */
+        type: "level";
+        talent: Talent;
+      };
+  /** Add to indexSrc. On Nahida */
+  extra?: AbilityEffectAvailableCondition & {
+    value: number;
+  };
+  /** Max index. Dynamic on Navia */
+  max?: number | DynamicMax;
+};
+
+export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
+  value: number | AbilityEffectValueOption;
+  /** Multiplier based on talent level */
+  lvScale?: AbilityEffectLevelScale;
+  /** Added before stacks, after scale */
+  preExtra?: number | Omit<AbilityBonus, "targets">;
+  /** Index of pre-calculated stack */
+  stackIndex?: number;
+  stacks?: AbilityBonusStack | AbilityBonusStack[];
+  targets: {
+    /** totalAttr */
+    ATTR?: AttributeStat | AttributeStat[];
+    /** attPattBonus */
+    PATT?: AttackPatternPath | AttackPatternPath[];
+    /** attElmtBonus */
+    ELMT?: AttackElementPath | AttackElementPath[];
+    /** rxnBonus */
+    RXN?: ReactionBonusPath | ReactionBonusPath[];
+    /** calcItem */
+    ITEM?: {
+      id: string | string[];
+      path: AttackPatternInfoKey;
+    };
+    /** Input's index to get element's index. */
+    INP_ELMT?: number; // On Dendro Traveler, Kazuha, Sucrose
+    /** On Candace */
+    ELM_NA?: 1;
+  };
+  max?:
+    | number
+    | {
+        /** On Hu Tao */
+        value: number;
+        stacks: AbilityBonusStack;
+      };
+}
+
+export type AbilityInnateBuff = AbilityModifier & {
+  cmnStacks?: AbilityBonus["stacks"];
+  effects?: AbilityBonus | AbilityBonus[];
+};
+
+export type AbilityBuff = AbilityInnateBuff & {
   /** This is id */
   index: number;
-  src: string;
-  isGranted?: (char: CharInfo) => boolean;
-};
-
-export type ApplyCharBuffArgs = ApplyCharInnateBuffArgs & {
-  inputs: ModifierInput[];
-  fromSelf: boolean;
-};
-
-export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
   infuseConfig?: {
     overwritable: boolean;
-    range?: NormalAttack[];
+    range?: ("NA" | "CA" | "PA")[];
     disabledNAs?: boolean;
   };
-  description: number | string;
-  applyBuff?: (args: ApplyCharBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
 // ============ DEBUFFS ============
-type ApplyCharDebuffArgs = DebuffModifierArgsWrapper & {
-  inputs: ModifierInput[];
-  fromSelf: boolean;
-  desc: string;
-};
+
+type PenaltyTarget =
+  | ResistanceReductionKey
+  | {
+      type: "inp_elmt";
+      /** Input's index to get Vision index. Default to 0 */
+      index?: number;
+    };
+
+export interface AbilityPenalty extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
+  value: number;
+  lvScale?: AbilityEffectLevelScale;
+  /** Added before stacks, after scale */
+  preExtra?: number | Omit<AbilityPenalty, "targets">;
+  targets: PenaltyTarget | PenaltyTarget[];
+  index?: number;
+  max?: number;
+}
 
 export type AbilityDebuff = AbilityModifier & {
+  /** This is id */
+  index: number;
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
-  description: number | string;
-  applyDebuff?: (args: ApplyCharDebuffArgs) => void;
+  effects?: AbilityPenalty;
 };

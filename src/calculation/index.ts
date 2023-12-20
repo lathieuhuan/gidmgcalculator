@@ -4,6 +4,9 @@ import { appData } from "@Src/data";
 import getCalculationStats from "./getCalculationStats";
 import getDamage from "./getDamage";
 
+export * from "./getCalculationStats";
+export { getLevelScale } from "./utils";
+
 export default function calculateAll(
   {
     char,
@@ -23,6 +26,7 @@ export default function calculateAll(
   target: Target,
   tracker?: Tracker
 ) {
+  // console.time();
   const charData = appData.getCharData(char.name);
   const partyData = appData.getPartyData(party);
   let infusedElement = customInfusion.element;
@@ -76,7 +80,6 @@ export default function calculateAll(
     infusedElement,
     tracker,
   });
-
   const dmgResult = getDamage({
     char,
     charData,
@@ -96,6 +99,7 @@ export default function calculateAll(
     tracker,
     ...rest,
   });
+  // console.timeEnd();
   return {
     infusedElement,
     infusedAttacks,

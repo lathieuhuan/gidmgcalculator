@@ -27,7 +27,8 @@ interface OverviewCharProps {
 }
 export const CharOverview = ({ touched }: OverviewCharProps) => {
   const dispatch = useDispatch();
-  const char = useSelector(selectChar)!;
+  const char = useSelector(selectChar);
+  const appReady = useSelector((state) => state.ui.ready);
 
   const [activeTab, setActiveTab] = useState("Attributes");
   const [modalType, setModalType] = useState<"CHARACTER_PICKER" | "IMPORT_SETUP" | "">("");
@@ -126,7 +127,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
           Choose a character
         </Button>
         <p>or</p>
-        <Button variant="positive" onClick={() => setModalType("IMPORT_SETUP")}>
+        <Button variant="positive" disabled={!appReady} onClick={() => setModalType("IMPORT_SETUP")}>
           Import a setup
         </Button>
       </div>

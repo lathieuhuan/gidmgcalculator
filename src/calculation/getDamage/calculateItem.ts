@@ -2,7 +2,7 @@ import { applyToOneOrMany, bareLv, toMult } from "@Src/utils";
 import { CalculateItemArgs } from "../types";
 import { getExclusiveBonus } from "./utils";
 
-export function calculateItem({
+function calculateItem({
   stat,
   attElmt,
   attPatt,
@@ -109,3 +109,5 @@ export function calculateItem({
   }
   return { nonCrit: 0, crit: 0, average: 0 };
 }
+
+export default calculateItem;

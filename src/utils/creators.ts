@@ -66,6 +66,26 @@ export function createArtifact({ type, code, rarity }: CreateArtifactArgs): Omit
   };
 }
 
+type Modifier = {
+  index: number;
+  inputConfigs?: ModInputConfig[];
+};
+function createModCrtl(mod: Modifier, forSelf: boolean) {
+  const ctrl: ModifierCtrl = { index: mod.index, activated: false };
+
+  if (mod.inputConfigs) {
+    const initialValues = [];
+
+    for (const config of mod.inputConfigs) {
+      if (config.for !== (forSelf ? "team" : "self")) {
+        initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
+      }
+    }
+    if (initialValues.length) ctrl.inputs = initialValues;
+  }
+  return ctrl;
+}
+
 export function createCharModCtrls(forSelf: boolean, name: string) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
@@ -75,41 +95,13 @@ export function createCharModCtrls(forSelf: boolean, name: string) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
       continue;
     }
-    const node: ModifierCtrl = { activated: false, index: buff.index };
-
-    if (buff.inputConfigs) {
-      const initialValues = [];
-
-      for (const config of buff.inputConfigs) {
-        if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-          initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
-        }
-      }
-      if (initialValues.length) {
-        node.inputs = initialValues;
-      }
-    }
-    buffCtrls.push(node);
+    buffCtrls.push(createModCrtl(buff, forSelf));
   }
   for (const debuff of debuffs) {
     if (!forSelf && debuff.affect === EModAffect.SELF) {
       continue;
     }
-    const node: ModifierCtrl = { activated: false, index: debuff.index };
-
-    if (debuff.inputConfigs) {
-      const initialValues = [];
-
-      for (const config of debuff.inputConfigs) {
-        if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-          initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
-        }
-      }
-      if (initialValues.length) {
-        node.inputs = initialValues;
-      }
-    }
-    debuffCtrls.push(node);
+    debuffCtrls.push(createModCrtl(debuff, forSelf));
   }
   return [buffCtrls, debuffCtrls];
 }
@@ -119,28 +111,12 @@ interface RefModifier {
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
 }
-export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
+function createBuffCtrls(forSelf: boolean, buffs: RefModifier[]) {
   const buffCtrls: ModifierCtrl[] = [];
 
   for (const buff of buffs) {
     if (buff.affect !== (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
-      const node: ModifierCtrl = {
-        index: buff.index,
-        activated: false,
-      };
-      if (buff.inputConfigs) {
-        const initialValues = [];
-
-        for (const config of buff.inputConfigs) {
-          if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-            initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
-          }
-        }
-        if (initialValues.length) {
-          node.inputs = initialValues;
-        }
-      }
-      buffCtrls.push(node);
+      buffCtrls.push(createModCrtl(buff, forSelf));
     }
   }
   return buffCtrls;
@@ -148,7 +124,7 @@ export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
 
 export function createWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
   const { buffs = [] } = appData.getWeaponData(weapon.code) || {};
-  return createModCtrls(forSelf, buffs);
+  return createBuffCtrls(forSelf, buffs);
 }
 
 export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
@@ -156,7 +132,7 @@ export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: num
     return [];
   }
   const { buffs = [] } = appData.getArtifactSetData(hasCode.code) || {};
-  return createModCtrls(forSelf, buffs);
+  return createBuffCtrls(forSelf, buffs);
 }
 
 export function createArtDebuffCtrls(): ArtifactDebuffCtrl[] {
@@ -196,7 +172,7 @@ export const createElmtModCtrls = (): ElementModCtrl => ({
   reaction: null,
   superconduct: false,
   resonances: [],
-  absorption: null
+  absorption: null,
 });
 
 export function createTarget() {

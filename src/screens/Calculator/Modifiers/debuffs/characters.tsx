@@ -3,7 +3,7 @@ import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calcul
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
-import { findByIndex, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Action
@@ -30,13 +30,13 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   selfDebuffCtrls.forEach((ctrl) => {
     const debuff = findByIndex(charData.debuffs || [], ctrl.index);
 
-    if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
+    if (debuff && isGranted(debuff, char)) {
       const { inputs = [] } = ctrl;
       const path: ToggleModCtrlPath = {
         modCtrlName: "selfDebuffCtrls",
         ctrlIndex: ctrl.index,
       };
-      const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "teammate");
+      const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "team");
 
       const updateDebuffCtrlInput = (value: number, inputIndex: number) => {
         dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));
@@ -46,11 +46,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         <ModifierTemplate
           key={ctrl.index}
           heading={debuff.src}
-          description={parseCharacterDescription(
-            debuff.description,
-            { fromSelf: true, char, partyData, inputs },
-            charData.dsGetters
-          )}
+          description={parseAbilityDescription(debuff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}
@@ -114,11 +110,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
       <ModifierTemplate
         key={ctrl.index}
         heading={debuff.src}
-        description={parseCharacterDescription(
-          debuff.description,
-          { fromSelf: false, char, partyData, inputs },
-          teammateData.dsGetters
-        )}
+        description={parseAbilityDescription(debuff, { char, charData: teammateData, partyData }, inputs, false)}
         inputs={inputs}
         inputConfigs={inputConfigs}
         checked={ctrl.activated}
@@ -137,7 +129,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
   return (
     <div>
       <p className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>{teammate.name}</p>
-      {modifierElmts}
+      <div className="mt-1 space-y-3">{modifierElmts}</div>
     </div>
   );
 }

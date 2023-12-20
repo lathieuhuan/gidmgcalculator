@@ -126,7 +126,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
 
               <Input
                 type="number"
-                className="ml-auto w-16 px-2 py-1 text-right text-lg font-medium"
+                className="ml-auto w-16 px-2 py-1 text-right font-medium"
                 value={ctrl.value}
                 min={min}
                 max={max}

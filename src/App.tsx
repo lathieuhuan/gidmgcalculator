@@ -5,7 +5,6 @@ import { EScreen } from "@Src/constants";
 
 // Store
 import { useSelector } from "@Store/hooks";
-import { selectAtScreen } from "@Store/uiSlice/selectors";
 
 // Component
 import { Switch } from "@Src/pure-components";
@@ -17,7 +16,7 @@ import MySetups from "@Screens/MySetups";
 import MyWeapons from "@Screens/MyWeapons";
 
 function App() {
-  const atScreen = useSelector(selectAtScreen);
+  const atScreen = useSelector((state) => state.ui.atScreen);
 
   useEffect(() => {
     const beforeunloadAlert = (e: BeforeUnloadEvent) => {

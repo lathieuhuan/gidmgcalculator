@@ -61,7 +61,7 @@ interface ConsDetailProps {
   onClose?: () => void;
 }
 export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  const { vision, constellation, talentLvBonusAtCons = {}, activeTalents } = charData;
+  const { vision, constellation, talentLvBonus = {}, activeTalents } = charData;
   const consInfo = constellation[consLv - 1] || {};
 
   const { isLoading, isError, descriptions } = useConsDescriptions(charData.name, {
@@ -71,7 +71,7 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
   let description;
 
   if (consLv === 3 || consLv === 5) {
-    const [talent] = Object.entries(talentLvBonusAtCons).find(([, cons]) => cons === consLv) || [];
+    const [talent] = Object.entries(talentLvBonus).find(([, cons]) => cons === consLv) || [];
     const { name } = activeTalents[talent as Talent] || {};
 
     if (name) {

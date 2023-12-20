@@ -19,7 +19,7 @@ import type {
   NormalAttack,
   CalcItem,
   CalcItemBonus,
-  BuffModifierArgsWrapper,
+  BuffInfoWrap,
   Vision,
 } from "@Src/types";
 
@@ -28,7 +28,13 @@ export type UsedMod = {
   modIndex: number;
 };
 
-export type GetStatsArgs = {
+export type CalcUltilInfo = {
+  char: CharInfo;
+  charData: AppCharacter;
+  partyData: PartyData;
+};
+
+export type GetCalculationStatsArgs = {
   char: CharInfo;
   charData: AppCharacter;
   weapon: CalcWeapon;
@@ -46,7 +52,7 @@ export type GetStatsArgs = {
 };
 
 export interface CalculateItemArgs
-  extends Pick<BuffModifierArgsWrapper, "char" | "totalAttr" | "attElmtBonus" | "attPattBonus"> {
+  extends Pick<BuffInfoWrap, "char" | "totalAttr" | "attElmtBonus" | "attPattBonus"> {
   stat: CalcItem;
   attPatt: ActualAttackPattern;
   attElmt: AttackElement;
@@ -59,7 +65,7 @@ export interface CalculateItemArgs
   record: TrackerCalcItemRecord;
 }
 
-export interface GetDamageArgs extends Omit<BuffModifierArgsWrapper, "infusedElement"> {
+export interface GetDamageArgs extends Omit<BuffInfoWrap, "infusedElement"> {
   selfDebuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];
   party: Party;

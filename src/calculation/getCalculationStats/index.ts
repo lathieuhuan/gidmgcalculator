@@ -1,4 +1,5 @@
 import { getCalculationStats } from "./getCalculationStats";
-export { addArtifactAttributes } from "./utils";
 
+export { getIntialBonusValue } from "./applyAbilityBuff";
+export { addArtifactAttributes } from "./utils";
 export default getCalculationStats;

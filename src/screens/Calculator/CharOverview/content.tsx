@@ -1,5 +1,5 @@
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { addArtifactAttributes } from "@Src/calculation/getCalculationStats";
+import { addArtifactAttributes } from "@Src/calculation";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -47,7 +47,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
     const artifacts = useSelector(selectArtifacts);
     const totalAttr = useSelector(selectTotalAttr);
 
-    const artAttr = addArtifactAttributes({ artifacts, totalAttr: { ...totalAttr } });
+    const artAttr = addArtifactAttributes(artifacts, { ...totalAttr });
 
     const { activeIndex, tabsElmt } = useTabs({
       level: 2,

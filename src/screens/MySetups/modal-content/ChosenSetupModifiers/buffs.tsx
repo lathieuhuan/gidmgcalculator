@@ -10,7 +10,7 @@ import type {
   PartyData,
   ReactionBonus,
   Vision,
-  InnateBuff,
+  AbilityInnateBuff,
   Level,
   AttackElement,
   AppCharacter,
@@ -20,7 +20,7 @@ import type {
 import { useTranslation } from "@Src/pure-hooks";
 
 // Util
-import { findByIndex, parseCharacterDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
+import { findByIndex, parseAbilityDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 import { appData } from "@Src/data";
 
@@ -107,7 +107,7 @@ interface SelfBuffsProps {
   buffs: AbilityBuff[];
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
-  innateBuffs: InnateBuff[];
+  innateBuffs: AbilityInnateBuff[];
 }
 export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
@@ -118,11 +118,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
         key={"innate-" + index}
         mutable={false}
         heading={buff.src}
-        description={parseCharacterDescription(
-          buff.description,
-          { fromSelf: true, char, partyData, inputs: [] },
-          charData.dsGetters
-        )}
+        description={parseAbilityDescription(buff, { char, charData, partyData }, [], true)}
       />
     );
   });
@@ -138,13 +134,9 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
           key={ctrl.index}
           mutable={false}
           heading={buff.src}
-          description={parseCharacterDescription(
-            buff.description,
-            { fromSelf: true, char, partyData, inputs },
-            charData.dsGetters
-          )}
+          description={parseAbilityDescription(buff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
-          inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "teammate")}
+          inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "team")}
         />
       );
     }
@@ -188,11 +180,7 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
             key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={buff.src}
-            description={parseCharacterDescription(
-              buff.description,
-              { fromSelf: false, char, partyData, inputs },
-              teammateData.dsGetters
-            )}
+            description={parseAbilityDescription(buff, { char, charData: teammateData, partyData }, inputs, false)}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />
