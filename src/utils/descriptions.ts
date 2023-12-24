@@ -1,5 +1,5 @@
 import { getIntialBonusValue, getLevelScale } from "@Src/calculation";
-import { AbilityEffectLevelScale, AppCharacter, CharInfo, AbilityEffectValueOption, PartyData } from "@Src/types";
+import { LevelScale_Character, AppCharacter, CharInfo, AbilityEffectValueOption, PartyData } from "@Src/types";
 import { round, toArray, toMult } from "./pure-utils";
 
 const typeToCls: Record<string, string> = {
@@ -23,7 +23,7 @@ const wrapText = (text: string | number, type = "") => {
 
 type Effect = {
   value: number | AbilityEffectValueOption;
-  lvScale?: AbilityEffectLevelScale;
+  lvScale?: LevelScale_Character;
   preExtra?: any;
   max?: any;
 };

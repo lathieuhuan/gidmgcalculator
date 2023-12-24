@@ -136,7 +136,7 @@ type AbilityModifier = {
   description: string;
 };
 
-export type AbilityEffectAvailableCondition = {
+export type AvailableCondition_Character = {
   grantedAt?: CharacterMilestone;
   /** When this bonus is from teammate, this is input's index to check granted. */
   alterIndex?: number;
@@ -150,7 +150,7 @@ type InputCheck = {
   type?: "equal" | "min" | "max" | "included";
 };
 
-export type AbilityEffectApplyCondition = {
+export type ApplyCondition_Character = {
   checkInput?: number | InputCheck;
   /** On Chongyun */
   forWeapons?: WeaponType[];
@@ -162,23 +162,28 @@ export type AbilityEffectApplyCondition = {
   partyOnlyElmts?: Vision[];
 };
 
-export type AbilityEffectLevelScale = {
+export type LevelScale_Character = {
   talent: Talent;
   /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level]. */
   value: number;
   /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
   alterIndex?: number;
+  /** On Raiden */
+  max?: number;
 };
 
 // ============ BUFFS ============
 
+export type ExtraMax = {
+  grantedAt?: CharacterMilestone;
+  alterIndex?: number;
+  checkInput?: InputCheck;
+  value: number;
+};
+
 export type DynamicMax = {
   value: number;
-  extras: Array<{
-    grantedAt?: CharacterMilestone;
-    checkInput?: InputCheck;
-    value: number;
-  }>;
+  extras: ExtraMax[];
 };
 
 type InputStack = {
@@ -225,7 +230,7 @@ export type AbilityBonusStack = (InputStack | AttributeStack | NationStack | Ene
   /** Final stack = stack - required base */
   requiredBase?: number;
   /** On Furina */
-  extra?: AbilityEffectAvailableCondition & {
+  extra?: AvailableCondition_Character & {
     value: number;
   };
   /** Dynamic on Mika */
@@ -252,17 +257,17 @@ export type AbilityEffectValueOption = {
         talent: Talent;
       };
   /** Add to indexSrc. On Nahida */
-  extra?: AbilityEffectAvailableCondition & {
+  extra?: AvailableCondition_Character & {
     value: number;
   };
   /** Max index. Dynamic on Navia */
   max?: number | DynamicMax;
 };
 
-export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
+export interface AbilityBonus extends AvailableCondition_Character, ApplyCondition_Character {
   value: number | AbilityEffectValueOption;
   /** Multiplier based on talent level */
-  lvScale?: AbilityEffectLevelScale;
+  lvScale?: LevelScale_Character;
   /** Added before stacks, after scale */
   preExtra?: number | Omit<AbilityBonus, "targets">;
   /** Index of pre-calculated stack */
@@ -290,9 +295,11 @@ export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEf
   max?:
     | number
     | {
-        /** On Hu Tao */
         value: number;
-        stacks: AbilityBonusStack;
+        /** On Hu Tao */
+        stacks?: AbilityBonusStack;
+        /** On Xianyun */
+        extras?: ExtraMax | ExtraMax[];
       };
 }
 
@@ -323,9 +330,9 @@ type PenaltyTarget =
       index?: number;
     };
 
-export interface AbilityPenalty extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
+export interface AbilityPenalty extends AvailableCondition_Character, ApplyCondition_Character {
   value: number;
-  lvScale?: AbilityEffectLevelScale;
+  lvScale?: LevelScale_Character;
   /** Added before stacks, after scale */
   preExtra?: number | Omit<AbilityPenalty, "targets">;
   targets: PenaltyTarget | PenaltyTarget[];

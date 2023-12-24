@@ -1,13 +1,11 @@
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants";
 import {
-  AbilityEffectApplyCondition,
-  AbilityEffectAvailableCondition,
-  AbilityEffectLevelScale,
-  AppCharacter,
+  ApplyCondition_Character,
+  AvailableCondition_Character,
+  LevelScale_Character,
   AttackElementBonus,
   AttackPatternBonus,
   CharInfo,
-  PartyData,
   ReactionBonus,
   ResistanceReduction,
   ResistanceReductionKey,
@@ -21,7 +19,7 @@ import { AttackElementPath, AttackPatternPath, ReactionBonusPath, finalTalentLv 
 import { CalcUltilInfo } from "./types";
 
 export const isAvailableEffect = (
-  condition: AbilityEffectAvailableCondition,
+  condition: AvailableCondition_Character,
   char: CharInfo,
   inputs: number[],
   fromSelf: boolean
@@ -34,74 +32,66 @@ export const isAvailableEffect = (
   return true;
 };
 
-export const isApplicableEffect = (
-  condition: AbilityEffectApplyCondition,
-  info: {
-    charData: AppCharacter;
-    partyData: PartyData;
-  },
-  inputs: number[]
-) => {
-  const { checkInput, partyElmtCount, partyOnlyElmts } = condition;
-
-  if (checkInput !== undefined) {
-    const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
-    const input = inputs[index] ?? 0;
-    switch (type) {
-      case "equal":
-        if (input !== value) return false;
-        else break;
-      case "min":
-        if (input < value) return false;
-        else break;
-      case "max":
-        if (input > value) return false;
-        else break;
-      case "included":
-        if (!inputs.includes(value)) return false;
-        else break;
-    }
-  }
-  if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
-    return false;
-  }
-  if (condition.forElmts && !condition.forElmts.includes(info.charData.vision)) {
-    return false;
-  }
-  const visions = countVision(info.partyData, info.charData);
-
-  if (partyElmtCount) {
-    for (const key in partyElmtCount) {
-      const currentCount = visions[key as Vision] ?? 0;
-      const requiredCount = partyElmtCount[key as Vision] ?? 0;
-      if (currentCount < requiredCount) return false;
-    }
-  }
-  if (partyOnlyElmts) {
-    for (const vision in visions) {
-      if (!partyOnlyElmts.includes(vision as Vision)) return false;
-    }
-  }
-  return true;
-};
-
 export const isUsableEffect = (
-  condition: AbilityEffectAvailableCondition & AbilityEffectApplyCondition,
+  condition: AvailableCondition_Character & ApplyCondition_Character,
   info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
-  return isAvailableEffect(condition, info.char, inputs, fromSelf) && isApplicableEffect(condition, info, inputs);
+  if (isAvailableEffect(condition, info.char, inputs, fromSelf)) {
+    const { checkInput, partyElmtCount, partyOnlyElmts } = condition;
+
+    if (checkInput !== undefined) {
+      const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
+      const input = inputs[index] ?? 0;
+      switch (type) {
+        case "equal":
+          if (input !== value) return false;
+          else break;
+        case "min":
+          if (input < value) return false;
+          else break;
+        case "max":
+          if (input > value) return false;
+          else break;
+        case "included":
+          if (!inputs.includes(value)) return false;
+          else break;
+      }
+    }
+    if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
+      return false;
+    }
+    if (condition.forElmts && !condition.forElmts.includes(info.charData.vision)) {
+      return false;
+    }
+    const visions = countVision(info.partyData, info.charData);
+
+    if (partyElmtCount) {
+      for (const key in partyElmtCount) {
+        const currentCount = visions[key as Vision] ?? 0;
+        const requiredCount = partyElmtCount[key as Vision] ?? 0;
+        if (currentCount < requiredCount) return false;
+      }
+    }
+    if (partyOnlyElmts) {
+      for (const vision in visions) {
+        if (!partyOnlyElmts.includes(vision as Vision)) return false;
+      }
+    }
+    return true;
+  }
+  return false;
 };
 
 export const getLevelScale = (
-  scale: AbilityEffectLevelScale | undefined,
+  scale: LevelScale_Character | undefined,
   info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
   if (scale) {
-    const { talent, value, alterIndex = 0 } = scale;
+    const { talent, value, alterIndex = 0, max } = scale;
     const level = fromSelf
       ? finalTalentLv({
           talentType: talent,
@@ -111,7 +101,8 @@ export const getLevelScale = (
         })
       : inputs[alterIndex] ?? 0;
 
-    return value ? TALENT_LV_MULTIPLIERS[value][level] : level;
+    const result = value ? TALENT_LV_MULTIPLIERS[value][level] : level;
+    return max && result > max ? max : result;
   }
   return 1;
 };

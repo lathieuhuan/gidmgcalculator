@@ -8,6 +8,7 @@ import {
   CalcItemBuff,
   DynamicMax,
   AbilityEffectValueOption,
+  ExtraMax,
 } from "@Src/types";
 import { countVision, toArray } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
@@ -29,16 +30,26 @@ const genExclusiveBuff = (
   };
 };
 
-const getMax = (max: number | DynamicMax, info: CalcUltilInfo, inputs: number[], fromSelf: boolean) => {
-  if (typeof max === "number") return max;
-  let result = max.value;
+const getTotalExtraMax = (
+  extras: ExtraMax | ExtraMax[] | undefined,
+  info: CalcUltilInfo,
+  inputs: number[],
+  fromSelf: boolean
+) => {
+  let result = 0;
 
-  for (const extra of max.extras) {
-    if (isUsableEffect(extra, info, inputs, fromSelf)) {
-      result += extra.value;
+  if (extras) {
+    for (const extra of toArray(extras)) {
+      if (isUsableEffect(extra, info, inputs, fromSelf)) {
+        result += extra.value;
+      }
     }
   }
   return result;
+};
+
+const getMax = (max: number | DynamicMax, info: CalcUltilInfo, inputs: number[], fromSelf: boolean) => {
+  return typeof max === "number" ? max : max.value + getTotalExtraMax(max.extras, info, inputs, fromSelf);
 };
 
 const getStackValue = (stack: AbilityBonusStack, info: BuffInfoWrap, inputs: number[], fromSelf: boolean): number => {
@@ -201,7 +212,14 @@ function getBonusValue(
   if (typeof bonus.max === "number") {
     bonusValue = Math.min(bonusValue, bonus.max);
   } else if (bonus.max) {
-    bonusValue = Math.min(bonusValue, bonus.max.value * getStackValue(bonus.max.stacks, info, inputs, fromSelf));
+    let finalMax = bonus.max.value;
+
+    if (bonus.max.stacks) {
+      finalMax *= getStackValue(bonus.max.stacks, info, inputs, fromSelf);
+    }
+    finalMax += getTotalExtraMax(bonus.max.extras, info, inputs, fromSelf);
+
+    bonusValue = Math.min(bonusValue, finalMax);
   }
 
   return bonusValue;
