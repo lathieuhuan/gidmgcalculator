@@ -33,7 +33,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
         )}
       >
         <Image
-          className={"max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "" : " -translate-y-2")}
+          className={"max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "side-image" : " -translate-y-2")}
           size="w-10 h-10"
           src={sideIcon || icon}
         />

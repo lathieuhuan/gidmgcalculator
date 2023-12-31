@@ -9,7 +9,7 @@ export const MAX_CALC_SETUPS = 4;
 export const INVENTORY_PAGE_SIZE = 60;
 
 export const GENSHIN_DEV_URL_PATH = {
-  base: "https://api.genshin.dev",
+  base: "https://genshin.jmp.blue",
   character: (name: string) => `${GENSHIN_DEV_URL_PATH.base}/characters/${name}`,
 };
 
