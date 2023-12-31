@@ -93,19 +93,23 @@ export const getTalentDefaultInfo = (
   key: "NAs" | "ES" | "EB",
   weaponType: WeaponType,
   vision: Vision,
-  attPatt?: AttackPattern
+  attPatt: AttackPattern,
+  config?: AppCharacter["multFactorConf"]
 ): {
   attElmt: AttackElement;
   scale: number;
-  attributeType: TalentAttributeType;
+  basedOn: TalentAttributeType;
   flatFactorScale: number;
 } => {
   const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
+  const defaultScale = attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2;
+  const defaultBasedOn: TalentAttributeType = "atk";
+  const { scale = defaultScale, basedOn = defaultBasedOn } = config?.[attPatt] || {};
 
   return {
     attElmt,
-    scale: attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2,
-    attributeType: "atk",
+    scale,
+    basedOn,
     flatFactorScale: 3,
   };
 };

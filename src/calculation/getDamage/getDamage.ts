@@ -52,7 +52,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
+  const { multFactorConf, calcList, weaponType, vision, debuffs } = charData;
   const infoWrap: DebuffInfoWrap = {
     char,
     charData,
@@ -145,9 +145,7 @@ export default function getDamage({
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
-    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
-    const config = calcListConfig?.[ATT_PATT] || {};
-    const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = config;
+    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT, multFactorConf);
     const level = finalTalentLv({ charData, talentType: resultKey, char, partyData });
 
     for (const stat of calcList[ATT_PATT]) {
@@ -201,8 +199,8 @@ export default function getDamage({
       for (const factor of toArray(stat.multFactors)) {
         const {
           root,
-          scale = multScale,
-          attributeType = multAttributeType,
+          scale = defaultInfo.scale,
+          basedOn = defaultInfo.basedOn,
         } = typeof factor === "number" ? { root: factor } : factor;
 
         const finalMult =
@@ -218,16 +216,16 @@ export default function getDamage({
         }
 
         record.multFactors.push({
-          value: totalAttr[attributeType],
-          desc: attributeType,
+          value: totalAttr[basedOn],
+          desc: basedOn,
           talentMult: finalMult,
         });
         record.totalFlat = flatBonus;
 
-        bases.push((totalAttr[attributeType] * finalMult) / 100 + flatBonus);
+        bases.push((totalAttr[basedOn] * finalMult) / 100 + flatBonus);
       }
 
-      if (stat.multFactorsAreOne) {
+      if (stat.joinMultFactors) {
         bases = [bases.reduce((accumulator, base) => accumulator + base, 0)];
       }
 

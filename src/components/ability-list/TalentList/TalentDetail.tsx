@@ -163,7 +163,7 @@ function processActiveTalents(
   level: number,
   label: Record<TalentAttributeType, string>
 ): ProcessedActiveTalent[] {
-  const { vision, weaponType, EBcost, activeTalents, calcListConfig, calcList } = charData;
+  const { vision, weaponType, EBcost, activeTalents, multFactorConf, calcList } = charData;
   const { NAs, ES, EB } = activeTalents;
 
   const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
@@ -173,10 +173,8 @@ function processActiveTalents(
   };
 
   for (const attPatt of ATTACK_PATTERNS) {
-    const isElemental = attPatt === "ES" || attPatt === "EB";
-    const resultKey = isElemental ? attPatt : "NAs";
-    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt);
-    const { multScale = defaultInfo.scale, multAttributeType } = calcListConfig?.[attPatt] || {};
+    const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
+    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt, multFactorConf);
 
     for (const stat of calcList[attPatt]) {
       const multFactors = toArray(stat.multFactors);
@@ -189,15 +187,15 @@ function processActiveTalents(
       for (const factor of multFactors) {
         const {
           root,
-          scale = multScale,
-          attributeType = multAttributeType,
+          scale = defaultInfo.scale,
+          basedOn = defaultInfo.basedOn,
         } = typeof factor === "number" ? { root: factor } : factor;
 
         if (scale && root) {
           let string = round(root * TALENT_LV_MULTIPLIERS[scale][level], 2) + "%";
 
-          if (attributeType) {
-            string += ` ${label[attributeType]}`;
+          if (basedOn) {
+            string += ` ${label[basedOn]}`;
           }
 
           factorStrings.push(string);

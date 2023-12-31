@@ -112,7 +112,7 @@ const getStackValue = (
     }
   }
 
-  if (stack.requiredBase) result -= stack.requiredBase;
+  if (stack.baseline && result < stack.baseline) return 0;
 
   if (stack.extra && CharacterCal.isAvailable(stack.extra, info.char, inputs, fromSelf)) {
     result += stack.extra.value;

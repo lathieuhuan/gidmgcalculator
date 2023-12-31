@@ -44,12 +44,12 @@ export type AppCharacter = {
     type: AttributeStat;
     value: number;
   };
-  calcListConfig?: {
-    NA?: CalcListConfig;
-    CA?: CalcListConfig;
-    PA?: CalcListConfig;
-    ES?: CalcListConfig;
-    EB?: CalcListConfig;
+  multFactorConf?: {
+    NA?: CalcItemMultFactorConfig;
+    CA?: CalcItemMultFactorConfig;
+    PA?: CalcItemMultFactorConfig;
+    ES?: CalcItemMultFactorConfig;
+    EB?: CalcItemMultFactorConfig;
   };
   calcList: {
     NA: CalcItem[];
@@ -73,9 +73,9 @@ export type AppCharacter = {
 
 export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
-type CalcListConfig = {
-  multScale?: number;
-  multAttributeType?: TalentAttributeType;
+type CalcItemMultFactorConfig = {
+  scale?: number;
+  basedOn?: TalentAttributeType;
 };
 
 type Ability = {
@@ -93,7 +93,7 @@ type CalcItemMultFactor = {
   /** When 0 stat not scale off talent level */
   scale?: number;
   /** Calc default to 'atk'. Only on ES / EB */
-  attributeType?: TalentAttributeType;
+  basedOn?: TalentAttributeType;
 };
 
 export type CalcItemType = "attack" | "healing" | "shield" | "other";
@@ -110,7 +110,7 @@ export type CalcItem = {
    * Damage factors multiplying an attribute, scaling off talent level
    */
   multFactors: number | number[] | CalcItemMultFactor | CalcItemMultFactor[];
-  multFactorsAreOne?: boolean;
+  joinMultFactors?: boolean;
   /**
    * Damage factor multiplying root, caling off talent level. Only on ES / EB
    */
@@ -226,7 +226,7 @@ type ResolveStack = {
 
 export type BonusStack_Character = (InputStack | AttributeStack | NationStack | EnergyStack | ResolveStack) & {
   /** Final stack = stack - required base */
-  requiredBase?: number;
+  baseline?: number;
   /** On Furina */
   extra?: AvailableCondition_Character & {
     value: number;
