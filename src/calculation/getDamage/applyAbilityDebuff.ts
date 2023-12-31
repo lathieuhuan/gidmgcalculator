@@ -1,21 +1,21 @@
 import { VISION_TYPES } from "@Src/constants";
-import { AbilityPenalty, DebuffInfoWrap } from "@Src/types";
+import { Penalty_Character, DebuffInfoWrap, PenaltyConfig_Character } from "@Src/types";
 import { toArray } from "@Src/utils";
 import { CalcUltilInfo } from "../types";
-import { getLevelScale, isUsableEffect, applyModifier } from "../utils";
+import { CharacterCal, applyModifier } from "../utils";
 
 const getPenaltyValue = (
-  penalty: Omit<AbilityPenalty, "targets">,
+  penalty: PenaltyConfig_Character,
   info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
   const { preExtra } = penalty;
-  let result = penalty.value * getLevelScale(penalty.lvScale, info, inputs, fromSelf);
+  let result = penalty.value * CharacterCal.getLevelScale(penalty.lvScale, info, inputs, fromSelf);
 
   if (typeof preExtra === "number") {
     result += preExtra;
-  } else if (preExtra && isUsableEffect(preExtra, info, inputs, fromSelf)) {
+  } else if (preExtra && CharacterCal.isUsable(preExtra, info, inputs, fromSelf)) {
     result += getPenaltyValue(preExtra, info, inputs, fromSelf);
   }
   if (penalty.max && result > penalty.max) result = penalty.max;
@@ -25,14 +25,14 @@ const getPenaltyValue = (
 
 interface ApplyAbilityDebuffArgs {
   description: string;
-  effects: AbilityPenalty | AbilityPenalty[];
+  effects: Penalty_Character | Penalty_Character[];
   inputs: number[];
   infoWrap: DebuffInfoWrap;
   fromSelf: boolean;
 }
 const applyAbilityDebuff = ({ description, effects, infoWrap: info, inputs, fromSelf }: ApplyAbilityDebuffArgs) => {
   for (const effect of toArray(effects)) {
-    if (isUsableEffect(effect, info, inputs, fromSelf)) {
+    if (CharacterCal.isExtensivelyUsable(effect, info, inputs, fromSelf)) {
       const penaltyValue = getPenaltyValue(effect, info, inputs, fromSelf);
 
       for (const target of toArray(effect.targets)) {

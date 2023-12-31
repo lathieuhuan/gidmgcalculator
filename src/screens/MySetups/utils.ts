@@ -1,5 +1,5 @@
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
-import calculateAll from "@Src/calculation";
+import { calculateAll } from "@Src/calculation";
 import { appData } from "@Src/data";
 
 export const calculateChosenSetup = (chosenSetup: UserSetup, weapon: UserWeapon | null, artifacts: UserArtifacts) => {

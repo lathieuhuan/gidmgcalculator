@@ -1,6 +1,6 @@
 import type { CalculatorState } from "./types";
 import { appData } from "@Src/data";
-import calculateAll from "@Src/calculation";
+import { calculateAll } from "@Src/calculation";
 
 export const getCharDataFromState = (state: CalculatorState) => {
   const setup = state.setupsById[state.activeId];

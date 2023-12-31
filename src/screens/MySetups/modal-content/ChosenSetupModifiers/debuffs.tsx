@@ -1,5 +1,5 @@
 import type {
-  AbilityDebuff,
+  Debuff_Character,
   AppCharacter,
   ArtifactDebuffCtrl,
   CharInfo,
@@ -55,7 +55,7 @@ interface SelfDebuffsProps {
   selfDebuffCtrls: ModifierCtrl[];
   charData: AppCharacter;
   partyData: PartyData;
-  debuffs: AbilityDebuff[];
+  debuffs: Debuff_Character[];
 }
 export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuffs }: SelfDebuffsProps) {
   const content: JSX.Element[] = [];

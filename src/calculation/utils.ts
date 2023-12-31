@@ -1,6 +1,5 @@
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants";
 import {
-  ApplyCondition_Character,
   AvailableCondition_Character,
   LevelScale_Character,
   AttackElementBonus,
@@ -13,33 +12,38 @@ import {
   TotalAttributeStat,
   Tracker,
   Vision,
+  UsableCondition_Character,
+  ExtendedUsableCondition_Character,
 } from "@Src/types";
 import { countVision, isGranted, toArray } from "@Src/utils";
 import { AttackElementPath, AttackPatternPath, ReactionBonusPath, finalTalentLv } from "@Src/utils/calculation";
 import { CalcUltilInfo } from "./types";
 
-export const isAvailableEffect = (
-  condition: AvailableCondition_Character,
-  char: CharInfo,
-  inputs: number[],
-  fromSelf: boolean
-) => {
-  if (fromSelf) {
-    if (!isGranted(condition, char)) return false;
-  } else if (condition.alterIndex !== undefined && !inputs[condition.alterIndex]) {
-    return false;
-  }
-  return true;
-};
+export class CharacterCal {
+  static isAvailable = (
+    condition: AvailableCondition_Character,
+    char: CharInfo,
+    inputs: number[],
+    fromSelf: boolean
+  ) => {
+    if (fromSelf) {
+      if (!isGranted(condition, char)) return false;
+    } else if (condition.alterIndex !== undefined && !inputs[condition.alterIndex]) {
+      return false;
+    }
+    return true;
+  };
 
-export const isUsableEffect = (
-  condition: AvailableCondition_Character & ApplyCondition_Character,
-  info: CalcUltilInfo,
-  inputs: number[],
-  fromSelf: boolean
-) => {
-  if (isAvailableEffect(condition, info.char, inputs, fromSelf)) {
-    const { checkInput, partyElmtCount, partyOnlyElmts } = condition;
+  static isUsable = (
+    condition: UsableCondition_Character,
+    info: CalcUltilInfo,
+    inputs: number[],
+    fromSelf: boolean
+  ) => {
+    if (!CharacterCal.isAvailable(condition, info.char, inputs, fromSelf)) {
+      return false;
+    }
+    const { checkInput } = condition;
 
     if (checkInput !== undefined) {
       const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
@@ -59,6 +63,20 @@ export const isUsableEffect = (
           else break;
       }
     }
+    return true;
+  };
+
+  static isExtensivelyUsable = (
+    condition: ExtendedUsableCondition_Character,
+    info: CalcUltilInfo,
+    inputs: number[],
+    fromSelf: boolean
+  ) => {
+    if (!CharacterCal.isUsable(condition, info, inputs, fromSelf)) {
+      return false;
+    }
+    const { partyElmtCount, partyOnlyElmts } = condition;
+
     if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
       return false;
     }
@@ -79,33 +97,31 @@ export const isUsableEffect = (
         if (!partyOnlyElmts.includes(vision as Vision)) return false;
       }
     }
-    return true;
-  }
-  return false;
-};
+  };
 
-export const getLevelScale = (
-  scale: LevelScale_Character | undefined,
-  info: CalcUltilInfo,
-  inputs: number[],
-  fromSelf: boolean
-) => {
-  if (scale) {
-    const { talent, value, alterIndex = 0, max } = scale;
-    const level = fromSelf
-      ? finalTalentLv({
-          talentType: talent,
-          char: info.char,
-          charData: info.charData,
-          partyData: info.partyData,
-        })
-      : inputs[alterIndex] ?? 0;
+  static getLevelScale = (
+    scale: LevelScale_Character | undefined,
+    info: CalcUltilInfo,
+    inputs: number[],
+    fromSelf: boolean
+  ) => {
+    if (scale) {
+      const { talent, value, alterIndex = 0, max } = scale;
+      const level = fromSelf
+        ? finalTalentLv({
+            talentType: talent,
+            char: info.char,
+            charData: info.charData,
+            partyData: info.partyData,
+          })
+        : inputs[alterIndex] ?? 0;
 
-    const result = value ? TALENT_LV_MULTIPLIERS[value][level] : level;
-    return max && result > max ? max : result;
-  }
-  return 1;
-};
+      const result = value ? TALENT_LV_MULTIPLIERS[value][level] : level;
+      return max && result > max ? max : result;
+    }
+    return 1;
+  };
+}
 
 type ModRecipient = TotalAttribute | ReactionBonus | AttackPatternBonus | AttackElementBonus | ResistanceReduction;
 
