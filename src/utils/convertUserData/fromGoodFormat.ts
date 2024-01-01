@@ -1,5 +1,4 @@
 import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
-
 import { appData } from "@Src/data";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
@@ -11,49 +10,34 @@ const convertLevel = (level: any, ascension: any) => {
   return `${roundedLevel || 1}/${ascension ? ascension * 10 + 30 : 20}` as Level;
 };
 
-const uppercaseFirstLetter = (word: any): string => {
-  return word[0].toUpperCase() + word.slice(1);
-};
+const convertName = (str: string) => {
+  let result = "";
+  let spaceAhead = true;
 
-const convertName = (str: any) => {
-  return str.replace(/'|"|-/g, "").split(" ").map(uppercaseFirstLetter).join("");
+  for (const c of str) {
+    if (!["-", "'", '"'].includes(c)) {
+      if (c === " ") {
+        spaceAhead = true;
+      } else {
+        result += spaceAhead ? c.toUpperCase() : c;
+        spaceAhead = false;
+      }
+    }
+  }
+  return result;
 };
 
 const searchCharacterByKey = (key: any) => {
-  if (!key) return undefined;
-  const characters = appData.getAllCharacters();
-
-  for (const { name, GOOD } of characters) {
-    if (name === key || GOOD === key) {
-      return name;
-    }
-  }
-  return undefined;
+  return key ? appData.getAllCharacters().find(({ name, GOOD }) => name === key || GOOD === key)?.name : undefined;
 };
 
 const searchWeaponByKey = (key: any) => {
-  const weapons = appData.getAllWeapons();
-
-  for (const weapon of weapons) {
-    if (key === convertName(weapon.name)) {
-      return {
-        code: weapon.code,
-        type: weapon.type,
-      };
-    }
-  }
-  return undefined;
+  const weapon = appData.getAllWeapons().find((item) => key === convertName(item.name));
+  return weapon ? { code: weapon.code, type: weapon.type } : undefined;
 };
 
 const searchArtifactByKey = (key: any) => {
-  const artifacts = appData.getAllArtifacts();
-
-  for (const { name, code } of artifacts) {
-    if (key === convertName(name)) {
-      return code;
-    }
-  }
-  return undefined;
+  return appData.getAllArtifacts().find((item) => key === convertName(item.name))?.code;
 };
 
 type Result = {
@@ -83,13 +67,12 @@ export function convertFromGoodFormat(data: any) {
 
     if (!name) continue;
 
-    const { ascension, talent } = char;
     const charInfo: UserCharacter = {
       name,
-      level: convertLevel(char.level, ascension),
-      NAs: talent.auto,
-      ES: talent.skill,
-      EB: talent.burst,
+      level: convertLevel(char.level, char.ascension),
+      NAs: char.talent.auto,
+      ES: char.talent.skill,
+      EB: char.talent.burst,
       cons: char.constellation,
       weaponID: 0,
       artifactIDs: [null, null, null, null, null],

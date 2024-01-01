@@ -17,23 +17,22 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
 
   const onUploadFile = () => {
     const file = inputRef.current?.files?.[0];
-    const reader = new FileReader();
-    const isJson = file?.type.match(/application.*/);
+    if (!file) return;
 
-    if (file && (file.type.match(/text.*/) || isJson)) {
+    const reader = new FileReader();
+    const isJson = /application.*/.test(file.type);
+
+    if (/text.*/.test(file.type) || isJson) {
       reader.onload = function (event) {
         try {
           let data = JSON.parse((event.target?.result as string) || "");
-
-          if (isJson) {
-            data = convertFromGoodFormat(data);
-          }
+          if (isJson) data = convertFromGoodFormat(data);
 
           const version = +data.version;
 
           if (version < 2.1) {
             notification.error({
-              content: "Your database are too old and cannot be converted to the current version.",
+              content: "Your data are too old and cannot be converted to the current version.",
             });
           }
           if (version === 2.1) {
@@ -50,7 +49,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
           console.log(err);
 
           notification.error({
-            content: "Your version of data cannot be recognised.",
+            content: "An error occurred while reading your data.",
           });
         }
       };
@@ -61,7 +60,6 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   return (
     <div className="flex flex-col">
       <p className="mt-4 px-8 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
-
       <input
         ref={inputRef}
         hidden
@@ -70,7 +68,6 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
         accept="text/*,application/json"
         onChange={onUploadFile}
       />
-
       <Button
         className="mt-4 mb-4 mx-auto"
         variant="positive"

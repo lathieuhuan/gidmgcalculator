@@ -25,7 +25,7 @@ export class CharacterCal {
     char: CharInfo,
     inputs: number[],
     fromSelf: boolean
-  ) => {
+  ): boolean => {
     if (fromSelf) {
       if (!isGranted(condition, char)) return false;
     } else if (condition.alterIndex !== undefined && !inputs[condition.alterIndex]) {
@@ -39,8 +39,8 @@ export class CharacterCal {
     info: CalcUltilInfo,
     inputs: number[],
     fromSelf: boolean
-  ) => {
-    if (!CharacterCal.isAvailable(condition, info.char, inputs, fromSelf)) {
+  ): boolean => {
+    if (!this.isAvailable(condition, info.char, inputs, fromSelf)) {
       return false;
     }
     const { checkInput } = condition;
@@ -71,8 +71,8 @@ export class CharacterCal {
     info: CalcUltilInfo,
     inputs: number[],
     fromSelf: boolean
-  ) => {
-    if (!CharacterCal.isUsable(condition, info, inputs, fromSelf)) {
+  ): boolean => {
+    if (!this.isUsable(condition, info, inputs, fromSelf)) {
       return false;
     }
     const { partyElmtCount, partyOnlyElmts } = condition;
@@ -97,6 +97,7 @@ export class CharacterCal {
         if (!partyOnlyElmts.includes(vision as Vision)) return false;
       }
     }
+    return true;
   };
 
   static getLevelScale = (
@@ -104,7 +105,7 @@ export class CharacterCal {
     info: CalcUltilInfo,
     inputs: number[],
     fromSelf: boolean
-  ) => {
+  ): number => {
     if (scale) {
       const { talent, value, alterIndex = 0, max } = scale;
       const level = fromSelf
