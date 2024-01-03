@@ -1,14 +1,16 @@
 import { useEffect } from "react";
-import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-import { changeModCtrlInput, toggleModCtrl, updateResonance, updateCalcSetup } from "@Store/calculatorSlice";
-import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
+import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { $AppData } from "@Src/services";
+
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
+import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
+import { changeModCtrlInput, toggleModCtrl, updateResonance, updateCalcSetup } from "@Store/calculatorSlice";
 
 // Util
 import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { appData } from "@Src/data";
 
 // Component
 import { Green } from "@Src/pure-components";
@@ -97,7 +99,7 @@ export function ArtifactDebuffs() {
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
-    const data = appData.getArtifactSetData(ctrl.code);
+    const data = $AppData.getArtifactSetData(ctrl.code);
     if (!data) return;
 
     const { debuffs = [] } = data;

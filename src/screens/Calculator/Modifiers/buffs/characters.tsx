@@ -1,20 +1,18 @@
 import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
+import { $AppData } from "@Src/services";
+import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
+
+// Store
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action
 import {
   changeModCtrlInput,
   changeTeammateModCtrlInput,
   toggleModCtrl,
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
-
-// Util
-import { appData } from "@Src/data";
-import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
@@ -25,10 +23,10 @@ export function SelfBuffs() {
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
-  const charData = appData.getCharData(char.name);
-  const partyData = appData.getPartyData(useSelector(selectParty));
+  const charData = $AppData.getCharData(char.name);
+  const partyData = $AppData.getPartyData(useSelector(selectParty));
 
-  const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
+  const { innateBuffs = [], buffs = [] } = $AppData.getCharData(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
@@ -85,7 +83,7 @@ export function SelfBuffs() {
 
 export function PartyBuffs() {
   const party = useSelector(selectParty);
-  const partyData = appData.getPartyData(useSelector(selectParty));
+  const partyData = $AppData.getPartyData(useSelector(selectParty));
   const modifierElmts: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {
@@ -106,7 +104,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const char = useSelector(selectChar);
 
   const modifierElmts: JSX.Element[] = [];
-  const teammateData = appData.getCharData(teammate.name);
+  const teammateData = $AppData.getCharData(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { inputs = [] } = ctrl;

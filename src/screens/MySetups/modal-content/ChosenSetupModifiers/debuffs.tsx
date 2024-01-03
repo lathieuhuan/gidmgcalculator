@@ -10,12 +10,9 @@ import type {
   Resonance,
 } from "@Src/types";
 
-// Hook
 import { useTranslation } from "@Src/pure-hooks";
-
-// Util
 import { findByIndex, parseAbilityDescription } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Component
 import { Green } from "@Src/pure-components";
@@ -93,7 +90,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
   party.forEach((teammate) => {
     if (!teammate || !teammate.debuffCtrls.length) return;
 
-    const teammateData = appData.getCharData(teammate.name);
+    const teammateData = $AppData.getCharData(teammate.name);
     if (!teammateData) return;
 
     const { name, debuffs = [] } = teammateData;
@@ -136,7 +133,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
   artDebuffCtrls.forEach((ctrl) => {
-    const data = appData.getArtifactSetData(ctrl.code);
+    const data = $AppData.getArtifactSetData(ctrl.code);
     if (!data) return;
 
     const { name, debuffs = [] } = data;

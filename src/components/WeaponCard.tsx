@@ -1,13 +1,10 @@
-import { useMemo } from "react";
 import type { CalcWeapon, Level } from "@Src/types";
+import { useMemo } from "react";
 
-// Constant
 import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/pure-hooks";
-
-// Util
-import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseWeaponDescription } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
+import { getImgSrc, parseWeaponDescription, percentSign, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
 
 // Component
 import { BetaMark } from "@Src/pure-components";
@@ -24,7 +21,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { t } = useTranslation();
   if (!weapon) return null;
 
-  const wpData = appData.getWeaponData(weapon.code)!;
+  const wpData = $AppData.getWeaponData(weapon.code)!;
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;

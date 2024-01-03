@@ -21,7 +21,6 @@ import type {
   CustomBuffCtrlType,
 } from "@Src/types";
 
-// Constant
 import {
   ATTACK_ELEMENTS,
   LEVELS,
@@ -32,11 +31,11 @@ import {
   REACTIONS,
   VISION_TYPES,
 } from "@Src/constants";
+import { $AppData } from "@Src/services";
 
 // Util
 import { findByCode } from "@Src/utils";
 import { restoreCalcSetup } from "@Src/utils/setup";
-import { appData } from "@Src/data";
 
 const DIVIDERS = ["*", "D1", "D2", "D3", "D4"];
 const DIVIDER_MC = "D8";
@@ -61,7 +60,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   } = calcSetup;
 
   try {
-    const charData = appData.getCharData(char.name);
+    const charData = $AppData.getCharData(char.name);
     if (!charData) {
       throw new Error("Character not found");
     }
@@ -101,7 +100,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 
     const _teammateCodes = party.map((tm, i) => {
       if (tm) {
-        const { code: tmCode } = appData.getCharData(tm.name) || {};
+        const { code: tmCode } = $AppData.getCharData(tm.name) || {};
         const { weapon, artifact } = tm;
 
         return [
@@ -193,7 +192,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 };
 
 export const decodeSetup = (code: string): SetupImportInfo => {
-  const characters = appData.getAllCharacters();
+  const characters = $AppData.getAllCharacters();
   const [
     _charCode,
     _selfBCsCode,

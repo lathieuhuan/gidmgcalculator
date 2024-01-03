@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { AppCharacter, Talent } from "@Src/types";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Conponent
 import { CloseButton, Green, Dim, LoadingIcon } from "@Src/pure-components";
@@ -23,7 +23,7 @@ const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
   }, []);
 
   const getConstellation = async () => {
-    const response = await appData.fetchConsDescriptions(name);
+    const response = await $AppData.fetchConsDescriptions(name);
 
     if (state.current.mounted) {
       if (response.code === 200) {

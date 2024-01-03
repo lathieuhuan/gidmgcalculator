@@ -1,10 +1,10 @@
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import { calculateAll } from "@Src/calculation";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 export const calculateChosenSetup = (chosenSetup: UserSetup, weapon: UserWeapon | null, artifacts: UserArtifacts) => {
   const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-  const charData = appData.getCharData(char.name);
+  const charData = $AppData.getCharData(char.name);
 
   if (charData && weapon) {
     const result = calculateAll({ char, weapon, artifacts, ...rest }, target);

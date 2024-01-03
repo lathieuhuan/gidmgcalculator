@@ -1,12 +1,13 @@
 import clsx from "clsx";
+
 import type { CharInfo, AppCharacter, Party } from "@Src/types";
+import { $AppData } from "@Src/services";
 
 // Constant
 import { TALENT_TYPES } from "@Src/constants";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
-import { appData } from "@Src/data";
 import { ascsFromLv } from "@Src/utils";
 import { totalXtraTalentLv } from "@Src/utils/calculation";
 
@@ -23,7 +24,7 @@ interface TalentOverviewProps {
 }
 export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
   const { vision, weaponType, activeTalents, passiveTalents } = charData;
-  const partyData = party ? appData.getPartyData(party) : undefined;
+  const partyData = party ? $AppData.getPartyData(party) : undefined;
 
   return (
     <div className="h-full hide-scrollbar flex flex-col space-y-3">

@@ -1,5 +1,5 @@
 import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
 import { findByName } from "../pure-utils";
@@ -28,16 +28,16 @@ const convertName = (str: string) => {
 };
 
 const searchCharacterByKey = (key: any) => {
-  return key ? appData.getAllCharacters().find(({ name, GOOD }) => name === key || GOOD === key)?.name : undefined;
+  return key ? $AppData.getAllCharacters().find(({ name, GOOD }) => name === key || GOOD === key)?.name : undefined;
 };
 
 const searchWeaponByKey = (key: any) => {
-  const weapon = appData.getAllWeapons().find((item) => key === convertName(item.name));
+  const weapon = $AppData.getAllWeapons().find((item) => key === convertName(item.name));
   return weapon ? { code: weapon.code, type: weapon.type } : undefined;
 };
 
 const searchArtifactByKey = (key: any) => {
-  return appData.getAllArtifacts().find((item) => key === convertName(item.name))?.code;
+  return $AppData.getAllArtifacts().find((item) => key === convertName(item.name))?.code;
 };
 
 type Result = {
@@ -154,7 +154,7 @@ export function convertFromGoodFormat(data: any) {
 
   for (const char of result.characters) {
     if (!char.weaponID) {
-      const { weaponType } = appData.getCharData(char.name)! || {};
+      const { weaponType } = $AppData.getCharData(char.name)! || {};
       const weaponID = seedID++;
       const newWeapon = createWeapon({ type: weaponType });
 

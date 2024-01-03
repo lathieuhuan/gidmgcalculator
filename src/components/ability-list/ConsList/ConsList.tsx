@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { CharInfo } from "@Src/types";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Conponent
 import { InfoSign, SharedSpace } from "@Src/pure-components";
@@ -16,7 +16,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
-  const charData = appData.getCharData(char.name);
+  const charData = $AppData.getCharData(char.name);
 
   useEffect(() => {
     setAtDetails(false);

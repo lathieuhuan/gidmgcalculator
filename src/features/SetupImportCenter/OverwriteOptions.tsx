@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type { CharInfo, Target } from "@Src/types";
-import { appSettings } from "@Src/utils";
+import { $AppSettings } from "@Src/services";
 import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Hook
@@ -45,7 +45,7 @@ export function OverrideOptions({
     cons: [char.cons],
   };
 
-  if (appSettings.get().charInfoIsSeparated) {
+  if ($AppSettings.get().charInfoIsSeparated) {
     comparedChar.level = Object.values(setupsById).map(({ char }) => char.level);
     comparedChar.NAs = Object.values(setupsById).map(({ char }) => char.NAs);
     comparedChar.ES = Object.values(setupsById).map(({ char }) => char.ES);

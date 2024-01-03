@@ -3,21 +3,20 @@ import { FaChevronDown, FaSort, FaTimes } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
 
+import { findByIndex, splitLv } from "@Src/utils";
+import { $AppData } from "@Src/services";
+
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { sortCharacters } from "@Store/userDatabaseSlice";
 import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
-
-// Util
-import { findByIndex, splitLv } from "@Src/utils";
-import { appData } from "@Src/data";
 
 // Component
 import { ButtonGroup, Popover, SharedSpace, withModal, Button } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
-    const { name, rarity } = appData.getCharData(char.name);
+    const { name, rarity } = $AppData.getCharData(char.name);
     return { name, level: char.level, rarity, index };
   })
 );

@@ -13,13 +13,12 @@ import type {
   WeaponType,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
-import { appData } from "@Src/data";
-import { appSettings } from "./utils";
+import { $AppData, $AppSettings } from "@Src/services";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
 
 export const createCharInfo = (info?: Partial<PartialCharInfo>): PartialCharInfo => {
-  const { charLevel, charCons, charNAs, charES, charEB } = appSettings.get();
+  const { charLevel, charCons, charNAs, charES, charEB } = $AppSettings.get();
 
   return {
     level: info?.level || charLevel,
@@ -35,7 +34,7 @@ interface CreateWeaponArgs {
   code?: number;
 }
 export const createWeapon = ({ type, code }: CreateWeaponArgs): Omit<CalcWeapon, "ID"> => {
-  const { wpLevel, wpRefi } = appSettings.get();
+  const { wpLevel, wpRefi } = $AppSettings.get();
   return {
     type,
     code: code || DEFAULT_WEAPON_CODE[type],
@@ -50,7 +49,7 @@ interface CreateArtifactArgs {
   rarity: Rarity;
 }
 export function createArtifact({ type, code, rarity }: CreateArtifactArgs): Omit<CalcArtifact, "ID"> {
-  const { artLevel } = appSettings.get();
+  const { artLevel } = $AppSettings.get();
   return {
     type,
     code,
@@ -89,7 +88,7 @@ function createModCrtl(mod: Modifier, forSelf: boolean) {
 export function createCharModCtrls(forSelf: boolean, name: string) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = appData.getCharData(name) || {};
+  const { buffs = [], debuffs = [] } = $AppData.getCharData(name) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
@@ -123,7 +122,7 @@ function createBuffCtrls(forSelf: boolean, buffs: RefModifier[]) {
 }
 
 export function createWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
-  const { buffs = [] } = appData.getWeaponData(weapon.code) || {};
+  const { buffs = [] } = $AppData.getWeaponData(weapon.code) || {};
   return createBuffCtrls(forSelf, buffs);
 }
 
@@ -131,7 +130,7 @@ export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: num
   if (!hasCode?.code) {
     return [];
   }
-  const { buffs = [] } = appData.getArtifactSetData(hasCode.code) || {};
+  const { buffs = [] } = $AppData.getArtifactSetData(hasCode.code) || {};
   return createBuffCtrls(forSelf, buffs);
 }
 

@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useState, useEffect } from "react";
 
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { $AppData, $AppSettings } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -9,8 +10,7 @@ import { changeArtifact } from "@Store/calculatorSlice";
 import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { appData } from "@Src/data";
-import { appSettings, getImgSrc } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 
 // Component
 import { PickerArtifact } from "@Src/components";
@@ -60,7 +60,7 @@ export default function SectionArtifacts() {
         {ARTIFACT_TYPES.map((type, index) => {
           const artifact = artifacts[index];
           const icon = artifact
-            ? appData.getArtifactData({ code: artifact.code, type })?.icon || ""
+            ? $AppData.getArtifactData({ code: artifact.code, type })?.icon || ""
             : ARTIFACT_ICONS[type];
 
           return (
@@ -112,7 +112,7 @@ export default function SectionArtifacts() {
                 ID: Date.now(),
                 ...item,
               },
-              shouldKeepStats: appSettings.get().doKeepArtStatsOnSwitch,
+              shouldKeepStats: $AppSettings.get().doKeepArtStatsOnSwitch,
             })
           );
           setActiveTabIndex(artifactPicker.slot);

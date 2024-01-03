@@ -1,27 +1,29 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { UserArtifact, UserComplexSetup, UserDatabaseState, UserWeapon, WeaponType } from "@Src/types";
 import type {
+  AddSetupToComplexAction,
   AddUserDatabaseAction,
-  UpdateUserArtifactSubStatAction,
+  CombineSetupsAction,
   RemoveArtifactAction,
   RemoveWeaponAction,
   SaveSetupAction,
   SwitchArtifactAction,
+  SwitchShownSetupInComplexAction,
   SwitchWeaponAction,
   UnequipArtifactAction,
   UpdateUserArtifactAction,
+  UpdateUserArtifactSubStatAction,
   UpdateUserCharacterAction,
   UpdateUserWeaponAction,
-  CombineSetupsAction,
-  AddSetupToComplexAction,
-  SwitchShownSetupInComplexAction,
 } from "./reducer-types";
-import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { appData } from "@Src/data";
+import { ARTIFACT_TYPES } from "@Src/constants";
+import { $AppData } from "@Src/services";
+
+// Util
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
-import { isUserSetup } from "@Src/utils/setup";
 import { createCharInfo, createWeapon } from "@Src/utils/creators";
+import { isUserSetup } from "@Src/utils/setup";
 
 export const initialState: UserDatabaseState = {
   userChars: [],
@@ -219,8 +221,8 @@ export const userDatabaseSlice = createSlice({
     },
     sortWeapons: (state) => {
       state.userWps.sort((a, b) => {
-        const rA = appData.getWeaponData(a.code)?.rarity || 4;
-        const rB = appData.getWeaponData(b.code)?.rarity || 4;
+        const rA = $AppData.getWeaponData(a.code)?.rarity || 4;
+        const rB = $AppData.getWeaponData(b.code)?.rarity || 4;
         if (rA !== rB) {
           return rB - rA;
         }
@@ -337,8 +339,8 @@ export const userDatabaseSlice = createSlice({
           };
           return type[b.type] - type[a.type];
         }
-        const aName = appData.getArtifactSetData(a.code)?.name || "";
-        const bName = appData.getArtifactSetData(b.code)?.name || "";
+        const aName = $AppData.getArtifactSetData(a.code)?.name || "";
+        const bName = $AppData.getArtifactSetData(b.code)?.name || "";
         return bName.localeCompare(aName);
       });
     },

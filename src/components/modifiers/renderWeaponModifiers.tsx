@@ -1,6 +1,6 @@
 import type { AppWeapon, ModifierCtrl, Weapon, WeaponBuff } from "@Src/types";
 import { findByIndex, parseWeaponDescription } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplate";
 
 const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: WeaponBuff, refi: number) => {
@@ -31,7 +31,7 @@ export const renderWeaponModifiers = ({
   ctrls,
   getHanlders,
 }: RenderWeaponModifiersArgs) => {
-  const data = appData.getWeaponData(weapon.code);
+  const data = $AppData.getWeaponData(weapon.code);
   if (!data) return [];
   const { buffs = [], descriptions = [] } = data;
 

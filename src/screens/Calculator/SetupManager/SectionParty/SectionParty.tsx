@@ -2,10 +2,12 @@ import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaSyncAlt, FaUserSlash } from "react-icons/fa";
 
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { findById } from "@Src/utils";
+import { $AppData } from "@Src/services";
 
-// Action
+// Store
+import { useDispatch, useSelector } from "@Store/hooks";
+import { selectChar, selectActiveId, selectSetupManageInfos, selectParty } from "@Store/calculatorSlice/selectors";
 import {
   addTeammate,
   removeTeammate,
@@ -13,13 +15,6 @@ import {
   updateTeammateArtifact,
   updateTeammateWeapon,
 } from "@Store/calculatorSlice";
-
-// Selector
-import { selectChar, selectActiveId, selectSetupManageInfos, selectParty } from "@Store/calculatorSlice/selectors";
-
-// Util
-import { findById } from "@Src/utils";
-import { appData } from "@Src/data";
 
 // Component
 import { Image, CollapseSpace } from "@Src/pure-components";
@@ -38,7 +33,7 @@ export default function SectionParty() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
 
-  const charData = appData.getCharData(char.name);
+  const charData = $AppData.getCharData(char.name);
 
   const [modal, setModal] = useState<ModalState>({
     type: "",
@@ -46,7 +41,7 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
-  const partyData = useMemo(() => appData.getPartyData(party), [party]);
+  const partyData = useMemo(() => $AppData.getPartyData(party), [party]);
 
   const isCombined = findById(setupManageInfos, activeId)?.type === "combined";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];

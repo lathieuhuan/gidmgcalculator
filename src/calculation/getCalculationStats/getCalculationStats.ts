@@ -10,11 +10,11 @@ import type {
 } from "@Src/types";
 import type { GetCalculationStatsArgs } from "../types";
 
+import { $AppData } from "@Src/services";
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
 // Util
-import { appData } from "@Src/data";
 import { applyPercent, findByIndex, isGranted, realParty, weaponSubStatValue } from "@Src/utils";
 import { getArtifactSetBonuses, getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { applyModifier } from "../utils";
@@ -42,7 +42,7 @@ export const getCalculationStats = ({
   const { refi } = weapon;
   const setBonuses = getArtifactSetBonuses(artifacts);
 
-  const weaponData = appData.getWeaponData(weapon.code)!;
+  const weaponData = $AppData.getWeaponData(weapon.code)!;
   const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
 
@@ -144,7 +144,7 @@ export const getCalculationStats = ({
     for (const { code, bonusLv } of setBonuses) {
       //
       for (let i = 0; i <= bonusLv; i++) {
-        const data = appData.getArtifactSetData(code);
+        const data = $AppData.getArtifactSetData(code);
         const buff = data?.setBonuses?.[i];
 
         if (buff && buff.effects) {
@@ -213,7 +213,7 @@ export const getCalculationStats = ({
 
   const APPLY_TEAMMATE_BUFFS = (party: Teammate[]) => {
     for (const teammate of party) {
-      const { name, buffs = [] } = appData.getCharData(teammate.name);
+      const { name, buffs = [] } = $AppData.getCharData(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
         const buff = findByIndex(buffs, index);
@@ -231,7 +231,7 @@ export const getCalculationStats = ({
       // #to-check: should be applied before main weapon buffs?
       (() => {
         const { code, refi } = teammate.weapon;
-        const { name, buffs = [] } = appData.getWeaponData(code) || {};
+        const { name, buffs = [] } = $AppData.getWeaponData(code) || {};
 
         for (const ctrl of teammate.weapon.buffCtrls) {
           const buff = findByIndex(buffs, ctrl.index);
@@ -250,7 +250,7 @@ export const getCalculationStats = ({
 
       (() => {
         const { code } = teammate.artifact;
-        const { name, buffs = [] } = appData.getArtifactSetData(code) || {};
+        const { name, buffs = [] } = $AppData.getArtifactSetData(code) || {};
 
         for (const ctrl of teammate.artifact.buffCtrls) {
           const buff = findByIndex(buffs, ctrl.index);
@@ -268,7 +268,7 @@ export const getCalculationStats = ({
     }
   };
 
-  const mainArtifactData = setBonuses[0]?.code ? appData.getArtifactSetData(setBonuses[0].code) : undefined;
+  const mainArtifactData = setBonuses[0]?.code ? $AppData.getArtifactSetData(setBonuses[0].code) : undefined;
   const APLY_MAIN_ARTIFACT_BUFFS = (isFinal: boolean) => {
     if (!mainArtifactData) return;
 

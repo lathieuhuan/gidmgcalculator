@@ -1,21 +1,18 @@
 import clsx from "clsx";
 import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 
-// Type
 import type { CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
 
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { useTranslation } from "@Src/pure-hooks";
-
-// Util
-import { percentSign, getImgSrc } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
+import { getImgSrc, percentSign } from "@Src/utils";
 
 // Component
 import { BetaMark, Button } from "@Src/pure-components";
-import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
+import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 
 interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable" | "space" | "onChangeSubStat"> {
   artifact?: CalcArtifact;
@@ -33,7 +30,7 @@ export const ArtifactCard = ({
   const { t } = useTranslation();
   if (!artifact) return null;
 
-  const { beta, name, icon = "" } = appData.getArtifactData(artifact) || {};
+  const { beta, name, icon = "" } = $AppData.getArtifactData(artifact) || {};
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;

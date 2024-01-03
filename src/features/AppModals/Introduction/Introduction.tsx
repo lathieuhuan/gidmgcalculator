@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 
-import { appData, Update } from "@Src/data";
+import { $AppData, Update } from "@Src/services";
 import { useGetMetadata } from "@Src/hooks";
 import { useDispatch } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
@@ -19,8 +19,8 @@ export const Introduction = (props: ModalControl) => {
 
   const { status, getMetadata } = useGetMetadata({
     onSuccess: () => {
-      setUpdates(appData.updates);
-      setSupporters(appData.supporters);
+      setUpdates($AppData.updates);
+      setSupporters($AppData.supporters);
       dispatch(updateUI({ ready: true }));
     },
   });

@@ -1,9 +1,13 @@
 import { batch } from "react-redux";
 import isEqual from "react-fast-compare";
+
+// Type
 import type { CalcArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { InitNewSessionPayload } from "./calculatorSlice/reducer-types";
 import type { AppThunk } from "./index";
+
 import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_WEAPONS } from "@Src/constants";
+import { $AppData } from "@Src/services";
 
 // Action
 import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
@@ -11,7 +15,6 @@ import { updateSetupImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
 // Util
-import { appData } from "@Src/data";
 import {
   findById,
   calcItemToUserItem,
@@ -42,13 +45,13 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
     const { char } = payload.calcSetup;
     const { onSuccess } = options || {};
 
-    if (appData.getCharStatus(char.name) === "fetched") {
+    if ($AppData.getCharStatus(char.name) === "fetched") {
       dispatch(initNewSession(payload));
       onSuccess?.();
     } else {
       dispatch(updateUI({ loading: true }));
 
-      const response = await appData.fetchCharacter(char.name);
+      const response = await $AppData.fetchCharacter(char.name);
 
       if (response.code === 200) {
         dispatch(initNewSession(payload));
@@ -72,7 +75,7 @@ export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
     const { userWps, userArts } = getState().database;
 
     const ID = Date.now();
-    const charData = appData.getCharData(pickedChar.name);
+    const charData = $AppData.getCharData(pickedChar.name);
     const data = parseUserCharacter({
       pickedChar,
       userWps,
@@ -322,7 +325,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
       let artifacts: CalcArtifacts = [null, null, null, null, null];
 
       if (artifact.code) {
-        const { variants = [] } = appData.getArtifactSetData(artifact.code) || {};
+        const { variants = [] } = $AppData.getArtifactSetData(artifact.code) || {};
         const maxRarity = variants[variants.length - 1];
 
         if (maxRarity) {

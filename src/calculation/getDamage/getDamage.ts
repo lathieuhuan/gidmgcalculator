@@ -7,6 +7,7 @@ import type {
   TrackerCalcItemRecord,
 } from "@Src/types";
 import type { GetDamageArgs } from "../types";
+import { $AppData } from "@Src/services";
 
 // Constant
 import {
@@ -20,7 +21,6 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 
 // Util
-import { appData } from "@Src/data";
 import { bareLv, findByIndex, getTalentDefaultInfo, isGranted, realParty, toArray } from "@Src/utils";
 import { finalTalentLv, getAmplifyingMultiplier } from "@Src/utils/calculation";
 import { applyModifier } from "../utils";
@@ -83,7 +83,7 @@ export default function getDamage({
 
   // APPLY PARTY DEBUFFS
   for (const teammate of realParty(party)) {
-    const { debuffs = [] } = appData.getCharData(teammate.name);
+    const { debuffs = [] } = $AppData.getCharData(teammate.name);
 
     for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);
@@ -103,7 +103,7 @@ export default function getDamage({
   // APPLY ARTIFACT DEBUFFS
   for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
-      const { name, debuffs = [] } = appData.getArtifactSetData(code) || {};
+      const { name, debuffs = [] } = $AppData.getArtifactSetData(code) || {};
 
       if (debuffs[index]) {
         const { value, path, inpIndex = 0 } = debuffs[index].effects;

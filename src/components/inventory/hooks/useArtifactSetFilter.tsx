@@ -1,10 +1,9 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import type { ArtifactType, CalcArtifact } from "@Src/types";
 
-// Util
+import type { ArtifactType, CalcArtifact } from "@Src/types";
 import { findByCode, getImgSrc } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Component
 import { Button } from "@Src/pure-components";
@@ -29,7 +28,7 @@ export function useArtifactSetFilter({ artifactType = "flower", artifacts, codes
 
     for (const { code } of artifacts) {
       if (!findByCode(result, code)) {
-        const { icon = "" } = appData.getArtifactData({ code, type: artifactType }) || {};
+        const { icon = "" } = $AppData.getArtifactData({ code, type: artifactType }) || {};
 
         result.push({
           code,

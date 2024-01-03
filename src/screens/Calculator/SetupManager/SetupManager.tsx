@@ -4,29 +4,27 @@ import { IoDocumentText } from "react-icons/io5";
 
 import type { ArtifactType } from "@Src/types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { useElementSize } from "@Src/pure-hooks";
+import { $AppData } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
-import { appData } from "@Src/data";
 
 // Store
-import { updateUI } from "@Store/uiSlice";
+import { useDispatch, useSelector } from "@Store/hooks";
+import { selectArtifacts, selectChar } from "@Store/calculatorSlice/selectors";
 import { changeArtifact, changeWeapon } from "@Store/calculatorSlice";
 import { pickEquippedArtSet } from "@Store/thunks";
-import { selectArtifacts, selectChar } from "@Store/calculatorSlice/selectors";
-
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
-import { useElementSize } from "@Src/pure-hooks";
+import { updateUI } from "@Store/uiSlice";
 
 // Component
+import { InventoryArtifact, InventoryWeapon, PickerCharacter, TypeSelect } from "@Src/components";
 import { Button, Modal } from "@Src/pure-components";
-import { TypeSelect, InventoryWeapon, InventoryArtifact, PickerCharacter } from "@Src/components";
-import SectionParty from "./SectionParty";
-import SectionWeapon from "./SectionWeapon";
-import SectionArtifacts from "./SectionArtifacts";
-import SectionTarget from "./SectionTarget";
-import HighManager from "./HighManager";
 import { SetupSelect } from "./SetupSelect";
 import { TargetConfig } from "./modal-content";
+import HighManager from "./HighManager";
+import SectionArtifacts from "./SectionArtifacts";
+import SectionParty from "./SectionParty";
+import SectionTarget from "./SectionTarget";
+import SectionWeapon from "./SectionWeapon";
 
 type ModalType = "CHARACTERS_PICKER" | "WEAPONS_PICKER" | ArtifactType | "SHARE_SETUP_SUPPORTER" | "TARGET_CONFIG" | "";
 
@@ -35,7 +33,7 @@ export default function SetupManager() {
   const char = useSelector(selectChar);
   const artifacts = useSelector(selectArtifacts);
 
-  const charData = appData.getCharData(char.name);
+  const charData = $AppData.getCharData(char.name);
 
   const [modalType, setModalType] = useState<ModalType>("");
   const [prePickerOn, setPrePickerOn] = useState(false);

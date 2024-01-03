@@ -3,11 +3,11 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+import { $AppData } from "@Src/services";
 
 // Util
 import { getAppDataError } from "@Src/utils";
 import { notification } from "@Src/utils/notification";
-import { appData } from "@Src/data";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -46,7 +46,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
   let body;
 
   if (touched) {
-    const charData = appData.getCharData(char.name);
+    const charData = $AppData.getCharData(char.name);
     const textVision = `text-${charData.vision}`;
 
     body = (
@@ -284,13 +284,13 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
         active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
         onPickCharacter={async (pickedChar) => {
-          if (appData.getCharStatus(pickedChar.name) === "fetched") {
+          if ($AppData.getCharStatus(pickedChar.name) === "fetched") {
             dispatch(initNewSessionWithChar(pickedChar));
             return;
           }
           dispatch(updateUI({ loading: true }));
 
-          const response = await appData.fetchCharacter(pickedChar.name);
+          const response = await $AppData.fetchCharacter(pickedChar.name);
 
           if (response.code === 200) {
             dispatch(initNewSessionWithChar(pickedChar));

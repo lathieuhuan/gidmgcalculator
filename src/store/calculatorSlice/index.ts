@@ -31,10 +31,11 @@ import type {
   ApplySettingsAction,
   InitNewSessionPayload,
 } from "./reducer-types";
-import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
-import { appData } from "@Src/data";
 
-import { bareLv, deepCopy, findById, toArray, countVision, getCopyName, appSettings } from "@Src/utils";
+import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
+import { $AppData, $AppSettings } from "@Src/services";
+
+import { bareLv, deepCopy, findById, toArray, countVision, getCopyName } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
@@ -98,7 +99,7 @@ export const calculatorSlice = createSlice({
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
-      appSettings.set({ charInfoIsSeparated: false });
+      $AppSettings.set({ charInfoIsSeparated: false });
 
       if (target) {
         state.target = target;
@@ -111,7 +112,7 @@ export const calculatorSlice = createSlice({
       const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
       const { setupsById } = state;
 
-      if (shouldOverwriteChar && appSettings.get().charInfoIsSeparated) {
+      if (shouldOverwriteChar && $AppSettings.get().charInfoIsSeparated) {
         for (const setup of Object.values(setupsById)) {
           setup.char = calcSetup.char;
         }
@@ -188,7 +189,7 @@ export const calculatorSlice = createSlice({
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
       const { setupsById, target } = state;
-      const { charInfoIsSeparated } = appSettings.get();
+      const { charInfoIsSeparated } = $AppSettings.get();
       const { level } = action.payload;
 
       if (level && target.level === 1) {
@@ -217,15 +218,15 @@ export const calculatorSlice = createSlice({
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldVisionCount = countVision(appData.getPartyData(party), charData);
+      const oldVisionCount = countVision($AppData.getPartyData(party), charData);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newVisionCount = countVision(appData.getPartyData(party), charData);
+      const newVisionCount = countVision($AppData.getPartyData(party), charData);
 
       if (oldTeammate) {
-        const { vision: oldVision } = appData.getCharData(oldTeammate.name) || {};
+        const { vision: oldVision } = $AppData.getCharData(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldVision &&
@@ -260,9 +261,9 @@ export const calculatorSlice = createSlice({
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = appData.getCharData(teammate.name);
+        const { vision } = $AppData.getCharData(teammate.name);
         party[teammateIndex] = null;
-        const newVisionCount = countVision(appData.getPartyData(party), charData);
+        const newVisionCount = countVision($AppData.getPartyData(party), charData);
 
         if (newVisionCount[vision] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
@@ -300,7 +301,7 @@ export const calculatorSlice = createSlice({
         };
         if (newArtifactInfo.code) {
           if (newArtifactInfo.code === -1) {
-            const debuffArtifactCodes = appData.getAllArtifacts().reduce<number[]>((accumulator, artifact) => {
+            const debuffArtifactCodes = $AppData.getAllArtifacts().reduce<number[]>((accumulator, artifact) => {
               if (artifact.debuffs?.length) {
                 accumulator.push(artifact.code);
               }
@@ -507,7 +508,7 @@ export const calculatorSlice = createSlice({
 
       const { target } = state;
       const { variantType, inputs = [] } = target;
-      const monsData = appData.getMonsData(target);
+      const monsData = $AppData.getMonsData(target);
 
       // not update target if monster code === 0 (custom target)
       if (monsData?.code) {

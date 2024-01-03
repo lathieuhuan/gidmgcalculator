@@ -4,12 +4,9 @@ import clsx from "clsx";
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-
-// Util
+import { $AppData } from "@Src/services";
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Src/data";
 
 // Component
 import { InfoSign } from "@Src/pure-components";
@@ -38,7 +35,7 @@ export function GearsOverview({
   //
   const renderWeaponThumb = () => {
     const { type, code, ...rest } = weapon;
-    const dataWeapon = appData.getWeaponData(weapon.code);
+    const dataWeapon = $AppData.getWeaponData(weapon.code);
 
     if (!dataWeapon) {
       return null;
@@ -70,7 +67,7 @@ export function GearsOverview({
                   item={{
                     rarity: artifact.rarity,
                     level: artifact.level,
-                    icon: appData.getArtifactData(artifact)?.icon || "",
+                    icon: $AppData.getArtifactData(artifact)?.icon || "",
                     setupIDs: artifact.setupIDs,
                   }}
                   chosen={window.innerWidth < 686 ? false : activeDetails === i}
@@ -102,11 +99,11 @@ export function GearsOverview({
             {setBonuses.length ? (
               <>
                 <p className="text-green-300 font-medium">
-                  {appData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
+                  {$AppData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
                   <p className="mt-1 text-green-300 font-medium">
-                    {appData.getArtifactSetData(setBonuses[1].code)?.name} (2)
+                    {$AppData.getArtifactSetData(setBonuses[1].code)?.name} (2)
                   </p>
                 ) : null}
               </>

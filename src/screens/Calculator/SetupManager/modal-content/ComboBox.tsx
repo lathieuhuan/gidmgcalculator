@@ -4,7 +4,7 @@ import { FaChevronDown } from "react-icons/fa";
 
 import type { Vision, AppMonster } from "@Src/types";
 import { toArray } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 interface ComboBoxProps {
   className: string;
@@ -73,7 +73,7 @@ export const ComboBox = ({ className, targetCode, targetTitle, onSelectMonster }
         className="absolute top-full z-10 mt-1 w-full text-black bg-light-400 custom-scrollbar cursor-default hidden peer-focus-within:block"
         style={{ maxHeight: "50vh" }}
       >
-        {appData.getAllMonsters().map((monster, i) => {
+        {$AppData.getAllMonsters().map((monster, i) => {
           if (
             keyword &&
             !monster.title.toLowerCase().includes(keyword) &&
