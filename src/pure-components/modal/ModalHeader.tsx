@@ -1,10 +1,14 @@
+import clsx from "clsx";
 import type { InsHTMLAttributes, ParamHTMLAttributes, ReactNode } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import { Button } from "../button";
 
 const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={"h-11 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange-500 " + className} {...rest} />
+    <div
+      className={"h-11 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange-500 " + className}
+      {...rest}
+    />
   );
 };
 
@@ -24,9 +28,9 @@ interface FilterButtonProps {
 ModalHeader.FilterButton = (props: FilterButtonProps) => {
   return (
     <Button
-      className={"shadow-common bg-black " + (props.active ? "text-green-300 " : "text-light-400 ") + (props.className || "")}
+      className={clsx("shadow-common bg-black ", props.active ? "text-green-300 " : "text-light-400 ", props.className)}
       variant="custom"
-      shape="rounded"
+      shape="square"
       size="small"
       icon={<FaFilter />}
       onClick={props.onClick}

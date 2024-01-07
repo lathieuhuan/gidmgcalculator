@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { FaInfo } from "react-icons/fa";
 
 // Type
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
@@ -9,7 +10,7 @@ import { $AppData } from "@Src/services";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { InfoSign } from "@Src/pure-components";
+import { Button, CloseButton } from "@Src/pure-components";
 import { ItemThumb } from "@Src/components";
 
 const bonusStyles = (active: boolean) => {
@@ -112,7 +113,14 @@ export function GearsOverview({
             )}
           </div>
         </div>
-        {setBonuses.length !== 0 && <InfoSign active={activeDetails === "setBonus"} />}
+
+        {setBonuses.length !== 0 ? (
+          activeDetails === "setBonus" ? (
+            <CloseButton className="ml-auto" size="small" />
+          ) : (
+            <Button className="ml-auto group-hover:bg-yellow-400" size="small" icon={<FaInfo />} />
+          )
+        ) : null}
       </div>
 
       <div
@@ -120,7 +128,12 @@ export function GearsOverview({
         onClick={() => toggleDetails("statsBonus")}
       >
         <p className="text-lg text-orange-500 font-semibold">Artifact details</p>
-        <InfoSign active={activeDetails === "statsBonus"} />
+
+        {activeDetails === "statsBonus" ? (
+          <CloseButton className="ml-auto" size="small" />
+        ) : (
+          <Button className="ml-auto group-hover:bg-yellow-400" size="small" icon={<FaInfo />} />
+        )}
       </div>
     </div>
   );

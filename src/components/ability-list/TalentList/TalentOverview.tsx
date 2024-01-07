@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { FaInfo } from "react-icons/fa";
 
 import type { CharInfo, AppCharacter, Party } from "@Src/types";
 import { $AppData } from "@Src/services";
@@ -12,7 +13,7 @@ import { ascsFromLv } from "@Src/utils";
 import { totalXtraTalentLv } from "@Src/utils/calculation";
 
 // Component
-import { InfoSign } from "@Src/pure-components";
+import { Button } from "@Src/pure-components";
 import { AbilityIcon } from "../components";
 
 interface TalentOverviewProps {
@@ -68,9 +69,13 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
                   {!!xtraLv && <p className="ml-2 font-bold text-green-300">+{xtraLv}</p>}
                 </div>
               </div>
-              <div className="ml-auto" onClick={() => onClickInfoSign(TALENT_TYPES.indexOf(talentType))}>
-                <InfoSign selfHover />
-              </div>
+
+              <Button
+                className="ml-auto hover:bg-yellow-400"
+                size="small"
+                icon={<FaInfo />}
+                onClick={() => onClickInfoSign(TALENT_TYPES.indexOf(talentType))}
+              />
             </div>
           </div>
         ) : null;
@@ -91,12 +96,12 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
                   <p className={`text-${vision} font-bold`}>1</p>
                 </div>
               </div>
-              {/* <div
-                className="ml-auto"
+              {/* <Button
+                className="ml-auto hover:bg-yellow-400"
+                size="small"
+                icon={<FaInfo />}
                 onClick={() => onClickInfoSign(Object.keys(activeTalents).length + i)}
-              >
-                <InfoSign selfHover />
-              </div> */}
+              /> */}
             </div>
           </div>
         );

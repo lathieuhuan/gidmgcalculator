@@ -121,7 +121,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
 
               <Input
                 ref={inputRef}
-                className="w-24 ml-3 px-2 py-1 leading-none font-semibold shadow-common"
+                className="w-24 ml-3 px-2 py-1 leading-5 font-semibold shadow-common"
                 placeholder="Search..."
                 onChange={setKeyword}
                 onKeyDown={onKeyDown}

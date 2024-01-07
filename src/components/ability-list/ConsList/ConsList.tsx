@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { FaInfo } from "react-icons/fa";
 
 import type { CharInfo } from "@Src/types";
 import { $AppData } from "@Src/services";
 
 // Conponent
-import { InfoSign, SharedSpace } from "@Src/pure-components";
+import { Button, SharedSpace } from "@Src/pure-components";
 import { AbilityIcon } from "../components";
 import { ConsDetail } from "./ConsDetail";
 
@@ -54,7 +55,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
                 </div>
                 <div className="grow flex items-center group" onClick={() => onClickInfo(i + 1)}>
                   <p className={"px-2 text-lg font-bold" + (char.cons < i + 1 ? " opacity-50" : "")}>{cons.name}</p>
-                  <InfoSign className="ml-auto" />
+                  <Button className="ml-auto group-hover:bg-yellow-400" size="small" icon={<FaInfo />} />
                 </div>
               </div>
             );

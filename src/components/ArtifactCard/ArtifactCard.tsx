@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
+import { FaArrowUp, FaChevronDown } from "react-icons/fa";
 
 import type { CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
@@ -41,10 +41,10 @@ export const ArtifactCard = ({
       <div className={`px-4 pt-1 bg-rarity-${rarity}`}>
         <p className="text-xl font-bold text-black truncate">{name}</p>
       </div>
-      <div className="mt-4 mx-4 flex">
+      <div className="mt-6 mx-4 flex">
         {mutable ? (
-          <div className="mr-6 pr-2 grow flex justify-between">
-            <div>
+          <div className="mr-6 grow">
+            <div className="w-fit">
               <ArtifactLevelSelect
                 mutable
                 rarity={rarity}
@@ -53,23 +53,18 @@ export const ArtifactCard = ({
                 onChangeLevel={onEnhance}
               />
             </div>
-            <div className="mt-1 flex flex-col items-center">
+            <div className="mt-6 flex items-center space-x-4">
               <Button
-                className="bg-black text-orange-500 text-3.5xl"
-                variant="custom"
-                style={{ padding: 0 }}
-                icon={<FaArrowAltCircleUp />}
+                shape="square"
+                className={levelUpDisabled ? "" : "hover:bg-yellow-400"}
+                icon={<FaArrowUp />}
                 disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(Math.min(artifact.level + 4, maxLevel))}
               />
               <Button
-                variant="custom"
-                shape="rounded"
-                className="mt-6 text-black bg-orange-500"
-                style={{
-                  paddingLeft: 6,
-                  paddingRight: 6,
-                }}
+                shape="square"
+                className={levelUpDisabled ? "" : "hover:bg-yellow-400"}
+                style={{ fontWeight: 900 }}
                 disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(maxLevel)}
               >

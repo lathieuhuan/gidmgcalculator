@@ -84,8 +84,8 @@ const CharacterInfo = () => {
     >
       <div className="p-4 rounded-lg bg-dark-900 flex flex-col relative">
         <Button
-          className="absolute top-4 right-4"
-          variant="negative"
+          className="absolute top-4 right-4 hover:text-red-600"
+          boneOnly
           icon={<FaUserSlash />}
           onClick={() => setRemoving(true)}
         />
@@ -93,10 +93,10 @@ const CharacterInfo = () => {
         <div className="flex" onDoubleClick={() => console.log(char, weapon, artifacts)}>
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
-            {!isMobile && <p className={`text-3xl text-${vision} font-black`}>{name}</p>}
-            <StarLine rarity={rarity} />
+            {!isMobile && <p className={`text-2.5xl text-${vision} font-black`}>{name}</p>}
+            <StarLine className="mt-1" rarity={rarity} />
 
-            <div className="ml-1 my-1 flex text-lg">
+            <div className="mt-1 flex text-lg">
               <p className="mr-1">Level</p>
               <select
                 className={`text-right text-last-right text-${vision} font-semibold`}
@@ -111,7 +111,7 @@ const CharacterInfo = () => {
           </div>
         </div>
 
-        <div className="grow w-75 h-0 custom-scrollbar">
+        <div className="mt-1 grow w-75 h-0 custom-scrollbar">
           <AttributeTable attributes={totalAttr} />
         </div>
       </div>

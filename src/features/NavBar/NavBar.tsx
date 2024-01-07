@@ -64,7 +64,13 @@ export function NavBar() {
         </div>
 
         <div className="flex">
-          <Button variant="positive" shape="square" icon={<FaDonate />} onClick={openModal("DONATE")}>
+          <Button
+            variant="positive"
+            shape="square"
+            className="shadow-common"
+            icon={<FaDonate />}
+            onClick={openModal("DONATE")}
+          >
             Donate
           </Button>
 
