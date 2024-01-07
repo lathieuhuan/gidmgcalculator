@@ -22,8 +22,8 @@ export const ButtonGroup = ({ className, buttons, space = "space-x-8", autoFocus
           <Button
             key={i}
             className="button-focus-shadow"
+            variant={button.variant || (i === buttons.length - 1 ? "positive" : i ? "neutral" : "negative")}
             disabled={button.disabled}
-            variant={button.variant || (i === buttons.length - 1 ? "positive" : !i ? "negative" : "neutral")}
             onClick={button.onClick}
             autoFocus={i === autoFocusIndex}
           >

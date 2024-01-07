@@ -3,12 +3,12 @@ import { useState } from "react";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import type { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
 
-// Hook
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/pure-hooks";
-
 import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@Store/calculatorSlice/selectors";
 import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";
+
+import { useTranslation } from "@Src/pure-hooks";
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Component
@@ -18,7 +18,7 @@ import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 
 const isBuffCtrl = (ctrl: CustomBuffCtrl | CustomDebuffCtrl): ctrl is CustomBuffCtrl => {
-  return "category" in (ctrl as CustomBuffCtrl);
+  return "category" in ctrl;
 };
 
 interface CustomModifiersProps {
@@ -36,7 +36,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
   const [modalOn, setModalOn] = useState(false);
 
   const modCtrls = setupsById[activeId][key];
-  const updateAction = isBuffs ? updateCustomBuffCtrls : updateCustomDebuffCtrls;
+  const updateCustomModCtrls = isBuffs ? updateCustomBuffCtrls : updateCustomDebuffCtrls;
   const copyOptions = [];
 
   if (!modCtrls.length) {
@@ -79,7 +79,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
           active={modCtrls.length !== 0}
           disabled={modCtrls.length === 0}
           onClick={() => {
-            dispatch(updateAction({ actionType: "replace", ctrls: [] }));
+            dispatch(updateCustomModCtrls({ actionType: "replace", ctrls: [] }));
           }}
         />
         <ToggleButton
@@ -132,7 +132,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
                 max={max}
                 onChange={(value) => {
                   dispatch(
-                    updateAction({
+                    updateCustomModCtrls({
                       actionType: "edit",
                       ctrls: {
                         index: ctrlIndex,

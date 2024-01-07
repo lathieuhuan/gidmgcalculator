@@ -1,25 +1,47 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
-import { StringRecord } from "@Src/types";
-
-const bgColorByVariant: StringRecord = {
-  positive: "bg-yellow-400",
-  neutral: "bg-green-300",
-  negative: "bg-red-600",
-  default: "bg-light-400",
-};
 
 type ButtonVariant = "default" | "positive" | "negative" | "neutral" | "custom";
 
 type ButtonShape = "rounded" | "square";
 
-type ButtonSize = "small" | "medium";
+type ButtonSize = "small" | "medium" | "custom";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+const colorCls: Partial<Record<ButtonVariant, string>> = {
+  default: "bg-light-400 text-black",
+  positive: "bg-yellow-400 text-black",
+  negative: "bg-red-600 text-light-400",
+  neutral: "bg-green-300 text-black",
+};
+
+const boneColorCls: Partial<Record<ButtonVariant, string>> = {
+  default: "text-light-400",
+  positive: "text-yellow-400",
+  negative: "text-red-600",
+  neutral: "text-green-300",
+};
+
+const shapeCls: Record<ButtonShape, string> = {
+  square: "rounded",
+  rounded: "rounded-full",
+};
+
+const sizeCls: Partial<Record<ButtonSize, string>> = {
+  small: "px-2 py-0.5",
+  medium: "px-3 py-1.5",
+};
+
+const iconSizeCls: Partial<Record<ButtonSize, string>> = {
+  small: "p-[5px]",
+  medium: "p-2",
+};
+
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  className?: ClassValue;
   variant?: ButtonVariant;
   shape?: ButtonShape;
-  size?: "small" | "medium";
+  size?: ButtonSize;
   boneOnly?: boolean;
   icon?: ReactNode;
   iconPosition?: "start" | "end";
@@ -35,46 +57,17 @@ export const Button = ({
   className,
   ...rest
 }: ButtonProps) => {
-  const colorMap: Partial<Record<ButtonVariant, string>> = {
-    default: "bg-light-400 text-black",
-    positive: "bg-yellow-400 text-black",
-    negative: "bg-red-600 text-light-400",
-    neutral: "bg-green-300 text-black",
-  };
-
-  const boneColorMap: Partial<Record<ButtonVariant, string>> = {
-    default: "text-light-400",
-    positive: "text-yellow-400",
-    negative: "text-red-600",
-    neutral: "text-green-300",
-  };
-
-  const shapeMap: Record<ButtonShape, string> = {
-    square: "rounded",
-    rounded: "rounded-full",
-  };
-
-  const sizeMap: Record<ButtonSize, string> = {
-    small: "px-2 py-0.5",
-    medium: "px-3 py-1.5",
-  };
-
-  const iconSizeMap: Record<ButtonSize, string> = {
-    small: "p-[5px]",
-    medium: "p-2",
-  };
-
   const classes = [
     "text-sm font-bold flex-center",
     iconPosition === "end" && "flex-row-reverse",
-    boneOnly ? boneColorMap[variant] : colorMap[variant],
-    shapeMap[shape],
+    boneOnly ? boneColorCls[variant] : colorCls[variant],
+    shapeCls[shape],
     rest.disabled ? "opacity-50" : "glow-on-hover",
     className,
-  ].concat(children ? [size === "small" ? "space-x-1" : "space-x-1.5", sizeMap[size]] : iconSizeMap[size]);
+  ].concat(children ? [size === "small" ? "space-x-1" : "space-x-1.5", sizeCls[size]] : iconSizeCls[size]);
 
   return (
-    <button type="button" className={clsx(classes, "")} {...rest}>
+    <button type="button" className={clsx(classes)} {...rest}>
       {icon ? <span className={clsx("shrink-0", !children && size === "medium" && "text-base")}>{icon}</span> : null}
       {children ? <span>{children}</span> : null}
     </button>
@@ -83,15 +76,10 @@ export const Button = ({
 
 interface ToggleButtonProps extends Omit<ButtonProps, "boneOnly"> {
   active?: boolean;
+  variant?: Exclude<ButtonVariant, "custom">;
 }
-export const ToggleButton = ({ active, variant = "default", ...rest }: ToggleButtonProps) => {
-  return (
-    <Button
-      {...rest}
-      variant="custom"
-      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"])}
-    />
-  );
+export const ToggleButton = ({ active, variant = "default", className, ...rest }: ToggleButtonProps) => {
+  return <Button {...rest} variant="custom" className={[className, active && colorCls[variant]]} />;
 };
 
 export interface CloseButtonProps

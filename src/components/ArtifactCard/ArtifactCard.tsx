@@ -43,7 +43,7 @@ export const ArtifactCard = ({
       </div>
       <div className="mt-6 mx-4 flex">
         {mutable ? (
-          <div className="mr-6 grow">
+          <div className="mr-6 grow flex space-x-6">
             <div className="w-fit">
               <ArtifactLevelSelect
                 mutable
@@ -53,17 +53,20 @@ export const ArtifactCard = ({
                 onChangeLevel={onEnhance}
               />
             </div>
-            <div className="mt-6 flex items-center space-x-4">
+
+            <div className="flex flex-col items-start space-y-4">
               <Button
+                className={levelUpDisabled ? "" : "hover:bg-orange-500"}
                 shape="square"
-                className={levelUpDisabled ? "" : "hover:bg-yellow-400"}
+                size="small"
                 icon={<FaArrowUp />}
                 disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(Math.min(artifact.level + 4, maxLevel))}
               />
               <Button
+                className={levelUpDisabled ? "" : "hover:bg-orange-500"}
                 shape="square"
-                className={levelUpDisabled ? "" : "hover:bg-yellow-400"}
+                size="small"
                 style={{ fontWeight: 900 }}
                 disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(maxLevel)}
