@@ -51,7 +51,11 @@ const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr
     }
     case "attribute": {
       const stackValue = totalAttr[stack.field];
-      if (stack.baseline && stackValue < stack.baseline) return 0;
+
+      if (stack.baseline) {
+        if (stackValue <= stack.baseline) return 0;
+        return stackValue - stack.baseline;
+      }
       return stackValue;
     }
     case "vision": {

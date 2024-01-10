@@ -10,7 +10,7 @@ import { $AppData } from "@Src/services";
 import { getImgSrc, percentSign } from "@Src/utils";
 
 // Component
-import { BetaMark, Button } from "@Src/pure-components";
+import { BetaMark, Button, Image } from "@Src/pure-components";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
 import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 
@@ -82,7 +82,7 @@ export const ArtifactCard = ({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <img className="w-28 h-28" src={getImgSrc(icon)} draggable={false} />
+          <Image src={icon} imgType="artifact" style={{ width: 104, height: 104 }} />
           {beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>

@@ -112,12 +112,13 @@ const getStackValue = (
     }
   }
 
-  if (stack.baseline && result < stack.baseline) return 0;
-
+  if (stack.baseline) {
+    if (result <= stack.baseline) return 0;
+    result -= stack.baseline;
+  }
   if (stack.extra && CharacterCal.isAvailable(stack.extra, info.char, inputs, fromSelf)) {
     result += stack.extra.value;
   }
-
   if (stack.max) {
     const max = getMax(stack.max, info, inputs, fromSelf);
     if (result > max) result = max;
