@@ -1,11 +1,14 @@
-import { useState } from "react";
-
+import clsx from "clsx";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
 import { useArtifactSetFilter, useArtifactStatsFilter } from "./hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "./utils";
+import { useScreenSize } from "@Src/features";
 
 // Component
-import { Button, ButtonGroup } from "@Src/pure-components";
+import { Button } from "@Src/pure-components";
+import { useTabs } from "@Src/pure-hooks";
+import { ArtifactStatFilter } from "./ArtifactStatFilter";
+import { ArtifactSetFilter } from "./ArtifactSetFilter";
 
 interface ArtifactFilterProps {
   artifactType: ArtifactType;
@@ -19,62 +22,79 @@ interface ArtifactFilterProps {
   onClose: () => void;
 }
 export const ArtifactFilter = ({ artifactType, artifacts, filter, onClose }: ArtifactFilterProps) => {
-  const [isError, setIsError] = useState(false);
+  const screenSize = useScreenSize();
+  const { activeIndex, tabsElmt } = useTabs({
+    level: 2,
+    configs: [{ text: "Stats" }, { text: "Sets" }],
+  });
 
   const {
-    filter: artifactStatsFilter,
-    setFilter: setArtifactStatsFilter,
-    renderArtifactStatsFilter,
-  } = useArtifactStatsFilter({
-    artifactType,
-    stats: filter.stats,
-    isError,
-  });
+    filter: statsFilter,
+    hasDuplicates,
+    changeMainStat,
+    changeSubStat,
+    clearFilter: clearStatsFilter,
+  } = useArtifactStatsFilter(filter.stats);
 
-  const { filteredTempCodes, renderArtifactSetFilter } = useArtifactSetFilter({
+  const {
+    filterSets,
+    toggleSet,
+    clearFilter: clearSetFilter,
+  } = useArtifactSetFilter({
     artifactType,
     artifacts,
-    codes: filter.codes,
+    initialChosenCodes: filter.codes,
   });
 
-  const resetIsDisabled = artifactStatsFilter.main === "All" && artifactStatsFilter.subs.every((s) => s === "All");
-
   const onConfirmFilter = () => {
-    if (hasDupStat(artifactStatsFilter)) {
-      setIsError(true);
-      return;
-    }
+    const filteredCodes = filterSets.reduce((codes: number[], tempSet) => {
+      if (tempSet.chosen) {
+        codes.push(tempSet.code);
+      }
+      return codes;
+    }, []);
 
-    filter.setStats(artifactStatsFilter);
-    filter.setCodes(filteredTempCodes);
+    filter.setStats(statsFilter);
+    filter.setCodes(filteredCodes);
 
     onClose();
   };
 
+  const isSmallScreen = ["xs", "sm"].includes(screenSize);
+  const wrapperCls = "p-4 rounded-lg bg-dark-700";
+
   return (
-    <div className="p-4 hide-scrollbar">
-      <div className="flex hide-scrollbar">
-        <div className="flex flex-col">
-          <Button
-            className="mb-2 mx-auto"
-            disabled={resetIsDisabled}
-            onClick={() => setArtifactStatsFilter(initArtifactStatsFilter())}
-          >
-            Reset Stats
-          </Button>
+    <div className="w-full p-4 flex flex-col">
+      <div className="mb-4 md1:hidden">{tabsElmt}</div>
 
-          {renderArtifactStatsFilter()}
-
-          <ButtonGroup
-            className="mt-4 pb-2"
-            buttons={[
-              { text: "Cancel", onClick: onClose },
-              { text: "Confirm", onClick: onConfirmFilter },
-            ]}
+      <div className={clsx("grow overflow-hidden", !isSmallScreen && "flex space-x-2")}>
+        <div className={clsx(isSmallScreen ? activeIndex !== 0 && "hidden" : wrapperCls)}>
+          <ArtifactStatFilter
+            artifactType={artifactType}
+            mainStat={statsFilter.main}
+            subStats={statsFilter.subs}
+            error={hasDuplicates ? "Every stat must be unique!" : ""}
+            onChangeMainStat={changeMainStat}
+            onChangeSubStat={changeSubStat}
+            onClearFilter={clearStatsFilter}
           />
         </div>
 
-        {renderArtifactSetFilter()}
+        <div className={clsx(isSmallScreen ? ["h-full", activeIndex !== 1 && "hidden"] : [wrapperCls, "shrink-0"])}>
+          <ArtifactSetFilter
+            setsWrapCls={clsx("grid", isSmallScreen ? "grid-cols-4" : "grid-cols-3 md2:grid-cols-4 lg:grid-cols-6")}
+            filterSets={filterSets}
+            onClickSet={toggleSet}
+            onClearFilter={clearSetFilter}
+          />
+        </div>
+      </div>
+
+      <div className="mt-4 flex justify-end space-x-2">
+        <Button onClick={onClose}>Cancel</Button>
+        <Button variant="positive" disabled={hasDuplicates} onClick={onConfirmFilter}>
+          Confirm
+        </Button>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
-interface CollapseAndMount {
+interface CollapseAndMountProps {
   className?: string;
   active: boolean;
   activeHeight: string | number;
-  duration: number;
+  moveDuration: number;
   style?: CSSProperties;
   children: ReactNode;
 }
@@ -13,10 +13,10 @@ export const CollapseAndMount = ({
   className,
   active,
   activeHeight,
-  duration,
+  moveDuration,
   style = {},
   children,
-}: CollapseAndMount) => {
+}: CollapseAndMountProps) => {
   const [state, setState] = useState({
     active: false,
     mounted: false,
@@ -39,7 +39,7 @@ export const CollapseAndMount = ({
           ...prev,
           mounted: false,
         }));
-      }, duration);
+      }, moveDuration);
     }
   }, [active]);
 
@@ -49,7 +49,8 @@ export const CollapseAndMount = ({
       style={{
         ...style,
         height: state.active ? activeHeight : 0,
-        transition: `height ${duration}ms linear`,
+        transition: `height ${moveDuration}ms ease-in-out`,
+        overflow: "hidden",
       }}
     >
       {state.mounted && children}

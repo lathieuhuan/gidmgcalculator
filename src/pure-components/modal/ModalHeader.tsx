@@ -6,7 +6,7 @@ import { Button } from "../button";
 const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={"h-11 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange-500 " + className}
+      className={"h-10 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange-500 " + className}
       {...rest}
     />
   );

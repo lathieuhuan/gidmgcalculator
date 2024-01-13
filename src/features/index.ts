@@ -7,3 +7,4 @@ export * from "./SetupImportCenter";
 export * from "./PersistControl";
 export * from "./MetadataRefetcher";
 export * from "./Tracker";
+export * from "./ScreenSizeWatcher";

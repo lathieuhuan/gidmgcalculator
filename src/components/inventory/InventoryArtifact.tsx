@@ -51,31 +51,34 @@ const ArtifactInventory = ({
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-2">
+      <div className="pt-2 px-2">
         <ModalHeader>
-          <div className="pl-5 flex items-center">
+          <div className="pl-4 flex items-center space-x-2">
             <ModalHeader.FilterButton active={filterActive} onClick={() => setFilterActive(!filterActive)} />
+            {filterActive && <span className="font-bold text-black">Filter</span>}
           </div>
           <ModalHeader.Text>{artifactType}</ModalHeader.Text>
           <ModalHeader.RightEnd onClickClose={onClose} />
+        </ModalHeader>
+      </div>
 
-          <CollapseAndMount
-            className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-dark-500 flex justify-center"
-            active={filterActive}
-            activeHeight="28.35rem"
-            duration={150}
-          >
+      <div className="p-2 pt-4 pr-4 grow hide-scrollbar relative">
+        <CollapseAndMount
+          className="absolute top-0 left-0 z-20 w-full px-2"
+          active={filterActive}
+          activeHeight="100%"
+          moveDuration={150}
+        >
+          <div className="h-full bg-dark-500 rounded-b-lg flex justify-center">
             <ArtifactFilter
               artifactType={artifactType}
               artifacts={data}
               filter={{ stats, codes, setStats, setCodes }}
               onClose={() => setFilterActive(false)}
             />
-          </CollapseAndMount>
-        </ModalHeader>
-      </div>
+          </div>
+        </CollapseAndMount>
 
-      <div className="p-2 pr-4 grow hide-scrollbar">
         <div className="h-full flex hide-scrollbar">
           <InventoryRack
             listClassName="inventory-list"

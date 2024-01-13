@@ -1,137 +1,80 @@
-import clsx from "clsx";
-import { ChangeEventHandler, useState } from "react";
-import { FaInfo, FaTimes } from "react-icons/fa";
+import { useState } from "react";
+import type { AttributeStat } from "@Src/types";
 
-// Type
-import type { ArtifactType, AttributeStat } from "@Src/types";
-import type { StatsFilter } from "../utils";
+type FilterOption = "All" | AttributeStat;
 
-// Constant
-import { ARTIFACT_SUBSTAT_TYPES, ATTACK_ELEMENTS } from "@Src/constants";
-import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
-
-// Hook
-import { useTranslation } from "@Src/pure-hooks";
-
-// Component
-import { Green, Button } from "@Src/pure-components";
-
-interface UseArtifactStatsFilterArgs {
-  artifactType?: ArtifactType;
-  stats: StatsFilter;
-  isError: boolean;
+interface StatsFilter {
+  main: FilterOption;
+  subs: FilterOption[];
 }
-export function useArtifactStatsFilter({ artifactType, stats, isError }: UseArtifactStatsFilterArgs) {
-  const { t } = useTranslation();
 
-  const [filter, setFilter] = useState(stats);
-  const [atInfo, setAtInfo] = useState(false);
+const DEFAULT_FILTER: StatsFilter = {
+  main: "All",
+  subs: Array(4).fill("All"),
+};
 
-  const Icon = atInfo ? FaTimes : FaInfo;
+export function useArtifactStatsFilter(initialFilter: StatsFilter) {
+  const [filter, setFilter] = useState(initialFilter);
+  const [hasDuplicates, setHasDuplicates] = useState(false);
 
-  const mainStatOptions = artifactType
-    ? ["All", ...Object.keys(ARTIFACT_MAIN_STATS[artifactType])]
-    : ["All", "hp", "hp_", "atk", "atk_", "def_", "em", "er_", "cRate_", "cDmg_", ...ATTACK_ELEMENTS, "healB_"];
-
-  const subStatOptions = ["All"].concat(ARTIFACT_SUBSTAT_TYPES);
-
-  const onChangeMainStat: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | AttributeStat }));
-  };
-
-  const onChangeSubStat = (newStat: string, index: number) => {
-    setFilter((prev) => {
-      const newSubs = [...prev.subs];
-      newSubs[index] = newStat as "All" | AttributeStat;
-
-      if (newStat === "All") {
-        for (let k = index; k < 4; k++) {
-          newSubs[k] = "All";
-        }
+  const checkDuplicate = (filter: StatsFilter) => {
+    const record: Record<string, boolean> = {
+      [filter.main]: true,
+    };
+    for (const stat of filter.subs) {
+      if (stat !== "All" && record[stat]) {
+        return true;
       }
-      return { ...prev, subs: newSubs };
-    });
+      record[stat] = true;
+    }
+    return false;
   };
 
-  const workMode = (
-    <div className="h-full flex flex-col">
-      <p className="mt-2 text-lg text-orange-500 font-bold">Main Stat</p>
-      <div className="mt-1 flex justify-center">
-        <div className="w-52 px-4 bg-dark-900">
-          <select
-            className={clsx(
-              "w-full p-1 text-center text-last-center",
-              filter.main === "All" ? "text-light-400" : "text-green-300"
-            )}
-            value={filter.main}
-            onChange={onChangeMainStat}
-          >
-            {mainStatOptions.map((type, i) => (
-              <option key={i} className="text-left" value={type}>
-                {t(type)}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+  const changeMainStat = (newStat: string) => {
+    const newFilter: StatsFilter = {
+      main: newStat as FilterOption,
+      subs: filter.subs,
+    };
 
-      <p className="mt-2 text-lg text-orange-500 font-bold">Sub Stats</p>
-      <div className="flex flex-col items-center">
-        {[1, 2, 3, 4].map((n, i) => {
-          return (
-            <div key={n} className="mt-2 px-4 w-52 h-8 bg-dark-900 flex items-center">
-              <p className="mr-1 mt-1 text-orange-500">{n}</p>
+    if (hasDuplicates !== checkDuplicate(newFilter)) {
+      setHasDuplicates(!hasDuplicates);
+    }
 
-              {(!i || filter.subs[i - 1] !== "All") && (
-                <select
-                  className={clsx(
-                    "w-full p-1 text-center text-last-center",
-                    filter.subs[i] === "All" ? "text-light-400" : "text-green-300"
-                  )}
-                  value={filter.subs[i]}
-                  onChange={(e) => onChangeSubStat(e.target.value, i)}
-                >
-                  {subStatOptions.map((type, j) => (
-                    <option key={j} className="text-left" value={type}>
-                      {t(type)}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      {isError && <p className="mt-4 px-2 text-red-100 text-right">Every stat must be unique!</p>}
-    </div>
-  );
+    setFilter(newFilter);
+  };
 
-  const renderArtifactStatsFilter = () => (
-    <div className="mr-2 px-4 py-2 h-full w-72 rounded-lg bg-dark-700 relative">
-      <Button
-        className="absolute bottom-3 left-3"
-        variant={atInfo ? "negative" : "default"}
-        size="small"
-        icon={<Icon />}
-        onClick={() => setAtInfo(!atInfo)}
-      />
+  const changeSubStat = (newStat: string, index: number) => {
+    const newSubs = [...filter.subs];
+    newSubs[index] = newStat as FilterOption;
 
-      {atInfo ? (
-        <div className="mt-2">
-          <p>
-            Artifacts will not only be <Green>filtered</Green> by stats, but also be <Green>sorted</Green> by stats. The
-            priority is Main Stat (if it's not "All"), then Sub Stat 1, Sub Stat 2...
-          </p>
-        </div>
-      ) : (
-        workMode
-      )}
-    </div>
-  );
+    if (newStat === "All") {
+      for (let k = index; k < 4; k++) {
+        newSubs[k] = "All";
+      }
+    }
+    const newFilter: StatsFilter = {
+      main: filter.main,
+      subs: newSubs,
+    };
+
+    if (hasDuplicates !== checkDuplicate(newFilter)) {
+      setHasDuplicates(!hasDuplicates);
+    }
+
+    setFilter(newFilter);
+  };
+
+  const clearFilter = () => {
+    setFilter(DEFAULT_FILTER);
+    setHasDuplicates(false);
+  };
 
   return {
     filter,
+    hasDuplicates,
+    changeMainStat,
+    changeSubStat,
+    clearFilter,
     setFilter,
-    renderArtifactStatsFilter,
   };
 }

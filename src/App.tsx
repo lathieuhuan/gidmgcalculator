@@ -8,7 +8,15 @@ import { useSelector } from "@Store/hooks";
 
 // Component
 import { Switch } from "@Src/pure-components";
-import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort, Tracker } from "@Src/features";
+import {
+  AppModals,
+  Message,
+  NavBar,
+  ScreenSizeWatcher,
+  SetupImportCenter,
+  SetupTransshipmentPort,
+  Tracker,
+} from "@Src/features";
 import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
@@ -31,33 +39,35 @@ function App() {
   }, []);
 
   return (
-    <div className="App h-screen pt-8 text-light-400 bg-light-400">
-      <NavBar />
+    <ScreenSizeWatcher>
+      <div className="App h-screen pt-8 text-light-400 bg-light-400">
+        <NavBar />
 
-      <div className="h-full flex-center relative">
-        <Calculator />
+        <div className="h-full flex-center relative">
+          <Calculator />
 
-        {atScreen !== EScreen.CALCULATOR ? (
-          <div className="absolute full-stretch z-30">
-            <Switch
-              value={atScreen}
-              cases={[
-                { value: EScreen.MY_CHARACTERS, element: <MyCharacters /> },
-                { value: EScreen.MY_WEAPONS, element: <MyWeapons /> },
-                { value: EScreen.MY_ARTIFACTS, element: <MyArtifacts /> },
-                { value: EScreen.MY_SETUPS, element: <MySetups /> },
-              ]}
-            />
-          </div>
-        ) : null}
+          {atScreen !== EScreen.CALCULATOR ? (
+            <div className="absolute full-stretch z-30">
+              <Switch
+                value={atScreen}
+                cases={[
+                  { value: EScreen.MY_CHARACTERS, element: <MyCharacters /> },
+                  { value: EScreen.MY_WEAPONS, element: <MyWeapons /> },
+                  { value: EScreen.MY_ARTIFACTS, element: <MyArtifacts /> },
+                  { value: EScreen.MY_SETUPS, element: <MySetups /> },
+                ]}
+              />
+            </div>
+          ) : null}
+        </div>
+
+        <AppModals />
+        <Tracker />
+        <Message />
+        <SetupTransshipmentPort />
+        <SetupImportCenter />
       </div>
-
-      <AppModals />
-      <Tracker />
-      <Message />
-      <SetupTransshipmentPort />
-      <SetupImportCenter />
-    </div>
+    </ScreenSizeWatcher>
   );
 }
 

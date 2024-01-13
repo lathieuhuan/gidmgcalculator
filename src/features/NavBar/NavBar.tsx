@@ -50,20 +50,18 @@ export function NavBar() {
 
   return (
     <div className="absolute top-0 left-0 right-0 bg-black/60">
-      <div className="flex justify-between">
-        <div className="flex">
-          {isLargeView ? (
-            <NavTabs
-              className="px-2 py-1"
-              activeClassName="bg-dark-900 text-orange-500"
-              idleClassName="bg-dark-500 hover:text-yellow-400"
-              ready={appReady}
-              onClickTab={onClickTab}
-            />
-          ) : null}
+      <div className="flex">
+        <div className="hidden lg:flex">
+          <NavTabs
+            className="px-2 py-1"
+            activeClassName="bg-dark-900 text-orange-500"
+            idleClassName="bg-dark-500 hover:text-yellow-400"
+            ready={appReady}
+            onClickTab={onClickTab}
+          />
         </div>
 
-        <div className="flex">
+        <div className="ml-auto flex">
           <Button
             variant="positive"
             shape="square"
@@ -98,17 +96,17 @@ export function NavBar() {
                   onClick={openModal("INTRO")}
                 />
                 <ActionButton label="Guides" icon={<FaQuestionCircle />} onClick={openModal("GUIDES")} />
-                {isLargeView ? null : (
-                  <NavTabs
-                    className="px-4 py-2"
-                    activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
-                    ready={appReady}
-                    onClickTab={(tab) => {
-                      onClickTab(tab);
-                      closeMenu();
-                    }}
-                  />
-                )}
+
+                <NavTabs
+                  className="px-4 py-2 lg:hidden"
+                  activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
+                  ready={appReady}
+                  onClickTab={(tab) => {
+                    onClickTab(tab);
+                    closeMenu();
+                  }}
+                />
+
                 <ActionButton label="Settings" icon={<FaCog />} onClick={openModal("SETTINGS")} />
                 <ActionButton
                   label="Download"

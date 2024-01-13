@@ -39,11 +39,15 @@ const iconSizeCls: Partial<Record<ButtonSize, string>> = {
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
   className?: ClassValue;
+  /** Default to 'default' */
   variant?: ButtonVariant;
+  /** Default to 'rounded' */
   shape?: ButtonShape;
+  /** Default to 'medium' */
   size?: ButtonSize;
   boneOnly?: boolean;
   icon?: ReactNode;
+  /** Default to 'start' */
   iconPosition?: "start" | "end";
 }
 export const Button = ({
