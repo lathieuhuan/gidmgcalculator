@@ -6,13 +6,12 @@ import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 import { useSelector } from "@Store/hooks";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "./utils";
 
 // Conponent
 import { ButtonGroup, CollapseAndMount, ModalHeader, withModal } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
-import { ArtifactFilter } from "./ArtifactFilter";
+import { ArtifactFilter, ArtifactFilterCondition } from "../ArtifactFilter";
 import { InventoryRack } from "./InventoryRack";
 
 const selectArtifactsByType = createSelector(
@@ -39,13 +38,15 @@ const ArtifactInventory = ({
 }: ArtifactInventoryProps) => {
   const [filterActive, setFilterActive] = useState(false);
   const [showingCurrent, setShowingCurrent] = useState(false);
-
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
-  const [stats, setStats] = useState(initArtifactStatsFilter());
-  const [codes, setCodes] = useState<number[]>([]);
-  const data = useSelector((state) => selectArtifactsByType(state, artifactType));
+  const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const filteredArtifacts = useMemo(() => filterArtifactsBySetsAndStats(data, codes, stats), [data, codes, stats]);
+  const artifacts = useSelector((state) => selectArtifactsByType(state, artifactType));
+
+  const filteredArtifacts = useMemo(
+    () => ArtifactFilter.filterArtifacts(artifacts, filterCondition),
+    [artifacts, filterCondition]
+  );
 
   const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(artifactType)];
 
@@ -72,8 +73,9 @@ const ArtifactInventory = ({
           <div className="h-full bg-dark-500 rounded-b-lg flex justify-center">
             <ArtifactFilter
               artifactType={artifactType}
-              artifacts={data}
-              filter={{ stats, codes, setStats, setCodes }}
+              artifacts={artifacts}
+              initialCondition={filterCondition}
+              onConfirm={setFilterCondition}
               onClose={() => setFilterActive(false)}
             />
           </div>
@@ -122,6 +124,7 @@ const ArtifactInventory = ({
                     },
                     {
                       text: buttonText,
+                      variant: "positive",
                       onClick: () => {
                         onClickButton(chosenArtifact);
                         onClose();

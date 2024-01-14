@@ -26,7 +26,8 @@ const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => 
           ) : null}
         </>
       }
-      buttons={[undefined, { onClick: onConfirm }]}
+      focusConfirm
+      onConfirm={onConfirm}
       onClose={onClose}
     />
   );

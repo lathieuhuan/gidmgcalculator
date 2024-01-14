@@ -1,4 +1,5 @@
 export * from "./ArtifactCard";
+export * from "./ArtifactFilter";
 export * from "./AttributeTable";
 export * from "./CharacterPortrait";
 export * from "./DamageDisplay";

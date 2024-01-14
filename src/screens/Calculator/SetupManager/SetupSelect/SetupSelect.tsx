@@ -218,12 +218,8 @@ export function SetupSelect() {
             Remove <b>{setupManageInfos[modal.setupIndex]?.name}</b>?
           </>
         }
-        buttons={[
-          undefined,
-          {
-            onClick: () => dispatch(removeCalcSetup(setupManageInfos[modal.setupIndex]?.ID)),
-          },
-        ]}
+        focusConfirm
+        onConfirm={() => dispatch(removeCalcSetup(setupManageInfos[modal.setupIndex]?.ID))}
         onClose={closeModal}
       />
     </>

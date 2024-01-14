@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
+import { Modal, ConfirmModalBody, Button, ButtonGroupItem } from "@Src/pure-components";
 import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
 interface ArtifactInfoProps {
@@ -170,7 +170,7 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
               ? "Successfully saved to My Artifacts."
               : "You're having to many Artifacts. Please remove some of them first."
           }
-          buttons={[undefined]}
+          onlyConfirm
           onClose={onClose}
         />
       );
@@ -188,8 +188,8 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
           })
         : false;
 
-      const buttons = [
-        undefined,
+      const buttons: ButtonGroupItem[] = [
+        { text: "Cancel" },
         {
           text: "Duplicate",
           onClick: () => {
@@ -200,7 +200,8 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
 
       if (!noChange) {
         buttons.push({
-          text: "Confirm",
+          text: "Overwrite",
+          variant: "positive",
           onClick: () => dispatch(updateUserArtifact(calcItemToUserItem(artifact))),
         });
       }
@@ -210,7 +211,7 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
           message={
             <>
               This artifact is already saved{ownerInfo}.{" "}
-              {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite"}
+              {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite?"}
             </>
           }
           buttons={buttons}

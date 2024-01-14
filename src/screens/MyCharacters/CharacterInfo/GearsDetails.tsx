@@ -116,7 +116,7 @@ export function GearsDetails({
               className="mt-4"
               buttons={[
                 { text: "Unequip", onClick: onClickUnequipArtifact },
-                { text: "Switch", onClick: onClickSwitchArtifact },
+                { text: "Switch", variant: 'positive', onClick: onClickSwitchArtifact },
               ]}
             />
           </div>

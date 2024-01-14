@@ -232,7 +232,7 @@ export default function HighManager({ height }: HighManagerProps) {
       active={highManagerActive}
       className={clsx("absolute bottom-0 left-0 bg-dark-500 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
-      duration={200}
+      moveDuration={200}
     >
       <HighManagerCore />
     </CollapseAndMount>

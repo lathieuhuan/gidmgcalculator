@@ -70,14 +70,8 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
             <ButtonGroup
               className="mt-4"
               buttons={[
-                {
-                  text: "Remove",
-                  onClick: () => setModalType("REMOVE_ARTIFACT"),
-                },
-                {
-                  text: "Equip",
-                  onClick: () => setModalType("EQUIP_CHARACTER"),
-                },
+                { text: "Remove", variant: "negative", onClick: () => setModalType("REMOVE_ARTIFACT") },
+                { text: "Equip", variant: "positive", onClick: () => setModalType("EQUIP_CHARACTER") },
               ]}
             />
           ) : null}
@@ -106,7 +100,8 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
               ". Swap?
             </>
           }
-          buttons={[undefined, { onClick: () => swapOwner(newOwner!) }]}
+          focusConfirm
+          onConfirm={() => swapOwner(newOwner!)}
           onClose={() => setNewOwner(null)}
         />
       )}

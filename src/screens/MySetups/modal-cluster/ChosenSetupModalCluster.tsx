@@ -49,12 +49,8 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
             Remove "<b>{chosenSetup.name}</b>"?
           </>
         }
-        buttons={[
-          undefined,
-          {
-            onClick: () => dispatch(removeSetup(chosenSetup.ID)),
-          },
-        ]}
+        focusConfirm
+        onConfirm={() => dispatch(removeSetup(chosenSetup.ID))}
         onClose={closeModal}
       />
 

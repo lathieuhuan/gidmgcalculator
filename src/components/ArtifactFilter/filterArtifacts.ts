@@ -1,33 +1,22 @@
 import type { AttributeStat, UserArtifact } from "@Src/types";
+import type { ArtifactFilterCondition } from "./types";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
-export interface StatsFilter {
-  main: "All" | AttributeStat;
-  subs: ("All" | AttributeStat)[];
-}
+export const filterArtifacts = (artifacts: UserArtifact[], filterCondition: ArtifactFilterCondition) => {
+  const { stats, codes, types } = filterCondition;
+  const noFilterCode = !codes.length;
+  const noFilterType = !types.length;
 
-export function initArtifactStatsFilter(): StatsFilter {
-  return {
-    main: "All",
-    subs: Array(4).fill("All"),
-  };
-}
+  let result = artifacts.filter((artifact) => {
+    return (noFilterCode || codes.includes(artifact.code)) && (noFilterType || types.includes(artifact.type));
+  });
 
-export const filterArtifactsBySetsAndStats = (
-  artifacts: UserArtifact[],
-  setCodes: number[],
-  stats: StatsFilter
-) => {
-  let result = setCodes.length
-    ? artifacts.filter((p) => setCodes.includes(p.code))
-    : [...artifacts];
-
-  function compareMainStat(a: UserArtifact, b: UserArtifact) {
+  const compareMainStat = (a: UserArtifact, b: UserArtifact) => {
     const mainStatValue = (p: UserArtifact) => {
       return ARTIFACT_MAIN_STATS[p.type][p.mainStatType]?.[p.rarity || 5][p.level] || 0;
     };
     return mainStatValue(b) - mainStatValue(a);
-  }
+  };
 
   if (stats.main !== "All") {
     result = result.filter((p) => p.mainStatType === stats.main);
@@ -39,9 +28,7 @@ export const filterArtifactsBySetsAndStats = (
   if (stats.subs[0] !== "All") {
     const requires = stats.subs.filter((s) => s !== "All") as AttributeStat[];
 
-    result = result.filter((p) =>
-      requires.every((rq) => p.subStats.map((ss) => ss.type).includes(rq))
-    );
+    result = result.filter((p) => requires.every((rq) => p.subStats.map((ss) => ss.type).includes(rq)));
 
     const getValue = (artifact: UserArtifact, type: AttributeStat) => {
       return artifact.subStats.find((stat) => stat.type === type)?.value || 0;
@@ -61,19 +48,3 @@ export const filterArtifactsBySetsAndStats = (
   }
   return result;
 };
-
-export function hasDupStat(stats: StatsFilter) {
-  const existed: string[] = [stats.main];
-
-  for (let ss of stats.subs) {
-    if (ss === "All") {
-      continue;
-    }
-    if (existed.includes(ss)) {
-      return true;
-    } else {
-      existed.push(ss);
-    }
-  }
-  return false;
-}

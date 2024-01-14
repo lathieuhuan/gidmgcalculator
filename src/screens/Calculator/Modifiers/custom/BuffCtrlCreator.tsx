@@ -194,13 +194,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
           <span className="ml-2">{sign}</span>
         </div>
       </div>
-      <ButtonGroup
-        className="mt-8"
-        buttons={[
-          { text: "Cancel", onClick: onClose },
-          { text: "Confirm", onClick: onConfirm },
-        ]}
-      />
+      <ButtonGroup.Confirm className="mt-8" onCancel={onClose} onConfirm={onConfirm} />
     </>
   );
 };

@@ -95,12 +95,12 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
           onKeyDown={onKeydownInput}
           onChange={setInput}
         />
-        <ButtonGroup
+        <ButtonGroup.Confirm
           className="mt-4"
-          buttons={[
-            { text: "Cancel", onClick: onClose },
-            { text: "Combine", disabled: !setupOptions.length, onClick: tryCombine },
-          ]}
+          confirmText="Combine"
+          disabledConfirm={!setupOptions.length}
+          onConfirm={tryCombine}
+          onCancel={onClose}
         />
       </div>
     </div>

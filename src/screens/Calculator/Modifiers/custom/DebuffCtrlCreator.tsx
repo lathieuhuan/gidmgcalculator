@@ -71,13 +71,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
         />
         <span className="ml-2">%</span>
       </div>
-      <ButtonGroup
-        className="mt-8"
-        buttons={[
-          { text: "Cancel", onClick: onClose },
-          { text: "Confirm", onClick: onConfirm },
-        ]}
-      />
+      <ButtonGroup.Confirm className="mt-8" onCancel={onClose} onConfirm={onConfirm} />
     </>
   );
 }

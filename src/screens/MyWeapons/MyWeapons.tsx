@@ -5,7 +5,7 @@ import type { WeaponType } from "@Src/types";
 
 import { MAX_USER_WEAPONS, WEAPON_ICONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
-import { useTypeFilter } from "@Src/components/inventory/hooks";
+import { useTypeFilter } from "@Src/hooks";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -40,7 +40,7 @@ export default function MyWeapons() {
     type: "sword",
   });
 
-  const { filteredTypes, renderTypeFilter } = useTypeFilter({ itemType: "weapon" });
+  const { filteredTypes, renderTypeFilter } = useTypeFilter("weapon");
   const { filteredWeapons, totalCount } = useSelector((state) =>
     selectWeaponInventory(state, filteredTypes as WeaponType[])
   );
@@ -67,11 +67,9 @@ export default function MyWeapons() {
         <WarehouseLayout.ButtonBar>
           <ButtonGroup
             className="mr-4"
-            space="space-x-4"
             buttons={[
               {
                 text: "Add",
-                variant: "positive",
                 onClick: () => {
                   if (!checkIfMaxWeaponsReached()) {
                     setModalType("PICK_WEAPON_TYPE");
@@ -80,7 +78,6 @@ export default function MyWeapons() {
               },
               {
                 text: "Sort",
-                variant: "positive",
                 onClick: () => dispatch(sortWeapons()),
               },
             ]}

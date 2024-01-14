@@ -1,76 +1,55 @@
 import clsx from "clsx";
-import { useState } from "react";
-import { createSelector } from "@reduxjs/toolkit";
+import { useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
 import type { ArtifactType, UserArtifact } from "@Src/types";
 import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
-import { useTypeFilter } from "@Src/components/inventory/hooks";
-
-// Action
-import { addUserArtifact, sortArtifacts } from "@Store/userDatabaseSlice";
-import { updateMessage } from "@Store/calculatorSlice";
+import { useTypeFilter } from "@Src/hooks";
+import { findById, indexById } from "@Src/utils";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-
-// Util
-import { findById, indexById } from "@Src/utils";
-import {
-  filterArtifactsBySetsAndStats,
-  initArtifactStatsFilter,
-  type StatsFilter,
-} from "@Src/components/inventory/utils";
+// Action
+import { addUserArtifact, sortArtifacts } from "@Store/userDatabaseSlice";
+import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
-import { ButtonGroup, WarehouseLayout } from "@Src/pure-components";
-import { TypeSelect, InventoryRack, PickerArtifact } from "@Src/components";
+import { ButtonGroup, Modal, ModalHeader, WarehouseLayout } from "@Src/pure-components";
+import { TypeSelect, InventoryRack, PickerArtifact, ArtifactFilter, ArtifactFilterCondition } from "@Src/components";
 import { ChosenArtifactView } from "./ChosenArtifactView";
-import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
 
-const selectArtifactInventory = createSelector(
-  selectUserArts,
-  (_: unknown, types: ArtifactType[]) => types,
-  (_: unknown, __: unknown, codes: number[]) => codes,
-  (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
-  (userArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
-    const result = types.length ? userArts.filter((p) => types.includes(p.type)) : userArts;
-    return {
-      filteredArtifacts: filterArtifactsBySetsAndStats(result, codes, stats),
-      totalCount: userArts.length,
-    };
-  }
-);
-
 export default function MyArtifacts() {
   const dispatch = useDispatch();
+  const userArts = useSelector(selectUserArts);
 
   const [chosenID, setChosenID] = useState(0);
-  const [codes, setCodes] = useState<number[]>([]);
-  const [stats, setStats] = useState(initArtifactStatsFilter());
-
   const [modalType, setModalType] = useState<"PICK_ARTIFACT_TYPE" | "FITLER" | "">("");
   const [artifactPicker, setArtifactPicker] = useState<{ active: boolean; type: ArtifactType }>({
     active: false,
     type: "flower",
   });
+  const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const { filteredTypes, setFilteredType, renderTypeFilter } = useTypeFilter({
-    itemType: "artifact",
+  const { operate, renderTypeFilter } = useTypeFilter("artifact", undefined, (filteredTypes) => {
+    setFilterCondition((prev) => ({
+      ...prev,
+      types: filteredTypes as ArtifactType[],
+    }));
   });
 
-  const { filteredArtifacts, totalCount } = useSelector((state) =>
-    selectArtifactInventory(state, filteredTypes as ArtifactType[], codes, stats)
+  const filteredArtifacts = useMemo(
+    () => ArtifactFilter.filterArtifacts(userArts, filterCondition),
+    [userArts, filterCondition]
   );
   const chosenArtifact = findById(filteredArtifacts, chosenID);
 
   const closeModal = () => setModalType("");
 
   const isMaxArtifactsReached = () => {
-    if (totalCount + 1 > MAX_USER_ARTIFACTS) {
+    if (userArts.length >= MAX_USER_ARTIFACTS) {
       dispatch(
         updateMessage({
           type: "error",
@@ -106,7 +85,10 @@ export default function MyArtifacts() {
   };
 
   const isFiltered =
-    filteredTypes.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");
+    filterCondition.types.length ||
+    filterCondition.codes.length ||
+    filterCondition.stats.main !== "All" ||
+    filterCondition.stats.subs.some((s) => s !== "All");
 
   return (
     <WarehouseLayout.Wrapper>
@@ -114,17 +96,9 @@ export default function MyArtifacts() {
         <WarehouseLayout.ButtonBar>
           <ButtonGroup
             className="mr-4"
-            space="space-x-4"
             buttons={[
-              {
-                text: "Add",
-                variant: "positive",
-                onClick: onClickAddArtifact,
-              },
-              {
-                text: "Sort",
-                onClick: onClickSortArtifact,
-              },
+              { text: "Add", onClick: onClickAddArtifact },
+              { text: "Sort", onClick: onClickSortArtifact },
             ]}
           />
 
@@ -133,8 +107,8 @@ export default function MyArtifacts() {
           <div className="flex cursor-pointer">
             <button
               className={clsx(
-                "pl-4 py-1 bg-yellow-400 glow-on-hover",
-                isFiltered ? "pr-2 rounded-l-2xl" : "pr-4 rounded-2xl"
+                "pl-4 py-1 glow-on-hover",
+                isFiltered ? "pr-2 bg-yellow-400 rounded-l-2xl" : "pr-4 bg-light-400 rounded-2xl"
               )}
               onClick={() => setModalType("FITLER")}
             >
@@ -145,9 +119,9 @@ export default function MyArtifacts() {
               <div
                 className="pl-2 pr-3 rounded-r-2xl bg-red-600 flex-center glow-on-hover"
                 onClick={() => {
-                  setFilteredType([]);
-                  setCodes([]);
-                  setStats(initArtifactStatsFilter());
+                  const { DEFAULT_CONDITION } = ArtifactFilter;
+                  setFilterCondition(DEFAULT_CONDITION);
+                  operate.updateFilter(DEFAULT_CONDITION.types);
                 }}
               >
                 <FaTimes />
@@ -169,16 +143,29 @@ export default function MyArtifacts() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <Filter
-        active={modalType === "FITLER"}
-        types={filteredTypes as ArtifactType[]}
-        codes={codes}
-        stats={stats}
-        setTypes={setFilteredType}
-        setCodes={setCodes}
-        setStats={setStats}
-        onClose={closeModal}
-      />
+      <Modal active={modalType === "FITLER"} withDefaultStyle onClose={closeModal}>
+        <div className="h-full flex flex-col">
+          <div className="pt-2 px-2">
+            <ModalHeader>
+              <div />
+              <ModalHeader.Text>Filter</ModalHeader.Text>
+              <ModalHeader.RightEnd onClickClose={closeModal} />
+            </ModalHeader>
+          </div>
+          <div className="grow hide-scrollbar relative">
+            <ArtifactFilter
+              showTypeFilter
+              artifacts={userArts}
+              initialCondition={filterCondition}
+              onConfirm={(contition) => {
+                setFilterCondition(contition);
+                operate.updateFilter(contition.types);
+              }}
+              onClose={closeModal}
+            />
+          </div>
+        </div>
+      </Modal>
 
       <TypeSelect
         active={modalType === "PICK_ARTIFACT_TYPE"}
@@ -203,7 +190,6 @@ export default function MyArtifacts() {
               isValid: false,
             };
           }
-
           const newArtifact: UserArtifact = {
             ID: Date.now(),
             ...item,

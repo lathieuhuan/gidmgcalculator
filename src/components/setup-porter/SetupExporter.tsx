@@ -39,6 +39,7 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
       moreButtons={[
         {
           text: "Copy",
+          autoFocus: true,
           onClick: () => {
             navigator.clipboard.writeText(encodedData).then(
               () => setStatus("SUCCESS"),
@@ -56,7 +57,6 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
           },
         },
       ]}
-      autoFocusButtonIndex={1}
       onClose={onClose}
     />
   );

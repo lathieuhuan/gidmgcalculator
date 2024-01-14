@@ -145,19 +145,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
         </Section>
       </div>
 
-      <ButtonGroup
-        className="mt-4"
-        buttons={[
-          {
-            text: "Cancel",
-            onClick: onClose,
-          },
-          {
-            text: "Confirm",
-            onClick: onConfirmNewSettings,
-          },
-        ]}
-      />
+      <ButtonGroup.Confirm className="mt-4" onCancel={onClose} onConfirm={onConfirmNewSettings} />
     </div>
   );
 };

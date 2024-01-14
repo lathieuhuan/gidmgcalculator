@@ -140,19 +140,13 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
               : `The number of Setups on Calculator has reach the limit of ${MAX_CALC_SETUPS}.`) +
             " Start a new session?"
           }
-          buttons={[undefined, { onClick: startNewSession }]}
+          focusConfirm
+          onConfirm={startNewSession}
           onClose={endImport}
         />
       );
     case 4:
-      return (
-        <ConfirmModal
-          active
-          message="This setup is already in the Calculator."
-          buttons={[undefined]}
-          onClose={endImport}
-        />
-      );
+      return <ConfirmModal active message="This setup is already in the Calculator." onlyConfirm onClose={endImport} />;
     default:
       return (
         <Modal active className="small-modal" onClose={endImport}>

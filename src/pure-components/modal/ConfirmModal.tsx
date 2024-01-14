@@ -1,49 +1,75 @@
+import clsx from "clsx";
 import { cloneElement, useRef } from "react";
-import { ButtonGroup, ButtonGroupItem } from "../button";
+import { ButtonGroup, ButtonGroupItem, ConfirmButtonGroupProps } from "../button";
 import { withModal } from "./Modal";
 
-export interface ConfirmModalBodyProps {
+export interface ConfirmModalBodyProps extends Omit<ConfirmButtonGroupProps, "className" | "justify"> {
   message: string | JSX.Element;
-  bgColor?: string;
-  buttons: (Partial<ButtonGroupItem> | undefined | false)[];
+  /** Default to 'bg-dark-500' */
+  bgColorCls?: string;
   /** Default to true */
-  closeOnClickButton?: boolean;
+  closeOnButtonClick?: boolean;
+  onlyConfirm?: boolean;
+  /** Override config for cancel & confirm buttons */
+  buttons?: ButtonGroupItem[];
   onClose: () => void;
 }
 export const ConfirmModalBody = ({
+  bgColorCls = "bg-dark-500",
+  closeOnButtonClick = true,
+  onlyConfirm,
   message,
-  bgColor = "bg-dark-500",
   buttons,
-  closeOnClickButton = true,
   onClose,
+  onCancel,
+  onConfirm,
+  ...buttonGroupProps
 }: ConfirmModalBodyProps) => {
-  const messageRef = useRef(cloneElement(<p className="py-2 text-center text-1.5xl text-light-400">{message}</p>));
+  const messageRef = useRef(cloneElement(<p className="py-2 text-center text-xl text-light-400">{message}</p>));
 
-  const renderedButtons = buttons.map<ButtonGroupItem>((button, index) => {
-    const { text, variant, onClick } = button || {};
-    const buttonText = text || (index === buttons.length - 1 ? "Confirm" : !index ? "Cancel" : "");
+  const customButtons: ButtonGroupItem[] = buttons
+    ? buttons.map((button) => ({
+        ...button,
+        onClick: (e) => {
+          button.onClick?.(e);
+          closeOnButtonClick && onClose();
+        },
+      }))
+    : [];
 
-    return {
-      text: buttonText,
-      variant,
-      onClick: () => {
-        onClick?.();
-        closeOnClickButton && onClose();
-      },
-    };
-  });
+  const handleCancel = () => {
+    onCancel?.();
+    closeOnButtonClick && onClose();
+  };
+
+  const handleConfirm = () => {
+    onConfirm?.();
+    closeOnButtonClick && onClose();
+  };
+
+  if (!buttons && onlyConfirm) {
+    customButtons.push({
+      text: "Confirm",
+      variant: "positive",
+      autoFocus: true,
+      onClick: handleConfirm,
+      ...buttonGroupProps.confirmButtonProps,
+    });
+  }
 
   return (
-    <div className={"p-4 rounded-lg " + bgColor}>
+    <div className={clsx("p-4 rounded-lg", bgColorCls)}>
       {messageRef.current}
-      {renderedButtons.length ? (
-        <ButtonGroup
+      {customButtons.length ? (
+        <ButtonGroup className="mt-4 flex-wrap" buttons={customButtons} />
+      ) : (
+        <ButtonGroup.Confirm
           className="mt-4 flex-wrap"
-          space={buttons.length > 2 ? "space-x-4" : undefined}
-          buttons={renderedButtons}
-          autoFocusIndex={buttons.length - 1}
+          {...buttonGroupProps}
+          onCancel={handleCancel}
+          onConfirm={handleConfirm}
         />
-      ) : null}
+      )}
     </div>
   );
 };

@@ -260,16 +260,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      <ButtonGroup
-        className="mt-4 flex justify-center"
-        space="space-x-4"
-        buttons={[
-          {
-            text: "Confirm",
-            onClick: onConfirmOrder,
-          },
-        ]}
-      />
+      <ButtonGroup.Confirm className="mt-4" onCancel={onClose} onConfirm={onConfirmOrder} />
     </div>
   );
 }

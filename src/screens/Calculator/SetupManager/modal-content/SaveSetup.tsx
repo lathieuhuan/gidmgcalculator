@@ -46,12 +46,7 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
           }
         }}
       />
-      <ButtonGroup
-        buttons={[
-          { text: "Cancel", onClick: onClose },
-          { text: "Confirm", onClick: saveSetup },
-        ]}
-      />
+      <ButtonGroup.Confirm onCancel={onClose} onConfirm={saveSetup} />
     </div>
   );
 }

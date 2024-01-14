@@ -35,6 +35,7 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
       moreButtons={[
         {
           text: "Paste",
+          autoFocus: true,
           onClick: () => {
             navigator.clipboard.readText().then(setCode, () => setError("NOT_SUPPORT"));
           },
@@ -57,7 +58,6 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
           },
         },
       ]}
-      autoFocusButtonIndex={1}
       onClose={props.onClose}
     />
   );

@@ -153,7 +153,8 @@ const CharacterInfo = () => {
             Remove <b>{name}</b>?
           </>
         }
-        buttons={[undefined, { onClick: () => dispatch(removeUserCharacter(name)) }]}
+        focusConfirm
+        onConfirm={() => dispatch(removeUserCharacter(name))}
         onClose={() => setRemoving(false)}
       />
     </div>

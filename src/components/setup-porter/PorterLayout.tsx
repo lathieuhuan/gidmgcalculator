@@ -9,17 +9,9 @@ interface PorterLayoutProps {
   };
   textareaAttrs: TextareaHTMLAttributes<HTMLTextAreaElement>;
   moreButtons: ButtonGroupItem[];
-  autoFocusButtonIndex?: number;
   onClose: () => void;
 }
-export const PorterLayout = ({
-  heading,
-  message,
-  textareaAttrs,
-  moreButtons,
-  autoFocusButtonIndex,
-  onClose,
-}: PorterLayoutProps) => {
+export const PorterLayout = ({ heading, message, textareaAttrs, moreButtons, onClose }: PorterLayoutProps) => {
   return (
     <div className="px-6 pt-4 pb-6 rounded-lg bg-dark-900 shadow-white-glow relative">
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
@@ -31,7 +23,8 @@ export const PorterLayout = ({
         {message ? (
           <p
             className={
-              "mt-2 text-center" + (message.type ? (message.type === "success" ? " text-green-300" : " text-red-100") : "")
+              "mt-2 text-center" +
+              (message.type ? (message.type === "success" ? " text-green-300" : " text-red-100") : "")
             }
           >
             {message.text}
@@ -40,9 +33,13 @@ export const PorterLayout = ({
 
         <ButtonGroup
           className="mt-4"
-          space="space-x-4"
-          autoFocusIndex={autoFocusButtonIndex}
-          buttons={[{ text: "Cancel", onClick: onClose }, ...moreButtons]}
+          buttons={[
+            {
+              text: "Cancel",
+              onClick: onClose,
+            },
+            ...moreButtons,
+          ]}
         />
       </div>
     </div>

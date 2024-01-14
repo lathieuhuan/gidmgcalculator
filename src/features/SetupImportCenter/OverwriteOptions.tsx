@@ -162,12 +162,10 @@ export function OverrideOptions({
           })}
         </div>
       </div>
-      <ButtonGroup
+      <ButtonGroup.Confirm
         className={expandedIndex === pendingCode % 10 ? "mt-2" : "mt-4"}
-        buttons={[
-          { text: "Cancel", onClick: onCancel },
-          { text: "Confirm", onClick: onConfirm },
-        ]}
+        onCancel={onCancel}
+        onConfirm={onConfirm}
       />
     </div>
   );
