@@ -1,0 +1,33 @@
+.default-modal-content-wrap {
+  width: 100%;
+  box-shadow: 0 0 3px white;
+}
+.large-modal-height {
+  height: 90vh;
+  max-height: 760px;
+}
+
+// #to-check: width is good?
+@media (min-width: 440px) {
+  .default-modal-content-wrap {
+    width: 402px;
+  }
+}
+@media (min-width: 610px) {
+  .default-modal-content-wrap {
+    width: 583.05px;
+  }
+}
+@media (min-width: 769px) {
+  .default-modal-content-wrap {
+    width: 720px;
+  }
+}
+@media (min-width: 1025px) {
+  .default-modal-content-wrap {
+    width: 944px;
+  }
+  .large-modal-height {
+    height: 85vh;
+  }
+}

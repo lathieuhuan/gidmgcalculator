@@ -146,7 +146,7 @@ export default function SetupManager() {
         onClose={closeModal}
       />
 
-      <Modal active={modalType === "TARGET_CONFIG"} className="h-large-modal" onClose={closeModal}>
+      <Modal active={modalType === "TARGET_CONFIG"} className={Modal.DEFAULT_HEIGHT_CLS} onClose={closeModal}>
         <TargetConfig
           button={
             targetOverviewOn ? null : (

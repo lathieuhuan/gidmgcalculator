@@ -30,9 +30,6 @@
     @apply rounded-lg shadow-white-glow;
     width: 22rem;
   }
-  .h-large-modal {
-    @apply h-[90vh] lg:h-[85vh] max-h-[760px];
-  }
   .load-option {
     @apply pt-2 pb-3 px-4 hover:bg-dark-900;
   }

@@ -33,14 +33,14 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
             changes to that setup.
           </li>
           <li>
-            <Yellow>Teammate details</Yellow> on a setup can be viewed when you press a teammate icon. Here you
-            can build a setup for that teammate based on the main setup. Party members and Target will be the same. Some
+            <Yellow>Teammate details</Yellow> on a setup can be viewed when you press a teammate icon. Here you can
+            build a setup for that teammate based on the main setup. Party members and Target will be the same. Some
             modifiers will remain activated and keep their inputs.
           </li>
           <li>
-            <Yellow>Complex Setup</Yellow> is the result of combining setups of the same 4 party members. You can
-            break this complex into individual setups again by pressing the <FaUnlink /> before its name. Now at
-            teammate details you can switch to that setup.
+            <Yellow>Complex Setup</Yellow> is the result of combining setups of the same 4 party members. You can break
+            this complex into individual setups again by pressing the <FaUnlink /> before its name. Now at teammate
+            details you can switch to that setup.
           </li>
           <li>
             You CANNOT change teammates when modifying the direct copy of a setup that is in a complex. However you can
@@ -51,7 +51,7 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
       <Modal
         active={modalType === "FIRST_COMBINE"}
-        className="h-large-modal"
+        className={Modal.DEFAULT_HEIGHT_CLS}
         style={{
           minWidth: 300,
         }}
@@ -62,7 +62,7 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
       <Modal
         active={modalType === "COMBINE_MORE"}
-        className="h-large-modal"
+        className={Modal.DEFAULT_HEIGHT_CLS}
         style={{
           minWidth: 300,
         }}

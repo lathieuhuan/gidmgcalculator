@@ -97,7 +97,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
 
       <Modal
         active={modalType === "STATS"}
-        className="h-large-modal hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"
+        className={[Modal.DEFAULT_HEIGHT_CLS, "hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"]}
         onClose={closeModal}
       >
         <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
@@ -128,7 +128,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
       {calcResult && weapon && (
         <Modal
           active={modalType === "MODIFIERS"}
-          className="h-large-modal hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"
+          className={[Modal.DEFAULT_HEIGHT_CLS, "hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"]}
           onClose={closeModal}
         >
           <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />

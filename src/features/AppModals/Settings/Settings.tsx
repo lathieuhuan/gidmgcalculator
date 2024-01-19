@@ -7,7 +7,7 @@ import { useDispatch } from "@Store/hooks";
 import { PersistControlContext } from "../../PersistControl";
 
 // Component
-import { ButtonGroup, withModal } from "@Src/pure-components";
+import { ButtonGroup, Modal, withModal } from "@Src/pure-components";
 import { CheckSetting, Section, SelectSetting } from "./components";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
@@ -153,7 +153,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
 export const Settings = withModal(
   SettingsCore,
   {
-    className: "h-large-modal rounded-lg bg-dark-700 shadow-white-glow",
+    className: [Modal.DEFAULT_HEIGHT_CLS, "rounded-lg bg-dark-700 shadow-white-glow"],
   },
   {
     className: "absolute top-1 right-1",
