@@ -5,7 +5,7 @@ import { useDispatch } from "@Store/hooks";
 import { decodeSetup } from "./utils";
 
 // Component
-import { withModal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
 const SetupImporterCore = (props: { onClose: () => void }) => {
@@ -63,4 +63,4 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
   );
 };
 
-export const SetupImporter = withModal(SetupImporterCore);
+export const SetupImporter = Modal.wrap(SetupImporterCore);

@@ -1,11 +1,11 @@
-import { Button, Input, withModal } from "@Src/pure-components";
+import { Button, Input, Modal } from "@Src/pure-components";
 import { useState } from "react";
 import { FaCoffee, FaPaypal } from "react-icons/fa";
 
 export const DonateCore = () => {
   const [usd, setUsd] = useState(1);
   return (
-    <div className="py-4">
+    <div className="p-4 py-8">
       <h3 className="text-2xl font-bold text-center">DONATE</h3>
 
       <div className="mt-6 flex flex-col items-center">
@@ -38,13 +38,10 @@ export const DonateCore = () => {
   );
 };
 
-export const Donate = withModal(
+export const Donate = Modal.wrap(
   DonateCore,
   {
-    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
-    style: {
-      width: "20rem",
-    },
+    className: [Modal.SMALL_CLS, "bg-dark-700"],
   },
   {
     className: "absolute top-1 right-1",

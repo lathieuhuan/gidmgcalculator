@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 
@@ -131,7 +131,7 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
       </div>
 
       <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>
-        <ConfirmSaving artifact={artifact} pieceIndex={pieceIndex} onClose={() => setIsSaving(false)} />
+        <ConfirmSaving artifact={artifact} onClose={() => setIsSaving(false)} />
       </Modal>
     </div>
   );
@@ -139,34 +139,33 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
 
 interface ConfirmSavingProps {
   artifact: CalcArtifact;
-  pieceIndex: number;
   onClose: () => void;
 }
-function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
+function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
   const dispatch = useDispatch();
-  const [state, setState] = useState<"SUCCESS" | "PENDING" | "EXCEED_MAX" | "">("");
+  const state = useRef<"SUCCESS" | "PENDING" | "EXCEED_MAX" | "">("");
 
-  const userArts = useSelector(selectUserArts);
-  const existedArtifact = findById(userArts, artifact.ID);
+  const userArtifacts = useSelector(selectUserArts);
+  const existedArtifact = findById(userArtifacts, artifact.ID);
 
-  useEffect(() => {
-    if (userArts.length + 1 > MAX_USER_ARTIFACTS) {
-      setState("EXCEED_MAX");
+  if (state.current === "") {
+    if (userArtifacts.length + 1 > MAX_USER_ARTIFACTS) {
+      state.current = "EXCEED_MAX";
     } else if (existedArtifact) {
-      setState("PENDING");
+      state.current = "PENDING";
     } else {
       dispatch(addUserArtifact(calcItemToUserItem(artifact)));
-      setState("SUCCESS");
+      state.current = "SUCCESS";
     }
-  }, []);
+  }
 
-  switch (state) {
+  switch (state.current) {
     case "SUCCESS":
     case "EXCEED_MAX":
       return (
         <ConfirmModalBody
           message={
-            state === "SUCCESS"
+            state.current === "SUCCESS"
               ? "Successfully saved to My Artifacts."
               : "You're having to many Artifacts. Please remove some of them first."
           }

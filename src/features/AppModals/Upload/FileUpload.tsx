@@ -7,7 +7,7 @@ import { notification } from "@Src/utils/notification";
 import { convertFromGoodFormat, toVersion3_0 } from "@Src/utils/convertUserData";
 
 // Component
-import { Button, withModal } from "@Src/pure-components";
+import { Button, Modal } from "@Src/pure-components";
 
 interface FileUploadProps {
   onSuccessUploadFile: (data: UploadedData) => void;
@@ -58,7 +58,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="p-4 flex flex-col">
       <p className="mt-4 px-8 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
       <input
         ref={inputRef}
@@ -80,13 +80,10 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   );
 };
 
-export const FileUpload = withModal(
+export const FileUpload = Modal.wrap(
   FileUploadCore,
   {
-    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
-    style: {
-      width: "28rem",
-    },
+    className: [Modal.SMALL_CLS, "bg-dark-700"],
   },
   {
     className: "absolute top-1 right-1",

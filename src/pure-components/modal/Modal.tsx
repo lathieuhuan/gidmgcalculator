@@ -128,21 +128,23 @@ const Modal = ({
     : null;
 };
 
-Modal.DEFAULT_HEIGHT_CLS = DEFAULT_HEIGHT_CLS;
-
 function withModal<T>(
   Component: (props: T) => JSX.Element | null,
   modalProps?: Partial<Omit<ModalProps, "active" | "onClose">>,
-  closeButton?: Partial<Omit<CloseButtonProps, "onClick">>
+  closeButtonProps?: Partial<Omit<CloseButtonProps, "onClick">>
 ) {
   return (props: ModalControl & T): JSX.Element => {
     return (
       <Modal active={props.active} onClose={props.onClose} closeOnMaskClick={props.closeOnMaskClick} {...modalProps}>
-        {closeButton ? <CloseButton {...closeButton} onClick={props.onClose} /> : null}
+        {closeButtonProps ? <CloseButton {...closeButtonProps} onClick={props.onClose} /> : null}
         <Component {...props} />
       </Modal>
     );
   };
 }
 
-export { Modal, withModal };
+Modal.DEFAULT_HEIGHT_CLS = DEFAULT_HEIGHT_CLS;
+Modal.SMALL_CLS = "small-modal rounded-lg shadow-white-glow overflow-hidden";
+Modal.wrap = withModal;
+
+export { Modal };

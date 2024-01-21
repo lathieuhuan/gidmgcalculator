@@ -4,7 +4,7 @@ import { useSelector } from "@Store/hooks";
 import { selectUserArts, selectUserChars, selectUserSetups, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { Button, withModal } from "@Src/pure-components";
+import { Button, Modal } from "@Src/pure-components";
 
 const DownloadOptions = () => {
   const userChars = useSelector(selectUserChars);
@@ -39,7 +39,7 @@ const DownloadOptions = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="p-4 flex flex-col">
       <Button className="mt-4 mx-auto" variant="positive" icon={<FaDownload />} onClick={onClickDownload}>
         Download
       </Button>
@@ -51,13 +51,10 @@ const DownloadOptions = () => {
   );
 };
 
-export const Download = withModal(
+export const Download = Modal.wrap(
   DownloadOptions,
   {
-    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
-    style: {
-      width: "28rem",
-    },
+    className: [Modal.SMALL_CLS, "bg-dark-700"],
   },
   {
     className: "absolute top-1 right-1",

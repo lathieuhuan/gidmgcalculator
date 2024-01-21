@@ -7,9 +7,8 @@ import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { createArtifact } from "@Src/utils/creators";
 
-
 // Component
-import { withModal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 interface ArtifactPickerProps {
@@ -72,4 +71,4 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
   );
 };
 
-export const PickerArtifact = withModal(ArtifactPicker, { withDefaultStyle: true });
+export const PickerArtifact = Modal.wrap(ArtifactPicker, { withDefaultStyle: true });

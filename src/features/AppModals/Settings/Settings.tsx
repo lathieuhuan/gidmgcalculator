@@ -7,7 +7,7 @@ import { useDispatch } from "@Store/hooks";
 import { PersistControlContext } from "../../PersistControl";
 
 // Component
-import { ButtonGroup, Modal, withModal } from "@Src/pure-components";
+import { ButtonGroup, Modal } from "@Src/pure-components";
 import { CheckSetting, Section, SelectSetting } from "./components";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
@@ -79,7 +79,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   ] as const);
 
   return (
-    <div className="w-80 md1:w-96 h-full px-2 py-4 flex flex-col">
+    <div className="h-full px-2 py-4 flex flex-col">
       <h3 className="text-2xl text-orange-500 text-center font-bold">Settings</h3>
 
       <div className="grow hide-scrollbar">
@@ -150,10 +150,10 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   );
 };
 
-export const Settings = withModal(
+export const Settings = Modal.wrap(
   SettingsCore,
   {
-    className: [Modal.DEFAULT_HEIGHT_CLS, "rounded-lg bg-dark-700 shadow-white-glow"],
+    className: [Modal.DEFAULT_HEIGHT_CLS, "w-80 md1:w-96 rounded-lg bg-dark-700 shadow-white-glow"],
   },
   {
     className: "absolute top-1 right-1",

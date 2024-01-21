@@ -8,7 +8,7 @@ import { useSelector } from "@Store/hooks";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Conponent
-import { ButtonGroup, CollapseAndMount, ModalHeader, withModal } from "@Src/pure-components";
+import { ButtonGroup, CollapseAndMount, Modal, ModalHeader } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { ArtifactFilter, ArtifactFilterCondition } from "../ArtifactFilter";
@@ -143,4 +143,4 @@ const ArtifactInventory = ({
   );
 };
 
-export const InventoryArtifact = withModal(ArtifactInventory, { withDefaultStyle: true });
+export const InventoryArtifact = Modal.wrap(ArtifactInventory, { withDefaultStyle: true });

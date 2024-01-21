@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { cloneElement, useRef } from "react";
 import { ButtonGroup, ButtonGroupItem, ConfirmButtonGroupProps } from "../button";
-import { withModal } from "./Modal";
+import { Modal } from "./Modal";
 
 export interface ConfirmModalBodyProps extends Omit<ConfirmButtonGroupProps, "className" | "justify"> {
   message: string | JSX.Element;
@@ -27,7 +27,7 @@ export const ConfirmModalBody = ({
 }: ConfirmModalBodyProps) => {
   const messageRef = useRef(cloneElement(<p className="py-2 text-center text-xl text-light-400">{message}</p>));
 
-  const customButtons: ButtonGroupItem[] = buttons
+  const finalButtons: ButtonGroupItem[] = buttons
     ? buttons.map((button) => ({
         ...button,
         onClick: (e) => {
@@ -48,7 +48,7 @@ export const ConfirmModalBody = ({
   };
 
   if (!buttons && onlyConfirm) {
-    customButtons.push({
+    finalButtons.push({
       text: "Confirm",
       variant: "positive",
       autoFocus: true,
@@ -57,11 +57,13 @@ export const ConfirmModalBody = ({
     });
   }
 
+  const buttonsRef = useRef(finalButtons);
+
   return (
-    <div className={clsx("p-4 rounded-lg", bgColorCls)}>
+    <div className={clsx("p-4", bgColorCls)}>
       {messageRef.current}
-      {customButtons.length ? (
-        <ButtonGroup className="mt-4 flex-wrap" buttons={customButtons} />
+      {buttonsRef.current.length ? (
+        <ButtonGroup className="mt-4 flex-wrap" buttons={buttonsRef.current} />
       ) : (
         <ButtonGroup.Confirm
           className="mt-4 flex-wrap"
@@ -74,4 +76,4 @@ export const ConfirmModalBody = ({
   );
 };
 
-export const ConfirmModal = withModal(ConfirmModalBody, { className: "small-modal" });
+export const ConfirmModal = Modal.wrap(ConfirmModalBody, { className: Modal.SMALL_CLS });

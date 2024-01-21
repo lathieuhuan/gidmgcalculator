@@ -12,7 +12,7 @@ import { sortCharacters } from "@Store/userDatabaseSlice";
 import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ButtonGroup, Popover, SharedSpace, withModal, Button } from "@Src/pure-components";
+import { ButtonGroup, Popover, SharedSpace, Modal, Button } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
@@ -265,4 +265,4 @@ function SortInner({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default withModal(SortInner, { className: "small-modal" });
+export default Modal.wrap(SortInner, { className: Modal.SMALL_CLS });

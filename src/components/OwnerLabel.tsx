@@ -1,19 +1,18 @@
 import { CSSProperties, useRef, useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
-import { UserItem } from "@Src/types";
+import { UserItem, UserSetup } from "@Src/types";
 import { useClickOutside, ClickOutsideHandler } from "@Src/pure-hooks";
-import { useCheckContainerSetups } from "@Src/hooks";
+import { useUserItemContainingSetups } from "@Src/hooks";
 
 // Component
 import { Popover } from "@Src/pure-components";
 
 interface SetupListProps {
-  item: UserItem;
+  setups: UserSetup[];
   onClickOutside: ClickOutsideHandler;
 }
-const SetupList = ({ item, onClickOutside }: SetupListProps) => {
-  const result = useCheckContainerSetups(item);
+const SetupList = ({ setups, onClickOutside }: SetupListProps) => {
   const listRef = useRef<HTMLDivElement>(null);
 
   useClickOutside(listRef, onClickOutside);
@@ -21,15 +20,12 @@ const SetupList = ({ item, onClickOutside }: SetupListProps) => {
   return (
     <div ref={listRef} className="px-4 py-2 flex flex-col overflow-auto">
       <p className="text-orange-500 font-medium">This item is used on these setups:</p>
-      {result.foundSetups.length ? (
-        <ul className="mt-1 pl-4 list-disc overflow-auto custom-scrollbar">
-          {result.foundSetups.map((setup, i) => {
-            return <li key={i}>{setup.name}</li>;
-          })}
-        </ul>
-      ) : (
-        <p className="text-center text-light-800">[No valid setups found]</p>
-      )}
+      <ul className="mt-1 pl-4 list-disc overflow-auto custom-scrollbar">
+        {setups.map((setup, i) => {
+          return <li key={i}>{setup.name}</li>;
+        })}
+      </ul>
+      {/* <p className="text-center text-light-800">[No valid setups found]</p> */}
     </div>
   );
 };
@@ -45,6 +41,8 @@ export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
     isVisible: false,
     isMounted: false,
   });
+
+  const containingSetups = useUserItemContainingSetups(item);
 
   const onClickPuzzlePiece = () => {
     setList((prevList) => {
@@ -79,7 +77,7 @@ export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
     >
       <p className="py-1">Equipped: {item?.owner || "None"}</p>
 
-      {item?.setupIDs?.length ? (
+      {containingSetups.length ? (
         <>
           <button ref={puzzleBtnRef} className="w-8 h-8 flex-center" onClick={onClickPuzzlePiece}>
             <FaPuzzlePiece className="w-5 h-5" />
@@ -92,7 +90,7 @@ export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
             withTooltipStyle
             origin="bottom-right"
           >
-            {list.isMounted && <SetupList item={item} onClickOutside={onClickOutsideList} />}
+            {list.isMounted && <SetupList setups={containingSetups} onClickOutside={onClickOutsideList} />}
           </Popover>
         </>
       ) : null}

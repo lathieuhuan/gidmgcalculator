@@ -1,10 +1,12 @@
 .default-modal-content-wrap {
   width: 100%;
-  box-shadow: 0 0 3px white;
 }
 .large-modal-height {
   height: 90vh;
   max-height: 760px;
+}
+.small-modal {
+  width: 22rem;
 }
 
 // #to-check: width is good?

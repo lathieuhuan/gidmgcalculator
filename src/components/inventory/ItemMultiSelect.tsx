@@ -5,7 +5,7 @@ import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { isUserWeapon } from "@Src/utils";
 
 // Component
-import { Button, ModalHeader, withModal } from "@Src/pure-components";
+import { Button, Modal, ModalHeader } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
@@ -101,4 +101,4 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
   );
 };
 
-export const ItemMultiSelect = withModal(ItemMultiSelectCore, { withDefaultStyle: true });
+export const ItemMultiSelect = Modal.wrap(ItemMultiSelectCore, { withDefaultStyle: true });

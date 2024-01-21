@@ -5,7 +5,7 @@ import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { Button, ModalHeader, withModal } from "@Src/pure-components";
+import { Button, Modal, ModalHeader } from "@Src/pure-components";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
 import { InventoryRack } from "./InventoryRack";
@@ -72,4 +72,4 @@ const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose
   );
 };
 
-export const InventoryWeapon = withModal(WeaponInventory, { withDefaultStyle: true });
+export const InventoryWeapon = Modal.wrap(WeaponInventory, { withDefaultStyle: true });

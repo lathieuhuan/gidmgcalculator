@@ -1,7 +1,7 @@
 import type { UserItem } from "@Src/types";
-import { useCheckContainerSetups } from "@Src/hooks";
-import { ConfirmModalBody, withModal } from "@Src/pure-components";
+import { ConfirmModalBody, Modal } from "@Src/pure-components";
 import { $AppData } from "@Src/services";
+import { isUserWeapon } from "@Src/utils";
 
 interface ItemRemoveCheckProps {
   item: UserItem;
@@ -9,8 +9,7 @@ interface ItemRemoveCheckProps {
   onClose: () => void;
 }
 const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => {
-  const result = useCheckContainerSetups(item, { correctOnUnmounted: false });
-  const itemName = result.isWeapon
+  const itemName = isUserWeapon(item)
     ? $AppData.getWeaponData(item.code).name
     : `${$AppData.getArtifactSetData(item.code)?.name} (${item.type})`;
 
@@ -33,4 +32,4 @@ const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => 
   );
 };
 
-export const ItemRemoveConfirm = withModal(ItemRemoveCheck, { className: "small-modal" });
+export const ItemRemoveConfirm = Modal.wrap(ItemRemoveCheck, { className: Modal.SMALL_CLS });

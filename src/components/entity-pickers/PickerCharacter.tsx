@@ -7,7 +7,7 @@ import { useSelector } from "@Store/hooks";
 import { findByName, pickProps } from "@Src/utils";
 
 // Component
-import { withModal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
@@ -74,4 +74,4 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
   );
 };
 
-export const PickerCharacter = withModal(CharacterPicker, { withDefaultStyle: true });
+export const PickerCharacter = Modal.wrap(CharacterPicker, { withDefaultStyle: true });
