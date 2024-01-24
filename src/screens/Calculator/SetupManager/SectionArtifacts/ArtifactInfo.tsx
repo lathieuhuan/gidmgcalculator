@@ -130,7 +130,7 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
         <Button variant="positive" icon={<FaSyncAlt />} onClick={onClickChangePiece} />
       </div>
 
-      <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>
+      <Modal active={isSaving} preset="small" onClose={() => setIsSaving(false)}>
         <ConfirmSaving artifact={artifact} onClose={() => setIsSaving(false)} />
       </Modal>
     </div>

@@ -39,7 +39,7 @@ const DownloadOptions = () => {
   };
 
   return (
-    <div className="p-4 flex flex-col">
+    <div className="p-4 flex flex-col bg-dark-700">
       <Button className="mt-4 mx-auto" variant="positive" icon={<FaDownload />} onClick={onClickDownload}>
         Download
       </Button>
@@ -51,13 +51,4 @@ const DownloadOptions = () => {
   );
 };
 
-export const Download = Modal.wrap(
-  DownloadOptions,
-  {
-    className: [Modal.SMALL_CLS, "bg-dark-700"],
-  },
-  {
-    className: "absolute top-1 right-1",
-    boneOnly: true,
-  }
-);
+export const Download = Modal.wrap(DownloadOptions, { preset: "small" }, true);

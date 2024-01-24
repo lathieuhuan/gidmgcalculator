@@ -9,6 +9,7 @@ import { PersistControlContext } from "../../PersistControl";
 // Component
 import { ButtonGroup, Modal } from "@Src/pure-components";
 import { CheckSetting, Section, SelectSetting } from "./components";
+import clsx from "clsx";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
   return [...Array(count)].map((_, i) => i + (startFromZero ? 0 : 1));
@@ -79,7 +80,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   ] as const);
 
   return (
-    <div className="h-full px-2 py-4 flex flex-col">
+    <div className={clsx("px-2 py-4 bg-dark-700 flex flex-col", Modal.LARGE_HEIGHT_CLS)}>
       <h3 className="text-2xl text-orange-500 text-center font-bold">Settings</h3>
 
       <div className="grow hide-scrollbar">
@@ -150,13 +151,4 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   );
 };
 
-export const Settings = Modal.wrap(
-  SettingsCore,
-  {
-    className: [Modal.DEFAULT_HEIGHT_CLS, "w-80 md1:w-96 rounded-lg bg-dark-700 shadow-white-glow"],
-  },
-  {
-    className: "absolute top-1 right-1",
-    boneOnly: true,
-  }
-);
+export const Settings = Modal.wrap(SettingsCore, { className: "w-96 rounded-lg" }, true);

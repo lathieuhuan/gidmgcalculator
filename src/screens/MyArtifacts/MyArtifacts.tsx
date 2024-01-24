@@ -143,7 +143,7 @@ export default function MyArtifacts() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <Modal active={modalType === "FITLER"} withDefaultStyle onClose={closeModal}>
+      <Modal active={modalType === "FITLER"} preset="large" onClose={closeModal}>
         <div className="h-full flex flex-col">
           <div className="pt-2 px-2">
             <ModalHeader>

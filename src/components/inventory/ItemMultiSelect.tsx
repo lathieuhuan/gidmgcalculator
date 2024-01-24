@@ -101,4 +101,4 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
   );
 };
 
-export const ItemMultiSelect = Modal.wrap(ItemMultiSelectCore, { withDefaultStyle: true });
+export const ItemMultiSelect = Modal.wrap(ItemMultiSelectCore, { preset: "large" });

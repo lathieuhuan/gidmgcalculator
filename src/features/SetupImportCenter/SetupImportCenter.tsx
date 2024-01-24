@@ -149,7 +149,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
       return <ConfirmModal active message="This setup is already in the Calculator." onlyConfirm onClose={endImport} />;
     default:
       return (
-        <Modal active className="small-modal" onClose={endImport}>
+        <Modal active preset="small" onClose={endImport}>
           <OverrideOptions
             pendingCode={pendingCode}
             importedChar={calcSetup?.char}

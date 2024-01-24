@@ -64,45 +64,37 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         />
       )}
 
-      <Modal
-        active={modalType === "WEAPON"}
-        className="p-4 flex overflow-auto bg-dark-900 rounded-lg shadow-white-glow"
-        onClose={closeModal}
-      >
-        <div className="relative">
-          <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
-            {weapon && <WeaponCard weapon={weapon} />}
-          </div>
-          <OwnerLabel item={weapon ?? undefined} />
+      <Modal active={modalType === "WEAPON"} className="p-4 bg-dark-900 rounded-lg" onClose={closeModal}>
+        <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
+          {weapon && <WeaponCard weapon={weapon} />}
+        </div>
+        <OwnerLabel item={weapon ?? undefined} />
+      </Modal>
+
+      <Modal active={modalType === "ARTIFACTS"} className="p-4 bg-dark-900 rounded-lg" onClose={closeModal}>
+        <div className="flex hide-scrollbar">
+          {artifacts?.map((artifact, i) => {
+            if (artifact) {
+              return (
+                <div key={i} className="px-1 shrink-0" style={{ width: "14.5rem" }}>
+                  <ArtifactCard artifact={artifact} space="mx-2" />
+                  <OwnerLabel item={artifact} />
+                </div>
+              );
+            }
+            return null;
+          })}
         </div>
       </Modal>
 
       <Modal
-        active={modalType === "ARTIFACTS"}
-        className="p-4 flex overflow-auto bg-dark-900 rounded-lg shadow-white-glow"
-        onClose={closeModal}
-      >
-        {artifacts?.map((artifact, i) => {
-          if (artifact) {
-            return (
-              <div key={i} className="px-1 shrink-0" style={{ width: "14.5rem" }}>
-                <ArtifactCard artifact={artifact} space="mx-2" />
-                <OwnerLabel item={artifact} />
-              </div>
-            );
-          }
-          return null;
-        })}
-      </Modal>
-
-      <Modal
         active={modalType === "STATS"}
-        className={[Modal.DEFAULT_HEIGHT_CLS, "hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"]}
+        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900 rounded-lg"]}
         onClose={closeModal}
       >
         <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
 
-        <div className="h-full flex divide-x-2 divide-dark-700">
+        <div className="h-full flex hide-scrollbar divide-x-2 divide-dark-700">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
             <p className="text-lg text-orange-500 font-bold">Final Attributes</p>
             <div className="mt-1 hide-scrollbar">
@@ -128,17 +120,19 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
       {calcResult && weapon && (
         <Modal
           active={modalType === "MODIFIERS"}
-          className={[Modal.DEFAULT_HEIGHT_CLS, "hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"]}
+          className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900 rounded-lg"]}
           onClose={closeModal}
         >
           <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
 
-          <ChosenSetupModifiers
-            calcResult={calcResult}
-            chosenSetup={chosenSetup}
-            setBonuses={setBonuses}
-            weapon={weapon}
-          />
+          <div className="w-full h-full hide-scrollbar">
+            <ChosenSetupModifiers
+              calcResult={calcResult}
+              chosenSetup={chosenSetup}
+              setBonuses={setBonuses}
+              weapon={weapon}
+            />
+          </div>
         </Modal>
       )}
     </>

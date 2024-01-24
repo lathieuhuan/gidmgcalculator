@@ -71,4 +71,4 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
   );
 };
 
-export const PickerArtifact = Modal.wrap(ArtifactPicker, { withDefaultStyle: true });
+export const PickerArtifact = Modal.wrap(ArtifactPicker, { preset: "large" });

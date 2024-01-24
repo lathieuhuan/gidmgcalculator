@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaChevronRight } from "react-icons/fa";
 
 import type { CharInfo, Target } from "@Src/types";
 import { $AppSettings } from "@Src/services";
@@ -69,10 +70,37 @@ export function OverrideOptions({
     addImportedSetup(ticked[0], ticked[1]);
   };
 
+  const renderRow = (object1: any, object2: any, ns: "resistance" | "common") => (type: string) => {
+    const value1 =
+      object1?.[type] === undefined
+        ? null
+        : Array.isArray(object1[type]) && object1[type].length > 1
+        ? `[${object1[type].join(", ")}]`
+        : `${object1[type]}`;
+
+    const value2 = object2?.[type] === undefined ? null : `${object2[type]}`;
+
+    return (
+      <Tr key={type}>
+        <Td className={"capitalize" + (value1 !== value2 ? " text-red-100" : "")}>{t(type, { ns })}</Td>
+        {type === "name" ? (
+          <Td colSpan={2} style={{ textAlign: "center" }}>
+            {comparedChar.name}
+          </Td>
+        ) : (
+          <>
+            <Td>{value1}</Td>
+            <Td>{value2}</Td>
+          </>
+        )}
+      </Tr>
+    );
+  };
+
   return (
     <div className="p-4 bg-dark-500 relative">
       <div className="py-2">
-        <p className="text-xl text-center">
+        <p className="text-sm text-center">
           We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
         </p>
         <div>
@@ -80,33 +108,37 @@ export function OverrideOptions({
             if (pendingCode >= 300 || pendingCode % 10 === i) {
               const object1: any = i ? { level: target?.level, ...target?.resistances } : comparedChar;
               const object2: any = i ? { level: importedTarget?.level, ...importedTarget?.resistances } : importedChar;
+              const expanded = expandedIndex === i;
 
               return (
                 <div key={i} className={expandedIndex ? "mt-4" : "mt-2"}>
-                  <div className="px-8 flex align-center">
-                    <label>
+                  <div className="px-4 flex justify-between items-center">
+                    <label className="mr-4 flex items-center">
                       <input
                         type="checkbox"
                         className="scale-150"
                         checked={ticked[i]}
                         onChange={onChangeTickedOption(i)}
                       />
-                      <span className="ml-4 text-lg">{title}</span>
+                      <span className="ml-2">{title}</span>
                     </label>
 
-                    <span
-                      className={
-                        "cursor-pointer ml-2 text-lg " +
-                        (expandedIndex === i ? "text-green-300 " : "text-light-400 hover:text-yellow-400 ")
-                      }
-                      onClick={onClickSeeDetails(i)}
-                    >
-                      See details
-                    </span>
+                    <div className="flex items-center">
+                      <FaChevronRight className={"text-sm" + (expanded ? " rotate-90" : "")} />
+                      <span
+                        className={
+                          "cursor-pointer ml-1 " +
+                          (expanded ? "text-green-300 " : "text-light-400 hover:text-yellow-400 ")
+                        }
+                        onClick={onClickSeeDetails(i)}
+                      >
+                        See details
+                      </span>
+                    </div>
                   </div>
 
                   <CollapseSpace active={expandedIndex === i}>
-                    <div className="flex justify-center">
+                    <div className="pt-2 flex justify-center">
                       <div style={{ maxWidth: "18rem" }}>
                         <Table>
                           <tbody>
@@ -116,39 +148,7 @@ export function OverrideOptions({
                               <Th className="text-yellow-400">New</Th>
                             </Tr>
 
-                            {Object.keys(object1).map((type, k) => {
-                              let comparedCols;
-
-                              if (type === "name") {
-                                comparedCols = (
-                                  <Td colSpan={2} style={{ textAlign: "center" }}>
-                                    {comparedChar.name}
-                                  </Td>
-                                );
-                              } else {
-                                comparedCols = (
-                                  <>
-                                    <Td>
-                                      {object1[type]?.length > 1 ? `[${object1[type].join(", ")}]` : object1[type]}
-                                    </Td>
-                                    <Td>{object2?.[type]}</Td>
-                                  </>
-                                );
-                              }
-
-                              return (
-                                <Tr key={k}>
-                                  <Td
-                                    className={
-                                      "capitalize" + (object1[type] !== object2?.[type] ? " text-red-100" : "")
-                                    }
-                                  >
-                                    {t(type, { ns: i ? "resistance" : "common" })}
-                                  </Td>
-                                  {comparedCols}
-                                </Tr>
-                              );
-                            })}
+                            {Object.keys(object1).map(renderRow(object1, object2, i ? "resistance" : "common"))}
                           </tbody>
                         </Table>
                       </div>

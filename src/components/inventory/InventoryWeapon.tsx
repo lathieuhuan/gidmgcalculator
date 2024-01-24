@@ -72,4 +72,4 @@ const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose
   );
 };
 
-export const InventoryWeapon = Modal.wrap(WeaponInventory, { withDefaultStyle: true });
+export const InventoryWeapon = Modal.wrap(WeaponInventory, { preset: "large" });

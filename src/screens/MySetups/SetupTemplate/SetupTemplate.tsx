@@ -261,7 +261,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         </div>
       </div>
 
-      <Modal active={teammateDetail.index !== -1} onClose={closeTeammateDetail}>
+      <Modal active={teammateDetail.index !== -1} className="rounded-lg" onClose={closeTeammateDetail}>
         {teammateInfo && (
           <TeammateDetail
             teammate={teammateInfo}

@@ -194,12 +194,7 @@ export function SetupSelect() {
         onChange={onClickSetupName}
       />
 
-      <Modal
-        active={modal.type === "SAVE_SETUP"}
-        className="rounded-lg"
-        style={{ width: "30rem" }}
-        onClose={closeModal}
-      >
+      <Modal active={modal.type === "SAVE_SETUP"} preset="small" onClose={closeModal}>
         <SaveSetup manageInfo={setupManageInfos[modal.setupIndex]} onClose={closeModal} />
       </Modal>
 

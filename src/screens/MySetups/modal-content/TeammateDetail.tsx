@@ -25,7 +25,7 @@ export const TeammateDetail = ({
   if (!data) return null;
 
   return (
-    <div className="w-75 rounded-lg bg-dark-700 shadow-white-glow">
+    <div className="w-75 bg-dark-700">
       <div className="flex">
         <div className="pl-4 pt-4 flex">
           <div className="w-18 h-18 shrink-0">

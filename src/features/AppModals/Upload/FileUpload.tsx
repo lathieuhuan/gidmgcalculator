@@ -58,7 +58,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   };
 
   return (
-    <div className="p-4 flex flex-col">
+    <div className="p-4 flex flex-col bg-dark-700">
       <p className="mt-4 px-8 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
       <input
         ref={inputRef}
@@ -80,13 +80,4 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   );
 };
 
-export const FileUpload = Modal.wrap(
-  FileUploadCore,
-  {
-    className: [Modal.SMALL_CLS, "bg-dark-700"],
-  },
-  {
-    className: "absolute top-1 right-1",
-    boneOnly: true,
-  }
-);
+export const FileUpload = Modal.wrap(FileUploadCore, { preset: "small" }, true);

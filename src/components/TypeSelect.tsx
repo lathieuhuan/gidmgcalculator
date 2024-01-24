@@ -13,7 +13,7 @@ interface TypeSelectProps extends ModalControl {
 }
 export function TypeSelect({ active, options, onSelect, onClose, footer }: TypeSelectProps) {
   return (
-    <Modal active={active} className="p-4 shadow-white-glow rounded-2xl bg-dark-500" onClose={onClose}>
+    <Modal active={active} className="p-4 bg-dark-500" preset="small" onClose={onClose}>
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
 
       <p className="mt-2 text-2xl text-center text-light-400 font-medium">Choose a Type</p>

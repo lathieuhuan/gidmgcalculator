@@ -74,4 +74,4 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
   );
 };
 
-export const PickerCharacter = Modal.wrap(CharacterPicker, { withDefaultStyle: true });
+export const PickerCharacter = Modal.wrap(CharacterPicker, { preset: "large" });

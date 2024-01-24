@@ -39,6 +39,7 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
       moreButtons={[
         {
           text: "Copy",
+          variant: "positive",
           autoFocus: true,
           onClick: () => {
             navigator.clipboard.writeText(encodedData).then(
@@ -62,4 +63,4 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
   );
 };
 
-export const SetupExporter = Modal.wrap(SetupExporterCore);
+export const SetupExporter = Modal.wrap(SetupExporterCore, { preset: "small" });

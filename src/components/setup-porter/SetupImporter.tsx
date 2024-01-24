@@ -35,6 +35,7 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
       moreButtons={[
         {
           text: "Paste",
+          variant: "positive",
           autoFocus: true,
           onClick: () => {
             navigator.clipboard.readText().then(setCode, () => setError("NOT_SUPPORT"));
@@ -63,4 +64,4 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
   );
 };
 
-export const SetupImporter = Modal.wrap(SetupImporterCore);
+export const SetupImporter = Modal.wrap(SetupImporterCore, { preset: "small" });

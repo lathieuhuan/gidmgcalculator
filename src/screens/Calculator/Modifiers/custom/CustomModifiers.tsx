@@ -149,7 +149,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
 
       <Modal
         active={modalOn}
-        className="p-4 rounded-lg flex flex-col bg-dark-900 shadow-white-glow"
+        className="p-4 rounded-lg flex flex-col bg-dark-900"
         style={{ minWidth: isBuffs ? 302 : "auto" }}
         onClose={closeModal}
       >

@@ -1,11 +1,18 @@
 import clsx, { ClassValue } from "clsx";
 import ReactDOM from "react-dom";
 import { CSSProperties, ReactNode, useEffect, useState } from "react";
-import { CloseButton, type CloseButtonProps } from "../button";
+import { CloseButton } from "../button";
 
 import "./styles.scss";
 
-const DEFAULT_HEIGHT_CLS = "large-modal-height";
+const LARGE_HEIGHT_CLS = "large-modal-height";
+
+type ModalPreset = "small" | "large" | "custom";
+
+const presetCls: Partial<Record<ModalPreset, ClassValue>> = {
+  small: "small-modal rounded-lg",
+  large: [LARGE_HEIGHT_CLS, "default-modal-content-wrap rounded-lg bg-dark-700"],
+};
 
 export interface ModalControl {
   active?: boolean;
@@ -24,17 +31,18 @@ type ModalState = {
 };
 
 interface ModalProps extends ModalControl {
+  /** Default to 'custom' */
+  preset?: ModalPreset;
   className?: ClassValue;
   style?: CSSProperties;
-  withDefaultStyle?: boolean;
   children: ReactNode;
 }
 const Modal = ({
   active,
   closable = true,
   closeOnMaskClick = true,
-  withDefaultStyle,
   className,
+  preset = "custom",
   style,
   state: stateProp,
   children,
@@ -107,12 +115,9 @@ const Modal = ({
 
           <div
             className={clsx(
-              "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transition duration-150 ease-linear",
+              "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transition duration-150 ease-linear shadow-white-glow overflow-hidden",
               state.movingDir === "OUT" ? "opacity-100 scale-100" : "opacity-0 scale-95",
-              withDefaultStyle && [
-                DEFAULT_HEIGHT_CLS,
-                "shadow-white-glow rounded-lg bg-dark-700 default-modal-content-wrap",
-              ],
+              presetCls[preset],
               className
             )}
             style={{
@@ -130,21 +135,20 @@ const Modal = ({
 
 function withModal<T>(
   Component: (props: T) => JSX.Element | null,
-  modalProps?: Partial<Omit<ModalProps, "active" | "onClose">>,
-  closeButtonProps?: Partial<Omit<CloseButtonProps, "onClick">>
+  modalProps?: Partial<Pick<ModalProps, "preset" | "className">>,
+  withCloseButton?: boolean
 ) {
   return (props: ModalControl & T): JSX.Element => {
     return (
       <Modal active={props.active} onClose={props.onClose} closeOnMaskClick={props.closeOnMaskClick} {...modalProps}>
-        {closeButtonProps ? <CloseButton {...closeButtonProps} onClick={props.onClose} /> : null}
+        {withCloseButton ? <CloseButton className="absolute top-1 right-1" boneOnly onClick={props.onClose} /> : null}
         <Component {...props} />
       </Modal>
     );
   };
 }
 
-Modal.DEFAULT_HEIGHT_CLS = DEFAULT_HEIGHT_CLS;
-Modal.SMALL_CLS = "small-modal rounded-lg shadow-white-glow overflow-hidden";
+Modal.LARGE_HEIGHT_CLS = LARGE_HEIGHT_CLS;
 Modal.wrap = withModal;
 
 export { Modal };

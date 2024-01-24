@@ -143,4 +143,4 @@ const ArtifactInventory = ({
   );
 };
 
-export const InventoryArtifact = Modal.wrap(ArtifactInventory, { withDefaultStyle: true });
+export const InventoryArtifact = Modal.wrap(ArtifactInventory, { preset: "large" });

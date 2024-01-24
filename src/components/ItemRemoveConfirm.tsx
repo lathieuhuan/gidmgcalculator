@@ -8,7 +8,7 @@ interface ItemRemoveCheckProps {
   onConfirm: () => void;
   onClose: () => void;
 }
-const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => {
+const ItemRemoveConfirmCore = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => {
   const itemName = isUserWeapon(item)
     ? $AppData.getWeaponData(item.code).name
     : `${$AppData.getArtifactSetData(item.code)?.name} (${item.type})`;
@@ -32,4 +32,4 @@ const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => 
   );
 };
 
-export const ItemRemoveConfirm = Modal.wrap(ItemRemoveCheck, { className: Modal.SMALL_CLS });
+export const ItemRemoveConfirm = Modal.wrap(ItemRemoveConfirmCore, { preset: "small" });

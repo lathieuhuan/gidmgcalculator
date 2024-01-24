@@ -35,7 +35,7 @@ const Line = ({ char, marker, visiblePlot, ...rest }: LineProps) => {
         <div className="w-8 h-8 mr-2 flex-center text-light-400 pointer-events-none">{marker}</div>
 
         <p className="pointer-events-none text-light-400">
-          <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv. {char.level})
+          <span className={`text-rarity-${char.rarity}`}>{char.name}</span> (Lv. {char.level})
         </p>
       </div>
     </div>
@@ -171,7 +171,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
   ];
 
   return (
-    <div className="px-2 py-4 rounded-lg bg-dark-900">
+    <div className="px-2 py-4 bg-dark-900">
       <Button
         className="absolute top-1 right-1 text-xl hover:text-red-600"
         boneOnly
@@ -179,7 +179,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
         onClick={onClose}
       />
 
-      <p className="text-1.5xl text-orange-500 text-center">Sort characters</p>
+      <p className="text-1.5xl text-orange-500 font-bold text-center">Sort characters</p>
 
       <div className="mt-1 h-8 flex justify-between">
         <div className="px-4 flex group relative cursor-default">
@@ -265,4 +265,4 @@ function SortInner({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default Modal.wrap(SortInner, { className: Modal.SMALL_CLS });
+export default Modal.wrap(SortInner, { preset: "small" });

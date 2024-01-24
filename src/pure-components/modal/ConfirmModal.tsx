@@ -76,4 +76,4 @@ export const ConfirmModalBody = ({
   );
 };
 
-export const ConfirmModal = Modal.wrap(ConfirmModalBody, { className: Modal.SMALL_CLS });
+export const ConfirmModal = Modal.wrap(ConfirmModalBody, { preset: "small" });

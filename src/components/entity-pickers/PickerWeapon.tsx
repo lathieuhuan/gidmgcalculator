@@ -35,4 +35,4 @@ function WeaponPicker({ weaponType, needMassAdd, onPickWeapon, onClose }: Weapon
   );
 }
 
-export const PickerWeapon = Modal.wrap(WeaponPicker, { withDefaultStyle: true });
+export const PickerWeapon = Modal.wrap(WeaponPicker, { preset: "large" });

@@ -32,8 +32,8 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
   };
 
   return (
-    <div className="h-full px-8 py-6 rounded-lg flex flex-col bg-dark-900 shadow-white-glow">
-      <p className="mb-2 mx-auto text-xl text-orange-500 font-bold">{existed ? "Update OLD" : "Save NEW"} Setup</p>
+    <div className="h-full px-8 py-6 flex flex-col bg-dark-900">
+      <p className="mb-2 mx-auto text-xl text-orange-500 font-bold">{existed ? "Update Old" : "Save New"} Setup</p>
       <Input
         className="mt-1 mb-8 px-4 pt-4 pb-2 text-1.5xl text-center font-semibold"
         autoFocus
