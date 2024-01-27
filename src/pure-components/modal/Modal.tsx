@@ -1,26 +1,22 @@
 import clsx, { ClassValue } from "clsx";
 import ReactDOM from "react-dom";
 import { CSSProperties, ReactNode, useEffect, useState } from "react";
-import { CloseButton } from "../button";
+import { FaTimes } from "react-icons/fa";
+import { Button, ButtonGroup, ButtonGroupItem, ButtonGroupProps } from "../button";
 
 import "./styles.scss";
 
-const LARGE_HEIGHT_CLS = "large-modal-height";
-
 type ModalPreset = "small" | "large" | "custom";
 
+const LARGE_HEIGHT_CLS = "large-modal-height";
+
 const presetCls: Partial<Record<ModalPreset, ClassValue>> = {
-  small: "small-modal rounded-lg",
-  large: [LARGE_HEIGHT_CLS, "default-modal-content-wrap rounded-lg bg-dark-700"],
+  small: "small-modal",
+  large: [LARGE_HEIGHT_CLS, "large-modal bg-dark-700"],
 };
 
 export interface ModalControl {
   active?: boolean;
-  /** Default to true */
-  closable?: boolean;
-  /** Default to true */
-  closeOnMaskClick?: boolean;
-  state?: "open" | "close" | "hidden";
   onClose: () => void;
 }
 
@@ -30,14 +26,19 @@ type ModalState = {
   movingDir: "OUT" | "IN";
 };
 
-interface ModalProps extends ModalControl {
+interface ModalCoreProps extends ModalControl {
+  state?: "open" | "close" | "hidden";
   /** Default to 'custom' */
   preset?: ModalPreset;
+  /** Default to true */
+  closable?: boolean;
+  /** Default to true */
+  closeOnMaskClick?: boolean;
   className?: ClassValue;
   style?: CSSProperties;
   children: ReactNode;
 }
-const Modal = ({
+const ModalCore = ({
   active,
   closable = true,
   closeOnMaskClick = true,
@@ -107,7 +108,7 @@ const Modal = ({
         <div className={"fixed full-stretch z-50" + (state.visible ? "" : " invisible")}>
           <div
             className={clsx(
-              "w-full h-full bg-black transition duration-150 ease-linear",
+              "modal-transition w-full h-full bg-black",
               state.movingDir === "OUT" ? "opacity-60" : "opacity-20"
             )}
             onClick={closeOnMaskClick ? closeModal : undefined}
@@ -115,7 +116,7 @@ const Modal = ({
 
           <div
             className={clsx(
-              "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transition duration-150 ease-linear shadow-white-glow overflow-hidden",
+              "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 modal-transition overflow-hidden",
               state.movingDir === "OUT" ? "opacity-100 scale-100" : "opacity-0 scale-95",
               presetCls[preset],
               className
@@ -133,15 +134,93 @@ const Modal = ({
     : null;
 };
 
+export interface ModalProps extends ModalCoreProps {
+  title?: string;
+  /** Default to true */
+  withCloseButton?: boolean;
+  bodyCls?: string;
+}
+const Modal = ({
+  className,
+  title,
+  withCloseButton = true,
+  closable = true,
+  bodyCls,
+  children,
+  ...coreProps
+}: ModalProps) => {
+  return (
+    <ModalCore
+      {...coreProps}
+      className={clsx(className, "rounded-lg shadow-white-glow", title && "flex flex-col")}
+      closable={closable}
+    >
+      {title ? (
+        <>
+          <div className="mb-2 text-1.5xl text-orange-500 font-medium">{title}</div>
+          <div className={clsx("grow", bodyCls)}>{children}</div>
+        </>
+      ) : (
+        children
+      )}
+
+      {withCloseButton ? (
+        <Button
+          variant="default"
+          size="custom"
+          icon={<FaTimes className="text-lg" />}
+          boneOnly
+          disabled={!closable}
+          className="absolute top-2 right-2 p-1.5"
+          onClick={coreProps.onClose}
+        />
+      ) : null}
+    </ModalCore>
+  );
+};
+
+interface ModalActionsProps extends Pick<ButtonGroupProps, "className" | "justify"> {
+  disabledConfirm?: boolean;
+  focusConfirm?: boolean;
+  /** Default to 'Cancel' */
+  cancelText?: string;
+  /** Default to 'Confirm' */
+  confirmText?: string;
+  cancelButtonProps?: Omit<ButtonGroupItem, "text" | "onClick">;
+  confirmButtonProps?: Omit<ButtonGroupItem, "text" | "onClick">;
+  moreActions?: ButtonGroupItem[];
+  onCancel?: () => void;
+  onConfirm?: () => void;
+}
+export const ModalActions = (props: ModalActionsProps) => {
+  const { justify = "end", cancelText = "Cancel", confirmText = "Confirm" } = props;
+  return (
+    <ButtonGroup
+      className={clsx("mt-4", props.className)}
+      justify={justify}
+      buttons={[
+        { text: cancelText, onClick: props.onCancel, ...props.cancelButtonProps },
+        ...(props.moreActions ?? []),
+        {
+          text: confirmText,
+          variant: "positive",
+          disabled: props.disabledConfirm,
+          autoFocus: props.focusConfirm,
+          onClick: props.onConfirm,
+          ...props.confirmButtonProps,
+        },
+      ]}
+    />
+  );
+};
+
 function withModal<T>(
   Component: (props: T) => JSX.Element | null,
-  modalProps?: Partial<Pick<ModalProps, "preset" | "className">>,
-  withCloseButton?: boolean
+  modalProps?: Partial<Pick<ModalProps, "preset" | "withCloseButton" | "className">>
 ) {
-  return (props: ModalControl & T): JSX.Element => {
+  return (props: Pick<ModalProps, "active" | "closable" | "closeOnMaskClick" | "onClose"> & T): JSX.Element => {
     return (
-      <Modal active={props.active} onClose={props.onClose} closeOnMaskClick={props.closeOnMaskClick} {...modalProps}>
-        {withCloseButton ? <CloseButton className="absolute top-1 right-1" boneOnly onClick={props.onClose} /> : null}
+      <Modal active={props.active} onClose={props.onClose} {...modalProps}>
         <Component {...props} />
       </Modal>
     );
@@ -149,6 +228,8 @@ function withModal<T>(
 }
 
 Modal.LARGE_HEIGHT_CLS = LARGE_HEIGHT_CLS;
+Modal.Core = ModalCore;
+Modal.Actions = ModalActions;
 Modal.wrap = withModal;
 
 export { Modal };

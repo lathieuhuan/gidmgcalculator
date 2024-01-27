@@ -13,7 +13,7 @@ import { updateUI } from "@Store/uiSlice";
 import { removeSetup } from "@Store/userDatabaseSlice";
 
 // Component
-import { CloseButton, ConfirmModal, Modal } from "@Src/pure-components";
+import { ConfirmModal, Modal } from "@Src/pure-components";
 import {
   ArtifactCard,
   AttributeTable,
@@ -64,14 +64,19 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         />
       )}
 
-      <Modal active={modalType === "WEAPON"} className="p-4 bg-dark-900 rounded-lg" onClose={closeModal}>
+      <Modal active={modalType === "WEAPON"} className="p-4 bg-dark-900" withCloseButton={false} onClose={closeModal}>
         <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
           {weapon && <WeaponCard weapon={weapon} />}
         </div>
         <OwnerLabel item={weapon ?? undefined} />
       </Modal>
 
-      <Modal active={modalType === "ARTIFACTS"} className="p-4 bg-dark-900 rounded-lg" onClose={closeModal}>
+      <Modal
+        active={modalType === "ARTIFACTS"}
+        className="p-4 bg-dark-900"
+        withCloseButton={false}
+        onClose={closeModal}
+      >
         <div className="flex hide-scrollbar">
           {artifacts?.map((artifact, i) => {
             if (artifact) {
@@ -87,13 +92,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         </div>
       </Modal>
 
-      <Modal
-        active={modalType === "STATS"}
-        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900 rounded-lg"]}
-        onClose={closeModal}
-      >
-        <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
-
+      <Modal active={modalType === "STATS"} className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]} onClose={closeModal}>
         <div className="h-full flex hide-scrollbar divide-x-2 divide-dark-700">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
             <p className="text-lg text-orange-500 font-bold">Final Attributes</p>
@@ -120,11 +119,9 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
       {calcResult && weapon && (
         <Modal
           active={modalType === "MODIFIERS"}
-          className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900 rounded-lg"]}
+          className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
           onClose={closeModal}
         >
-          <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
-
           <div className="w-full h-full hide-scrollbar">
             <ChosenSetupModifiers
               calcResult={calcResult}

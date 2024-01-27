@@ -71,7 +71,7 @@ export const Menu = () => {
 
       <Modal
         active={resultsEnlarged}
-        className={[Modal.LARGE_HEIGHT_CLS, "p-4 pt-2 rounded-lg bg-dark-500 custom-scrollbar"]}
+        className={[Modal.LARGE_HEIGHT_CLS, "p-4 pt-2 bg-dark-500"]}
         onClose={() => setResultsEnlarged(false)}
       >
         <ResultsDisplay />

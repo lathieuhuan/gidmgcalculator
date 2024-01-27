@@ -10,7 +10,7 @@ import { useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { ButtonGroup, Table, CollapseSpace } from "@Src/pure-components";
+import { Table, CollapseSpace, Modal } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 
@@ -46,7 +46,7 @@ export function OverrideOptions({
     cons: [char.cons],
   };
 
-  if ($AppSettings.get().charInfoIsSeparated) {
+  if ($AppSettings.get("charInfoIsSeparated")) {
     comparedChar.level = Object.values(setupsById).map(({ char }) => char.level);
     comparedChar.NAs = Object.values(setupsById).map(({ char }) => char.NAs);
     comparedChar.ES = Object.values(setupsById).map(({ char }) => char.ES);
@@ -98,9 +98,9 @@ export function OverrideOptions({
   };
 
   return (
-    <div className="p-4 bg-dark-500 relative">
-      <div className="py-2">
-        <p className="text-sm text-center">
+    <div>
+      <div className="pb-2">
+        <p className="text-base">
           We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
         </p>
         <div>
@@ -124,10 +124,10 @@ export function OverrideOptions({
                     </label>
 
                     <div className="flex items-center">
-                      <FaChevronRight className={"text-sm" + (expanded ? " rotate-90" : "")} />
+                      <FaChevronRight className={"text-xs" + (expanded ? " rotate-90" : "")} />
                       <span
                         className={
-                          "cursor-pointer ml-1 " +
+                          "ml-1 text-sm cursor-pointer " +
                           (expanded ? "text-green-300 " : "text-light-400 hover:text-yellow-400 ")
                         }
                         onClick={onClickSeeDetails(i)}
@@ -162,11 +162,8 @@ export function OverrideOptions({
           })}
         </div>
       </div>
-      <ButtonGroup.Confirm
-        className={expandedIndex === pendingCode % 10 ? "mt-2" : "mt-4"}
-        onCancel={onCancel}
-        onConfirm={onConfirm}
-      />
+
+      <Modal.Actions onCancel={onCancel} onConfirm={onConfirm} />
     </div>
   );
 }

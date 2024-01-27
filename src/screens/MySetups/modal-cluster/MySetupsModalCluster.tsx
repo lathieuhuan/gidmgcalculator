@@ -51,7 +51,7 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
       <Modal
         active={modalType === "FIRST_COMBINE"}
-        className={[Modal.LARGE_HEIGHT_CLS, "rounded-lg bg-dark-700"]}
+        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-700"]}
         style={{
           minWidth: 300,
         }}
@@ -62,7 +62,7 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
       <Modal
         active={modalType === "COMBINE_MORE"}
-        className={[Modal.LARGE_HEIGHT_CLS, "rounded-lg bg-dark-700"]}
+        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-700"]}
         style={{
           minWidth: 300,
         }}

@@ -20,7 +20,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { ButtonGroup, Input } from "@Src/pure-components";
+import { ButtonGroup, Input, Modal } from "@Src/pure-components";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
 
@@ -136,7 +136,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
         })}
       </div>
 
-      <div className="mt-4 mx-auto flex-center flex-col md1:flex-row md1:space-x-3">
+      <div className="py-4 mx-auto flex-center flex-col md1:flex-row md1:space-x-3">
         <div className="mt-4 flex items-center relative">
           <FaChevronDown className="absolute -z-10" />
           <select
@@ -194,7 +194,8 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
           <span className="ml-2">{sign}</span>
         </div>
       </div>
-      <ButtonGroup.Confirm className="mt-8" onCancel={onClose} onConfirm={onConfirm} />
+
+      <Modal.Actions onCancel={onClose} onConfirm={onConfirm} />
     </>
   );
 };

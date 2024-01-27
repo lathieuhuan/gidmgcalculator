@@ -4,19 +4,16 @@ import type { StringRecord } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { CloseButton, Modal, type ModalControl } from "@Src/pure-components";
+import { Modal, type ModalControl } from "@Src/pure-components";
 
 interface TypeSelectProps extends ModalControl {
   options: StringRecord;
   footer?: ReactNode;
   onSelect: (key: string) => void;
 }
-export function TypeSelect({ active, options, onSelect, onClose, footer }: TypeSelectProps) {
+export function TypeSelect({ active, options, footer, onSelect, onClose }: TypeSelectProps) {
   return (
-    <Modal active={active} className="p-4 bg-dark-500" preset="small" onClose={onClose}>
-      <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
-
-      <p className="mt-2 text-2xl text-center text-light-400 font-medium">Choose a Type</p>
+    <Modal active={active} className="p-4 bg-dark-700" preset="small" title="Choose a Type" onClose={onClose}>
       <div className="mt-2 mb-1 flex">
         {Object.entries(options).map(([title, src], i) => (
           <button

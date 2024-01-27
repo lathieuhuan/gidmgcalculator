@@ -12,7 +12,7 @@ import { sortCharacters } from "@Store/userDatabaseSlice";
 import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ButtonGroup, Popover, SharedSpace, Modal, Button } from "@Src/pure-components";
+import { ButtonGroup, Popover, SharedSpace, Modal } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
@@ -172,16 +172,9 @@ function SortInner({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="px-2 py-4 bg-dark-900">
-      <Button
-        className="absolute top-1 right-1 text-xl hover:text-red-600"
-        boneOnly
-        icon={<FaTimes />}
-        onClick={onClose}
-      />
-
       <p className="text-1.5xl text-orange-500 font-bold text-center">Sort characters</p>
 
-      <div className="mt-1 h-8 flex justify-between">
+      <div className="mt-2 h-8 flex justify-between">
         <div className="px-4 flex group relative cursor-default">
           <p className="h-full flex items-center space-x-2">
             <span>Quick sort</span>

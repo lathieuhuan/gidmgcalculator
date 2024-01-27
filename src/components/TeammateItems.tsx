@@ -1,11 +1,11 @@
-import { FaTimes } from "react-icons/fa";
+import clsx from "clsx";
 
 import type { Teammate } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 import { $AppData } from "@Src/services";
 
 // Component
-import { Button } from "@Src/pure-components";
+import { CloseButton } from "@Src/pure-components";
 
 interface TeammateItemsProps {
   className?: string;
@@ -72,7 +72,7 @@ export const TeammateItems = ({
         </div>
       )}
 
-      <div className="mt-2 flex space-x-2">
+      <div className="mt-2 flex items-start space-x-2">
         <button className="w-14 h-14 shrink-0" disabled={!mutable} onClick={onClickArtifact}>
           {artifactSetIcon ? (
             <img className="bg-dark-500 rounded" src={getImgSrc(artifactSetIcon)} alt="artifact" draggable={false} />
@@ -81,17 +81,16 @@ export const TeammateItems = ({
           )}
         </button>
 
-        <p className={"mt-1 grow font-medium truncate " + (artifactSetName ? "text-light-400 text-lg" : "text-light-800")}>
+        <p
+          className={clsx(
+            "mt-1 grow font-medium truncate",
+            artifactSetName ? "text-light-400 text-lg" : "text-light-800"
+          )}
+        >
           {artifactSetName || "No artifact buff / debuff"}
         </p>
-        {artifactSetName && mutable && (
-          <Button
-            className="mt-1 self-start hover:text-red-400"
-            boneOnly
-            icon={<FaTimes />}
-            onClick={onClickRemoveArtifact}
-          />
-        )}
+
+        {artifactSetName && mutable ? <CloseButton boneOnly onClick={onClickRemoveArtifact} /> : null}
       </div>
     </div>
   );

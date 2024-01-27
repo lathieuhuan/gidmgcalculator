@@ -11,10 +11,10 @@ interface PersistControlProviderProps {
   children: (config: ReturnType<typeof setupStore>) => React.ReactElement;
 }
 export const PersistControlProvider = (props: PersistControlProviderProps) => {
-  const [config, setConfig] = useState(setupStore({ persistingUserData: $AppSettings.get().persistingUserData }));
+  const [config, setConfig] = useState(setupStore({ persistingUserData: $AppSettings.get("persistingUserData") }));
 
   const changeConfig: ChangeConfigFn = useCallback(({ persistingUserData }) => {
-    if (persistingUserData !== $AppSettings.get().persistingUserData) {
+    if (persistingUserData !== $AppSettings.get("persistingUserData")) {
       $AppSettings.set({ persistingUserData });
 
       setConfig(setupStore({ persistingUserData }));

@@ -15,7 +15,7 @@ import { importSetup } from "@Store/calculatorSlice";
 import { checkBeforeInitNewSession } from "@Store/thunks";
 
 // Component
-import { Modal, ConfirmModal, LoadingIcon } from "@Src/pure-components";
+import { Modal, ConfirmModal, LoadingMask } from "@Src/pure-components";
 import { OverrideOptions } from "./OverwriteOptions";
 
 type SetupImportCenterProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
@@ -124,11 +124,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
 
   switch (pendingCode) {
     case 0:
-      return (
-        <Modal active closeOnMaskClick={false} onClose={() => {}}>
-          <LoadingIcon size="large" />
-        </Modal>
-      );
+      return <LoadingMask active />;
     case 1:
     case 2:
       return (
@@ -149,7 +145,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
       return <ConfirmModal active message="This setup is already in the Calculator." onlyConfirm onClose={endImport} />;
     default:
       return (
-        <Modal active preset="small" onClose={endImport}>
+        <Modal active preset="small" className="p-4 bg-dark-500" title="Overwrite Configuration" onClose={endImport}>
           <OverrideOptions
             pendingCode={pendingCode}
             importedChar={calcSetup?.char}

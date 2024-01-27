@@ -21,7 +21,13 @@ export const Tracker = () => {
   };
 
   return (
-    <Modal state={trackerState} className="p-4 flex flex-col" preset="large" onClose={() => setTrackerState("close")}>
+    <Modal
+      state={trackerState}
+      className="p-4 flex flex-col"
+      preset="large"
+      withCloseButton={false}
+      onClose={() => setTrackerState("close")}
+    >
       <div className="absolute top-1 right-1 flex">
         <Button
           className="hover:text-yellow-400"

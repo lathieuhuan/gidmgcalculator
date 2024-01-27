@@ -112,7 +112,7 @@ export default function SectionArtifacts() {
                 ID: Date.now(),
                 ...item,
               },
-              shouldKeepStats: $AppSettings.get().doKeepArtStatsOnSwitch,
+              shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
             })
           );
           setActiveTabIndex(artifactPicker.slot);

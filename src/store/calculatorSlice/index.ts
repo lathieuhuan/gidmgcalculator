@@ -111,8 +111,9 @@ export const calculatorSlice = createSlice({
       const { importInfo, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
       const { setupsById } = state;
+      const { charInfoIsSeparated } = $AppSettings.get();
 
-      if (shouldOverwriteChar && $AppSettings.get().charInfoIsSeparated) {
+      if (shouldOverwriteChar && charInfoIsSeparated) {
         for (const setup of Object.values(setupsById)) {
           setup.char = calcSetup.char;
         }

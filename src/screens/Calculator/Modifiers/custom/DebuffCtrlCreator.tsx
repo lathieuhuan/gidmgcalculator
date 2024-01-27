@@ -9,7 +9,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { ButtonGroup, Input } from "@Src/pure-components";
+import { ButtonGroup, Input, Modal } from "@Src/pure-components";
 
 interface DebuffCtrlCreatorProps {
   onClose: () => void;
@@ -41,7 +41,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
 
   return (
     <>
-      <div className="mx-auto mt-4 px-2 flex items-center">
+      <div className="mx-auto py-4 px-2 flex items-center">
         <select
           className="pr-2 text-light-400 text-right text-last-right"
           value={config.type}
@@ -71,7 +71,8 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
         />
         <span className="ml-2">%</span>
       </div>
-      <ButtonGroup.Confirm className="mt-8" onCancel={onClose} onConfirm={onConfirm} />
+
+      <Modal.Actions onCancel={onClose} onConfirm={onConfirm} />
     </>
   );
 }

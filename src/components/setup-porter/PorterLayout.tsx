@@ -1,5 +1,5 @@
 import type { TextareaHTMLAttributes } from "react";
-import { CloseButton, ButtonGroup, type ButtonGroupItem } from "@Src/pure-components";
+import { ButtonGroup, type ButtonGroupItem } from "@Src/pure-components";
 
 interface PorterLayoutProps {
   heading: string;
@@ -14,8 +14,6 @@ interface PorterLayoutProps {
 export const PorterLayout = ({ heading, message, textareaAttrs, moreButtons, onClose }: PorterLayoutProps) => {
   return (
     <div className="px-6 pt-4 pb-6 bg-dark-900 relative">
-      <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
-
       <p className="mb-2 px-2 text-xl text-orange-500 text-center font-bold">{heading}</p>
       <textarea className="w-full p-2 text-black rounded resize-none" rows={15} {...textareaAttrs} />
 

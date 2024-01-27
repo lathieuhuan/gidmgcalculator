@@ -12,7 +12,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { Button, CloseButton, Input } from "@Src/pure-components";
+import { Button, Input } from "@Src/pure-components";
 import { ComboBox } from "./ComboBox";
 
 interface TargetConfigProps {
@@ -57,7 +57,6 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
 
   return (
     <div className="pl-5 pr-2 pt-4 pb-2 h-full bg-dark-900 flex flex-col">
-      <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
       <p className="text-1.5xl text-orange-500 font-bold" onDoubleClick={() => console.log(target)}>
         Target Config
       </p>

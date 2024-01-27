@@ -1,32 +1,38 @@
-.default-modal-content-wrap {
+.modal-transition {
+  transition-property: opacity, transform;
+  transition-timing-function: linear;
+  transition-duration: 150ms;
+}
+
+.small-modal {
+  width: 22rem;
+}
+.large-modal {
   width: 100%;
 }
 .large-modal-height {
   height: 90vh;
   max-height: 760px;
 }
-.small-modal {
-  width: 22rem;
-}
 
 // #to-check: width is good?
 @media (min-width: 440px) {
-  .default-modal-content-wrap {
+  .large-modal {
     width: 402px;
   }
 }
 @media (min-width: 610px) {
-  .default-modal-content-wrap {
+  .large-modal {
     width: 583.05px;
   }
 }
 @media (min-width: 769px) {
-  .default-modal-content-wrap {
+  .large-modal {
     width: 720px;
   }
 }
 @media (min-width: 1025px) {
-  .default-modal-content-wrap {
+  .large-modal {
     width: 944px;
   }
   .large-modal-height {

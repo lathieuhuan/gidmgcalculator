@@ -149,8 +149,10 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
 
       <Modal
         active={modalOn}
-        className="p-4 rounded-lg flex flex-col bg-dark-900"
+        title={`Add custom ${isBuffs ? "buffs" : "debuffs"}`}
+        className="p-4 flex flex-col bg-dark-900"
         style={{ minWidth: isBuffs ? 302 : "auto" }}
+        withCloseButton={false}
         onClose={closeModal}
       >
         {isBuffs ? <BuffCtrlCreator onClose={closeModal} /> : <DebuffCtrlCreator onClose={closeModal} />}

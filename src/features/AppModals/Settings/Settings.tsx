@@ -24,7 +24,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   const changeAppStoreConfig = useContext(PersistControlContext);
 
   const onConfirmNewSettings = () => {
-    if ($AppSettings.get().charInfoIsSeparated && !tempSettings.charInfoIsSeparated) {
+    if ($AppSettings.get("charInfoIsSeparated") && !tempSettings.charInfoIsSeparated) {
       dispatch(
         applySettings({
           doMergeCharInfo: true,
@@ -151,4 +151,4 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   );
 };
 
-export const Settings = Modal.wrap(SettingsCore, { className: "w-96 rounded-lg" }, true);
+export const Settings = Modal.wrap(SettingsCore, { className: "w-96" });

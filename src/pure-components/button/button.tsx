@@ -90,14 +90,6 @@ export interface CloseButtonProps
   extends Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled"> {
   //
 }
-export const CloseButton = ({ boneOnly, className, ...rest }: CloseButtonProps) => {
-  return (
-    <Button
-      variant={boneOnly ? "default" : "negative"}
-      icon={<FaTimes />}
-      boneOnly={boneOnly}
-      className={clsx(className, boneOnly && "hover:text-red-600")}
-      {...rest}
-    />
-  );
+export const CloseButton = ({ boneOnly, ...rest }: CloseButtonProps) => {
+  return <Button variant={boneOnly ? "default" : "negative"} icon={<FaTimes />} boneOnly={boneOnly} {...rest} />;
 };

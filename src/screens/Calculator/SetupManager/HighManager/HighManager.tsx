@@ -17,7 +17,7 @@ import { updateSetups } from "@Store/calculatorSlice";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { Button, Popover, CollapseAndMount } from "@Src/pure-components";
+import { Button, Popover, CollapseAndMount, CloseButton } from "@Src/pure-components";
 import { SetupImporter } from "@Src/components";
 import { SetupControl } from "./SetupControl";
 
@@ -147,12 +147,11 @@ function HighManagerCore() {
 
   return (
     <div className="p-4 h-full flex flex-col">
-      <button
-        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-red-400"
+      <CloseButton
+        className="absolute top-2 right-2"
+        boneOnly
         onClick={() => dispatch(updateUI({ highManagerActive: false }))}
-      >
-        <FaTimes />
-      </button>
+      />
 
       <p className="my-2 text-1.5xl text-center text-orange-500 font-bold">Setups Management</p>
 
