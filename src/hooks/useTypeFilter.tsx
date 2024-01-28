@@ -30,7 +30,7 @@ export const useTypeFilter = (
   };
 
   const renderTypeFilter = (className?: ClassValue) => (
-    <div className={clsx("mx-1 flex items-center gap-4", className)}>
+    <div className={clsx("flex items-center gap-4", className)}>
       {icons.map(([type, src], i) => {
         const index = filteredTypes.indexOf(type);
         const active = index !== -1;

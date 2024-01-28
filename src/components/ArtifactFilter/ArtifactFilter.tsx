@@ -1,4 +1,5 @@
 import clsx, { ClassValue } from "clsx";
+import { BiReset } from "react-icons/bi";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
 import type { ArtifactFilterCondition } from "./types";
 
@@ -9,7 +10,7 @@ import { useTabs } from "@Src/pure-hooks";
 import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
 
 import { filterArtifacts } from "./filterArtifacts";
-import { Modal } from "@Src/pure-components";
+import { Button, Modal } from "@Src/pure-components";
 
 export interface ArtifactFilterProps {
   artifactType?: ArtifactType;
@@ -34,7 +35,7 @@ const ArtifactFilter = ({
     configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
   });
 
-  const { filteredTypes, renderTypeFilter } = useTypeFilter("artifact", initialCondition.types);
+  const { filteredTypes, operate, renderTypeFilter } = useTypeFilter("artifact", initialCondition.types);
   const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(
     initialCondition.stats,
     artifactType
@@ -60,23 +61,41 @@ const ArtifactFilter = ({
   const isSmallScreen = ["xs", "sm"].includes(screenSize);
 
   const wrapperCls = (isHidden: boolean): ClassValue => {
-    return isSmallScreen ? ["h-full", isHidden && "hidden"] : "p-4 rounded-lg bg-dark-700";
+    return isSmallScreen ? ["h-full", isHidden && "hidden"] : "rounded-lg bg-dark-700";
   };
 
   return (
-    <div className="w-full h-full p-4 flex flex-col">
+    <div className="h-full flex flex-col">
       <div className="mb-4 md1:hidden">{tabsElmt}</div>
 
-      <div className={clsx("grow overflow-hidden", !isSmallScreen && "flex space-x-2")}>
+      <div className={clsx("grow overflow-hidden", !isSmallScreen && "px-2 md2:px-4 flex space-x-4")}>
         {showTypeFilter ? (
-          <div className={clsx([wrapperCls(activeIndex !== 2), !isSmallScreen && "shrink-0"])}>
-            {renderTypeFilter()}
+          <div
+            className={clsx([
+              wrapperCls(activeIndex !== 2),
+              "flex flex-col",
+              isSmallScreen ? "justify-between" : "mr-4 items-center shrink-0",
+            ])}
+          >
+            {renderTypeFilter(["mb-6", isSmallScreen ? "justify-center py-4" : "py-2 flex-col"])}
+
+            <div className="flex">
+              <Button
+                size={isSmallScreen ? "small" : "custom"}
+                className={!isSmallScreen && "p-1"}
+                icon={<BiReset className="text-lg" />}
+                disabled={!filteredTypes.length}
+                onClick={() => operate.updateFilter([])}
+              >
+                {isSmallScreen ? "Clear All" : ""}
+              </Button>
+            </div>
           </div>
         ) : null}
 
         <div className={clsx(wrapperCls(activeIndex !== 0))}>{renderArtifactStatFilter()}</div>
 
-        <div className={clsx([wrapperCls(activeIndex !== 1), !isSmallScreen && "shrink-0"])}>
+        <div className={clsx([wrapperCls(activeIndex !== 1)])}>
           {renderArtifactSetFilter(
             null,
             clsx("grid", isSmallScreen ? "grid-cols-4" : "grid-cols-3 md2:grid-cols-4 lg:grid-cols-6")
@@ -84,7 +103,7 @@ const ArtifactFilter = ({
         </div>
       </div>
 
-      <Modal.Actions disabledConfirm={hasDuplicates} onCancel={onClose} onConfirm={onConfirmFilter} />
+      <Modal.Actions withDivider disabledConfirm={hasDuplicates} onCancel={onClose} onConfirm={onConfirmFilter} />
     </div>
   );
 };

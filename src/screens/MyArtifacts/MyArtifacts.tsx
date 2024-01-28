@@ -93,9 +93,8 @@ export default function MyArtifacts() {
   return (
     <WarehouseLayout.Wrapper>
       <WarehouseLayout>
-        <WarehouseLayout.ButtonBar>
+        <WarehouseLayout.ButtonBar className="space-x-4">
           <ButtonGroup
-            className="mr-4"
             buttons={[
               { text: "Add", onClick: onClickAddArtifact },
               { text: "Sort", onClick: onClickSortArtifact },
@@ -143,29 +142,24 @@ export default function MyArtifacts() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <Modal.Core active={modalType === "FITLER"} preset="large" onClose={closeModal}>
-        <div className="h-full flex flex-col">
-          <div className="pt-2 px-2">
-            <ModalHeader>
-              <div />
-              <ModalHeader.Text>Filter</ModalHeader.Text>
-              <ModalHeader.RightEnd onClickClose={closeModal} />
-            </ModalHeader>
-          </div>
-          <div className="grow hide-scrollbar relative">
-            <ArtifactFilter
-              showTypeFilter
-              artifacts={userArts}
-              initialCondition={filterCondition}
-              onConfirm={(contition) => {
-                setFilterCondition(contition);
-                operate.updateFilter(contition.types);
-              }}
-              onClose={closeModal}
-            />
-          </div>
-        </div>
-      </Modal.Core>
+      <Modal
+        active={modalType === "FITLER"}
+        preset="large"
+        title="Artifact Filter"
+        bodyCls="grow hide-scrollbar"
+        onClose={closeModal}
+      >
+        <ArtifactFilter
+          showTypeFilter
+          artifacts={userArts}
+          initialCondition={filterCondition}
+          onConfirm={(contition) => {
+            setFilterCondition(contition);
+            operate.updateFilter(contition.types);
+          }}
+          onClose={closeModal}
+        />
+      </Modal>
 
       <TypeSelect
         active={modalType === "PICK_ARTIFACT_TYPE"}

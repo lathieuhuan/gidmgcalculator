@@ -50,7 +50,7 @@ const Modal = ({
       {withActions && (
         <ModalActions
           {...{
-            className: "pt-4 border-t border-solid border-dark-300",
+            withDivider: true,
             disabledConfirm,
             focusConfirm,
             showCancel,
@@ -86,6 +86,7 @@ const ModalCloseX = (props: { disabled?: boolean; onClick?: () => void }) => {
 };
 
 export interface ModalActionsProps extends Pick<ButtonGroupProps, "className" | "justify"> {
+  withDivider?: boolean;
   disabledConfirm?: boolean;
   focusConfirm?: boolean;
   /** Default to true */
@@ -105,6 +106,7 @@ export interface ModalActionsProps extends Pick<ButtonGroupProps, "className" | 
 export const ModalActions = ({
   className,
   justify = "end",
+  withDivider,
   disabledConfirm,
   focusConfirm,
   showCancel = true,
@@ -139,7 +141,13 @@ export const ModalActions = ({
     });
   }
 
-  return <ButtonGroup className={clsx("mt-4", className)} justify={justify} buttons={buttons} />;
+  return (
+    <ButtonGroup
+      className={clsx("mt-4", withDivider && "pt-4 border-t border-solid border-dark-300", className)}
+      justify={justify}
+      buttons={buttons}
+    />
+  );
 };
 
 function withModal<T>(

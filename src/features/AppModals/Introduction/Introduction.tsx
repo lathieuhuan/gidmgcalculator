@@ -91,7 +91,7 @@ export const Introduction = (props: ModalControl) => {
                   isLoadingMetadata ? (
                     <Skeleton className="w-28 h-4 rounded" />
                   ) : latestDate ? (
-                    <span className="ml-2 px-1 py-px text-sm rounded text-orange-500 bg-dark-900">{latestDate}</span>
+                    <span className="ml-2 px-1 text-sm rounded text-orange-500 bg-dark-900">{latestDate}</span>
                   ) : null
                 ) : null}
               </div>
