@@ -33,53 +33,51 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
   };
 
   const combineMenu = (
-    <div className="mt-2 md2:pr-4 grow custom-scrollbar">
-      <div>
-        {!options.length && (
-          <div className="h-40 flex-center">
-            <p className="pr-2 text-lg text-light-800 text-center">No Setups available for choosing...</p>
-          </div>
-        )}
-        {options.map((setup) => {
-          const { ID } = setup;
-          const picked = pickedIDs.includes(ID);
-          const { code = 0, icon = "" } = $AppData.getCharData(setup.char.name) || {};
+    <div className="space-y-2">
+      {!options.length && (
+        <div className="h-40 flex-center">
+          <p className="pr-2 text-lg text-light-800 text-center">No Setups available for choosing...</p>
+        </div>
+      )}
+      {options.map((setup) => {
+        const { ID } = setup;
+        const picked = pickedIDs.includes(ID);
+        const { code = 0, icon = "" } = $AppData.getCharData(setup.char.name) || {};
 
-          return (
-            <div
-              key={ID}
-              className={clsx(
-                "mb-2 p-4 rounded-lg bg-dark-900 flex flex-col md1:flex-row md1:items-center",
-                !picked && !notFull && "opacity-50",
-                picked && "shadow-green-300"
-              )}
-              style={{ boxShadow: picked ? "0 0 5px 1px var(--tw-shadow-color) inset" : undefined }}
-              onClick={() => onClickOption(ID, picked)}
-            >
-              <div className="md1:w-40 md1:mr-4">
-                <p className="text-lg font-bold text-orange-500 cursor-default">{setup.name}</p>
-              </div>
-              <div className="mt-2 md1:mt-0 flex space-x-4">
-                <div className="w-16 rounded-circle shadow-3px-2px shadow-orange-500">
-                  <CharacterPortrait {...{ code, icon }} />
-                </div>
-                {setup.party.map((teammate, j) => {
-                  if (teammate) {
-                    const { code = 0, icon = "" } = $AppData.getCharData(teammate.name) || {};
-
-                    return (
-                      <div key={j} className="w-16 rounded-circle">
-                        <CharacterPortrait {...{ code, icon }} />
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
+        return (
+          <div
+            key={ID}
+            className={clsx(
+              "p-4 rounded-lg bg-dark-900 flex flex-col md1:flex-row md1:items-center",
+              !picked && !notFull && "opacity-50",
+              picked && "shadow-green-300"
+            )}
+            style={{ boxShadow: picked ? "0 0 5px 1px var(--tw-shadow-color) inset" : undefined }}
+            onClick={() => onClickOption(ID, picked)}
+          >
+            <div className="md1:w-40 md1:mr-4">
+              <p className="text-lg font-bold text-orange-500 cursor-default">{setup.name}</p>
             </div>
-          );
-        })}
-      </div>
+            <div className="mt-2 md1:mt-0 flex space-x-4">
+              <div className="w-16 rounded-circle shadow-3px-2px shadow-orange-500">
+                <CharacterPortrait {...{ code, icon }} />
+              </div>
+              {setup.party.map((teammate, j) => {
+                if (teammate) {
+                  const { code = 0, icon = "" } = $AppData.getCharData(teammate.name) || {};
+
+                  return (
+                    <div key={j} className="w-16 rounded-circle">
+                      <CharacterPortrait {...{ code, icon }} />
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 

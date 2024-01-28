@@ -1,20 +1,21 @@
-import { useState, KeyboardEventHandler } from "react";
+import { useState, KeyboardEventHandler, FormEvent } from "react";
 import type { UserSetup } from "@Src/types";
 
 // Store
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { combineSetups } from "@Store/userDatabaseSlice";
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
+import { useStoreSnapshot } from "@Store/store-snapshot";
 
 import { findById, realParty } from "@Src/utils";
 import { useCombineManager } from "./hooks";
 
 // Component
-import { Input, ButtonGroup } from "@Src/pure-components";
+import { Input } from "@Src/pure-components";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
-  const userSetups = useSelector(selectUserSetups);
+  const userSetups = useStoreSnapshot(selectUserSetups);
 
   const [input, setInput] = useState("Team Setup");
 
@@ -79,15 +80,20 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
     }
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    tryCombine();
+  };
+
   return (
-    <div className="h-full pl-2 md2:pl-6 pr-2 py-4 flex flex-col break-words">
-      <p className={"pr-4 text-center " + (isError ? "text-red-100" : "text-yellow-400")}>
-        {isError ? "You cannot combine these Setups." : "Choose at least 2 setups with the same party members."}
+    <form id="setup-combine" className="h-full flex flex-col break-words" onSubmit={onSubmit}>
+      <p className={"px-2 " + (isError ? "text-red-100" : "text-light-800")}>
+        {isError ? "You cannot combine these setups." : "Choose at least 2 setups with the same party members."}
       </p>
 
-      {combineMenu}
+      <div className="mt-2 px-2 grow custom-scrollbar">{combineMenu}</div>
 
-      <div className="mt-6 pr-4">
+      <div className="mt-4">
         <Input
           className="px-4 py-1 w-full text-xl text-center font-bold"
           value={input}
@@ -95,14 +101,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
           onKeyDown={onKeydownInput}
           onChange={setInput}
         />
-        <ButtonGroup.Confirm
-          className="mt-4"
-          confirmText="Combine"
-          disabledConfirm={!setupOptions.length}
-          onConfirm={tryCombine}
-          onCancel={onClose}
-        />
       </div>
-    </div>
+    </form>
   );
 }

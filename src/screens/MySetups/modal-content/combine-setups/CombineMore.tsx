@@ -1,18 +1,15 @@
+import { FormEvent } from "react";
 import type { UserSetup } from "@Src/types";
 
 // Store
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
+import { useStoreSnapshot } from "@Store/store-snapshot";
 
-// Util
 import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
-
 import { useCombineManager } from "./hooks";
-
-// Component
-import { ButtonGroup } from "@Src/pure-components";
 
 interface CombineMoreProps {
   setupID: number;
@@ -20,7 +17,7 @@ interface CombineMoreProps {
 }
 export function CombineMore({ setupID, onClose }: CombineMoreProps) {
   const dispatch = useDispatch();
-  const userSetups = useSelector(selectUserSetups);
+  const userSetups = useStoreSnapshot(selectUserSetups);
 
   const targetSetup = findById(userSetups, setupID);
   if (!targetSetup || isUserSetup(targetSetup)) {
@@ -82,9 +79,14 @@ export function CombineMore({ setupID, onClose }: CombineMoreProps) {
     }
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    tryCombine();
+  };
+
   return (
-    <div className="h-full pl-6 pr-2 py-4 flex flex-col break-words">
-      <p className={"pr-4 text-center " + (isError ? "text-red-100" : "text-yellow-400")}>
+    <form id="setup-combine-more" className="h-full flex flex-col break-words" onSubmit={onSubmit}>
+      <p className={"px-2 " + (isError ? "text-red-100" : "text-light-800")}>
         {isError ? (
           "These 2 Setups feature the same Character."
         ) : (
@@ -94,15 +96,7 @@ export function CombineMore({ setupID, onClose }: CombineMoreProps) {
         )}
       </p>
 
-      {combineMenu}
-
-      <ButtonGroup.Confirm
-        className="mt-4"
-        confirmText="Combine"
-        disabledConfirm={!pickedIDs.length}
-        onConfirm={tryCombine}
-        onCancel={onClose}
-      />
-    </div>
+      <div className="mt-2 px-2 grow custom-scrollbar">{combineMenu}</div>
+    </form>
   );
 }

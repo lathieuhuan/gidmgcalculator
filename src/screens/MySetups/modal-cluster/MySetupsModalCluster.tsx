@@ -54,10 +54,16 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
       <Modal
         active={modalType === "FIRST_COMBINE"}
-        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-700"]}
+        title="Combine setups"
+        className="bg-dark-700"
+        bodyCls="grow hide-scrollbar"
+        withActions
         style={{
           minWidth: 300,
+          height: "90vh",
+          maxHeight: 1024,
         }}
+        formId="setup-combine"
         onClose={closeModal}
       >
         <FirstCombine onClose={closeModal} />
@@ -65,10 +71,16 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
       <Modal
         active={modalType === "COMBINE_MORE"}
-        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-700"]}
+        title="Add setups to the complex"
+        className="bg-dark-700"
+        bodyCls="grow hide-scrollbar"
+        withActions
         style={{
           minWidth: 300,
+          height: "90vh",
+          maxHeight: 1024,
         }}
+        formId="setup-combine-more"
         onClose={closeModal}
       >
         {props.combineMoreId && <CombineMore setupID={props.combineMoreId} onClose={closeModal} />}

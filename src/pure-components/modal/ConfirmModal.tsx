@@ -1,11 +1,7 @@
 import clsx from "clsx";
-import { cloneElement, useRef } from "react";
-import { ButtonGroup, ButtonGroupItem, ConfirmButtonGroupProps } from "../button";
+import { useRef } from "react";
 import { Modal, ModalActionsProps } from "./Modal";
 import { ModalControl } from "./ModalCore";
-import { PartiallyRequired } from "@Src/types";
-
-// Omit<ConfirmButtonGroupProps, "className" | "justify">
 
 export interface ConfirmModalBodyProps extends Omit<ModalActionsProps, "className" | "justify" | "formId"> {
   message: string | JSX.Element;
@@ -37,7 +33,10 @@ export const ConfirmModal = ({
           onCancel?.();
           onClose();
         }}
-        onConfirm={onConfirm}
+        onConfirm={() => {
+          onConfirm?.();
+          onClose();
+        }}
       />
     </Modal.Core>
   );

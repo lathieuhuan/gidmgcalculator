@@ -261,7 +261,12 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         </div>
       </div>
 
-      <Modal active={teammateDetail.index !== -1} onClose={closeTeammateDetail}>
+      <Modal.Core
+        active={teammateDetail.index !== -1}
+        className="rounded-lg shadow-white-glow"
+        onClose={closeTeammateDetail}
+      >
+        <Modal.CloseX onClick={closeTeammateDetail} />
         {teammateInfo && (
           <TeammateDetail
             teammate={teammateInfo}
@@ -280,10 +285,9 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               }
             }}
             onCalculateTeammateSetup={onCalculateTeammateSetup}
-            onClose={closeTeammateDetail}
           />
         )}
-      </Modal>
+      </Modal.Core>
     </>
   );
 }
