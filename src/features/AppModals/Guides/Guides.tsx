@@ -1,11 +1,11 @@
-import { Yellow, CollapseList, StandardModal, type ModalControl } from "@Src/pure-components";
+import { Yellow, CollapseList, type ModalControl, Modal } from "@Src/pure-components";
 import { CalculatorGuide } from "./CalculatorGuide";
 import { SettingsGuide } from "./SettingsGuide";
 import { UserDataGuide } from "./UserDataGuide";
 
 export const Guides = (props: ModalControl) => {
   return (
-    <StandardModal title={<p className="px-6 mb-2 text-xl text-center text-orange-500 font-bold">Guides</p>} {...props}>
+    <Modal title="Guides" preset="large" withHeaderDivider={false} bodyCls="grow custom-scrollbar" {...props}>
       <CollapseList
         list={[
           {
@@ -62,6 +62,6 @@ export const Guides = (props: ModalControl) => {
           },
         ]}
       />
-    </StandardModal>
+    </Modal>
   );
 };

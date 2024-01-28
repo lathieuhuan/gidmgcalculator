@@ -27,9 +27,9 @@ export interface ButtonGroupProps {
 const ButtonGroup = ({ className, justify = "center", buttons, space = "default" }: ButtonGroupProps) => {
   return (
     <div className={clsx("flex", justifyCls[justify], spaceCls[space], className)}>
-      {buttons.map(({ text, ...others }, i) => {
+      {buttons.map(({ text, className, ...others }, i) => {
         return (
-          <Button key={i} className="button-focus-shadow" {...others}>
+          <Button key={i} className={clsx("button-focus-shadow", className)} {...others}>
             {text}
           </Button>
         );

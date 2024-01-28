@@ -38,8 +38,10 @@ module.exports = {
         100: "#ffffff", // root
         400: "#e0e0e0",
         800: "#b8b8b8",
+        900: "#adadad"
       },
       dark: {
+        300: "#535582",
         500: "#2c315c",
         700: "#151a40",
         900: "#050926",
@@ -101,7 +103,7 @@ module.exports = {
       },
       boxShadow: {
         common: "rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px",
-        "white-glow": "0 0 3px white",
+        "white-glow": "0 0 3px #b8b8b8",
       },
       fontSize: {
         "1.5xl": "1.375rem",

@@ -147,16 +147,31 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
         })}
       </div>
 
-      <Modal
-        active={modalOn}
-        title={`Add custom ${isBuffs ? "buffs" : "debuffs"}`}
-        className="p-4 flex flex-col bg-dark-900"
-        style={{ minWidth: isBuffs ? 302 : "auto" }}
-        withCloseButton={false}
-        onClose={closeModal}
-      >
-        {isBuffs ? <BuffCtrlCreator onClose={closeModal} /> : <DebuffCtrlCreator onClose={closeModal} />}
-      </Modal>
+      {isBuffs ? (
+        <Modal
+          active={modalOn}
+          title="Add custom buffs"
+          className="bg-dark-900"
+          style={{ minWidth: 302 }}
+          withActions
+          withHeaderDivider={false}
+          formId="buff-creator"
+          onClose={closeModal}
+        >
+          <BuffCtrlCreator onClose={closeModal} />
+        </Modal>
+      ) : (
+        <Modal
+          active={modalOn && !isBuffs}
+          title="Add custom debuffs"
+          className="bg-dark-900"
+          withActions
+          formId="debuff-creator"
+          onClose={closeModal}
+        >
+          <DebuffCtrlCreator onClose={closeModal} />
+        </Modal>
+      )}
     </div>
   );
 };

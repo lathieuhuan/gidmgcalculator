@@ -5,7 +5,7 @@ import { updateUI } from "@Store/uiSlice";
 import { selectMySetupModalType } from "@Store/uiSlice/selectors";
 
 // Component
-import { Yellow, Modal, Red, StandardModal } from "@Src/pure-components";
+import { Yellow, Modal, Red } from "@Src/pure-components";
 import { CombineMore, FirstCombine } from "../modal-content";
 
 interface MySetupsModalClusterProps {
@@ -21,9 +21,12 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
 
   return (
     <>
-      <StandardModal
+      <Modal
         active={modalType === "TIPS"}
-        title={<p className="mb-2 text-1.5xl text-orange-500 font-bold">Tips</p>}
+        title="Tips"
+        preset="large"
+        bodyCls="grow custom-scrollbar"
+        {...props}
         onClose={closeModal}
       >
         <ul className="pl-4 pr-2 list-disc space-y-1 contains-inline-svg">
@@ -47,7 +50,7 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
             make a copy of that copy in the Calculator and work on it.
           </li>
         </ul>
-      </StandardModal>
+      </Modal>
 
       <Modal
         active={modalType === "FIRST_COMBINE"}

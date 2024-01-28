@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, useRef } from "react";
+import { useState, useRef, FormEvent } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
 
@@ -20,7 +20,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { ButtonGroup, Input, Modal } from "@Src/pure-components";
+import { Input } from "@Src/pure-components";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
 
@@ -103,13 +103,18 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
     inputRef.current?.focus();
   };
 
-  const onConfirm = () => {
+  const onDone = () => {
     dispatch(updateCustomBuffCtrls({ actionType: "add", ctrls: config }));
     onClose();
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onDone();
+  };
+
   return (
-    <>
+    <div className="flex flex-col">
       <div className="flex flex-col md1:flex-row">
         {Object.entries(CATEGORIES).map(([category, { label }], index) => {
           const chosen = config.category === category;
@@ -136,7 +141,11 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
         })}
       </div>
 
-      <div className="py-4 mx-auto flex-center flex-col md1:flex-row md1:space-x-3">
+      <form
+        id="buff-creator"
+        className="py-4 mx-auto flex-center flex-col md1:flex-row md1:space-x-3"
+        onSubmit={onSubmit}
+      >
         <div className="mt-4 flex items-center relative">
           <FaChevronDown className="absolute -z-10" />
           <select
@@ -187,16 +196,14 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                onConfirm();
+                onDone();
               }
             }}
           />
           <span className="ml-2">{sign}</span>
         </div>
-      </div>
-
-      <Modal.Actions onCancel={onClose} onConfirm={onConfirm} />
-    </>
+      </form>
+    </div>
   );
 };
 

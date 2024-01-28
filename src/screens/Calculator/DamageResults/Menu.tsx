@@ -36,6 +36,10 @@ export const Menu = () => {
     },
   ];
 
+  const closeEnlargedView = () => {
+    setResultsEnlarged(false);
+  };
+
   return (
     <div ref={wrapperRef} className="absolute top-2 right-2 w-8">
       <button
@@ -69,13 +73,14 @@ export const Menu = () => {
         </div>
       </div>
 
-      <Modal
+      <Modal.Core
         active={resultsEnlarged}
-        className={[Modal.LARGE_HEIGHT_CLS, "p-4 pt-2 bg-dark-500"]}
-        onClose={() => setResultsEnlarged(false)}
+        className={[Modal.LARGE_HEIGHT_CLS, "p-4 pt-2 rounded shadow-white-glow bg-dark-500"]}
+        onClose={closeEnlargedView}
       >
+        <Modal.CloseX onClick={closeEnlargedView} />
         <ResultsDisplay />
-      </Modal>
+      </Modal.Core>
     </div>
   );
 };

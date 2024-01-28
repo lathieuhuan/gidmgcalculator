@@ -6,7 +6,7 @@ import { useGetMetadata } from "@Src/hooks";
 import { useDispatch } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 
-import { CollapseList, StandardModal, ModalControl, LoadingIcon, Skeleton } from "@Src/pure-components";
+import { CollapseList, ModalControl, LoadingIcon, Skeleton, Modal } from "@Src/pure-components";
 import { MetadataRefetcher } from "../../MetadataRefetcher";
 import { About } from "./About";
 import { Notes } from "./Notes";
@@ -56,10 +56,13 @@ export const Introduction = (props: ModalControl) => {
   };
 
   return (
-    <StandardModal
+    <Modal
+      preset="large"
+      withHeaderDivider={false}
+      bodyCls="grow custom-scrollbar"
       title={
         <>
-          <div className="mb-2 flex flex-col items-center">
+          <div className="flex flex-col items-center">
             {renderTitle("Welcome to GI DMG Calculator", "hidden md1:block")}
 
             <p className="text-xl font-semibold md1:hidden">Welcome to</p>
@@ -67,7 +70,7 @@ export const Introduction = (props: ModalControl) => {
           </div>
 
           <MetadataRefetcher
-            className="mb-4"
+            className="mt-2"
             isLoading={isLoadingMetadata}
             isError={status === "error"}
             onRefetch={getMetadata}
@@ -168,6 +171,6 @@ export const Introduction = (props: ModalControl) => {
         )}
         <p>- Last but not least, thank you for using my App and please give me some feedback if you can.</p>
       </div>
-    </StandardModal>
+    </Modal>
   );
 };

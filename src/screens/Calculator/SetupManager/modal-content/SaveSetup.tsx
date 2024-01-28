@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 import type { CalcSetupManageInfo } from "@Src/types";
 import { $AppData } from "@Src/services";
@@ -11,7 +11,7 @@ import { selectChar } from "@Store/calculatorSlice/selectors";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ButtonGroup, Input } from "@Src/pure-components";
+import { Input } from "@Src/pure-components";
 
 interface SaveSetupProps {
   manageInfo: CalcSetupManageInfo;
@@ -31,11 +31,18 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
     onClose();
   };
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    saveSetup();
+  };
+
   return (
-    <div className="h-full px-8 py-6 flex flex-col bg-dark-900">
-      <p className="mb-2 mx-auto text-xl text-orange-500 font-bold">{existed ? "Update Old" : "Save New"} Setup</p>
+    <form id="save-calc-setup" className="flex flex-col" onSubmit={onSubmit}>
+      <p className="mb-2 text-light-800">
+        {existed ? "Update name for this existing setup" : "Enter name for this new setup"}
+      </p>
       <Input
-        className="mt-1 mb-8 px-4 py-2 text-1.5xl text-center font-semibold"
+        className="px-4 py-2 text-1.5xl text-center font-semibold"
         autoFocus
         value={input}
         maxLength={34}
@@ -46,7 +53,6 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
           }
         }}
       />
-      <ButtonGroup.Confirm onCancel={onClose} onConfirm={saveSetup} />
-    </div>
+    </form>
   );
 }

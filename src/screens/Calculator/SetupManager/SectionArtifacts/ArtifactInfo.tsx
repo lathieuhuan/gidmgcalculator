@@ -39,6 +39,10 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
   const mainStatValues = availableMainStatTypes[mainStatType]![rarity];
   const maxLevel = rarity === 5 ? 20 : 16;
 
+  const closeModal = () => {
+    setIsSaving(false);
+  };
+
   return (
     <div className="pt-4" onDoubleClick={() => console.log(artifact)}>
       <div className="pl-6 flex items-start">
@@ -130,9 +134,9 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
         <Button variant="positive" icon={<FaSyncAlt />} onClick={onClickChangePiece} />
       </div>
 
-      <Modal active={isSaving} preset="small" withCloseButton={false} onClose={() => setIsSaving(false)}>
-        <ConfirmSaving artifact={artifact} onClose={() => setIsSaving(false)} />
-      </Modal>
+      <Modal.Core active={isSaving} preset="small" onClose={closeModal}>
+        <ConfirmSaving artifact={artifact} onClose={closeModal} />
+      </Modal.Core>
     </div>
   );
 }
@@ -169,17 +173,23 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
               ? "Successfully saved to My Artifacts."
               : "You're having to many Artifacts. Please remove some of them first."
           }
-          onlyConfirm
-          onClose={onClose}
+          focusConfirm
+          showCancel={false}
+          onConfirm={onClose}
         />
       );
     case "PENDING":
-      const ownerInfo = existedArtifact?.owner ? (
+      const inform = (
         <>
-          , and currently used by <b>{existedArtifact.owner}</b>
+          This artifact is already saved
+          {existedArtifact?.owner ? (
+            <>
+              , and currently used by <b>{existedArtifact.owner}</b>
+            </>
+          ) : null}
+          .
         </>
-      ) : null;
-
+      );
       const noChange = existedArtifact
         ? isEqual(artifact, {
             ...userItemToCalcItem(existedArtifact),
@@ -187,34 +197,45 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
           })
         : false;
 
-      const buttons: ButtonGroupItem[] = [
-        { text: "Cancel" },
-        {
-          text: "Duplicate",
-          onClick: () => {
-            dispatch(addUserArtifact(calcItemToUserItem(artifact, { ID: Date.now() })));
-          },
-        },
-      ];
+      const addNew = () => {
+        dispatch(addUserArtifact(calcItemToUserItem(artifact, { ID: Date.now() })));
+        onClose();
+      };
 
-      if (!noChange) {
-        buttons.push({
-          text: "Overwrite",
-          variant: "positive",
-          onClick: () => dispatch(updateUserArtifact(calcItemToUserItem(artifact))),
-        });
+      if (noChange) {
+        return (
+          <ConfirmModalBody
+            message={<>{inform} Nothing has changed.</>}
+            showCancel={false}
+            focusConfirm
+            moreActions={[
+              {
+                text: "Duplicate",
+                onClick: addNew,
+              },
+            ]}
+            onConfirm={onClose}
+          />
+        );
       }
+
+      const overwrite = () => {
+        dispatch(updateUserArtifact(calcItemToUserItem(artifact)));
+        onClose();
+      };
 
       return (
         <ConfirmModalBody
-          message={
-            <>
-              This artifact is already saved{ownerInfo}.{" "}
-              {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite?"}
-            </>
-          }
-          buttons={buttons}
-          onClose={onClose}
+          message={<>{inform} Their stats are different. Do you want to overwrite?</>}
+          moreActions={[
+            {
+              text: "Add new",
+              onClick: addNew,
+            },
+          ]}
+          confirmText="Overwrite"
+          onConfirm={overwrite}
+          onCancel={onClose}
         />
       );
     default:

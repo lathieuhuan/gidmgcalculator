@@ -143,7 +143,7 @@ export default function MyArtifacts() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <Modal active={modalType === "FITLER"} preset="large" withCloseButton={false} onClose={closeModal}>
+      <Modal.Core active={modalType === "FITLER"} preset="large" onClose={closeModal}>
         <div className="h-full flex flex-col">
           <div className="pt-2 px-2">
             <ModalHeader>
@@ -165,7 +165,7 @@ export default function MyArtifacts() {
             />
           </div>
         </div>
-      </Modal>
+      </Modal.Core>
 
       <TypeSelect
         active={modalType === "PICK_ARTIFACT_TYPE"}

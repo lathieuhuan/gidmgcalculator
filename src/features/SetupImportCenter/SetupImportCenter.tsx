@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import isEqual from "react-fast-compare";
 
 import type { PartiallyRequired, SetupImportInfo } from "@Src/types";
@@ -16,7 +16,7 @@ import { checkBeforeInitNewSession } from "@Store/thunks";
 
 // Component
 import { Modal, ConfirmModal, LoadingMask } from "@Src/pure-components";
-import { OverrideOptions } from "./OverwriteOptions";
+import { OverwriteOptions, OverwriteOptionsProps } from "./OverwriteOptions";
 
 type SetupImportCenterProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
 
@@ -25,17 +25,59 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
   const char = useSelector(selectChar);
   const currentTarget = useSelector(selectTarget);
   const calcSetupInfos = useSelector(selectSetupManageInfos);
-  // 0: initial | 1: different imported vs current | 2: reach MAX_CALC_SETUPS
-  // 30: different char only | 31: different target only | 301: different both
-  // 4: already existed
+
   const [pendingCode, setPendingCode] = useState(0);
+  const overwriteToAsk = useRef({
+    character: false,
+    target: true,
+  });
+
+  useEffect(() => {
+    const delayExecute = (fn: Function) => setTimeout(fn, 0);
+
+    // Start of site, no setup in Calculator yet
+    if (!char) {
+      delayExecute(startNewSession);
+      return;
+    }
+    if (char.name !== calcSetup.char.name) {
+      delayExecute(() => setPendingCode(1));
+      return;
+    }
+    // The imported is from My Setups and already imported
+    if (manageInfo.ID && calcSetupInfos.some((info) => info.ID === manageInfo.ID)) {
+      delayExecute(() => setPendingCode(2));
+      return;
+    }
+    if (calcSetupInfos.length === MAX_CALC_SETUPS) {
+      delayExecute(() => setPendingCode(3));
+      return;
+    }
+    const sameChar = isEqual(char, calcSetup.char);
+    const sameTarget = isEqual(removeEmpty(currentTarget), removeEmpty(target));
+
+    if (sameChar && sameTarget) {
+      delayExecute(() =>
+        addImportedSetup({
+          shouldOverwriteChar: false,
+          shouldOverwriteTarget: false,
+        })
+      );
+      return;
+    }
+    overwriteToAsk.current = {
+      character: !sameChar,
+      target: !sameTarget,
+    };
+
+    setPendingCode(4);
+  }, []);
 
   const endImport = () => {
     dispatch(updateSetupImportInfo({}));
-    dispatch(updateUI({ highManagerActive: false }));
   };
 
-  const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {
+  const addImportedSetup: OverwriteOptionsProps["onDone"] = (config) => {
     dispatch(
       importSetup({
         importInfo: {
@@ -43,8 +85,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
           calcSetup,
           target,
         },
-        shouldOverwriteChar,
-        shouldOverwriteTarget,
+        ...config,
       })
     );
     dispatch(
@@ -54,6 +95,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
       })
     );
     endImport();
+    dispatch(updateUI({ highManagerActive: false }));
   };
 
   const startNewSession = () => {
@@ -87,80 +129,68 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
     );
   };
 
-  useEffect(() => {
-    const delayExecute = (fn: Function) => setTimeout(fn, 0);
-
-    if (char) {
-      if (char.name === calcSetup.char.name) {
-        if (calcSetupInfos.length === MAX_CALC_SETUPS) {
-          delayExecute(() => setPendingCode(2));
-        } else if (manageInfo.ID && calcSetupInfos.some((info) => info.ID === manageInfo.ID)) {
-          delayExecute(() => setPendingCode(4));
-        } else {
-          const sameChar = isEqual(char, calcSetup.char);
-          const sameTarget = isEqual(removeEmpty(currentTarget), removeEmpty(target));
-
-          if (sameChar && sameTarget) {
-            delayExecute(() => addImportedSetup(false, false));
-          } else {
-            let code = 3;
-
-            if (!sameChar) {
-              code = code * 10;
-            }
-            if (!sameTarget) {
-              code = code * 10 + 1;
-            }
-            setPendingCode(code);
-          }
-        }
-      } else {
-        delayExecute(() => setPendingCode(1));
-      }
-    } else {
-      delayExecute(startNewSession);
-    }
-  }, []);
+  const resetExistingSetup = () => {
+    //
+    dispatch(updateUI({ highManagerActive: false }));
+  };
 
   switch (pendingCode) {
     case 0:
       return <LoadingMask active />;
     case 1:
-    case 2:
       return (
         <ConfirmModal
           active
-          message={
-            (pendingCode === 1
-              ? "We're calculating another Character."
-              : `The number of Setups on Calculator has reach the limit of ${MAX_CALC_SETUPS}.`) +
-            " Start a new session?"
-          }
+          message="We're calculating another Character. Start a new session?"
           focusConfirm
           onConfirm={startNewSession}
           onClose={endImport}
         />
       );
-    case 4:
-      return <ConfirmModal active message="This setup is already in the Calculator." onlyConfirm onClose={endImport} />;
+    case 2:
+      return (
+        <ConfirmModal
+          active
+          message="This setup is already in the Calculator. Do you want to reset it to this version?"
+          focusConfirm
+          onConfirm={resetExistingSetup}
+          onClose={endImport}
+        />
+      );
+    case 3:
+      return (
+        <ConfirmModal
+          active
+          message={`The number of Setups on Calculator has reach the limit of ${MAX_CALC_SETUPS}. Start a new session?`}
+          focusConfirm
+          onConfirm={startNewSession}
+          onClose={endImport}
+        />
+      );
     default:
       return (
-        <Modal active preset="small" className="p-4 bg-dark-500" title="Overwrite Configuration" onClose={endImport}>
-          <OverrideOptions
-            pendingCode={pendingCode}
+        <Modal
+          active
+          preset="small"
+          className="bg-dark-500"
+          title="Overwrite Configuration"
+          withActions
+          formId="overwrite-configuration"
+          onClose={endImport}
+        >
+          <OverwriteOptions
+            askForCharacter={overwriteToAsk.current.character}
+            askForTarget={overwriteToAsk.current.target}
             importedChar={calcSetup?.char}
             importedTarget={target}
-            addImportedSetup={addImportedSetup}
-            onCancel={() => {
-              dispatch(updateSetupImportInfo({}));
-            }}
+            onDone={addImportedSetup}
           />
         </Modal>
       );
   }
 };
 
-export function SetupImportCenter() {
+export const SetupImportCenter = () => {
   const { calcSetup, target, ...rest } = useSelector((state) => state.ui.importInfo);
   return calcSetup && target ? <SetupImportCenterCore calcSetup={calcSetup} target={target} {...rest} /> : null;
-}
+};

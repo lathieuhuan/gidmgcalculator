@@ -194,7 +194,15 @@ export function SetupSelect() {
         onChange={onClickSetupName}
       />
 
-      <Modal active={modal.type === "SAVE_SETUP"} preset="small" onClose={closeModal}>
+      <Modal
+        active={modal.type === "SAVE_SETUP"}
+        preset="small"
+        className="bg-dark-900"
+        title="Save setup"
+        withActions
+        formId="save-calc-setup"
+        onClose={closeModal}
+      >
         <SaveSetup manageInfo={setupManageInfos[modal.setupIndex]} onClose={closeModal} />
       </Modal>
 

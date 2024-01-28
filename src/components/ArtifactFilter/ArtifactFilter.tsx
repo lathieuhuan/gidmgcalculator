@@ -9,7 +9,7 @@ import { useTabs } from "@Src/pure-hooks";
 import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
 
 import { filterArtifacts } from "./filterArtifacts";
-import { ButtonGroup } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 
 export interface ArtifactFilterProps {
   artifactType?: ArtifactType;
@@ -84,13 +84,7 @@ const ArtifactFilter = ({
         </div>
       </div>
 
-      <ButtonGroup.Confirm
-        className="mt-4"
-        justify="end"
-        disabledConfirm={hasDuplicates}
-        onCancel={onClose}
-        onConfirm={onConfirmFilter}
-      />
+      <Modal.Actions disabledConfirm={hasDuplicates} onCancel={onClose} onConfirm={onConfirmFilter} />
     </div>
   );
 };

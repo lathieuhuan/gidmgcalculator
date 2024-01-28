@@ -15,8 +15,8 @@ interface ModifierWrapperProps {
 }
 const ModifierWrapper = ({ className = "", title, children }: ModifierWrapperProps) => {
   return (
-    <div className={"py-4 shrink-0 " + className}>
-      <p className="mb-2 text-lg text-center text-orange-500 font-bold uppercase">{title}</p>
+    <div className={"shrink-0 " + className}>
+      <p className="mb-2 text-lg text-center font-semibold">{title}</p>
       <div className="custom-scrollbar">{children}</div>
     </div>
   );
@@ -117,8 +117,9 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
 
       <ModifierWrapper title="Target" className="w-68">
         <div className="h-full px-2">
-          <p className="text-lg">
-            {title} - Level: <Yellow>{target.level}</Yellow>
+          <p className="text-lg">{title}</p>
+          <p>
+            Level: <Yellow>{target.level}</Yellow>
           </p>
 
           {variant && <p className="capitalize">{variant}</p>}
@@ -136,7 +137,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
               <span className={"mr-2 capitalize " + (key === "level" ? "text-yellow-400" : `text-${key}`)}>
                 {t(key, { ns: "resistance" })}:
               </span>
-              <span className="font-medium">{value}</span>
+              <span className="font-medium">{value}%</span>
             </p>
           ))}
         </div>

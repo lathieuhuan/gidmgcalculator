@@ -64,19 +64,14 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         />
       )}
 
-      <Modal active={modalType === "WEAPON"} className="p-4 bg-dark-900" withCloseButton={false} onClose={closeModal}>
+      <Modal active={modalType === "WEAPON"} className="bg-dark-900" title="Weapon" onClose={closeModal}>
         <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
           {weapon && <WeaponCard weapon={weapon} />}
         </div>
         <OwnerLabel item={weapon ?? undefined} />
       </Modal>
 
-      <Modal
-        active={modalType === "ARTIFACTS"}
-        className="p-4 bg-dark-900"
-        withCloseButton={false}
-        onClose={closeModal}
-      >
+      <Modal active={modalType === "ARTIFACTS"} className="bg-dark-900" title="Artifacts" onClose={closeModal}>
         <div className="flex hide-scrollbar">
           {artifacts?.map((artifact, i) => {
             if (artifact) {
@@ -92,25 +87,32 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         </div>
       </Modal>
 
-      <Modal active={modalType === "STATS"} className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]} onClose={closeModal}>
+      <Modal
+        active={modalType === "STATS"}
+        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
+        title="Stats"
+        bodyCls="grow overflow-auto"
+        onClose={closeModal}
+      >
         <div className="h-full flex hide-scrollbar divide-x-2 divide-dark-700">
-          <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-            <p className="text-lg text-orange-500 font-bold">Final Attributes</p>
-            <div className="mt-1 hide-scrollbar">
+          <div className="w-80 pr-4 flex flex-col " style={{ minWidth: "20rem" }}>
+            <p className="text-lg text-center font-semibold">Final Attributes</p>
+            <div className="mt-1 custom-scrollbar">
               {calcResult?.totalAttr && <AttributeTable attributes={calcResult.totalAttr} />}
             </div>
           </div>
 
-          <div className="w-80 pt-2 px-4 pb-4 flex flex-col" style={{ minWidth: "20rem" }}>
-            <p className="text-lg text-orange-500 font-bold">Artifact Stats</p>
-            <div className="mt-1 hide-scrollbar">
+          <div className="w-80 px-4 flex flex-col" style={{ minWidth: "20rem" }}>
+            <p className="text-lg text-center font-semibold">Artifact Stats</p>
+            <div className="mt-1 custom-scrollbar">
               {calcResult?.artAttr && <AttributeTable attributes={calcResult.artAttr} />}
             </div>
           </div>
 
-          <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-            <div className="h-full hide-scrollbar">
-              <SetBonusesDisplay setBonuses={setBonuses} />
+          <div className="w-80 pl-4 flex flex-col" style={{ minWidth: "20rem" }}>
+            <p className="text-lg text-center font-semibold">Set bonus</p>
+            <div className="grow custom-scrollbar">
+              <SetBonusesDisplay noTitle setBonuses={setBonuses} />
             </div>
           </div>
         </div>
@@ -120,16 +122,16 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         <Modal
           active={modalType === "MODIFIERS"}
           className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
+          title="Modifiers"
+          bodyCls="grow hide-scrollbar"
           onClose={closeModal}
         >
-          <div className="w-full h-full hide-scrollbar">
-            <ChosenSetupModifiers
-              calcResult={calcResult}
-              chosenSetup={chosenSetup}
-              setBonuses={setBonuses}
-              weapon={weapon}
-            />
-          </div>
+          <ChosenSetupModifiers
+            calcResult={calcResult}
+            chosenSetup={chosenSetup}
+            setBonuses={setBonuses}
+            weapon={weapon}
+          />
         </Modal>
       )}
     </>

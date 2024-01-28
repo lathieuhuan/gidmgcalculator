@@ -1,43 +1,40 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 
 import type { CharInfo, Target } from "@Src/types";
 import { $AppSettings } from "@Src/services";
 import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calculatorSlice/selectors";
-
-// Hook
 import { useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { Table, CollapseSpace, Modal } from "@Src/pure-components";
+import { Table, CollapseSpace } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 
-interface OverrideOptions {
-  pendingCode: number;
+export interface OverwriteOptionsProps {
   importedChar: CharInfo;
   importedTarget: Target;
-  addImportedSetup: (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => void;
-  onCancel: () => void;
+  askForCharacter: boolean;
+  askForTarget: boolean;
+  onDone: (data: { shouldOverwriteChar: boolean; shouldOverwriteTarget: boolean }) => void;
 }
-export function OverrideOptions({
-  pendingCode,
+export function OverwriteOptions({
   importedChar,
   importedTarget,
-  addImportedSetup,
-  onCancel,
-}: OverrideOptions) {
+  askForCharacter,
+  askForTarget,
+  onDone,
+}: OverwriteOptionsProps) {
   const { t } = useTranslation();
   const setupsById = useSelector(selectCalcSetupsById);
   const activeId = useSelector(selectActiveId);
   const target = useSelector(selectTarget);
 
-  const [ticked, setTicked] = useState([false, false]);
-  const [expandedIndex, setExpandedIndex] = useState(-1);
+  const [expandedSection, setExpandedSection] = useState<"" | "char" | "target">("");
 
   const { char } = setupsById[activeId];
-  const comparedChar = {
+  const oldChar = {
     name: char.name,
     level: [char.level],
     NAs: [char.NAs],
@@ -47,123 +44,137 @@ export function OverrideOptions({
   };
 
   if ($AppSettings.get("charInfoIsSeparated")) {
-    comparedChar.level = Object.values(setupsById).map(({ char }) => char.level);
-    comparedChar.NAs = Object.values(setupsById).map(({ char }) => char.NAs);
-    comparedChar.ES = Object.values(setupsById).map(({ char }) => char.ES);
-    comparedChar.EB = Object.values(setupsById).map(({ char }) => char.EB);
-    comparedChar.cons = Object.values(setupsById).map(({ char }) => char.cons);
+    oldChar.level = Object.values(setupsById).map(({ char }) => char.level);
+    oldChar.NAs = Object.values(setupsById).map(({ char }) => char.NAs);
+    oldChar.ES = Object.values(setupsById).map(({ char }) => char.ES);
+    oldChar.EB = Object.values(setupsById).map(({ char }) => char.EB);
+    oldChar.cons = Object.values(setupsById).map(({ char }) => char.cons);
   }
 
-  const onChangeTickedOption = (i: number) => () => {
-    setTicked((prev) => {
-      const result = [...prev];
-      result[i] = !result[i];
-      return result;
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    onDone({
+      shouldOverwriteChar: !!formData.get("shouldOverwriteChar"),
+      shouldOverwriteTarget: !!formData.get("shouldOverwriteTarget"),
     });
   };
 
-  const onClickSeeDetails = (i: number) => () => {
-    setExpandedIndex(expandedIndex === i ? -1 : i);
+  const onClickSeeDetails = (section: typeof expandedSection) => {
+    setExpandedSection(section === expandedSection ? "" : section);
   };
 
-  const onConfirm = () => {
-    addImportedSetup(ticked[0], ticked[1]);
+  const renderCompareRow = (object1: any, object2: any, ns: "resistance" | "common") => {
+    return Object.keys(object1).map((type) => {
+      const value1 =
+        object1?.[type] === undefined
+          ? null
+          : Array.isArray(object1[type]) && object1[type].length > 1
+          ? `${object1[type].join(", ")}`
+          : `${object1[type]}`;
+
+      const value2 = object2?.[type] === undefined ? null : `${object2[type]}`;
+
+      return (
+        <Tr key={type}>
+          <Td className={"capitalize" + (value1 !== value2 ? " text-red-100" : "")}>{t(type, { ns })}</Td>
+          {type === "name" ? (
+            <Td colSpan={2} style={{ textAlign: "center" }}>
+              {oldChar.name}
+            </Td>
+          ) : (
+            <>
+              <Td>{value1}</Td>
+              <Td>{value2}</Td>
+            </>
+          )}
+        </Tr>
+      );
+    });
   };
 
-  const renderRow = (object1: any, object2: any, ns: "resistance" | "common") => (type: string) => {
-    const value1 =
-      object1?.[type] === undefined
-        ? null
-        : Array.isArray(object1[type]) && object1[type].length > 1
-        ? `[${object1[type].join(", ")}]`
-        : `${object1[type]}`;
+  const oldTarget = { level: target?.level, ...target?.resistances };
+  const newTarget = { level: importedTarget?.level, ...importedTarget?.resistances };
 
-    const value2 = object2?.[type] === undefined ? null : `${object2[type]}`;
+  return (
+    <form id="overwrite-configuration" onSubmit={onSubmit}>
+      <p className="text-base">
+        We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
+      </p>
+      <div className="mt-4 space-y-4">
+        <OverwriteOption
+          visible={askForCharacter}
+          label="Character's Info"
+          name="shouldOverwriteChar"
+          expanded={expandedSection === "char"}
+          onClickSeeDetails={() => onClickSeeDetails("char")}
+        >
+          {renderCompareRow(oldChar, importedChar, "common")}
+        </OverwriteOption>
 
-    return (
-      <Tr key={type}>
-        <Td className={"capitalize" + (value1 !== value2 ? " text-red-100" : "")}>{t(type, { ns })}</Td>
-        {type === "name" ? (
-          <Td colSpan={2} style={{ textAlign: "center" }}>
-            {comparedChar.name}
-          </Td>
-        ) : (
-          <>
-            <Td>{value1}</Td>
-            <Td>{value2}</Td>
-          </>
-        )}
-      </Tr>
-    );
-  };
+        <OverwriteOption
+          visible={askForTarget}
+          label="Target's Info"
+          name="shouldOverwriteTarget"
+          expanded={expandedSection === "target"}
+          onClickSeeDetails={() => onClickSeeDetails("target")}
+        >
+          {renderCompareRow(oldTarget, newTarget, "resistance")}
+        </OverwriteOption>
+      </div>
+    </form>
+  );
+}
+
+interface OverwriteOptionProps {
+  visible: boolean;
+  label: string;
+  name: string;
+  expanded: boolean;
+  /** Compare rows */
+  children: React.ReactNode;
+  onClickSeeDetails: () => void;
+}
+const OverwriteOption = ({ visible, label, name, expanded, children, onClickSeeDetails }: OverwriteOptionProps) => {
+  if (!visible) return null;
 
   return (
     <div>
-      <div className="pb-2">
-        <p className="text-base">
-          We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
-        </p>
-        <div>
-          {["Character's Info.", "Target's Info."].map((title, i) => {
-            if (pendingCode >= 300 || pendingCode % 10 === i) {
-              const object1: any = i ? { level: target?.level, ...target?.resistances } : comparedChar;
-              const object2: any = i ? { level: importedTarget?.level, ...importedTarget?.resistances } : importedChar;
-              const expanded = expandedIndex === i;
+      <div className="px-4 flex items-center justify-between">
+        <label className="mr-4 flex">
+          <input type="checkbox" name={name} className="scale-150" />
+          <span className="ml-2">{label}</span>
+        </label>
 
-              return (
-                <div key={i} className={expandedIndex ? "mt-4" : "mt-2"}>
-                  <div className="px-4 flex justify-between items-center">
-                    <label className="mr-4 flex items-center">
-                      <input
-                        type="checkbox"
-                        className="scale-150"
-                        checked={ticked[i]}
-                        onChange={onChangeTickedOption(i)}
-                      />
-                      <span className="ml-2">{title}</span>
-                    </label>
-
-                    <div className="flex items-center">
-                      <FaChevronRight className={"text-xs" + (expanded ? " rotate-90" : "")} />
-                      <span
-                        className={
-                          "ml-1 text-sm cursor-pointer " +
-                          (expanded ? "text-green-300 " : "text-light-400 hover:text-yellow-400 ")
-                        }
-                        onClick={onClickSeeDetails(i)}
-                      >
-                        See details
-                      </span>
-                    </div>
-                  </div>
-
-                  <CollapseSpace active={expandedIndex === i}>
-                    <div className="pt-2 flex justify-center">
-                      <div style={{ maxWidth: "18rem" }}>
-                        <Table>
-                          <tbody>
-                            <Tr>
-                              <Th />
-                              <Th className="text-yellow-400">Old</Th>
-                              <Th className="text-yellow-400">New</Th>
-                            </Tr>
-
-                            {Object.keys(object1).map(renderRow(object1, object2, i ? "resistance" : "common"))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    </div>
-                  </CollapseSpace>
-                </div>
-              );
-            }
-
-            return null;
-          })}
+        <div className="flex items-center">
+          <FaChevronRight className={"text-xs" + (expanded ? " rotate-90" : "")} />
+          <span
+            className={"ml-1 text-sm cursor-pointer " + (expanded ? "text-green-300" : "text-light-400")}
+            onClick={onClickSeeDetails}
+          >
+            See details
+          </span>
         </div>
       </div>
 
-      <Modal.Actions onCancel={onCancel} onConfirm={onConfirm} />
+      <CollapseSpace active={expanded}>
+        <div className="pt-2 flex justify-center">
+          <div style={{ maxWidth: "18rem" }}>
+            <Table>
+              <tbody>
+                <Tr>
+                  <Th />
+                  <Th className="text-yellow-400">Old</Th>
+                  <Th className="text-yellow-400">New</Th>
+                </Tr>
+
+                {children}
+              </tbody>
+            </Table>
+          </div>
+        </div>
+      </CollapseSpace>
     </div>
   );
-}
+};

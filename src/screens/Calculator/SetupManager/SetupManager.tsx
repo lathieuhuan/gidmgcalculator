@@ -146,23 +146,30 @@ export default function SetupManager() {
         onClose={closeModal}
       />
 
-      <Modal active={modalType === "TARGET_CONFIG"} className={Modal.LARGE_HEIGHT_CLS} onClose={closeModal}>
-        <TargetConfig
-          button={
-            targetOverviewOn ? null : (
-              <Button
-                variant="positive"
-                onClick={() => {
-                  setTargetOverviewOn(true);
-                  closeModal();
-                }}
-              >
-                Overview mode
-              </Button>
-            )
-          }
-          onClose={closeModal}
-        />
+      <Modal
+        active={modalType === "TARGET_CONFIG"}
+        className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
+        title="Target Configuration (live)"
+        bodyCls="grow hide-scrollbar"
+        withActions
+        showCancel={false}
+        confirmText="Close"
+        confirmButtonProps={{ variant: "default" }}
+        onConfirm={closeModal}
+        cancelText="Overview mode"
+        moreActions={[
+          {
+            text: "Overview mode",
+            className: targetOverviewOn && "invisible",
+            onClick: () => {
+              setTargetOverviewOn(true);
+              closeModal();
+            },
+          },
+        ]}
+        onClose={closeModal}
+      >
+        <TargetConfig />
       </Modal>
     </div>
   );
