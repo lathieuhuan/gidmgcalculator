@@ -22,6 +22,8 @@ import { useTranslation } from "@Src/pure-hooks";
 // Component
 import { Input } from "@Src/pure-components";
 
+import styles from "./styles.module.scss";
+
 type CustomBuffCategory = CustomBuffCtrl["category"];
 
 const CATEGORIES: Record<
@@ -113,8 +115,48 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
     onDone();
   };
 
+  const categorySelect = (
+    <div className="flex items-center relative">
+      <FaChevronDown className="absolute -z-10" />
+      <select
+        className="pl-6 pr-2 text-light-400 appearance-none capitalize"
+        value={config.type}
+        onChange={(e) => onChangeType(e.target.value)}
+      >
+        {CATEGORIES[config.category].types.map((option) => (
+          <option key={option} className="pr-2" value={option}>
+            {toCustomBuffLabel(config.category, option, t)}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
+  const valueInput = (
+    <div className="flex items-center">
+      <Input
+        ref={inputRef}
+        type="number"
+        className="w-16 px-2 py-1 text-lg text-right font-semibold"
+        autoFocus
+        value={config.value}
+        min={sign ? -99 : -9999}
+        max={sign ? 999 : 99_999}
+        onChange={(value) => {
+          setConfig((prev) => ({ ...prev, value }));
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onDone();
+          }
+        }}
+      />
+      <span className="w-5 flex justify-end">{sign}</span>
+    </div>
+  );
+
   return (
-    <div className="flex flex-col">
+    <div className={clsx("flex flex-col", styles["buff-ctrl-creator"])}>
       <div className="flex flex-col md1:flex-row">
         {Object.entries(CATEGORIES).map(([category, { label }], index) => {
           const chosen = config.category === category;
@@ -124,8 +166,8 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
               key={category}
               className={clsx(
                 "px-4 py-1",
-                !index && "rounded-t-lg md1:rounded-tr-none md1:rounded-l-lg",
-                index === 3 && "rounded-b-lg md1:rounded-bl-none md1:rounded-r-lg",
+                !index && "rounded-t md1:rounded-tr-none md1:rounded-l",
+                index === 3 && "rounded-b md1:rounded-bl-none md1:rounded-r",
                 chosen ? "bg-light-400" : "bg-dark-500"
               )}
               onMouseDown={(e) => e.preventDefault()}
@@ -135,73 +177,46 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
                 }
               }}
             >
-              <p className={clsx("text-lg font-semibold text-center", chosen && "text-black")}>{label}</p>
+              <p className={clsx("font-semibold text-center", chosen && "text-black")}>{label}</p>
             </button>
           );
         })}
       </div>
 
-      <form
-        id="buff-creator"
-        className="py-4 mx-auto flex-center flex-col md1:flex-row md1:space-x-3"
-        onSubmit={onSubmit}
-      >
-        <div className="mt-4 flex items-center relative">
-          <FaChevronDown className="absolute -z-10" />
-          <select
-            className="pl-6 pr-2 text-light-400 appearance-none capitalize"
-            value={config.type}
-            onChange={(e) => onChangeType(e.target.value)}
-          >
-            {CATEGORIES[config.category].types.map((option) => (
-              <option key={option} className="pr-2" value={option}>
-                {toCustomBuffLabel(config.category, option, t)}
-              </option>
-            ))}
-          </select>
-        </div>
+      <form id="buff-creator" className="mt-6" onSubmit={onSubmit}>
+        {subTypes ? (
+          <div className="flex flex-col md1:flex-row md1:justify-end md1:items-center gap-2">
+            {categorySelect}
 
-        <div className="mt-4 flex items-center">
-          {subTypes ? (
-            ["melt", "vaporize"].includes(config.type) ? (
-              <span className="px-2">{t("pct_")}</span>
-            ) : (
-              <div className="flex items-center relative">
-                <FaChevronDown className="absolute -z-10" />
-                <select
-                  className="pl-6 pr-2 text-light-400 appearance-none"
-                  value={config.subType}
-                  onChange={(e) => onChangeSubType(e.target.value)}
-                >
-                  {subTypes.map((subType, i) => (
-                    <option key={i} className="disabled:bg-light-800" value={subType}>
-                      {t(subType)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )
-          ) : null}
+            <div className="flex items-center justify-between gap-2">
+              {["melt", "vaporize"].includes(config.type) ? (
+                <span className="px-2">{t("pct_")}</span>
+              ) : (
+                <div className="flex items-center relative">
+                  <FaChevronDown className="absolute -z-10" />
+                  <select
+                    className="pl-6 pr-2 text-light-400 appearance-none"
+                    value={config.subType}
+                    onChange={(e) => onChangeSubType(e.target.value)}
+                  >
+                    {subTypes.map((subType, i) => (
+                      <option key={i} className="disabled:bg-light-800" value={subType}>
+                        {t(subType)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
-          <Input
-            ref={inputRef}
-            type="number"
-            className="w-16 ml-3 px-2 py-1 text-lg text-right font-semibold"
-            autoFocus
-            value={config.value}
-            min={sign ? -99 : -9999}
-            max={sign ? 999 : 99_999}
-            onChange={(value) => {
-              setConfig((prev) => ({ ...prev, value }));
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                onDone();
-              }
-            }}
-          />
-          <span className="ml-2">{sign}</span>
-        </div>
+              {valueInput}
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center md1:justify-end gap-2">
+            {categorySelect}
+            {valueInput}
+          </div>
+        )}
       </form>
     </div>
   );

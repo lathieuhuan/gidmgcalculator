@@ -54,14 +54,7 @@ export function useArtifactSetFilter(artifacts: CalcArtifact[], chosenCodes: num
           <div className={setsWrapCls}>
             {filterSets.map((set, i) => {
               return (
-                <div
-                  key={i}
-                  className="p-2"
-                  style={{
-                    minWidth: 76,
-                  }}
-                  onClick={() => toggleSet(i)}
-                >
+                <div key={i} className="p-2" onClick={() => toggleSet(i)}>
                   <div
                     className={clsx(
                       "rounded-circle",

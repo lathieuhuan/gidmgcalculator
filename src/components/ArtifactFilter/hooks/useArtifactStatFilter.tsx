@@ -109,41 +109,43 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
 
   const renderArtifactStatFilter = (className: ClassValue = "") => {
     return (
-      <div className={clsx("h-full w-full flex flex-col space-y-4", className)}>
-        <p className="text-sm">
-          Artifacts will not only be <b>filtered</b> by stats, but also <b>sorted</b> by stats. The priority is Main
-          Stat (if not "All"), then Sub Stat 1, Sub Stat 2...
-        </p>
+      <div className={clsx("h-full w-full flex flex-col", className)}>
+        <div className="grow hide-scrollbar flex flex-col space-y-4">
+          <p className="text-sm text-light-600">
+            Artifacts will not only be <b>filtered</b> by stats, but also <b>sorted</b> by stats. The priority is Main
+            Stat (if not "All"), then Sub Stat 1, Sub Stat 2...
+          </p>
 
-        <div className="grow hide-scrollbar">
-          <div className="space-y-1">
-            <p className="text-lg text-orange-500 font-semibold">Main Stat</p>
-            <div className="mt-1 flex justify-center">
-              {renderSelect({ value: filter.main, options: mainStatOptions, onChange: changeMainStat })}
+          <div>
+            <div className="space-y-1">
+              <p className="text-lg text-orange-500 font-semibold">Main Stat</p>
+              <div className="mt-1 flex justify-center">
+                {renderSelect({ value: filter.main, options: mainStatOptions, onChange: changeMainStat })}
+              </div>
             </div>
-          </div>
 
-          <div className="mt-2 space-y-1">
-            <p className="text-lg text-orange-500 font-semibold">Sub Stats</p>
-            <div className="flex flex-col items-center space-y-2">
-              {[1, 2, 3, 4].map((no, i) => {
-                const prevValue = filter.subs[i - 1];
+            <div className="mt-3 space-y-1">
+              <p className="text-lg text-orange-500 font-semibold">Sub Stats</p>
+              <div className="flex flex-col items-center space-y-2">
+                {[1, 2, 3, 4].map((no, i) => {
+                  const prevValue = filter.subs[i - 1];
 
-                return renderSelect({
-                  no,
-                  value: filter.subs[i],
-                  options: subStatOptions,
-                  showSelect: !prevValue || prevValue !== "All",
-                  onChange: changeSubStat,
-                });
-              })}
+                  return renderSelect({
+                    no,
+                    value: filter.subs[i],
+                    options: subStatOptions,
+                    showSelect: !prevValue || prevValue !== "All",
+                    onChange: changeSubStat,
+                  });
+                })}
+              </div>
             </div>
-          </div>
 
-          {hasDuplicates && <p className="mt-4 text-red-100">Every stat must be unique!</p>}
+            {hasDuplicates && <p className="mt-4 text-red-100">Every stat must be unique!</p>}
+          </div>
         </div>
 
-        <div className="flex space-x-2">
+        <div className="mt-4 flex space-x-2">
           <Button size="small" icon={<BiReset className="text-lg" />} disabled={!resetable} onClick={clearFilter}>
             Clear All
           </Button>
