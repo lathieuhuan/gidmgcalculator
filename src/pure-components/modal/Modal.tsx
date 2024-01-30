@@ -46,7 +46,8 @@ const Modal = ({
       >
         {title}
       </div>
-      <div className={bodyCls}>{children}</div>
+      <div className={bodyCls}>{typeof children === "function" ? children() : children}</div>
+
       {withActions && (
         <ModalActions
           {...{

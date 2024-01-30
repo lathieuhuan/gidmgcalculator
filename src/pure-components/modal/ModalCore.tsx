@@ -32,7 +32,7 @@ export interface ModalCoreProps extends ModalControl {
   closeOnMaskClick?: boolean;
   className?: ClassValue;
   style?: CSSProperties;
-  children: ReactNode;
+  children: ReactNode | (() => JSX.Element | null);
 }
 export const ModalCore = ({
   active,
@@ -122,7 +122,7 @@ export const ModalCore = ({
               ...style,
             }}
           >
-            {children}
+            {typeof children === "function" ? children() : children}
           </div>
         </div>,
         document.querySelector("#root")!

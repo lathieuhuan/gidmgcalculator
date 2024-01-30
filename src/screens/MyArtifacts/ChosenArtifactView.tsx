@@ -14,7 +14,7 @@ import {
 
 // Component
 import { ButtonGroup, ConfirmModal } from "@Src/pure-components";
-import { ArtifactCard, ItemRemoveConfirm, OwnerLabel, PickerCharacter } from "@Src/components";
+import { ArtifactCard, OwnerLabel, PickerCharacter } from "@Src/components";
 
 interface ChosenArtifactViewProps {
   artifact?: UserArtifact;
@@ -35,9 +35,9 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
 
   return (
     <Fragment>
-      <div>
-        <div className="p-4 rounded-lg bg-dark-900 flex flex-col">
-          <div className="w-75 hide-scrollbar" style={{ height: "26rem" }}>
+      <div className="flex flex-col">
+        <div className="p-4 rounded-lg bg-dark-900 grow flex flex-col">
+          <div className="w-75 grow hide-scrollbar" style={{ height: "26rem" }}>
             {artifact ? (
               <ArtifactCard
                 artifact={artifact}
@@ -69,9 +69,10 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           {artifact ? (
             <ButtonGroup
               className="mt-4"
+              justify="end"
               buttons={[
-                { text: "Remove", variant: "negative", onClick: () => setModalType("REMOVE_ARTIFACT") },
-                { text: "Equip", variant: "positive", onClick: () => setModalType("EQUIP_CHARACTER") },
+                { text: "Remove", onClick: () => setModalType("REMOVE_ARTIFACT") },
+                { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },
               ]}
             />
           ) : null}
@@ -90,7 +91,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
         onClose={closeModal}
       />
 
-      {artifact && (
+      {artifact ? (
         <ConfirmModal
           active={!!newOwner}
           message={
@@ -104,19 +105,29 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           onConfirm={() => swapOwner(newOwner!)}
           onClose={() => setNewOwner(null)}
         />
-      )}
+      ) : null}
 
-      {artifact && (
-        <ItemRemoveConfirm
+      {artifact ? (
+        <ConfirmModal
           active={modalType === "REMOVE_ARTIFACT"}
-          item={artifact}
+          message={
+            <>
+              Remove "<b>{$AppData.getArtifactSetData(artifact.code)?.name}</b>" ({artifact.type})?{" "}
+              {artifact.owner ? (
+                <>
+                  It is currently used by <b>{artifact.owner}</b>.
+                </>
+              ) : null}
+            </>
+          }
+          focusConfirm
           onConfirm={() => {
             dispatch(removeArtifact(artifact));
             onRemoveArtifact?.();
           }}
           onClose={closeModal}
         />
-      )}
+      ) : null}
     </Fragment>
   );
 };

@@ -4,7 +4,6 @@ export * from "./AttributeTable";
 export * from "./CharacterPortrait";
 export * from "./DamageDisplay";
 export * from "./ItemThumb";
-export * from "./ItemRemoveConfirm";
 export * from "./ModifierTemplate";
 export * from "./OwnerLabel";
 export * from "./SetBonusesDisplay";

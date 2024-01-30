@@ -149,7 +149,7 @@ export default function SetupManager() {
       <Modal
         active={modalType === "TARGET_CONFIG"}
         className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
-        title="Target Configuration (live)"
+        title="Target Configuration (direct)"
         bodyCls="grow hide-scrollbar"
         withActions
         showCancel={false}

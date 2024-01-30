@@ -6,6 +6,7 @@ import type { WeaponType } from "@Src/types";
 import { MAX_USER_WEAPONS, WEAPON_ICONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
 import { useTypeFilter } from "@Src/hooks";
+import { $AppData } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -14,16 +15,8 @@ import { addUserWeapon, removeWeapon, sortWeapons, swapWeaponOwner, updateUserWe
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
-import { ButtonGroup, CollapseSpace, WarehouseLayout, Button } from "@Src/pure-components";
-import {
-  OwnerLabel,
-  TypeSelect,
-  WeaponCard,
-  InventoryRack,
-  ItemRemoveConfirm,
-  PickerCharacter,
-  PickerWeapon,
-} from "@Src/components";
+import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
+import { OwnerLabel, TypeSelect, WeaponCard, InventoryRack, PickerCharacter, PickerWeapon } from "@Src/components";
 
 import styles from "../styles.module.scss";
 
@@ -124,6 +117,7 @@ export default function MyWeapons() {
               {chosenWeapon ? (
                 <ButtonGroup
                   className="mt-4"
+                  justify="end"
                   buttons={[
                     {
                       text: "Remove",
@@ -203,10 +197,20 @@ export default function MyWeapons() {
         />
       )}
 
-      {chosenWeapon && (
-        <ItemRemoveConfirm
+      {chosenWeapon ? (
+        <ConfirmModal
           active={modalType === "REMOVE_WEAPON"}
-          item={chosenWeapon}
+          message={
+            <>
+              Remove "<b>{$AppData.getWeaponData(chosenWeapon.code).name}</b>"?{" "}
+              {chosenWeapon.owner ? (
+                <>
+                  It is currently used by <b>{chosenWeapon.owner}</b>.
+                </>
+              ) : null}
+            </>
+          }
+          focusConfirm
           onConfirm={() => {
             dispatch(removeWeapon(chosenWeapon));
 
@@ -224,7 +228,7 @@ export default function MyWeapons() {
           }}
           onClose={closeModal}
         />
-      )}
+      ) : null}
     </WarehouseLayout.Wrapper>
   );
 }

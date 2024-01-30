@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { Modal, ConfirmModalBody, Button, ButtonGroupItem } from "@Src/pure-components";
+import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
 interface ArtifactInfoProps {
