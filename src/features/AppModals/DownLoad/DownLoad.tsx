@@ -51,4 +51,4 @@ const DownloadOptions = () => {
   );
 };
 
-export const Download = Modal.wrap(DownloadOptions, { preset: "small" }, true);
+export const Download = Modal.wrap(DownloadOptions, { preset: "small", withCloseButton: true });

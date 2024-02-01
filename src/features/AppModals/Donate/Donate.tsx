@@ -38,4 +38,4 @@ export const DonateCore = () => {
   );
 };
 
-export const Donate = Modal.wrap(DonateCore, { preset: "small" }, true);
+export const Donate = Modal.wrap(DonateCore, { preset: "small", withCloseButton: true });

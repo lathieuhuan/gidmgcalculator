@@ -80,4 +80,4 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   );
 };
 
-export const FileUpload = Modal.wrap(FileUploadCore, { preset: "small" }, true);
+export const FileUpload = Modal.wrap(FileUploadCore, { preset: "small", withCloseButton: true });
