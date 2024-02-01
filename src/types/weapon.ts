@@ -46,7 +46,7 @@ type InputStack = {
 type AttributeStack = {
   type: "attribute";
   field: "hp" | "base_atk" | "def" | "em" | "er_";
-  requiredBase?: number;
+  baseline?: number;
 };
 
 type VisionStack = {

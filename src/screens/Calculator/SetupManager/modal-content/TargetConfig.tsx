@@ -1,17 +1,15 @@
-import type { ReactNode, ChangeEvent } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 
 import type { AttackElement, Vision } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
-import { updateTarget } from "@Store/calculatorSlice";
-import { selectTarget } from "@Store/calculatorSlice/selectors";
-
-// Util
-import { toArray } from "@Src/utils";
-import { appData } from "@Src/data";
-
-// Hook
 import { useTranslation } from "@Src/pure-hooks";
+import { $AppData } from "@Src/services";
+import { toArray } from "@Src/utils";
+
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
+import { selectTarget } from "@Store/calculatorSlice/selectors";
+import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
 import { Button, CloseButton, Input } from "@Src/pure-components";
@@ -26,7 +24,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
   const { t } = useTranslation();
 
   const target = useSelector(selectTarget);
-  const monsData = appData.getMonsData(target);
+  const monsData = $AppData.getMonsData(target);
 
   if (!monsData) {
     return null;

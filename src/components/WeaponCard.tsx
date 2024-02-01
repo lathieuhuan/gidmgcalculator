@@ -1,13 +1,10 @@
-import { useMemo } from "react";
 import type { CalcWeapon, Level } from "@Src/types";
+import { useMemo } from "react";
 
-// Constant
 import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/pure-hooks";
-
-// Util
-import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseWeaponDescription } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
+import { getImgSrc, parseWeaponDescription, percentSign, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
 
 // Component
 import { BetaMark } from "@Src/pure-components";
@@ -24,7 +21,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { t } = useTranslation();
   if (!weapon) return null;
 
-  const wpData = appData.getWeaponData(weapon.code)!;
+  const wpData = $AppData.getWeaponData(weapon.code)!;
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
@@ -38,11 +35,11 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
-      <p className={`text-2.5xl text-rarity-${rarity} font-bold`}>{wpData.name}</p>
+      <p className={`text-2xl text-rarity-${rarity} font-bold`}>{wpData.name}</p>
+
       <div className="mt-2 flex">
         {/* left */}
-        <div className="flex flex-col grow justify-between">
-          {/*  */}
+        <div className="flex flex-col grow justify-between space-y-1">
           <div className={"pt-1 grow flex items-center " + groupStyles}>
             <p className="mr-2 text-lg font-semibold">Level</p>
             {mutable ? (
@@ -61,7 +58,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
           </div>
 
           {subStat ? (
-            <div className={"grow mt-1 pt-1 flex flex-col justify-center " + groupStyles}>
+            <div className={"grow pt-1 flex flex-col justify-center " + groupStyles}>
               <p className="font-semibold">{t(subStat.type)}</p>
               <p className={`text-rarity-${rarity} text-2xl leading-7 font-bold`}>
                 {weaponSubStatValue(subStat.scale, level)}
@@ -70,7 +67,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
             </div>
           ) : null}
 
-          <div className={"grow mt-1 pt-1 flex flex-col justify-center " + groupStyles}>
+          <div className={"grow pt-1 flex flex-col justify-center " + groupStyles}>
             <p className="font-semibold">Base ATK</p>
             <p className={`text-rarity-${rarity} text-2.5xl font-bold`}>
               {weaponMainStatValue(wpData.mainStatScale, level)}

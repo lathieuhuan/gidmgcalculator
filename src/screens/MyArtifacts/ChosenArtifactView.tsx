@@ -1,8 +1,9 @@
 import { Fragment, useState } from "react";
 
 import { AttributeStat, UserArtifact } from "@Src/types";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
+// Store
 import { useDispatch } from "@Store/hooks";
 import {
   removeArtifact,
@@ -101,7 +102,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           message={
             <>
               <b>{artifact.owner}</b> is currently using "
-              <b>{appData.getArtifactData(artifact)?.name || "<name missing>"}</b>
+              <b>{$AppData.getArtifactData(artifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }

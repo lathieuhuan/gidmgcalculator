@@ -14,7 +14,7 @@ import type {
 } from "@Src/types";
 
 import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { mapVerson3_0 } from "./constants";
 
 import { getArtifactSetBonuses } from "../calculation";
@@ -129,7 +129,7 @@ const convertCharacter = (
 
   if (!weaponID || !findById(weapons, weaponID)) {
     finalWeaponID = seedID++;
-    const { weaponType = "sword" } = appData.getCharData(char.name) || {};
+    const { weaponType = "sword" } = $AppData.getCharData(char.name) || {};
 
     xtraWeapon = {
       ID: finalWeaponID,
@@ -216,7 +216,7 @@ const convertSetup = (
   seedID: number
 ): ConvertSetupResult => {
   const { weapon, art } = setup;
-  const { buffs = [], debuffs = [] } = appData.getCharData(setup.char.name) || {};
+  const { buffs = [], debuffs = [] } = $AppData.getCharData(setup.char.name) || {};
   let weaponID: number;
   let xtraWeapon: UserWeapon | undefined;
   const artifactIDs: (number | null)[] = [];
@@ -242,7 +242,7 @@ const convertSetup = (
 
   if (weaponInfo.ID && existedWeapon) {
     weaponID = weaponInfo.ID;
-    dataWeapon = appData.getWeaponData(existedWeapon.code);
+    dataWeapon = $AppData.getWeaponData(existedWeapon.code);
 
     if (!existedWeapon.setupIDs?.includes(setup.ID)) {
       existedWeapon.setupIDs = (existedWeapon.setupIDs || []).concat(setup.ID);
@@ -256,7 +256,7 @@ const convertSetup = (
       owner: null,
       setupIDs: [setup.ID],
     };
-    dataWeapon = appData.getWeaponData(xtraWeapon.code);
+    dataWeapon = $AppData.getWeaponData(xtraWeapon.code);
   }
 
   // ARTIFACTS
@@ -294,14 +294,14 @@ const convertSetup = (
     }
   }
   const { code: setBonusesCode = 0 } = getArtifactSetBonuses(finalArtifacts)[0] || {};
-  const { buffs: artifactBuffs = [] } = appData.getArtifactSetData(setBonusesCode) || {};
+  const { buffs: artifactBuffs = [] } = $AppData.getArtifactSetData(setBonusesCode) || {};
 
   // PARTY
   for (const teammate of setup.party) {
     if (!teammate) {
       party.push(null);
     } else {
-      const dataTeammate = appData.getCharData(teammate);
+      const dataTeammate = $AppData.getCharData(teammate);
 
       if (!dataTeammate) {
         party.push(null);

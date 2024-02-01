@@ -1,189 +1,99 @@
-import clsx from "clsx";
-import { ButtonHTMLAttributes, ReactElement } from "react";
-import { FaInfoCircle, FaTimes } from "react-icons/fa";
-import { StringRecord } from "@Src/types";
+import clsx, { ClassValue } from "clsx";
+import { ButtonHTMLAttributes, ReactNode } from "react";
+import { FaTimes } from "react-icons/fa";
 
-const bgColorByVariant: StringRecord = {
-  positive: "bg-yellow-400",
-  neutral: "bg-green-300",
-  negative: "bg-red-600",
-  default: "bg-light-400",
+type ButtonVariant = "default" | "positive" | "negative" | "neutral" | "custom";
+
+type ButtonShape = "rounded" | "square";
+
+type ButtonSize = "small" | "medium" | "custom";
+
+const colorCls: Partial<Record<ButtonVariant, string>> = {
+  default: "bg-light-400 text-black",
+  positive: "bg-yellow-400 text-black",
+  negative: "bg-red-600 text-light-400",
+  neutral: "bg-green-300 text-black",
 };
-const colorByVariant: StringRecord = {
-  positive: "text-yellow-400",
-  neutral: "text-green-300",
-  negative: "text-red-600",
+
+const boneColorCls: Partial<Record<ButtonVariant, string>> = {
   default: "text-light-400",
+  positive: "text-yellow-400",
+  negative: "text-red-600",
+  neutral: "text-green-300",
 };
 
-const buttonPadding = {
-  circular: {
-    small: "px-3 py-1",
-    medium: "px-4 py-1.5",
-  },
-  rounded: {
-    small: "px-2 py-1",
-    medium: "px-3 py-1.5",
-  },
-  square: {
-    small: "px-3 py-1",
-    medium: "px-4 py-1.5",
-  },
-};
-const buttonSize = {
-  small: "text-sm leading-4",
-  medium: "text-base leading-5",
+const shapeCls: Record<ButtonShape, string> = {
+  square: "rounded",
+  rounded: "rounded-full",
 };
 
-const iconButtonPadding = {
-  withFlesh: {
-    small: "p-1.5",
-    medium: "p-2",
-  },
-  boneOnly: {
-    small: "p-1",
-    medium: "p-1.5",
-  },
-};
-const iconButtonSize = {
-  withFlesh: buttonSize,
-  boneOnly: {
-    small: "text-lg leading-5",
-    medium: "text-xl leading-6",
-  },
+const sizeCls: Partial<Record<ButtonSize, string>> = {
+  small: "px-2 py-0.5",
+  medium: "px-3 py-1.5",
 };
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "positive" | "neutral" | "negative" | "default" | "custom";
-  shape?: "rounded" | "circular" | "square";
-  size?: "small" | "medium";
+const iconSizeCls: Partial<Record<ButtonSize, string>> = {
+  small: "p-[5px]",
+  medium: "p-2",
+};
+
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  className?: ClassValue;
+  variant?: ButtonVariant;
+  shape?: ButtonShape;
+  size?: ButtonSize;
   boneOnly?: boolean;
-  paddingCls?: string | null;
-  icon?: ReactElement;
+  icon?: ReactNode;
   iconPosition?: "start" | "end";
 }
 export const Button = ({
   variant = "default",
-  shape = "circular",
+  shape = "rounded",
   size = "medium",
   boneOnly,
-  paddingCls,
   icon,
   iconPosition = "start",
   children,
+  className,
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "font-bold flex-center",
-    shape === "circular" ? "rounded-full" : "rounded",
-    variant === "custom"
-      ? ""
-      : boneOnly
-      ? colorByVariant[variant]
-      : ["shadow-common", bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"],
+    "text-sm font-bold flex-center",
+    iconPosition === "end" && "flex-row-reverse",
+    boneOnly ? boneColorCls[variant] : colorCls[variant],
+    shapeCls[shape],
     rest.disabled ? "opacity-50" : "glow-on-hover",
-    rest.className,
-  ];
+    className,
+  ].concat(children ? [size === "small" ? "space-x-1" : "space-x-1.5", sizeCls[size]] : iconSizeCls[size]);
 
-  const getPaddingCls = (defaultCls: string) => {
-    return paddingCls === null ? "" : paddingCls || defaultCls;
-  };
-
-  if (children) {
-    const iconRender = <span className="shrink-0">{icon}</span>;
-
-    return (
-      <button
-        type="button"
-        {...rest}
-        className={clsx(classes, "space-x-1.5", buttonSize[size], getPaddingCls(buttonPadding[shape][size]))}
-      >
-        {!!icon && iconPosition === "start" && iconRender}
-        <span className={size === "small" ? "pt-0.5" : ""}>{children}</span>
-        {!!icon && iconPosition === "end" && iconRender}
-      </button>
-    );
-  }
   return (
-    <button
-      type="button"
-      {...rest}
-      className={clsx(
-        classes,
-        boneOnly
-          ? [getPaddingCls(iconButtonPadding.boneOnly[size]), iconButtonSize.boneOnly[size]]
-          : [getPaddingCls(iconButtonPadding.withFlesh[size]), iconButtonSize.withFlesh[size]]
-      )}
-    >
-      {icon}
+    <button type="button" className={clsx(classes)} {...rest}>
+      {icon ? <span className={clsx("shrink-0", !children && size === "medium" && "text-base")}>{icon}</span> : null}
+      {children ? <span>{children}</span> : null}
     </button>
   );
 };
 
 interface ToggleButtonProps extends Omit<ButtonProps, "boneOnly"> {
   active?: boolean;
+  variant?: Exclude<ButtonVariant, "custom">;
 }
-export const ToggleButton = ({ active, variant = "default", ...rest }: ToggleButtonProps) => {
-  return (
-    <Button
-      {...rest}
-      variant="custom"
-      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"])}
-    />
-  );
+export const ToggleButton = ({ active, variant = "default", className, ...rest }: ToggleButtonProps) => {
+  return <Button {...rest} variant="custom" className={[className, active && colorCls[variant]]} />;
 };
 
-export interface CloseButtonProps extends Omit<ButtonProps, "icon" | "children" | "variant"> {
-  hoverRed?: boolean;
+export interface CloseButtonProps
+  extends Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled"> {
+  //
 }
-export const CloseButton = ({ hoverRed = true, ...rest }: CloseButtonProps) => {
-  if (rest.boneOnly) {
-    return (
-      <Button
-        variant="default"
-        icon={<FaTimes className="shrink-0" />}
-        {...rest}
-        className={rest.className + (hoverRed ? " hover:text-red-600" : "")}
-      />
-    );
-  }
+export const CloseButton = ({ boneOnly, className, ...rest }: CloseButtonProps) => {
   return (
     <Button
-      variant="negative"
-      icon={<FaTimes className={"shrink-0 " + (rest.size === "small" ? "text-base" : "text-lg")} />}
+      variant={boneOnly ? "default" : "negative"}
+      icon={<FaTimes />}
+      boneOnly={boneOnly}
+      className={clsx(className, boneOnly && "hover:text-red-600")}
       {...rest}
-      style={{
-        ...(rest.paddingCls === null ? undefined : { padding: rest.size === "small" ? 5 : 7 }),
-        ...rest.style,
-      }}
-    />
-  );
-};
-
-interface InfoSignProps {
-  className?: string;
-  active?: boolean;
-  selfHover?: boolean;
-  onClick?: () => void;
-}
-export const InfoSign = (props: InfoSignProps) => {
-  if (props.active) {
-    return (
-      <CloseButton
-        className={clsx("w-6 h-6", props.className)}
-        size="small"
-        paddingCls={null}
-        onClick={props.onClick}
-      />
-    );
-  }
-  return (
-    <Button
-      className={clsx(props.selfHover ? "hover:text-yellow-400" : "group-hover:text-yellow-400", props.className)}
-      boneOnly
-      paddingCls={null}
-      icon={<FaInfoCircle className="text-2xl" />}
-      onClick={props.onClick}
     />
   );
 };

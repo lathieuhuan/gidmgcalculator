@@ -1,7 +1,7 @@
 import { createContext, useState, useCallback } from "react";
 
 import { setupStore } from "@Src/store";
-import { appSettings } from "@Src/utils";
+import { $AppSettings } from "@Src/services";
 
 type ChangeConfigFn = (args: Partial<{ persistingUserData: boolean }>) => void;
 
@@ -11,11 +11,11 @@ interface PersistControlProviderProps {
   children: (config: ReturnType<typeof setupStore>) => React.ReactElement;
 }
 export const PersistControlProvider = (props: PersistControlProviderProps) => {
-  const [config, setConfig] = useState(setupStore({ persistingUserData: appSettings.get().persistingUserData }));
+  const [config, setConfig] = useState(setupStore({ persistingUserData: $AppSettings.get().persistingUserData }));
 
   const changeConfig: ChangeConfigFn = useCallback(({ persistingUserData }) => {
-    if (persistingUserData !== appSettings.get().persistingUserData) {
-      appSettings.set({ persistingUserData });
+    if (persistingUserData !== $AppSettings.get().persistingUserData) {
+      $AppSettings.set({ persistingUserData });
 
       setConfig(setupStore({ persistingUserData }));
     }

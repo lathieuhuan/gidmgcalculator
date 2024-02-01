@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 interface UseGetMetadataOptions {
   onSuccess?: () => void;
@@ -13,7 +13,7 @@ export const useGetMetadata = (options: UseGetMetadataOptions = {}) => {
       setStatus("loading");
     }
 
-    const isOk = await appData.fetchMetadata();
+    const isOk = await $AppData.fetchMetadata();
 
     if (isOk) {
       setStatus("done");

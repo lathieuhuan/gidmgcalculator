@@ -1,4 +1,4 @@
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { AppArtifact, ArtifactModifier, ModifierCtrl } from "@Src/types";
 import { findByIndex, parseArtifactDescription, toArray } from "@Src/utils";
 import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplate";
@@ -30,7 +30,7 @@ export const renderArtifactModifiers = ({
   ctrls,
   getHanlders,
 }: RenderArtifactBuffsArgs) => {
-  const data = appData.getArtifactSetData(code);
+  const data = $AppData.getArtifactSetData(code);
   if (!data) return [];
   const { buffs = [] } = data;
 

@@ -4,9 +4,9 @@ import { FaChevronDown } from "react-icons/fa";
 import type { CharInfo, DamageResult, Party } from "@Src/types";
 import { EStatDamageKey } from "@Src/constants";
 import { useTranslation } from "@Src/pure-hooks";
+import { $AppData } from "@Src/services";
 
 // Util
-import { appData } from "@Src/data";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 
@@ -47,7 +47,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                 char,
                 charData,
                 talentType: key.main,
-                partyData: appData.getPartyData(party),
+                partyData: $AppData.getPartyData(party),
               })
             : 0;
 

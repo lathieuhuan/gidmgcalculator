@@ -1,5 +1,4 @@
 import type {
-  AppSettings,
   AttackElement,
   AttackPattern,
   CalcArtifact,
@@ -93,19 +92,23 @@ export const getTalentDefaultInfo = (
   key: "NAs" | "ES" | "EB",
   weaponType: WeaponType,
   vision: Vision,
-  attPatt?: AttackPattern
+  attPatt: AttackPattern,
+  config?: AppCharacter["multFactorConf"]
 ): {
   attElmt: AttackElement;
   scale: number;
-  attributeType: TalentAttributeType;
+  basedOn: TalentAttributeType;
   flatFactorScale: number;
 } => {
   const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
+  const defaultScale = attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2;
+  const defaultBasedOn: TalentAttributeType = "atk";
+  const { scale = defaultScale, basedOn = defaultBasedOn } = config?.[attPatt] || {};
 
   return {
     attElmt,
-    scale: attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2,
-    attributeType: "atk",
+    scale,
+    basedOn,
     flatFactorScale: 3,
   };
 };
@@ -130,42 +133,3 @@ export const toCustomBuffLabel = (category: string, type: string, t: (origin: st
 };
 
 export const realParty = (party?: Party) => (party?.filter(Boolean) as Teammate[]) ?? [];
-
-const getAppSettings = (): AppSettings => {
-  let savedSettings = localStorage.getItem("settings");
-  const defaultSettings: AppSettings = {
-    charInfoIsSeparated: false,
-    doKeepArtStatsOnSwitch: false,
-    persistingUserData: false,
-    charLevel: "1/20",
-    charCons: 0,
-    charNAs: 1,
-    charES: 1,
-    charEB: 1,
-    wpLevel: "1/20",
-    wpRefi: 1,
-    artLevel: 0,
-  };
-
-  return savedSettings
-    ? {
-        ...defaultSettings,
-        ...(JSON.parse(savedSettings) as AppSettings),
-      }
-    : defaultSettings;
-};
-
-const setAppSettings = (newSettings: Partial<AppSettings>) => {
-  localStorage.setItem(
-    "settings",
-    JSON.stringify({
-      ...getAppSettings(),
-      ...newSettings,
-    })
-  );
-};
-
-export const appSettings = {
-  get: getAppSettings,
-  set: setAppSettings,
-};

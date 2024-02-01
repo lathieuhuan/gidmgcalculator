@@ -1,4 +1,4 @@
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { NORMAL_ATTACKS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 
 type AttackPatternKey = {
@@ -14,7 +14,7 @@ type ReactionKey = {
 export type TableKey = AttackPatternKey | ReactionKey;
 
 export const getTableKeys = (charName: string) => {
-  const charData = appData.getCharData(charName);
+  const charData = $AppData.getCharData(charName);
   if (!charData) {
     return {
       tableKeys: [],

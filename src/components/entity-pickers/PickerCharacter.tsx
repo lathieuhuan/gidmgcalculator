@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { AppCharacter, PartiallyRequired } from "@Src/types";
 import type { PickerItem } from "./types";
 
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { useSelector } from "@Store/hooks";
 import { findByName, pickProps } from "@Src/utils";
 
@@ -23,7 +23,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
   const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
-    const characters = appData.getAllCharacters();
+    const characters = $AppData.getAllCharacters();
     const fields: Array<keyof AppCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
     const data: PickerItem[] = [];
 
@@ -46,7 +46,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
       }
     } else if (sourceType === "user") {
       for (const { name, cons, artifactIDs } of userChars) {
-        const found = appData.getCharData(name);
+        const found = $AppData.getCharData(name);
 
         if (found) {
           if (!filter || filter(found)) {

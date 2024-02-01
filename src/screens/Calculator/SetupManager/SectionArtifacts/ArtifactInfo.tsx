@@ -122,9 +122,10 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
           className="w-8 h-8"
           disabled={level === maxLevel}
           variant="neutral"
-          icon={<span>{maxLevel}</span>}
           onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
-        />
+        >
+          {maxLevel}
+        </Button>
 
         <Button variant="positive" icon={<FaSyncAlt />} onClick={onClickChangePiece} />
       </div>

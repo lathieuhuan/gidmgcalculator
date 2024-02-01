@@ -50,8 +50,13 @@ const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr
       return index.reduce((total, { value, ratio = 1 }) => total + (inputs[value] ?? 0) * ratio, 0);
     }
     case "attribute": {
-      const { field, requiredBase = 0 } = stack;
-      return totalAttr[field] - requiredBase;
+      const stackValue = totalAttr[stack.field];
+
+      if (stack.baseline) {
+        if (stackValue <= stack.baseline) return 0;
+        return stackValue - stack.baseline;
+      }
+      return stackValue;
     }
     case "vision": {
       const { element, max } = stack;

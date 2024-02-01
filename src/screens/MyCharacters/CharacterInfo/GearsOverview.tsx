@@ -1,18 +1,16 @@
 import clsx from "clsx";
+import { FaInfo } from "react-icons/fa";
 
 // Type
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-
-// Util
+import { $AppData } from "@Src/services";
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Src/data";
 
 // Component
-import { InfoSign } from "@Src/pure-components";
+import { Button, CloseButton } from "@Src/pure-components";
 import { ItemThumb } from "@Src/components";
 
 const bonusStyles = (active: boolean) => {
@@ -38,7 +36,7 @@ export function GearsOverview({
   //
   const renderWeaponThumb = () => {
     const { type, code, ...rest } = weapon;
-    const dataWeapon = appData.getWeaponData(weapon.code);
+    const dataWeapon = $AppData.getWeaponData(weapon.code);
 
     if (!dataWeapon) {
       return null;
@@ -70,7 +68,7 @@ export function GearsOverview({
                   item={{
                     rarity: artifact.rarity,
                     level: artifact.level,
-                    icon: appData.getArtifactData(artifact)?.icon || "",
+                    icon: $AppData.getArtifactData(artifact)?.icon || "",
                     setupIDs: artifact.setupIDs,
                   }}
                   chosen={window.innerWidth < 686 ? false : activeDetails === i}
@@ -102,11 +100,11 @@ export function GearsOverview({
             {setBonuses.length ? (
               <>
                 <p className="text-green-300 font-medium">
-                  {appData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
+                  {$AppData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
                   <p className="mt-1 text-green-300 font-medium">
-                    {appData.getArtifactSetData(setBonuses[1].code)?.name} (2)
+                    {$AppData.getArtifactSetData(setBonuses[1].code)?.name} (2)
                   </p>
                 ) : null}
               </>
@@ -115,7 +113,14 @@ export function GearsOverview({
             )}
           </div>
         </div>
-        {setBonuses.length !== 0 && <InfoSign active={activeDetails === "setBonus"} />}
+
+        {setBonuses.length !== 0 ? (
+          activeDetails === "setBonus" ? (
+            <CloseButton className="ml-auto" size="small" />
+          ) : (
+            <Button className="ml-auto group-hover:bg-yellow-400" size="small" icon={<FaInfo />} />
+          )
+        ) : null}
       </div>
 
       <div
@@ -123,7 +128,12 @@ export function GearsOverview({
         onClick={() => toggleDetails("statsBonus")}
       >
         <p className="text-lg text-orange-500 font-semibold">Artifact details</p>
-        <InfoSign active={activeDetails === "statsBonus"} />
+
+        {activeDetails === "statsBonus" ? (
+          <CloseButton className="ml-auto" size="small" />
+        ) : (
+          <Button className="ml-auto group-hover:bg-yellow-400" size="small" icon={<FaInfo />} />
+        )}
       </div>
     </div>
   );

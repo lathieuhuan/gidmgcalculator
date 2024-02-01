@@ -43,6 +43,7 @@ function HighManagerCore() {
 
   const displayedSetups = tempSetups.filter((tempSetup) => tempSetup.status !== "REMOVED");
   const comparedSetups = displayedSetups.filter((tempSetup) => tempSetup.isCompared);
+  const canAddMoreSetup = displayedSetups.length < MAX_CALC_SETUPS;
 
   useEffect(() => {
     if (comparedSetups.length === 0 && tempStandardId !== 0) {
@@ -85,25 +86,23 @@ function HighManagerCore() {
   };
 
   const copySetup = (index: number) => () => {
-    if (displayedSetups.length < MAX_CALC_SETUPS) {
-      setTempSetups((prev) => {
-        const newSetupName = getCopyName(
-          prev[index].name,
-          displayedSetups.map(({ name }) => name)
-        );
+    setTempSetups((prev) => {
+      const newSetupName = getCopyName(
+        prev[index].name,
+        displayedSetups.map(({ name }) => name)
+      );
 
-        const newSetup: NewSetupManageInfo = {
-          ...prev[index],
-          ID: Date.now(),
-          name: newSetupName || "New setup",
-          type: "original",
-          originId: prev[index].ID,
-          status: "DUPLICATE",
-        };
+      const newSetup: NewSetupManageInfo = {
+        ...prev[index],
+        ID: Date.now(),
+        name: newSetupName || "New setup",
+        type: "original",
+        originId: prev[index].ID,
+        status: "DUPLICATE",
+      };
 
-        return [...prev, newSetup];
-      });
-    }
+      return [...prev, newSetup];
+    });
   };
 
   const addNewSetup = () => {
@@ -155,7 +154,7 @@ function HighManagerCore() {
         <FaTimes />
       </button>
 
-      <p className="my-2 text-2xl text-center text-orange-500 font-bold">MANAGE SETUPS</p>
+      <p className="my-2 text-1.5xl text-center text-orange-500 font-bold">Setups Management</p>
 
       <div className="flex-grow hide-scrollbar">
         <div>
@@ -171,6 +170,7 @@ function HighManagerCore() {
                   setup={setup}
                   isStandard={setup.ID === tempStandardId}
                   choosableAsStandard={setup.isCompared && comparedSetups.length > 1}
+                  copiable={canAddMoreSetup}
                   onChangeSetupName={changeSetupName(index)}
                   onRemoveSetup={removeSetup(index)}
                   onCopySetup={copySetup(index)}
@@ -181,7 +181,7 @@ function HighManagerCore() {
             })}
           </div>
 
-          {displayedSetups.length < MAX_CALC_SETUPS && (
+          {canAddMoreSetup && (
             <div className="mt-4 space-y-4">
               <Button
                 variant="custom"

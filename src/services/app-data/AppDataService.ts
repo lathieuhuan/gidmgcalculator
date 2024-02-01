@@ -9,10 +9,10 @@ import type {
   Target,
   WeaponType,
 } from "@Src/types";
-import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
+import { BACKEND_URL, GENSHIN_DEV_URL } from "@Src/constants";
 import { findByCode, pickProps, toArray } from "@Src/utils";
 import { CharacterSubscriber, DataControl, Metadata, Response, Update } from "./types";
-
+ 
 export class AppDataService {
   private isFetchedMetadata = false;
 
@@ -58,7 +58,7 @@ export class AppDataService {
     if (this.isFetchedMetadata) {
       return true;
     }
-    const response = await this.fetchData<Metadata>(BACKEND_URL_PATH.metadata());
+    const response = await this.fetchData<Metadata>(BACKEND_URL.metadata());
 
     if (response.data) {
       this.isFetchedMetadata = true;
@@ -133,7 +133,7 @@ export class AppDataService {
     }
 
     control.status = "fetching";
-    const response = await this.fetchData<AppCharacter>(BACKEND_URL_PATH.character.byName(name));
+    const response = await this.fetchData<AppCharacter>(BACKEND_URL.character.byName(name));
 
     if (response.data) {
       control.status = "fetched";
@@ -167,7 +167,7 @@ export class AppDataService {
         };
       }
 
-      const response = await fetch(GENSHIN_DEV_URL_PATH.character(name))
+      const response = await fetch(GENSHIN_DEV_URL.character(name))
         .then((res) => res.json())
         .catch((err) => ({
           code: 500,

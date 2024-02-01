@@ -1,5 +1,5 @@
 import type {
-  AbilityBuff,
+  Buff_Character,
   ArtifactSetBonus,
   CalcWeapon,
   CharInfo,
@@ -10,19 +10,18 @@ import type {
   PartyData,
   ReactionBonus,
   Vision,
-  AbilityInnateBuff,
+  InnateBuff_Character,
   Level,
   AttackElement,
   AppCharacter,
 } from "@Src/types";
 
-// Hook
 import { useTranslation } from "@Src/pure-hooks";
+import { $AppData } from "@Src/services";
 
 // Util
 import { findByIndex, parseAbilityDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { appData } from "@Src/data";
 
 // Component
 import {
@@ -104,10 +103,10 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
 interface SelfBuffsProps {
   char: CharInfo;
   charData: AppCharacter;
-  buffs: AbilityBuff[];
+  buffs: Buff_Character[];
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
-  innateBuffs: AbilityInnateBuff[];
+  innateBuffs: InnateBuff_Character[];
 }
 export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
@@ -156,7 +155,7 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
   party.forEach((teammate) => {
     if (!teammate || !teammate.buffCtrls.length) return;
 
-    const teammateData = appData.getCharData(teammate.name);
+    const teammateData = $AppData.getCharData(teammate.name);
     if (!teammateData) return;
 
     const { name, buffs = [] } = teammateData;

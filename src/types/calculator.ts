@@ -52,7 +52,7 @@ export type ModifierInput = number;
 
 export type ModifierCtrl = {
   activated: boolean;
-  /** This is WeaponBuff.index / ArtifactBuff.index / AbilityModifier.index */
+  /** This is WeaponBuff.index / ArtifactBuff.index / Modifier_Character.index */
   index: number;
   inputs?: ModifierInput[];
 };

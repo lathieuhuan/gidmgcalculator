@@ -1,5 +1,5 @@
-import { getIntialBonusValue, getLevelScale } from "@Src/calculation";
-import { LevelScale_Character, AppCharacter, CharInfo, AbilityEffectValueOption, PartyData } from "@Src/types";
+import { getIntialBonusValue, CharacterCal } from "@Src/calculation";
+import { LevelScale_Character, AppCharacter, CharInfo, ValueOption_Character, PartyData } from "@Src/types";
 import { round, toArray, toMult } from "./pure-utils";
 
 const typeToCls: Record<string, string> = {
@@ -22,7 +22,7 @@ const wrapText = (text: string | number, type = "") => {
 };
 
 type Effect = {
-  value: number | AbilityEffectValueOption;
+  value: number | ValueOption_Character;
   lvScale?: LevelScale_Character;
   preExtra?: any;
   max?: any;
@@ -53,9 +53,9 @@ export const parseAbilityDescription = (
 
       if (effect) {
         const { value, preExtra, max } = effect;
-        let result = typeof value === "number" ? value : getIntialBonusValue(value, obj, inputs, fromSelf);
+        let result = getIntialBonusValue(value, obj, inputs, fromSelf);
 
-        result *= getLevelScale(effect.lvScale, obj, inputs, fromSelf);
+        result *= CharacterCal.getLevelScale(effect.lvScale, obj, inputs, fromSelf);
         if (typeof preExtra === "number") result += preExtra;
         if (typeof max === "number" && result > max) result = max;
 

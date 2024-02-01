@@ -1,6 +1,6 @@
 import { FaChevronDown, FaEdit, FaMinus } from "react-icons/fa";
 
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -17,7 +17,7 @@ interface SectionTargetProps {
 export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps) {
   const dispatch = useDispatch();
   const target = useSelector(selectTarget);
-  const { title, names, variant, statuses } = appData.getTargetData(target);
+  const { title, names, variant, statuses } = $AppData.getTargetData(target);
 
   return (
     <div className="px-4 py-3 rounded-xl bg-dark-900 cursor-default relative border-2 border-lesser">

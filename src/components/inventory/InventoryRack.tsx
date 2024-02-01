@@ -4,21 +4,21 @@ import { FaCaretRight, FaMinus } from "react-icons/fa";
 
 import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
+import { $AppData } from "@Src/services";
 
 // Util
 import { isUserWeapon } from "@Src/utils";
 
 // Component
 import { ItemThumb } from "../ItemThumb";
-import { appData } from "@Src/data";
 
 export const getWeaponInfo = ({ code, owner, refi, level, setupIDs }: UserWeapon) => {
-  const { beta, name, icon = "", rarity = 5 } = appData.getWeaponData(code) || {};
+  const { beta, name, icon = "", rarity = 5 } = $AppData.getWeaponData(code) || {};
   return { beta, name, icon, rarity, level, refi, owner, setupIDs };
 };
 
 export const getArtifactInfo = ({ code, type, owner, rarity, level, setupIDs }: UserArtifact) => {
-  const { beta, name, icon = "" } = appData.getArtifactData({ code, type }) || {};
+  const { beta, name, icon = "" } = $AppData.getArtifactData({ code, type }) || {};
   return { beta, name, icon, rarity, level, owner, setupIDs };
 };
 

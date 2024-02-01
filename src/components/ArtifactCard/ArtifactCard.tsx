@@ -1,21 +1,18 @@
 import clsx from "clsx";
-import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
+import { FaArrowUp, FaChevronDown } from "react-icons/fa";
 
-// Type
 import type { CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
 
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { useTranslation } from "@Src/pure-hooks";
-
-// Util
-import { percentSign, getImgSrc } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
+import { getImgSrc, percentSign } from "@Src/utils";
 
 // Component
-import { BetaMark, Button } from "@Src/pure-components";
-import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
+import { BetaMark, Button, Image } from "@Src/pure-components";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
+import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 
 interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable" | "space" | "onChangeSubStat"> {
   artifact?: CalcArtifact;
@@ -33,7 +30,7 @@ export const ArtifactCard = ({
   const { t } = useTranslation();
   if (!artifact) return null;
 
-  const { beta, name, icon = "" } = appData.getArtifactData(artifact) || {};
+  const { beta, name, icon = "" } = $AppData.getArtifactData(artifact) || {};
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;
@@ -44,10 +41,10 @@ export const ArtifactCard = ({
       <div className={`px-4 pt-1 bg-rarity-${rarity}`}>
         <p className="text-xl font-bold text-black truncate">{name}</p>
       </div>
-      <div className="mt-4 mx-4 flex">
+      <div className="mt-6 mx-4 flex">
         {mutable ? (
-          <div className="mr-6 pr-2 grow flex justify-between">
-            <div>
+          <div className="mr-6 grow flex space-x-6">
+            <div className="w-fit">
               <ArtifactLevelSelect
                 mutable
                 rarity={rarity}
@@ -56,23 +53,21 @@ export const ArtifactCard = ({
                 onChangeLevel={onEnhance}
               />
             </div>
-            <div className="mt-1 flex flex-col items-center">
+
+            <div className="flex flex-col items-start space-y-4">
               <Button
-                className="bg-black text-orange-500 text-3.5xl"
-                variant="custom"
-                style={{ padding: 0 }}
-                icon={<FaArrowAltCircleUp />}
+                className={levelUpDisabled ? "" : "hover:bg-orange-500"}
+                shape="square"
+                size="small"
+                icon={<FaArrowUp />}
                 disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(Math.min(artifact.level + 4, maxLevel))}
               />
               <Button
-                variant="custom"
-                shape="rounded"
-                className="mt-6 text-black bg-orange-500"
-                style={{
-                  paddingLeft: 6,
-                  paddingRight: 6,
-                }}
+                className={levelUpDisabled ? "" : "hover:bg-orange-500"}
+                shape="square"
+                size="small"
+                style={{ fontWeight: 900 }}
                 disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(maxLevel)}
               >
@@ -87,7 +82,7 @@ export const ArtifactCard = ({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <img className="w-28 h-28" src={getImgSrc(icon)} draggable={false} />
+          <Image src={icon} imgType="artifact" style={{ width: 104, height: 104 }} />
           {beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>

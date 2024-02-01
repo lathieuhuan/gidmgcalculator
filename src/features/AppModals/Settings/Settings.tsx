@@ -1,10 +1,10 @@
-import { useRef, useState, useContext } from "react";
+import { useContext, useRef, useState } from "react";
 
 import { LEVELS } from "@Src/constants";
-import { appSettings } from "@Src/utils";
-import { PersistControlContext } from "../../PersistControl";
-import { useDispatch } from "@Store/hooks";
+import { $AppSettings } from "@Src/services";
 import { applySettings } from "@Store/calculatorSlice";
+import { useDispatch } from "@Store/hooks";
+import { PersistControlContext } from "../../PersistControl";
 
 // Component
 import { ButtonGroup, withModal } from "@Src/pure-components";
@@ -19,11 +19,11 @@ interface SettingsProps {
 }
 const SettingsCore = ({ onClose }: SettingsProps) => {
   const dispatch = useDispatch();
-  const [tempSettings, setTempSettings] = useState(appSettings.get());
+  const [tempSettings, setTempSettings] = useState($AppSettings.get());
   const changeAppStoreConfig = useContext(PersistControlContext);
 
   const onConfirmNewSettings = () => {
-    if (appSettings.get().charInfoIsSeparated && !tempSettings.charInfoIsSeparated) {
+    if ($AppSettings.get().charInfoIsSeparated && !tempSettings.charInfoIsSeparated) {
       dispatch(
         applySettings({
           doMergeCharInfo: true,
@@ -35,7 +35,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
       persistingUserData: tempSettings.persistingUserData,
     });
 
-    appSettings.set(tempSettings);
+    $AppSettings.set(tempSettings);
     onClose();
   };
 
@@ -80,7 +80,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
 
   return (
     <div className="w-80 md1:w-96 h-full px-2 py-4 flex flex-col">
-      <h3 className="text-2xl text-orange-500 text-center font-bold">SETTINGS</h3>
+      <h3 className="text-2xl text-orange-500 text-center font-bold">Settings</h3>
 
       <div className="grow hide-scrollbar">
         <Section title="Calculator">

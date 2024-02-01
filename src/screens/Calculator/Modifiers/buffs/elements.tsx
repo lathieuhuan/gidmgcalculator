@@ -3,7 +3,7 @@ import type { AmplifyingReaction, CalcItem, ModInputConfig, Vision } from "@Src/
 
 import { VISION_TYPES } from "@Src/constants";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -27,7 +27,7 @@ const hasAbsorbingAttackIn = (items: CalcItem[]) => {
 export const ElementBuffs = () => {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const { vision, weaponType, calcList } = appData.getCharData(char.name);
+  const { vision, weaponType, calcList } = $AppData.getCharData(char.name);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
   const customInfusion = useSelector((state) => {

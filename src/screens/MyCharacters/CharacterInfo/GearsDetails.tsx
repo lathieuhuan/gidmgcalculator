@@ -113,7 +113,7 @@ export function GearsDetails({
               />
             </div>
             <ButtonGroup
-              className="mt-6"
+              className="mt-4"
               buttons={[
                 { text: "Unequip", onClick: onClickUnequipArtifact },
                 { text: "Switch", onClick: onClickSwitchArtifact },

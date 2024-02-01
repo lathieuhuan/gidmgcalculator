@@ -97,20 +97,6 @@ export type Artifact = {
   subStats: ArtifactSubStat[];
 };
 
-export type AppSettings = {
-  charInfoIsSeparated: boolean;
-  doKeepArtStatsOnSwitch: boolean;
-  persistingUserData: boolean;
-  charLevel: Level;
-  charCons: number;
-  charNAs: number;
-  charES: number;
-  charEB: number;
-  wpLevel: Level;
-  wpRefi: number;
-  artLevel: number;
-};
-
 export type AppMessage = {
   active: boolean;
   type?: "error" | "success" | "info";

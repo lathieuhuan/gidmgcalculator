@@ -1,8 +1,7 @@
 import clsx from "clsx";
-import { useState } from "react";
-import { FaUser } from "react-icons/fa";
+import { CSSProperties, useState } from "react";
+import { FaUser, FaQuestion } from "react-icons/fa";
 import { RiSwordFill } from "react-icons/ri";
-import type { IconType } from "react-icons/lib";
 import { getImgSrc } from "@Src/utils";
 
 const ICONS_BY_TYPE = {
@@ -15,17 +14,19 @@ interface ImageProps {
   src: string;
   size?: string;
   className?: string;
-  placeHolderClassName?: string;
-  imgClassName?: string;
+  style?: CSSProperties;
+  placeholderCls?: string;
+  imgCls?: string;
   imgType?: "character" | "weapon" | "artifact";
-  Placeholder?: IconType;
+  Placeholder?: (props: { className?: string }) => JSX.Element;
 }
 export const Image = ({
-  className,
-  placeHolderClassName,
-  imgClassName,
   src,
   size = "w-full h-full",
+  className,
+  style,
+  placeholderCls,
+  imgCls,
   imgType,
   Placeholder,
 }: ImageProps) => {
@@ -36,19 +37,18 @@ export const Image = ({
   return (
     <>
       {isError && PlaceholderIcon && (
-        <div className={className}>
-          <PlaceholderIcon className={clsx(size, placeHolderClassName)} />
+        <div className={clsx("p-3", className)} style={style}>
+          <PlaceholderIcon className={clsx(size, placeholderCls)} />
         </div>
       )}
       <img
         src={getImgSrc(src)}
-        className={clsx(size, className, imgClassName, isError && "hidden")}
+        className={clsx(size, className, imgCls, isError && "hidden")}
+        style={style}
         draggable={false}
         onError={() => setIsError(true)}
         onLoad={() => {
-          if (isError) {
-            setIsError(false);
-          }
+          if (isError) setIsError(false);
         }}
       />
     </>

@@ -48,6 +48,10 @@ const getBonusValue = (bonus: Omit<ArtifactBonus, "targets">, info: BuffInfoWrap
       }
       bonusValue *= getStackValue(bonus.stacks, info, inputs);
     }
+  } else {
+    const { options, inpIndex = 0 } = bonus.value;
+    const input = inputs[inpIndex] ?? 1;
+    bonusValue = options[input - 1] || options[options.length - 1];
   }
   if (typeof bonus.sufExtra === "number") {
     bonusValue += bonus.sufExtra;

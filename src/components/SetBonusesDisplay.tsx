@@ -1,5 +1,5 @@
-import { appData } from "@Src/data";
 import type { ArtifactSetBonus } from "@Src/types";
+import { $AppData } from "@Src/services";
 import { parseArtifactDescription, toArray } from "@Src/utils";
 
 interface SetBonusesDisplayProps {
@@ -14,7 +14,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
       {setBonuses.length > 0 ? (
         setBonuses.map((bonus, index) => {
           const content = [];
-          const data = appData.getArtifactSetData(bonus.code);
+          const data = $AppData.getArtifactSetData(bonus.code);
           if (!data) return;
           const { descriptions } = data;
 

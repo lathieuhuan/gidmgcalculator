@@ -1,15 +1,15 @@
-import clsx from "clsx";
 import { FaBalanceScaleLeft, FaCopy, FaTrashAlt } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Component
-import { Button, Input } from "@Src/pure-components";
+import { Button, Input, ToggleButton } from "@Src/pure-components";
 
 interface SetupControlProps {
   setup: NewSetupManageInfo;
   isStandard: boolean;
   choosableAsStandard: boolean;
+  copiable?: boolean;
   onChangeSetupName: (newName: string) => void;
   onRemoveSetup: () => void;
   onCopySetup: () => void;
@@ -20,6 +20,7 @@ export function SetupControl({
   setup,
   isStandard,
   choosableAsStandard,
+  copiable,
   onChangeSetupName,
   onRemoveSetup,
   onCopySetup,
@@ -32,32 +33,39 @@ export function SetupControl({
         placeholder="Enter Setup's name"
         className="w-full px-4 pt-1 text-lg text-center rounded-md font-medium"
         value={setup.name}
-        maxLength={16}
+        maxLength={20}
         onChange={onChangeSetupName}
       />
       <div className="mt-4 flex justify-between">
         <div className="ml-1 flex space-x-4">
           <Button variant="negative" icon={<FaTrashAlt />} onClick={onRemoveSetup} />
-          <Button variant="positive" icon={<FaCopy />} disabled={setup.status === "NEW"} onClick={onCopySetup} />
+          <Button
+            variant="positive"
+            icon={<FaCopy />}
+            disabled={!copiable || setup.status === "NEW"}
+            onClick={onCopySetup}
+          />
         </div>
 
         <div className="flex space-x-3">
-          <button
-            className={clsx(
-              "w-8 h-8 rounded-circle flex-center text-2xl",
-              isStandard ? "bg-green-300 text-black" : choosableAsStandard ? "text-light-400" : "text-light-800"
-            )}
+          <ToggleButton
+            className="w-8 h-8"
+            size="custom"
+            variant="neutral"
+            active={isStandard}
             disabled={!choosableAsStandard}
+            icon={<SiTarget className="text-2xl" />}
             onClick={onChooseStandard}
-          >
-            <SiTarget />
-          </button>
-          <button
-            className={clsx("w-8 h-8 rounded-circle flex-center text-xl", setup.isCompared && "bg-green-300 text-black")}
+          />
+
+          <ToggleButton
+            className="w-8 h-8"
+            size="custom"
+            variant="neutral"
+            active={setup.isCompared}
+            icon={<FaBalanceScaleLeft className="text-xl" />}
             onClick={onToggleCompared}
-          >
-            <FaBalanceScaleLeft />
-          </button>
+          />
         </div>
       </div>
     </div>

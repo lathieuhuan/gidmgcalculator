@@ -4,25 +4,24 @@ import { useDispatch } from "react-redux";
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
+import { getImgSrc } from "@Src/utils";
+import { $AppData } from "@Src/services";
+
 // Store
 import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
 import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
-// Util
-import { getImgSrc } from "@Src/utils";
-
 // Component
 import { PickerWeapon } from "@Src/components";
 import { BetaMark } from "@Src/pure-components";
-import { appData } from "@Src/data";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
   const [pickerOn, setPickerOn] = useState(false);
 
-  const { beta, name = "", icon = "", rarity = 5 } = appData.getWeaponData(weapon.code) || {};
+  const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeaponData(weapon.code) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (

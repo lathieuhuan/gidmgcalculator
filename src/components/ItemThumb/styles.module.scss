@@ -3,11 +3,8 @@
     box-shadow: 0 0 0 2.5px white;
   }
   .side-icon {
-    > img {
+    > img.side-image {
       transform: translate(-8px, -17px);
-    }
-    &.beta > img {
-      transform: translate(-8px, -7px);
     }
   }
   &:hover:not(.clicked),

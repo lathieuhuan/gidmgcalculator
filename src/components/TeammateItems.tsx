@@ -2,7 +2,7 @@ import { FaTimes } from "react-icons/fa";
 
 import type { Teammate } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 
 // Component
 import { Button } from "@Src/pure-components";
@@ -26,8 +26,8 @@ export const TeammateItems = ({
   onClickRemoveArtifact,
 }: TeammateItemsProps) => {
   const { weapon, artifact } = teammate;
-  const weaponData = appData.getWeaponData(weapon.code);
-  const { name: artifactSetName, flower } = appData.getArtifactSetData(artifact.code) || {};
+  const weaponData = $AppData.getWeaponData(weapon.code);
+  const { name: artifactSetName, flower } = $AppData.getArtifactSetData(artifact.code) || {};
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (

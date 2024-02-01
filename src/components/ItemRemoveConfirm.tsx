@@ -1,11 +1,7 @@
 import type { UserItem } from "@Src/types";
-
-// Util & Hook
 import { useCheckContainerSetups } from "@Src/hooks";
-import { appData } from "@Src/data";
-
-// Component
 import { ConfirmModalBody, withModal } from "@Src/pure-components";
+import { $AppData } from "@Src/services";
 
 interface ItemRemoveCheckProps {
   item: UserItem;
@@ -15,8 +11,8 @@ interface ItemRemoveCheckProps {
 const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => {
   const result = useCheckContainerSetups(item, { correctOnUnmounted: false });
   const itemName = result.isWeapon
-    ? appData.getWeaponData(item.code).name
-    : `${appData.getArtifactSetData(item.code)?.name} (${item.type})`;
+    ? $AppData.getWeaponData(item.code).name
+    : `${$AppData.getArtifactSetData(item.code)?.name} (${item.type})`;
 
   return (
     <ConfirmModalBody

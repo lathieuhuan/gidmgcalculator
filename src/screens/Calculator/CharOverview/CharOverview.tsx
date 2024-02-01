@@ -3,11 +3,11 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+import { $AppData } from "@Src/services";
 
 // Util
 import { getAppDataError } from "@Src/utils";
 import { notification } from "@Src/utils/notification";
-import { appData } from "@Src/data";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -46,37 +46,44 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
   let body;
 
   if (touched) {
-    const charData = appData.getCharData(char.name);
+    const charData = $AppData.getCharData(char.name);
     const textVision = `text-${charData.vision}`;
 
     body = (
       <div className="h-full flex flex-col">
         <div className="mt-2 mb-1 pb-4 flex">
-          <div className="w-24 mr-4 relative aspect-square shrink-0" onClick={() => setModalType("CHARACTER_PICKER")}>
+          <div
+            className="mr-3 relative aspect-square shrink-0"
+            onClick={() => setModalType("CHARACTER_PICKER")}
+            style={{ width: 88, height: 88 }}
+          >
             <Button className="absolute -top-2.5 -left-2.5 z-10" variant="positive" icon={<FaSyncAlt />} />
             {charData.beta ? <BetaMark className="absolute -top-2 -right-2 z-10" /> : null}
             <Image className="cursor-pointer" src={charData.icon} imgType="character" />
           </div>
 
-          <div className="min-w-0">
+          <div className="min-w-0 grow">
             <div className="overflow-hidden">
-              <p className={`text-3xl truncate ${textVision} font-black`}>{char.name}</p>
+              <p className={`text-2.5xl truncate ${textVision} font-black`}>{char.name}</p>
               <StarLine className="mt-1" rarity={charData.rarity} />
             </div>
 
-            <div className="mt-1 flex items-center">
-              <p className="mr-1 text-lg">Level</p>
-              <select
-                className={`text-lg ${textVision} font-bold text-right text-last-right`}
-                value={char.level}
-                onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
-              >
-                {LEVELS.map((_, index) => (
-                  <option key={index} className="text-black">
-                    {LEVELS[LEVELS.length - 1 - index]}
-                  </option>
-                ))}
-              </select>
+            <div className="mt-1 flex justify-between items-center">
+              <div className="flex items-center text-lg">
+                <p className="mr-1">Level</p>
+                <select
+                  className={`${textVision} font-bold text-right text-last-right`}
+                  value={char.level}
+                  onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
+                >
+                  {LEVELS.map((_, index) => (
+                    <option key={index} className="text-black">
+                      {LEVELS[LEVELS.length - 1 - index]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div
                 className={
                   "ml-4 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-dark-700 " +
@@ -132,148 +139,6 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
         </Button>
       </div>
     );
-
-    // body = (
-    //   <div className="w-full grid grid-cols-3 gap-2">
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Variant</p>
-    //       <Button variant="default" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="negative" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="neutral" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="custom" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //     </div>
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Shape</p>
-    //       <Button variant="positive" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="square" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="rounded" size="small">
-    //         Click
-    //       </Button>
-    //     </div>
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Size</p>
-    //       <Button variant="positive" shape="circular" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="circular" size="medium">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="square" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="square" size="medium">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="rounded" size="small">
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="rounded" size="medium">
-    //         Click
-    //       </Button>
-    //     </div>
-
-    //     {/* With Icon */}
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Variant</p>
-    //       <Button variant="default" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="negative" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="neutral" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="custom" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //     </div>
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Shape</p>
-    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //     </div>
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Size</p>
-    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="circular" size="medium" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="square" size="medium" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //       <Button variant="positive" shape="rounded" size="medium" icon={<FaSyncAlt />}>
-    //         Click
-    //       </Button>
-    //     </div>
-
-    //     {/* Icon Only */}
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Variant</p>
-    //       <Button variant="default" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="negative" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="neutral" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="custom" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //     </div>
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Shape</p>
-    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />} />
-    //     </div>
-
-    //     <div className="flex flex-col items-center gap-2">
-    //       <p>Size</p>
-    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="circular" size="medium" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="square" size="medium" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />} />
-    //       <Button variant="positive" shape="rounded" size="medium" icon={<FaSyncAlt />} />
-    //     </div>
-    //   </div>
-    // );
   }
 
   return (
@@ -284,13 +149,13 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
         active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
         onPickCharacter={async (pickedChar) => {
-          if (appData.getCharStatus(pickedChar.name) === "fetched") {
+          if ($AppData.getCharStatus(pickedChar.name) === "fetched") {
             dispatch(initNewSessionWithChar(pickedChar));
             return;
           }
           dispatch(updateUI({ loading: true }));
 
-          const response = await appData.fetchCharacter(pickedChar.name);
+          const response = await $AppData.fetchCharacter(pickedChar.name);
 
           if (response.code === 200) {
             dispatch(initNewSessionWithChar(pickedChar));

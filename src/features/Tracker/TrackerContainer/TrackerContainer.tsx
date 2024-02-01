@@ -6,7 +6,7 @@ import { useSelector } from "@Store/hooks";
 import { selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
-import calculateAll from "@Src/calculation";
+import { calculateAll } from "@Src/calculation";
 import { bareLv } from "@Src/utils";
 import { initTracker, getTotalRecordValue } from "./utils";
 
@@ -81,8 +81,8 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
                 (1 - <Dim>DEF ignore</Dim> <Green>{totalDefIgnore}</Green> / 100) *
               </>
             ) : null}{" "}
-            (<Dim>target Lv.</Dim> <Green>{target.level}</Green> + 100) + <Dim>char. Lv.</Dim>{" "}
-            <Green>{charLv}</Green> + 100
+            (<Dim>target Lv.</Dim> <Green>{target.level}</Green> + 100) + <Dim>char. Lv.</Dim> <Green>{charLv}</Green> +
+            100
           </p>
         </div>
       </div>

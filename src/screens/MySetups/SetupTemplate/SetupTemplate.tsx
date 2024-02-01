@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
 import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "react-icons/fa";
+
+// Type
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { OpenModalFn } from "../types";
 
-// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { $AppData } from "@Src/services";
 
 // Store
 import { useDispatch } from "@Store/hooks";
@@ -15,7 +17,6 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { appData } from "@Src/data";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
@@ -43,7 +44,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const teammateInfo = party[teammateDetail.index];
   const isOriginal = type === "original";
-  const isFetched = appData.getCharStatus(char.name) === "fetched";
+  const isFetched = $AppData.getCharStatus(char.name) === "fetched";
 
   const closeTeammateDetail = () => {
     setTeammateDetail({
@@ -74,8 +75,8 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const charData = appData.getCharData(char.name);
-    const weaponData = weapon ? appData.getWeaponData(weapon.code) : undefined;
+    const charData = $AppData.getCharData(char.name);
+    const weaponData = weapon ? $AppData.getWeaponData(weapon.code) : undefined;
 
     if (charData) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
@@ -83,7 +84,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           char,
           charData,
           talentType,
-          partyData: appData.getPartyData(party),
+          partyData: $AppData.getPartyData(party),
         });
       });
 
@@ -109,7 +110,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const teammate = (
       <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && appData.getCharData(teammate.name);
+          const dataTeammate = teammate && $AppData.getCharData(teammate.name);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];
@@ -148,7 +149,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
-            const artifactData = appData.getArtifactData(artifact);
+            const artifactData = $AppData.getArtifactData(artifact);
 
             return artifactData ? (
               <GearIcon

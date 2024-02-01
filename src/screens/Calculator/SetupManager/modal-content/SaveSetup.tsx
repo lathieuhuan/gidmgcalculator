@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 import type { CalcSetupManageInfo } from "@Src/types";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { appData } from "@Src/data";
+import { $AppData } from "@Src/services";
 import { findById } from "@Src/utils";
 
 // Store
+import { useDispatch, useSelector } from "@Store/hooks";
 import { saveSetupThunk } from "@Store/thunks";
 import { selectChar } from "@Store/calculatorSlice/selectors";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
@@ -21,7 +21,7 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
 
-  const charData = appData.getCharData(char.name);
+  const charData = $AppData.getCharData(char.name);
   const existed = findById(useSelector(selectUserSetups), manageInfo.ID);
 
   const [input, setInput] = useState(existed ? existed.name : `${charData.name} setup`);
