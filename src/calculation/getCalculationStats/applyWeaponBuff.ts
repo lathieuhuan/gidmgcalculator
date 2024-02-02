@@ -3,7 +3,7 @@ import { countVision, toArray } from "@Src/utils";
 import { applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
 
-const isUsableBonus = (bonus: WeaponBonus, info: BuffInfoWrap, inputs: number[]) => {
+const isUsableBonus = (bonus: Pick<WeaponBonus, "checkInput">, info: BuffInfoWrap, inputs: number[]) => {
   if (typeof bonus.checkInput === "number") {
     if (inputs[0] !== bonus.checkInput) {
       return false;
@@ -84,7 +84,7 @@ const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr
 };
 
 const getBonusValue = (
-  bonus: WeaponBonus,
+  bonus: Omit<WeaponBonus, "targets">,
   info: BuffInfoWrap,
   inputs: number[],
   refi: number,
@@ -118,7 +118,11 @@ const getBonusValue = (
   }
 
   // ========== ADD SUF-EXTRA ==========
-  bonusValue += bonus.sufExtra ? scaleRefi(bonus.sufExtra) : 0;
+  if (typeof bonus.sufExtra === "number") {
+    bonusValue += scaleRefi(bonus.sufExtra);
+  } else if (bonus.sufExtra && isUsableBonus(bonus.sufExtra, info, inputs)) {
+    bonusValue += getBonusValue(bonus.sufExtra, info, inputs, refi, preCalcStacks);
+  }
 
   // ========== APPLY MAX ==========
   let max = 0;

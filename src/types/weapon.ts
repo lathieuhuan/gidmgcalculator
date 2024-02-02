@@ -82,7 +82,7 @@ export type WeaponBonus = {
   incre?: number;
   stacks?: WeaponBonusStack | WeaponBonusStack[];
   /** Apply after stacks */
-  sufExtra?: number;
+  sufExtra?: number | Omit<WeaponBonus, "targets">;
   targets: {
     /** totalAttr */
     ATTR?: "own_elmt" | AttributeStat | AttributeStat[];

@@ -43,7 +43,7 @@ const getBonusValue = (bonus: Omit<ArtifactBonus, "targets">, info: BuffInfoWrap
     bonusValue += bonus.value;
 
     if (bonus.stacks) {
-      if (!info.partyData.length && bonus.stacks.type === "vision") {
+      if (bonus.stacks.type === "vision" && !info.partyData.length) {
         return 0;
       }
       bonusValue *= getStackValue(bonus.stacks, info, inputs);
