@@ -29,8 +29,6 @@ export function NavBar() {
   const ref = useRef<HTMLDivElement>(null);
   const [menuDropped, setMenuDropped] = useState(false);
 
-  const isLargeView = window.innerWidth >= 1025;
-
   const closeMenu = () => setMenuDropped(false);
 
   useClickOutside(ref, closeMenu);

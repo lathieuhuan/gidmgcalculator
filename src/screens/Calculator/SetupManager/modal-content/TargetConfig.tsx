@@ -145,11 +145,6 @@ export function TargetConfig() {
             );
           })}
         </div>
-
-        {/* <div className="mt-3 flex space-x-2">
-          <Button onClick={onClose}>Close</Button>
-          {button}
-        </div> */}
       </div>
 
       <div className="mx-2" />
