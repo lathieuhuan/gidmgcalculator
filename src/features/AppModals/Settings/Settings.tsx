@@ -1,15 +1,15 @@
+import clsx from "clsx";
 import { useContext, useRef, useState } from "react";
 
 import { LEVELS } from "@Src/constants";
 import { $AppSettings } from "@Src/services";
 import { applySettings } from "@Store/calculatorSlice";
 import { useDispatch } from "@Store/hooks";
-import { PersistControlContext } from "../../PersistControl";
+import { DynamicStoreControlContext } from "../../DynamicStoreProvider";
 
 // Component
 import { ButtonGroup, Modal } from "@Src/pure-components";
 import { CheckSetting, Section, SelectSetting } from "./components";
-import clsx from "clsx";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
   return [...Array(count)].map((_, i) => i + (startFromZero ? 0 : 1));
@@ -21,10 +21,12 @@ interface SettingsProps {
 const SettingsCore = ({ onClose }: SettingsProps) => {
   const dispatch = useDispatch();
   const [tempSettings, setTempSettings] = useState($AppSettings.get());
-  const changeAppStoreConfig = useContext(PersistControlContext);
+  const changeAppStoreConfig = useContext(DynamicStoreControlContext);
 
   const onConfirmNewSettings = () => {
-    if ($AppSettings.get("charInfoIsSeparated") && !tempSettings.charInfoIsSeparated) {
+    const { charInfoIsSeparated, persistingUserData } = $AppSettings.get();
+
+    if (!tempSettings.charInfoIsSeparated && charInfoIsSeparated) {
       dispatch(
         applySettings({
           doMergeCharInfo: true,
@@ -32,9 +34,11 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
       );
     }
 
-    changeAppStoreConfig({
-      persistingUserData: tempSettings.persistingUserData,
-    });
+    if (tempSettings.persistingUserData !== persistingUserData) {
+      changeAppStoreConfig({
+        persistingUserData: !persistingUserData,
+      });
+    }
 
     $AppSettings.set(tempSettings);
     onClose();

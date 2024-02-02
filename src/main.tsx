@@ -3,22 +3,19 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 import App from "./App";
-import { PersistControlProvider } from "./features";
-import { StoreSnapshotProvider } from "./store";
+import { DynamicStoreProvider } from "./features";
 
 import "./assets/css/tailwind.css";
 import "./assets/css/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <PersistControlProvider>
+  <DynamicStoreProvider>
     {({ store, persistor }) => (
-      <StoreSnapshotProvider store={store}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <App />
-          </PersistGate>
-        </Provider>
-      </StoreSnapshotProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
     )}
-  </PersistControlProvider>
+  </DynamicStoreProvider>
 );

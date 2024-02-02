@@ -5,8 +5,8 @@ import type { UserSetup } from "@Src/types";
 import { useDispatch } from "@Store/hooks";
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
-import { useStoreSnapshot } from "@Store/store-snapshot";
 
+import { useStoreSnapshot } from "@Src/features";
 import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { useCombineManager } from "./hooks";

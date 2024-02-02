@@ -3,13 +3,13 @@ import { FormEvent, useState } from "react";
 import type { CalcSetupManageInfo } from "@Src/types";
 import { $AppData } from "@Src/services";
 import { findById } from "@Src/utils";
+import { useStoreSnapshot } from "@Src/features";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { saveSetupThunk } from "@Store/thunks";
 import { selectChar } from "@Store/calculatorSlice/selectors";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
-import { useStoreSnapshot } from "@Store/store-snapshot";
 
 // Component
 import { Input } from "@Src/pure-components";

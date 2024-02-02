@@ -4,7 +4,7 @@ export * from "./AppModals";
 export * from "./Message";
 export * from "./SetupTransshipmentPort";
 export * from "./SetupImportCenter";
-export * from "./PersistControl";
+export * from "./DynamicStoreProvider";
 export * from "./MetadataRefetcher";
 export * from "./Tracker";
 export * from "./ScreenSizeWatcher";
