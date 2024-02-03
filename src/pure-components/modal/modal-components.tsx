@@ -15,6 +15,23 @@ export const ModalCloseButton = (props: { disabled?: boolean; onClick?: () => vo
   );
 };
 
+export interface ModalHeaderProps {
+  title?: React.ReactNode;
+  withDivider?: boolean;
+}
+export const ModalHeader = ({ title, withDivider }: ModalHeaderProps) => {
+  return (
+    <div
+      className={clsx(
+        "mb-4 text-xl text-orange-500 font-semibold",
+        withDivider && "pb-2 border-b border-solid border-dark-300"
+      )}
+    >
+      {title}
+    </div>
+  );
+};
+
 export interface ModalActionsProps extends Pick<ButtonGroupProps, "className" | "justify"> {
   withDivider?: boolean;
   disabledConfirm?: boolean;

@@ -1,12 +1,16 @@
 import clsx from "clsx";
 import { ModalCore, ModalCoreProps } from "./ModalCore";
-import { ModalActions, ModalActionsProps, ModalCloseButton } from "./modal-components";
+import { ModalActions, ModalActionsProps, ModalCloseButton, ModalHeader, ModalHeaderProps } from "./modal-components";
 
-export interface ModalProps extends ModalCoreProps, Omit<ModalActionsProps, "className" | "justify" | "onCancel"> {
+export interface ModalProps
+  extends ModalCoreProps,
+    Omit<ModalHeaderProps, "withDivider">,
+    Omit<ModalActionsProps, "className" | "justify" | "withDivider" | "onCancel"> {
   title?: React.ReactNode;
   /** Default to true */
   withCloseButton?: boolean;
   withHeaderDivider?: boolean;
+  withFooterDivider?: boolean;
   withActions?: boolean;
   bodyCls?: string;
 }
@@ -22,6 +26,7 @@ const Modal = ({
   //
   disabledConfirm,
   focusConfirm,
+  withFooterDivider = true,
   showCancel,
   cancelText,
   confirmText,
@@ -38,20 +43,14 @@ const Modal = ({
       className={clsx("p-4 flex flex-col", !coreProps.preset && "rounded-lg shadow-white-glow", className)}
       closable={closable}
     >
-      <div
-        className={clsx(
-          "mb-4 text-xl text-orange-500 font-semibold",
-          withHeaderDivider && "pb-2 border-b border-solid border-dark-300"
-        )}
-      >
-        {title}
-      </div>
+      <ModalHeader title={title} withDivider={withHeaderDivider} />
+
       <div className={bodyCls}>{typeof children === "function" ? children() : children}</div>
 
       {withActions && (
         <ModalActions
           {...{
-            withDivider: true,
+            withDivider: withFooterDivider,
             disabledConfirm,
             focusConfirm,
             showCancel,
@@ -87,8 +86,9 @@ function withModal<T>(
 
 Modal.LARGE_HEIGHT_CLS = "large-modal-height";
 Modal.Core = ModalCore;
-Modal.CloseX = ModalCloseButton;
+Modal.Header = ModalHeader;
 Modal.Actions = ModalActions;
+Modal.CloseButton = ModalCloseButton;
 Modal.wrap = withModal;
 
 export { Modal };
