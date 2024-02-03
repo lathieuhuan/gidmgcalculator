@@ -92,6 +92,9 @@ body {
   .zoomin-on-hover:hover {
     transform: scale(1.05);
   }
+  .zoomin-on-hover img {
+    transition: transform 100ms ease-in-out;
+  }
   .zoomin-on-hover:hover img {
     transform: scale(1.2);
   }

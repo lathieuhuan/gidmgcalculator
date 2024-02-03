@@ -105,7 +105,7 @@ const ArtifactFilter = ({
         </div>
       </div>
 
-      <Modal.Actions withDivider disabledConfirm={hasDuplicates} onCancel={onClose} onConfirm={onConfirmFilter} />
+      <Modal.Actions disabledConfirm={hasDuplicates} onCancel={onClose} onConfirm={onConfirmFilter} />
     </div>
   );
 };

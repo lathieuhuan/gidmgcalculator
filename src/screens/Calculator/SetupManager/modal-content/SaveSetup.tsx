@@ -40,7 +40,7 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
   return (
     <form id="save-calc-setup" className="flex flex-col" onSubmit={onSubmit}>
       <p className="mb-2 text-light-800">
-        {existedSetup ? "Update name for this existing setup" : "Enter name for this new setup"}
+        {existedSetup ? "Do you what to update this setup" : "Do you what to save this setup as"}
       </p>
       <Input
         className="px-4 py-2 text-1.5xl text-center font-semibold"

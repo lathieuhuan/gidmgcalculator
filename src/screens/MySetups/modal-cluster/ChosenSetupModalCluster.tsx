@@ -94,22 +94,22 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         bodyCls="grow overflow-auto"
         onClose={closeModal}
       >
-        <div className="h-full flex hide-scrollbar divide-x-2 divide-dark-700">
-          <div className="w-80 pr-4 flex flex-col " style={{ minWidth: "20rem" }}>
+        <div className="h-full flex hide-scrollbar gap-8">
+          <div className="w-75 flex flex-col shrink-0">
             <p className="text-lg text-center font-semibold">Final Attributes</p>
             <div className="mt-1 custom-scrollbar">
               {calcResult?.totalAttr && <AttributeTable attributes={calcResult.totalAttr} />}
             </div>
           </div>
 
-          <div className="w-80 px-4 flex flex-col" style={{ minWidth: "20rem" }}>
+          <div className="w-75 flex flex-col shrink-0">
             <p className="text-lg text-center font-semibold">Artifact Stats</p>
             <div className="mt-1 custom-scrollbar">
               {calcResult?.artAttr && <AttributeTable attributes={calcResult.artAttr} />}
             </div>
           </div>
 
-          <div className="w-80 pl-4 flex flex-col" style={{ minWidth: "20rem" }}>
+          <div className="w-72 flex flex-col shrink-0">
             <p className="text-lg text-center font-semibold">Set bonus</p>
             <div className="grow custom-scrollbar">
               <SetBonusesDisplay noTitle setBonuses={setBonuses} />

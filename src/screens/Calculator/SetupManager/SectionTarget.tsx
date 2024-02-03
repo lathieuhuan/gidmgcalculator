@@ -30,7 +30,7 @@ export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps
       <div className="mt-2 pr-6 flex flex-col items-start">
         {names ? (
           <div className="flex items-center relative">
-            <FaChevronDown className="absolute top-1 left-0" />
+            <FaChevronDown className="absolute top-1/2 left-1 -translate-y-1/2 text-sm" />
             <select className="pl-6 pr-2 py-1 leading-none relative z-10 appearance-none text-lg">
               {names.map((name, i) => {
                 return <option key={i}>{name}</option>;

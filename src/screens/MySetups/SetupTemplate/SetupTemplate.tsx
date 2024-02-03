@@ -266,7 +266,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         className="rounded-lg shadow-white-glow"
         onClose={closeTeammateDetail}
       >
-        <Modal.CloseX onClick={closeTeammateDetail} />
+        <Modal.CloseButton onClick={closeTeammateDetail} />
 
         {teammateInfo && (
           <TeammateDetail

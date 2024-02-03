@@ -60,7 +60,7 @@ export default function SectionParty() {
     dispatch(
       updateMessage({
         type: "info",
-        content: "This setup is marked as part of a Complex setup, thus teammates cannot be changed",
+        content: "This setup is marked as part of a Complex setup, thus teammates cannot be changed.",
       })
     );
   };

@@ -15,8 +15,9 @@ import { addUserArtifact, updateUserArtifact } from "@Store/userDatabaseSlice";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
+import { useStoreSnapshot } from "@Src/features";
 
 // Component
 import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
@@ -149,7 +150,7 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
   const dispatch = useDispatch();
   const state = useRef<"SUCCESS" | "PENDING" | "EXCEED_MAX" | "">("");
 
-  const userArtifacts = useSelector(selectUserArts);
+  const userArtifacts = useStoreSnapshot(selectUserArts);
   const existedArtifact = findById(userArtifacts, artifact.ID);
 
   if (state.current === "") {

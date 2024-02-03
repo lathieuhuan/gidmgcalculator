@@ -10,11 +10,11 @@ interface TypeSelectProps extends ModalControl {
 export function TypeSelect({ active, options, footer, onSelect, onClose }: TypeSelectProps) {
   return (
     <Modal active={active} className="p-4 bg-dark-700" preset="small" title="Choose a Type" onClose={onClose}>
-      <div className="flex">
+      <div className="flex space-x-2">
         {Object.entries(options).map(([type, value], i) => (
           <button
             key={i}
-            className="mx-1 p-1 w-14 h-14 rounded-full hover:bg-yellow-400"
+            className="p-1 w-full rounded-full hover:bg-yellow-400"
             onClick={() => onSelect(type)}
           >
             <Image src={value} imgType="weapon" />

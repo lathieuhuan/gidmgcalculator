@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import { useRef } from "react";
-import { Modal, ModalActionsProps } from "./Modal";
+import { Modal } from "./Modal";
 import { ModalControl } from "./ModalCore";
+import { ModalActionsProps } from "./modal-components";
 
 export interface ConfirmModalBodyProps extends Omit<ModalActionsProps, "className" | "justify" | "formId"> {
   message: string | JSX.Element;
