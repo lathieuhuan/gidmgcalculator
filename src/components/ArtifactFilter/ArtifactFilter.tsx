@@ -87,7 +87,7 @@ const ArtifactFilter = ({
                 disabled={!filteredTypes.length}
                 onClick={() => operate.updateFilter([])}
               >
-                {isSmallScreen ? "Clear All" : ""}
+                {isSmallScreen ? "Clear all" : ""}
               </Button>
             </div>
           </div>

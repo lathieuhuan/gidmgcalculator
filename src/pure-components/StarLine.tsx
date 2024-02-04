@@ -9,7 +9,7 @@ export const StarLine = ({ rarity, className = "" }: StarLineProps) => {
         <svg
           key={i}
           viewBox="0 0 24 24"
-          className={rarity === 5 ? "fill-rarity-5" : "fill-rarity-4"}
+          className={rarity === 5 ? "fill-rarity-5" : rarity === 4 ? "fill-rarity-4" : "fill-rarity-1"}
           style={{
             width: 18,
             height: 18,

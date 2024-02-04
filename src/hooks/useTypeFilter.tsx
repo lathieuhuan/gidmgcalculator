@@ -6,10 +6,14 @@ import { Image } from "@Src/pure-components";
 export const useTypeFilter = (
   itemType: "weapon" | "artifact",
   initialFilteredTypes: string[] = [],
-  onChange?: (filteredTypes: string[]) => void
+  options?: {
+    requiredOne?: boolean;
+    onChange?: (filteredTypes: string[]) => void;
+  }
 ) => {
   const [filteredTypes, setFilteredTypes] = useState<string[]>(initialFilteredTypes);
 
+  const { requiredOne, onChange } = options || {};
   const icons = Object.entries(itemType === "weapon" ? WEAPON_ICONS : ARTIFACT_ICONS);
 
   const onClickIcon = (active: boolean, index: number, type: string) => {
@@ -20,8 +24,10 @@ export const useTypeFilter = (
       newFilteredTypes.push(type);
     }
 
-    setFilteredTypes(newFilteredTypes);
-    onChange?.(newFilteredTypes);
+    if (!requiredOne || newFilteredTypes.length) {
+      setFilteredTypes(newFilteredTypes);
+      onChange?.(newFilteredTypes);
+    }
   };
 
   const updateFilter = (newFilteredTypes: string[]) => {

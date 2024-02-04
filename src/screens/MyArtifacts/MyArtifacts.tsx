@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
 import type { ArtifactType, UserArtifact } from "@Src/types";
-import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
+import { MAX_USER_ARTIFACTS } from "@Src/constants";
 import { useTypeFilter } from "@Src/hooks";
 import { findById, indexById } from "@Src/utils";
 
@@ -15,29 +15,29 @@ import { addUserArtifact, sortArtifacts } from "@Store/userDatabaseSlice";
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
-import { ButtonGroup, Modal, ModalHeader, WarehouseLayout } from "@Src/pure-components";
-import { TypeSelect, InventoryRack, PickerArtifact, ArtifactFilter, ArtifactFilterCondition } from "@Src/components";
+import { ButtonGroup, Modal, WarehouseLayout } from "@Src/pure-components";
+import { InventoryRack, PickerArtifact, ArtifactFilter, ArtifactFilterCondition } from "@Src/components";
 import { ChosenArtifactView } from "./ChosenArtifactView";
 
 import styles from "../styles.module.scss";
+
+type ModalType = "" | "ADD_ARTIFACT" | "FITLER";
 
 export default function MyArtifacts() {
   const dispatch = useDispatch();
   const userArts = useSelector(selectUserArts);
 
   const [chosenID, setChosenID] = useState(0);
-  const [modalType, setModalType] = useState<"PICK_ARTIFACT_TYPE" | "FITLER" | "">("");
-  const [artifactPicker, setArtifactPicker] = useState<{ active: boolean; type: ArtifactType }>({
-    active: false,
-    type: "flower",
-  });
+  const [modalType, setModalType] = useState<ModalType>("");
   const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const { operate, renderTypeFilter } = useTypeFilter("artifact", undefined, (filteredTypes) => {
-    setFilterCondition((prev) => ({
-      ...prev,
-      types: filteredTypes as ArtifactType[],
-    }));
+  const { operate, renderTypeFilter } = useTypeFilter("artifact", undefined, {
+    onChange: (filteredTypes) => {
+      setFilterCondition((prev) => ({
+        ...prev,
+        types: filteredTypes as ArtifactType[],
+      }));
+    },
   });
 
   const filteredArtifacts = useMemo(
@@ -62,7 +62,7 @@ export default function MyArtifacts() {
 
   const onClickAddArtifact = () => {
     if (!isMaxArtifactsReached()) {
-      setModalType("PICK_ARTIFACT_TYPE");
+      setModalType("ADD_ARTIFACT");
     }
   };
 
@@ -161,23 +161,9 @@ export default function MyArtifacts() {
         />
       </Modal>
 
-      <TypeSelect
-        active={modalType === "PICK_ARTIFACT_TYPE"}
-        options={ARTIFACT_ICONS}
-        onSelect={(artifactType) => {
-          setArtifactPicker({
-            active: true,
-            type: artifactType as ArtifactType,
-          });
-          closeModal();
-        }}
-        onClose={closeModal}
-      />
-
       <PickerArtifact
-        active={artifactPicker.active}
-        needMassAdd
-        artifactType={artifactPicker.type}
+        active={modalType === "ADD_ARTIFACT"}
+        canMultiple
         onPickArtifact={(item) => {
           if (isMaxArtifactsReached()) {
             return {
@@ -193,7 +179,7 @@ export default function MyArtifacts() {
           dispatch(addUserArtifact(newArtifact));
           setChosenID(newArtifact.ID);
         }}
-        onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
+        onClose={closeModal}
       />
     </WarehouseLayout.Wrapper>
   );

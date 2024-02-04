@@ -76,7 +76,7 @@ export function useArtifactSetFilter(artifacts: CalcArtifact[], chosenCodes: num
             disabled={filterSets.every((set) => !set.chosen)}
             onClick={clearFilter}
           >
-            Clear All
+            Clear all
           </Button>
         </div>
       </div>

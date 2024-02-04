@@ -1,7 +1,9 @@
 import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
+
 import { useTypeFilter } from "@Src/hooks";
-import { ButtonGroup, StarLine } from "@Src/pure-components";
+import { ARTIFACT_TYPES, WEAPON_TYPES } from "@Src/constants";
+import { Button, ButtonGroup, StarLine } from "@Src/pure-components";
 import { ItemFilterState } from "./types";
 
 const useRarityFilter = (options: number[], initialFilteredRarities: number[] = []) => {
@@ -15,6 +17,10 @@ const useRarityFilter = (options: number[], initialFilteredRarities: number[] = 
     }
   };
 
+  const updateFilter = (rarities: number[]) => {
+    setRarities(rarities);
+  };
+
   const renderRarityFilter = (className?: ClassValue) => {
     return (
       <div className={clsx("flex flex-col space-y-2", className)}>
@@ -22,10 +28,10 @@ const useRarityFilter = (options: number[], initialFilteredRarities: number[] = 
           const selected = rarities.includes(option);
 
           return (
-            <label key={option} className="p-2 rounded-sm border border-dark-300 flex justify-center">
+            <label key={option} className="p-2 rounded-sm border border-dark-500 flex justify-center">
               <input
                 type="checkbox"
-                className=""
+                className="scale-110"
                 checked={selected}
                 onChange={() => onToggleRarity(option, selected)}
               />
@@ -39,20 +45,44 @@ const useRarityFilter = (options: number[], initialFilteredRarities: number[] = 
 
   return {
     filteredRarities: rarities,
+    operate: {
+      updateFilter,
+    },
     renderRarityFilter,
   };
 };
 
 export interface ItemFilterProps {
   className?: ClassValue;
+  itemType: "weapon" | "artifact";
   initialFilter?: ItemFilterState;
   forcedType?: string;
   onCancel: () => void;
   onDone: (filter: ItemFilterState) => void;
 }
-export const ItemFilter = ({ className, initialFilter, forcedType, onCancel, onDone }: ItemFilterProps) => {
-  const { filteredTypes, renderTypeFilter } = useTypeFilter("weapon", initialFilter?.types);
-  const { filteredRarities, renderRarityFilter } = useRarityFilter([5, 4, 3, 2, 1], initialFilter?.rarities);
+export const ItemFilter = ({ className, itemType, initialFilter, forcedType, onCancel, onDone }: ItemFilterProps) => {
+  const rarityOptions = itemType === "weapon" ? [5, 4, 3, 2, 1] : [5, 4];
+
+  const {
+    filteredTypes,
+    operate: typeOperate,
+    renderTypeFilter,
+  } = useTypeFilter(itemType, initialFilter?.types, {
+    requiredOne: true,
+  });
+  const {
+    filteredRarities,
+    operate: rarityOperate,
+    renderRarityFilter,
+  } = useRarityFilter(rarityOptions, initialFilter?.rarities);
+
+  const onClickSelectAllTypes = () => {
+    typeOperate.updateFilter(itemType === "weapon" ? [...WEAPON_TYPES] : [...ARTIFACT_TYPES]);
+  };
+
+  const onClickSelectAllRarities = () => {
+    rarityOperate.updateFilter(rarityOptions);
+  };
 
   const onConfirm = () => {
     onDone({
@@ -62,24 +92,34 @@ export const ItemFilter = ({ className, initialFilter, forcedType, onCancel, onD
   };
 
   return (
-    <div className={clsx("p-4 bg-dark-700 flex justify-center", className)}>
-      <div className="flex flex-col">
-        <p className="text-lg font-semibold">Filter</p>
+    <div className={clsx("p-4 bg-dark-900 flex flex-col", className)}>
+      <div className="grow flex flex-col hide-scrollbar">
+        <p className="w-full text-lg font-semibold">Filter</p>
 
-        <div className="mt-3 grow flex flex-col md1:flex-row gap-6">
-          <div className="space-y-3">
-            <p className="text-sm">Rarity</p>
-            {renderRarityFilter()}
-          </div>
-
-          <div className="space-y-3">
-            <p className="text-sm">Type</p>
+        <div className="mt-2 flex flex-col md1:flex-row gap-4">
+          <div className="p-4 rounded bg-dark-700 space-y-6">
+            <div className="flex justify-between items-center">
+              <p>Type</p>
+              <Button size="small" onClick={onClickSelectAllTypes}>
+                Select all
+              </Button>
+            </div>
             {renderTypeFilter("justify-center")}
           </div>
-        </div>
 
-        <ButtonGroup.Confirm className="mt-4" justify="end" onCancel={onCancel} onConfirm={onConfirm} />
+          <div className="p-4 rounded bg-dark-700 space-y-6" style={{ minWidth: 240 }}>
+            <div className="flex justify-between items-center">
+              <p>Rarity</p>
+              <Button size="small" onClick={onClickSelectAllRarities}>
+                Select all
+              </Button>
+            </div>
+            {renderRarityFilter()}
+          </div>
+        </div>
       </div>
+
+      <ButtonGroup.Confirm className="mt-4" justify="end" onCancel={onCancel} onConfirm={onConfirm} />
     </div>
   );
 };

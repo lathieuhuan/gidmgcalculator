@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import type { WeaponType } from "@Src/types";
 
-import { MAX_USER_WEAPONS, WEAPON_ICONS } from "@Src/constants";
+import { MAX_USER_WEAPONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
 import { useTypeFilter } from "@Src/hooks";
 import { $AppData } from "@Src/services";
@@ -16,11 +16,11 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
-import { OwnerLabel, TypeSelect, WeaponCard, InventoryRack, PickerCharacter, PickerWeapon } from "@Src/components";
+import { OwnerLabel, WeaponCard, InventoryRack, PickerCharacter, PickerWeapon } from "@Src/components";
 
 import styles from "../styles.module.scss";
 
-type ModalType = "" | "PICK_WEAPON_TYPE" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON";
+type ModalType = "" | "ADD_WEAPON" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON";
 
 export default function MyWeapons() {
   const dispatch = useDispatch();
@@ -28,10 +28,6 @@ export default function MyWeapons() {
   const [chosenID, setChosenID] = useState(0);
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
-  const [weaponPicker, setWeaponPicker] = useState<{ active: boolean; type: WeaponType }>({
-    active: false,
-    type: "sword",
-  });
 
   const { filteredTypes, renderTypeFilter } = useTypeFilter("weapon");
   const { filteredWeapons, totalCount } = useSelector((state) =>
@@ -54,6 +50,12 @@ export default function MyWeapons() {
 
   const closeModal = () => setModalType("");
 
+  const onClickAddWeapon = () => {
+    if (!checkIfMaxWeaponsReached()) {
+      setModalType("ADD_WEAPON");
+    }
+  };
+
   return (
     <WarehouseLayout.Wrapper>
       <WarehouseLayout>
@@ -61,14 +63,7 @@ export default function MyWeapons() {
           <ButtonGroup
             className="mr-4"
             buttons={[
-              {
-                text: "Add",
-                onClick: () => {
-                  if (!checkIfMaxWeaponsReached()) {
-                    setModalType("PICK_WEAPON_TYPE");
-                  }
-                },
-              },
+              { text: "Add", onClick: onClickAddWeapon },
               {
                 text: "Sort",
                 onClick: () => dispatch(sortWeapons()),
@@ -145,23 +140,9 @@ export default function MyWeapons() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <TypeSelect
-        active={modalType === "PICK_WEAPON_TYPE"}
-        options={WEAPON_ICONS}
-        onSelect={(weaponType) => {
-          setWeaponPicker({
-            active: true,
-            type: weaponType as WeaponType,
-          });
-          closeModal();
-        }}
-        onClose={closeModal}
-      />
-
       <PickerWeapon
-        active={weaponPicker.active}
-        needMassAdd
-        weaponType={weaponPicker.type}
+        active={modalType === "ADD_WEAPON"}
+        canMultiple
         onPickWeapon={(item) => {
           if (checkIfMaxWeaponsReached()) {
             return {
@@ -178,7 +159,7 @@ export default function MyWeapons() {
           dispatch(addUserWeapon(newWeapon));
           setChosenID(newWeapon.ID);
         }}
-        onClose={() => setWeaponPicker((prev) => ({ ...prev, active: false }))}
+        onClose={closeModal}
       />
 
       {chosenWeapon && (

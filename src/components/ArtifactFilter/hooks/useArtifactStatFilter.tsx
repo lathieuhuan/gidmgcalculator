@@ -147,7 +147,7 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
 
         <div className="mt-4 flex space-x-2">
           <Button size="small" icon={<BiReset className="text-lg" />} disabled={!resetable} onClick={clearFilter}>
-            Clear All
+            Clear all
           </Button>
         </div>
       </div>

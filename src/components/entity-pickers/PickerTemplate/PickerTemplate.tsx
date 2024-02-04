@@ -6,9 +6,10 @@ import type { DataType, Filter, PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
-import { Input, CollapseSpace, ModalHeader } from "@Src/pure-components";
+import { Input, CollapseSpace, ModalHeader, Modal, Button } from "@Src/pure-components";
 import { CharacterFilter } from "./CharacterFilter";
 import { MemoPickerItemView } from "./Item";
+import { FaFilter } from "react-icons/fa";
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
@@ -20,14 +21,25 @@ type Return = void | {
 export type OnPickItemReturn = Return | Promise<Return>;
 
 export interface PickerTemplateProps {
+  title: string;
   data: PickerItem[];
-  // dataType: DataType;
-  // needMassAdd?: boolean;
-  // onPickItem: (item: PickerItem) => OnPickItemReturn;
+  shouldHasFilter?: boolean;
+  initialFilterOn?: boolean;
+  renderFilter: (toggle: () => void) => React.ReactNode;
   onClickItem?: (item: PickerItem) => void;
-  // onClose: () => void;
+  onClose: () => void;
 }
-export const PickerTemplate = ({ data }: PickerTemplateProps) => {
+export const PickerTemplate = ({
+  title,
+  data,
+  shouldHasFilter = true,
+  initialFilterOn = false,
+  renderFilter,
+  onClickItem,
+  onClose,
+}: PickerTemplateProps) => {
+  const [filterOn, setFilterOn] = useState(initialFilterOn);
+
   // const inputRef = useRef<HTMLInputElement>(null);
   // const [pickedNames, setPickedNames] = useState<BooleanRecord>({});
 
@@ -112,38 +124,77 @@ export const PickerTemplate = ({ data }: PickerTemplateProps) => {
   //   }
   // };
 
+  const toggleFilter = () => {
+    setFilterOn(!filterOn);
+  };
+
   return (
-    <div ref={observedAreaRef} className="sm:pr-2 h-full custom-scrollbar">
-      <div className="flex flex-wrap">
-        {data.map((item, i) => {
-          return (
-            <div
-              key={`${item.code}-${item.rarity}`}
-              data-id={item.code}
-              className={clsx(
-                observedItemCls,
-                "grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
-                item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2"
-                // { hidden: dataType === "character" && !visibleNames[item.name] }
-              )}
-            >
-              <div
-                onClick={() => {
-                  // onClickItem(item, i);
-                }}
-              >
-                <MemoPickerItemView
-                  visible={visibleItems[item.code]}
-                  item={item}
-                  // pickedAmount={itemCounts[i] || 0}
-                  pickedAmount={0}
-                />
-              </div>
+    <>
+      <Modal.CloseButton onClick={onClose} />
+
+      <Modal.Header withDivider>
+        <div className="flex items-center relative">
+          {shouldHasFilter ? (
+            <Button
+              className="mr-2 shadow-common"
+              variant={filterOn ? "neutral" : "default"}
+              shape="square"
+              size="small"
+              icon={<FaFilter />}
+              onClick={toggleFilter}
+            />
+          ) : null}
+
+          <span>{title}</span>
+        </div>
+      </Modal.Header>
+
+      <div className="p-4 grow overflow-auto relative">
+        <div className="h-full custom-scrollbar">
+          <div ref={observedAreaRef} className="sm:pr-2 h-full custom-scrollbar">
+            <div className="flex flex-wrap">
+              {data.map((item, i) => {
+                return (
+                  <div
+                    key={`${item.code}-${item.rarity}`}
+                    data-id={item.code}
+                    className={clsx(
+                      observedItemCls,
+                      "grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
+                      item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2"
+                      // { hidden: dataType === "character" && !visibleNames[item.name] }
+                    )}
+                  >
+                    <div onClick={() => onClickItem?.(item)}>
+                      <MemoPickerItemView
+                        visible={visibleItems[item.code]}
+                        item={item}
+                        // pickedAmount={itemCounts[i] || 0}
+                        pickedAmount={0}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
+          </div>
+        </div>
+
+        <div
+          className={clsx("absolute full-stretch bg-black/60 hidden", filterOn ? "md1:block" : "")}
+          onClick={toggleFilter}
+        />
+
+        <div
+          className={clsx(
+            "absolute top-0 left-0 w-full md1:w-auto transition-size duration-300 overflow-hidden",
+            filterOn ? "h-full" : "h-0"
+          )}
+        >
+          {renderFilter(toggleFilter)}
+        </div>
       </div>
-    </div>
+    </>
 
     // <div className="h-full flex flex-col">
     //   <div className="p-2">

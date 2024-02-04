@@ -19,7 +19,8 @@ export type PickerItem = {
   icon: string;
   rarity: Rarity;
   vision?: Vision;
-  type?: WeaponType;
+  /** Weapon type of Artifact type */
+  type?: string;
   weaponType?: WeaponType;
   cons?: number;
   artifactIDs?: (number | null)[];
