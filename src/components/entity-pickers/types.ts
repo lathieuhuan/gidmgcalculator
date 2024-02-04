@@ -7,6 +7,11 @@ export type Filter = {
   value: string;
 };
 
+export type ItemFilterState = {
+  types: string[];
+  rarities: number[];
+};
+
 export type PickerItem = {
   code: number;
   beta?: boolean;
@@ -14,6 +19,7 @@ export type PickerItem = {
   icon: string;
   rarity: Rarity;
   vision?: Vision;
+  type?: WeaponType;
   weaponType?: WeaponType;
   cons?: number;
   artifactIDs?: (number | null)[];

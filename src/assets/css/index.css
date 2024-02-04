@@ -21,28 +21,15 @@ body {
   background: rgb(185, 185, 185);
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px grey;
-  border-radius: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
+.custom-scrollbar::-webkit-scrollbar,
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
 
 .custom-scrollbar,
 .hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   overflow: auto;
 }
 
@@ -83,12 +70,30 @@ body {
 }
 
 @media (min-width: 440px) {
+  .custom-scrollbar {
+    -ms-overflow-style: auto; /* IE and Edge */
+    scrollbar-width: auto;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+    height: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px grey;
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+  }
+
   .glow-on-hover:not(:disabled) {
     opacity: 0.9;
   }
   .glow-on-hover:not(:disabled):hover {
     opacity: 1;
   }
+
   .zoomin-on-hover:hover {
     transform: scale(1.05);
   }
