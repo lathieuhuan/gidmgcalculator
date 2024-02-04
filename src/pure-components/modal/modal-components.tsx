@@ -1,11 +1,11 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import { ButtonGroup, ButtonGroupItem, ButtonGroupProps } from "../button";
 
 export const ModalCloseButton = (props: { disabled?: boolean; onClick?: () => void }) => {
   return (
     <button
       type="button"
-      className="w-8 h-8 flex-center absolute top-1 right-1 text-light-900 text-1.5xl glow-on-hover"
+      className="w-8 h-8 flex-center absolute top-1 right-1 z-50 text-light-900 text-1.5xl glow-on-hover"
       {...props}
     >
       <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
@@ -16,18 +16,14 @@ export const ModalCloseButton = (props: { disabled?: boolean; onClick?: () => vo
 };
 
 export interface ModalHeaderProps {
-  title?: React.ReactNode;
+  className?: ClassValue;
   withDivider?: boolean;
+  children?: React.ReactNode;
 }
-export const ModalHeader = ({ title, withDivider }: ModalHeaderProps) => {
+export const ModalHeader = ({ className, children, withDivider }: ModalHeaderProps) => {
   return (
-    <div
-      className={clsx(
-        "mb-4 text-xl text-orange-500 font-semibold",
-        withDivider && "pb-2 border-b border-solid border-dark-300"
-      )}
-    >
-      {title}
+    <div className={clsx("px-4 pt-4 text-xl text-orange-500 font-semibold", className)}>
+      <div className={clsx("pb-2", withDivider && "border-b border-solid border-dark-300")}>{children}</div>
     </div>
   );
 };
@@ -90,7 +86,7 @@ export const ModalActions = ({
 
   return (
     <ButtonGroup
-      className={clsx("mt-4", withDivider && "pt-4 border-t border-solid border-dark-300", className)}
+      className={clsx("pt-4", withDivider && "border-t border-solid border-dark-300", className)}
       justify={justify}
       buttons={buttons}
     />

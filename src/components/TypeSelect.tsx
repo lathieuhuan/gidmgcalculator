@@ -9,7 +9,7 @@ interface TypeSelectProps extends ModalControl {
 }
 export function TypeSelect({ active, options, footer, onSelect, onClose }: TypeSelectProps) {
   return (
-    <Modal active={active} className="p-4 bg-dark-700" preset="small" title="Choose a Type" onClose={onClose}>
+    <Modal active={active} className="bg-dark-700" preset="small" title="Choose a Type" onClose={onClose}>
       <div className="flex space-x-2">
         {Object.entries(options).map(([type, value], i) => (
           <button

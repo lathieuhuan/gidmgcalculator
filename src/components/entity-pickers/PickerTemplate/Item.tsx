@@ -1,17 +1,15 @@
 import { memo } from "react";
-
 import type { DataType, PickerItem } from "../types";
-
-// Component
 import { Image, BetaMark, Vision } from "@Src/pure-components";
 
-interface ItemProps {
+interface PickerItemViewProps {
   visible: boolean;
   item: PickerItem;
-  itemType: DataType;
   pickedAmount: number;
 }
-const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
+const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) => {
+  const itemType: DataType = item.vision ? "character" : item.weaponType ? "weapon" : "artifact";
+
   return (
     <div>
       <div className="cursor-pointer zoomin-on-hover relative">
@@ -47,6 +45,6 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
   );
 };
 
-export const MemoItem = memo(Item, (prev, next) => {
+export const MemoPickerItemView = memo(PickerItemView, (prev, next) => {
   return prev.visible === next.visible && prev.pickedAmount === next.pickedAmount;
 });

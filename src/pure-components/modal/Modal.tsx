@@ -1,10 +1,9 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import { ModalCore, ModalCoreProps } from "./ModalCore";
 import { ModalActions, ModalActionsProps, ModalCloseButton, ModalHeader, ModalHeaderProps } from "./modal-components";
 
 export interface ModalProps
   extends ModalCoreProps,
-    Omit<ModalHeaderProps, "withDivider">,
     Omit<ModalActionsProps, "className" | "justify" | "withDivider" | "onCancel"> {
   title?: React.ReactNode;
   /** Default to true */
@@ -12,7 +11,7 @@ export interface ModalProps
   withHeaderDivider?: boolean;
   withFooterDivider?: boolean;
   withActions?: boolean;
-  bodyCls?: string;
+  bodyCls?: ClassValue;
 }
 const Modal = ({
   className,
@@ -40,16 +39,19 @@ const Modal = ({
   return (
     <ModalCore
       {...coreProps}
-      className={clsx("p-4 flex flex-col", !coreProps.preset && "rounded-lg shadow-white-glow", className)}
+      className={clsx("flex flex-col", !coreProps.preset && "rounded-lg shadow-white-glow", className)}
       closable={closable}
     >
-      <ModalHeader title={title} withDivider={withHeaderDivider} />
+      <ModalHeader withDivider={withHeaderDivider}>{title}</ModalHeader>
 
-      <div className={bodyCls}>{typeof children === "function" ? children() : children}</div>
+      <div className={clsx("p-4 grow overflow-auto", bodyCls)}>
+        {typeof children === "function" ? children() : children}
+      </div>
 
       {withActions && (
         <ModalActions
           {...{
+            className: "px-4",
             withDivider: withFooterDivider,
             disabledConfirm,
             focusConfirm,
@@ -73,7 +75,7 @@ const Modal = ({
 
 function withModal<T>(
   Component: (props: T) => JSX.Element | null,
-  modalProps?: Partial<Pick<ModalProps, "preset" | "withCloseButton" | "className">>
+  modalProps?: Partial<Pick<ModalProps, "title" | "preset" | "withCloseButton" | "className">>
 ) {
   return (props: Pick<ModalProps, "active" | "closable" | "closeOnMaskClick" | "onClose"> & T): JSX.Element => {
     return (
@@ -84,11 +86,25 @@ function withModal<T>(
   };
 }
 
+function withCoreModal<T>(
+  Component: (props: T) => JSX.Element | null,
+  modalProps?: Partial<Pick<ModalCoreProps, "preset" | "className">>
+) {
+  return (props: Pick<ModalProps, "active" | "closable" | "closeOnMaskClick" | "onClose"> & T): JSX.Element => {
+    return (
+      <ModalCore active={props.active} onClose={props.onClose} {...modalProps}>
+        <Component {...props} />
+      </ModalCore>
+    );
+  };
+}
+
 Modal.LARGE_HEIGHT_CLS = "large-modal-height";
 Modal.Core = ModalCore;
 Modal.Header = ModalHeader;
 Modal.Actions = ModalActions;
 Modal.CloseButton = ModalCloseButton;
 Modal.wrap = withModal;
+Modal.bareWrap = withCoreModal;
 
 export { Modal };
