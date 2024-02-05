@@ -3,13 +3,19 @@ interface StarLineProps {
   rarity: number;
 }
 export const StarLine = ({ rarity, className = "" }: StarLineProps) => {
+  const rarityCls: Record<number, string> = {
+    5: "fill-rarity-5",
+    4: "fill-rarity-4",
+    3: "fill-rarity-3",
+  };
+
   return (
     <div className={"flex items-center " + className}>
       {[...Array(rarity)].map((_, i) => (
         <svg
           key={i}
           viewBox="0 0 24 24"
-          className={rarity === 5 ? "fill-rarity-5" : rarity === 4 ? "fill-rarity-4" : "fill-rarity-1"}
+          className={rarityCls[rarity] ?? "fill-rarity-1"}
           style={{
             width: 18,
             height: 18,

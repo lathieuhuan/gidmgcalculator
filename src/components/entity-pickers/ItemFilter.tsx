@@ -45,6 +45,7 @@ const useRarityFilter = (options: number[], initialFilteredRarities: number[] = 
 
   return {
     filteredRarities: rarities,
+    allSelected: rarities.length === options.length,
     operate: {
       updateFilter,
     },
@@ -65,6 +66,7 @@ export const ItemFilter = ({ className, itemType, initialFilter, forcedType, onC
 
   const {
     filteredTypes,
+    allSelected: allTypesSelected,
     operate: typeOperate,
     renderTypeFilter,
   } = useTypeFilter(itemType, initialFilter?.types, {
@@ -72,6 +74,7 @@ export const ItemFilter = ({ className, itemType, initialFilter, forcedType, onC
   });
   const {
     filteredRarities,
+    allSelected: allRaritiesSelected,
     operate: rarityOperate,
     renderRarityFilter,
   } = useRarityFilter(rarityOptions, initialFilter?.rarities);
@@ -100,7 +103,7 @@ export const ItemFilter = ({ className, itemType, initialFilter, forcedType, onC
           <div className="p-4 rounded bg-dark-700 space-y-6">
             <div className="flex justify-between items-center">
               <p>Type</p>
-              <Button size="small" onClick={onClickSelectAllTypes}>
+              <Button size="small" disabled={allTypesSelected} onClick={onClickSelectAllTypes}>
                 Select all
               </Button>
             </div>
@@ -110,7 +113,7 @@ export const ItemFilter = ({ className, itemType, initialFilter, forcedType, onC
           <div className="p-4 rounded bg-dark-700 space-y-6" style={{ minWidth: 240 }}>
             <div className="flex justify-between items-center">
               <p>Rarity</p>
-              <Button size="small" onClick={onClickSelectAllRarities}>
+              <Button size="small" disabled={allRaritiesSelected} onClick={onClickSelectAllRarities}>
                 Select all
               </Button>
             </div>
@@ -119,7 +122,7 @@ export const ItemFilter = ({ className, itemType, initialFilter, forcedType, onC
         </div>
       </div>
 
-      <ButtonGroup.Confirm className="mt-4" justify="end" onCancel={onCancel} onConfirm={onConfirm} />
+      <ButtonGroup.Confirm className="mt-4" justify="end" focusConfirm onCancel={onCancel} onConfirm={onConfirm} />
     </div>
   );
 };

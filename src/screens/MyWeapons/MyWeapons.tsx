@@ -142,7 +142,8 @@ export default function MyWeapons() {
 
       <PickerWeapon
         active={modalType === "ADD_WEAPON"}
-        canMultiple
+        hasMultipleMode
+        hasConfigStep
         onPickWeapon={(item) => {
           if (checkIfMaxWeaponsReached()) {
             return {
@@ -151,8 +152,8 @@ export default function MyWeapons() {
           }
 
           const newWeapon = {
-            ID: Date.now(),
             ...item,
+            ID: Date.now(),
             owner: null,
           };
 

@@ -20,20 +20,17 @@ const initialFilter: ItemFilterState = {
 
 interface ArtifactPickerProps {
   forcedType?: ArtifactType;
-  canMultiple?: boolean;
+  showMultipleMode?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
   onPickArtifact: (info: ReturnType<typeof createArtifact>) => OnPickItemReturn;
   onClose: () => void;
 }
-const ArtifactPicker = ({ forcedType, forFeature, canMultiple, onPickArtifact, onClose }: ArtifactPickerProps) => {
-  const allSets = useMemo(() => {
-    return [];
-  }, []);
-
+const ArtifactPicker = ({ forcedType, forFeature, showMultipleMode, onPickArtifact, onClose }: ArtifactPickerProps) => {
   const [filter, setFilter] = useState<ItemFilterState>();
 
   const filteredArtifacts = useMemo(() => {
-    return allSets;
+    return [];
+
     // switch (forFeature) {
     //   case "TEAMMATE_MODIFIERS":
     //     return artifacts.reduce<PickerItem[][]>(
@@ -71,18 +68,13 @@ const ArtifactPicker = ({ forcedType, forFeature, canMultiple, onPickArtifact, o
     // }
   }, [filter]);
 
-  const onclickArtifact = async (artifact: PickerItem) => {
+  const onClickArtifact = async (artifact: PickerItem) => {
     const newArtifact = createArtifact({
       type: artifact.type as ArtifactType,
       code: artifact.code,
       rarity: artifact.rarity,
     });
-    const result = await onPickArtifact(newArtifact);
-    const { isValid = true } = result || {};
-
-    if (isValid) {
-      onClose();
-    }
+    return onPickArtifact(newArtifact);
   };
 
   return (
@@ -106,12 +98,9 @@ const ArtifactPicker = ({ forcedType, forFeature, canMultiple, onPickArtifact, o
         );
       }}
       onClose={onClose}
-      onClickItem={onclickArtifact}
+      onPickItem={onClickArtifact}
     />
   );
 };
 
-export const PickerArtifact = Modal.bareWrap(ArtifactPicker, {
-  preset: "large",
-  className: "flex flex-col rounded-lg shadow-white-glow",
-});
+export const PickerArtifact = Modal.bareWrap(ArtifactPicker, { preset: "large" });

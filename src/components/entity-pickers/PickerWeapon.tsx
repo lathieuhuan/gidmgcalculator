@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import type { WeaponType } from "@Src/types";
-import type { ItemFilterState, PickerItem } from "./types";
+import type { Weapon, WeaponType } from "@Src/types";
+import type { ItemFilterState } from "./types";
 import { $AppData } from "@Src/services";
 
 // Util
@@ -9,22 +9,22 @@ import { pickProps } from "@Src/utils";
 import { createWeapon } from "@Src/utils/creators";
 
 // Component
-import { Modal } from "@Src/pure-components";
-import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
-import { ItemFilter } from "./ItemFilter";
+import { Button, Modal } from "@Src/pure-components";
+import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./PickerTemplate";
+import { ItemFilter, ItemFilterProps } from "./ItemFilter";
+import { WeaponCard } from "../WeaponCard";
 
 const initialFilter: ItemFilterState = {
   types: ["bow"],
   rarities: [4, 5],
 };
 
-interface WeaponPickerProps {
-  forcedType?: WeaponType;
-  canMultiple?: boolean;
+interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
+  forcedType?: ItemFilterProps["forcedType"];
   onPickWeapon: (info: ReturnType<typeof createWeapon>) => OnPickItemReturn;
   onClose: () => void;
 }
-function WeaponPicker({ forcedType, canMultiple, onPickWeapon, onClose }: WeaponPickerProps) {
+function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
   const allWeapons = useMemo(() => {
     return $AppData
       .getAllWeapons()
@@ -32,6 +32,7 @@ function WeaponPicker({ forcedType, canMultiple, onPickWeapon, onClose }: Weapon
   }, []);
 
   const [filter, setFilter] = useState<ItemFilterState>();
+  const [weaponConfig, setWeaponConfig] = useState<Weapon>();
 
   const filteredWeapons = useMemo(() => {
     if (!filter?.types?.length && !filter?.rarities?.length) {
@@ -40,18 +41,21 @@ function WeaponPicker({ forcedType, canMultiple, onPickWeapon, onClose }: Weapon
     return allWeapons.filter((weapon) => filter.types.includes(weapon.type) && filter.rarities.includes(weapon.rarity));
   }, [filter]);
 
-  const onclickWeapon = async (weapon: PickerItem) => {
+  const onPickItem: PickerTemplateProps["onPickItem"] = (weapon, isConfigStep) => {
     if (weapon.type) {
       const newWeapon = createWeapon({
         type: weapon.type as WeaponType,
         code: weapon.code,
       });
-      const result = await onPickWeapon(newWeapon);
-      const { isValid = true } = result || {};
 
-      if (isValid) {
-        onClose();
+      if (isConfigStep) {
+        return setWeaponConfig({
+          ID: 0,
+          ...newWeapon,
+        });
       }
+
+      return onPickWeapon(newWeapon);
     }
   };
 
@@ -75,13 +79,49 @@ function WeaponPicker({ forcedType, canMultiple, onPickWeapon, onClose }: Weapon
           />
         );
       }}
+      renderItemConfig={(afterPickItem) => {
+        return (
+          <div className="h-full flex flex-col">
+            <div className="grow hide-scrollbar">
+              <WeaponCard
+                mutable
+                weapon={weaponConfig}
+                refine={(refi) => {
+                  if (weaponConfig) {
+                    setWeaponConfig({ ...weaponConfig, refi });
+                  }
+                }}
+                upgrade={(level) => {
+                  if (weaponConfig) {
+                    setWeaponConfig({ ...weaponConfig, level });
+                  }
+                }}
+              />
+            </div>
+
+            {weaponConfig ? (
+              <div className="mt-4 flex justify-center">
+                <Button
+                  variant="positive"
+                  onClick={() => {
+                    if (weaponConfig) {
+                      onPickWeapon(weaponConfig);
+                      afterPickItem(weaponConfig.code);
+                    }
+                  }}
+                >
+                  Select
+                </Button>
+              </div>
+            ) : null}
+          </div>
+        );
+      }}
       onClose={onClose}
-      onClickItem={onclickWeapon}
+      onPickItem={onPickItem}
+      {...templateProps}
     />
   );
 }
 
-export const PickerWeapon = Modal.bareWrap(WeaponPicker, {
-  preset: "large",
-  className: "flex flex-col rounded-lg shadow-white-glow",
-});
+export const PickerWeapon = Modal.bareWrap(WeaponPicker, { preset: "large" });

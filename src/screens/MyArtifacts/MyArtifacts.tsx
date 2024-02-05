@@ -163,7 +163,7 @@ export default function MyArtifacts() {
 
       <PickerArtifact
         active={modalType === "ADD_ARTIFACT"}
-        canMultiple
+        showMultipleMode
         onPickArtifact={(item) => {
           if (isMaxArtifactsReached()) {
             return {

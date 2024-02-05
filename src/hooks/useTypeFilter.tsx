@@ -60,6 +60,7 @@ export const useTypeFilter = (
 
   return {
     filteredTypes,
+    allSelected: filteredTypes.length === icons.length,
     operate: {
       updateFilter,
     },

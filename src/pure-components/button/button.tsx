@@ -28,8 +28,8 @@ const shapeCls: Record<ButtonShape, string> = {
 };
 
 const sizeCls: Partial<Record<ButtonSize, string>> = {
-  small: "px-2 py-0.5",
-  medium: "px-3 py-1.5",
+  small: "px-2 py-0.5 font-semibold",
+  medium: "px-3 py-1.5 font-bold",
 };
 
 const iconSizeCls: Partial<Record<ButtonSize, string>> = {
@@ -62,7 +62,7 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "text-sm font-bold flex-center",
+    "text-sm flex-center",
     iconPosition === "end" && "flex-row-reverse",
     boneOnly ? boneColorCls[variant] : colorCls[variant],
     shapeCls[shape],

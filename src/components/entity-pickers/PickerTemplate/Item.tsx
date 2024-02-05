@@ -5,7 +5,7 @@ import { Image, BetaMark, Vision } from "@Src/pure-components";
 interface PickerItemViewProps {
   visible: boolean;
   item: PickerItem;
-  pickedAmount: number;
+  pickedAmount?: number;
 }
 const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) => {
   const itemType: DataType = item.vision ? "character" : item.weaponType ? "weapon" : "artifact";
@@ -21,7 +21,12 @@ const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) =>
           }
         >
           <div className={"aspect-square transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")}>
-            {visible && <Image src={item.icon} imgType={itemType} />}
+            {visible && (
+              <Image
+                src={item.icon}
+                // imgType={itemType}
+              />
+            )}
           </div>
 
           {pickedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p> : null}
@@ -30,6 +35,7 @@ const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) =>
           {item.name}
         </p>
       </div>
+
       {item.vision && visible && (
         <div
           className={

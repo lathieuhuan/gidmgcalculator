@@ -79,8 +79,8 @@ export default function SectionWeapon() {
         onPickWeapon={(item) => {
           dispatch(
             changeWeapon({
-              ID: Date.now(),
               ...item,
+              ID: Date.now(),
             })
           );
         }}
