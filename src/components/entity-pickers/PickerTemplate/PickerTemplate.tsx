@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState, ReactNode } from "react";
 
-import type { DataType, Filter, PickerItem } from "../types";
+import type { Filter, PickedItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
@@ -10,16 +10,14 @@ import { CharacterFilter } from "./CharacterFilter";
 import { MemoPickerItemView } from "./Item";
 import { FaFilter } from "react-icons/fa";
 
-type Return = void | {
-  /** default to true */
-  isValid: boolean;
-};
+/** this pick is valid or not */
+type Return = boolean;
 
 export type OnPickItemReturn = Return | Promise<Return>;
 
-export interface PickerTemplateProps {
+export interface PickerTemplateProps<T extends PickedItem = PickedItem> {
   title: string;
-  data: PickerItem[];
+  data: T[];
   hasMultipleMode?: boolean;
   hasConfigStep?: boolean;
   /** Default to true */
@@ -29,10 +27,10 @@ export interface PickerTemplateProps {
   initialFilterOn?: boolean;
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
-  onPickItem?: (item: PickerItem, isConfigStep: boolean) => OnPickItemReturn;
+  onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
 }
-export const PickerTemplate = ({
+export const PickerTemplate = <T extends PickedItem = PickedItem>({
   title,
   data,
   hasMultipleMode,
@@ -44,7 +42,7 @@ export const PickerTemplate = ({
   renderItemConfig,
   onPickItem,
   onClose,
-}: PickerTemplateProps) => {
+}: PickerTemplateProps<T>) => {
   const [filterOn, setFilterOn] = useState(initialFilterOn);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
@@ -65,7 +63,7 @@ export const PickerTemplate = ({
     onClose();
   };
 
-  const onClickPickerItem = async (item: PickerItem) => {
+  const onClickPickerItem = async (item: T) => {
     if (!onPickItem) return;
 
     if (hasConfigStep) {
@@ -73,11 +71,9 @@ export const PickerTemplate = ({
       return;
     }
 
-    const result = await onPickItem(item, false);
-    const { isValid = true } = result || {};
-    if (!isValid) return;
-
-    afterPickItem(item.code);
+    if (await onPickItem(item, false)) {
+      afterPickItem(item.code);
+    }
   };
 
   const itemWidth = hasConfigStep
@@ -148,9 +144,7 @@ export const PickerTemplate = ({
           </div>
 
           {hasConfigStep ? (
-            <div className="overflow-auto shrink-0" style={{ width: 316 }}>
-              {renderItemConfig?.(afterPickItem)}
-            </div>
+            <div className="w-75 overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div>
           ) : null}
         </div>
 

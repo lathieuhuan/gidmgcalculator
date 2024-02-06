@@ -78,7 +78,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* right */}
         <div className="ml-2">
           <div className={`rounded-lg bg-gradient-${rarity} relative`}>
-            <img className="w-32 h-32" src={getImgSrc(wpData.icon)} alt="" draggable={false} />
+            <img className="w-28 h-28" src={getImgSrc(wpData.icon)} alt="" draggable={false} />
             {wpData.beta && <BetaMark className="absolute bottom-0 right-0" />}
           </div>
 

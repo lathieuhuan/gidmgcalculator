@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import type { AppArtifact, ArtifactType } from "@Src/types";
-import type { ItemFilterState, PickerItem } from "./types";
+import type { ItemFilterState, PickedItem } from "./types";
 
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
@@ -10,11 +10,6 @@ import { createArtifact } from "@Src/utils/creators";
 // Component
 import { Modal } from "@Src/pure-components";
 import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
-
-const initialFilter: ItemFilterState = {
-  types: ["flower"],
-  rarities: [5],
-};
 
 interface ArtifactPickerProps {
   forcedType?: ArtifactType;
@@ -26,12 +21,20 @@ interface ArtifactPickerProps {
 const ArtifactPicker = ({ forcedType, forFeature, showMultipleMode, onPickArtifact, onClose }: ArtifactPickerProps) => {
   const [filter, setFilter] = useState<ItemFilterState>();
 
-  const filteredArtifacts = useMemo(() => {
-    return [];
+  const allArtifactSets = useMemo(() => {
+    return $AppData.getAllArtifacts().map<PickedItem>((artifact) => {
+      const { code, beta, name, flower } = artifact;
+      return {
+        code,
+        beta,
+        name,
+        icon: flower.icon,
+      };
+    });
 
     // switch (forFeature) {
     //   case "TEAMMATE_MODIFIERS":
-    //     return artifacts.reduce<PickerItem[][]>(
+    //     return artifacts.reduce<PickedItem[][]>(
     //       (accumulator, set) => {
     //         const { code, beta, name, buffs, debuffs, variants } = set;
 
@@ -48,7 +51,7 @@ const ArtifactPicker = ({ forcedType, forFeature, showMultipleMode, onPickArtifa
     //       [[], []]
     //     );
     //   default:
-    //     return artifacts.reduce<PickerItem[][]>(
+    //     return artifacts.reduce<PickedItem[][]>(
     //       (accumulator, set) => {
     //         const { code, beta, name } = set;
 
@@ -66,7 +69,7 @@ const ArtifactPicker = ({ forcedType, forFeature, showMultipleMode, onPickArtifa
     // }
   }, [filter]);
 
-  const onClickArtifact = async (artifact: PickerItem) => {
+  const onClickArtifact = async (artifact: PickedItem) => {
     const newArtifact = createArtifact({
       type: artifact.type as ArtifactType,
       code: artifact.code,
@@ -78,8 +81,7 @@ const ArtifactPicker = ({ forcedType, forFeature, showMultipleMode, onPickArtifa
   return (
     <PickerTemplate
       title="Artifacts"
-      data={filteredArtifacts}
-      initialFilterOn={!forcedType}
+      data={allArtifactSets}
       // renderFilter={(toggle) => {
       //   return (
       //     <ItemFilter

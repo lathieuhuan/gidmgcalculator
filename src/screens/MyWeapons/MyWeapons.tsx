@@ -145,11 +145,7 @@ export default function MyWeapons() {
         hasMultipleMode
         hasConfigStep
         onPickWeapon={(item) => {
-          if (checkIfMaxWeaponsReached()) {
-            return {
-              isValid: false,
-            };
-          }
+          if (checkIfMaxWeaponsReached()) return false;
 
           const newWeapon = {
             ...item,
@@ -159,6 +155,7 @@ export default function MyWeapons() {
 
           dispatch(addUserWeapon(newWeapon));
           setChosenID(newWeapon.ID);
+          return true;
         }}
         onClose={closeModal}
       />
@@ -174,6 +171,7 @@ export default function MyWeapons() {
             if (chosenID) {
               dispatch(swapWeaponOwner({ weaponID: chosenID, newOwner: name }));
             }
+            return true;
           }}
           onClose={closeModal}
         />

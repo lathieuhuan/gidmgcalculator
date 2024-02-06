@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { AppCharacter, PartiallyRequired } from "@Src/types";
-import type { PickerItem } from "./types";
+import type { PickedItem } from "./types";
 
 import { $AppData } from "@Src/services";
 import { useSelector } from "@Store/hooks";
@@ -10,7 +10,7 @@ import { findByName, pickProps } from "@Src/utils";
 import { Modal } from "@Src/pure-components";
 import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./PickerTemplate";
 
-type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
+type PickedCharacter = PartiallyRequired<PickedItem, "weaponType" | "vision">;
 
 export interface CharacterPickerProps {
   sourceType: "mixed" | "app" | "user";
@@ -65,7 +65,7 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   //   }
   // }
 
-  // const onPickItem = async (item: PickerItem, index: number) => {
+  // const onPickItem = async (item: PickedItem, index: number) => {
   //   const { isValid = true } = (await onPickItem(item)) || {};
 
   //   if (isValid) {
@@ -101,7 +101,7 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   const data = useMemo(() => {
     const characters = $AppData.getAllCharacters();
     const fields: Array<keyof AppCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
-    const data: PickerItem[] = [];
+    const data: PickedItem[] = [];
 
     if (sourceType === "mixed") {
       for (const character of characters) {

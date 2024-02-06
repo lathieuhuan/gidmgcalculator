@@ -1,14 +1,16 @@
+import clsx from "clsx";
 import { memo } from "react";
-import type { DataType, PickerItem } from "../types";
+import { PickedItem } from "../types";
 import { Image, BetaMark, Vision } from "@Src/pure-components";
+import { PickedChar } from "@Store/utils";
 
 interface PickerItemViewProps {
   visible: boolean;
-  item: PickerItem;
+  item: PickedItem;
   pickedAmount?: number;
 }
-const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) => {
-  const itemType: DataType = item.vision ? "character" : item.weaponType ? "weapon" : "artifact";
+function PickerItemView({ visible, item, pickedAmount }: PickerItemViewProps) {
+  const itemType = item.vision ? "character" : item.weaponType ? "weapon" : "artifact";
 
   return (
     <div>
@@ -16,9 +18,11 @@ const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) =>
         {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
 
         <div
-          className={
-            `overflow-hidden relative bg-gradient-${item.rarity} rounded-t-lg ` + (item.vision ? "pt-4" : "p-1")
-          }
+          className={clsx(
+            "overflow-hidden relative rounded-t-lg",
+            item.rarity && `bg-gradient-${item.rarity}`,
+            item.vision ? "pt-4" : "p-1"
+          )}
         >
           <div className={"aspect-square transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")}>
             {visible && (
@@ -49,7 +53,7 @@ const PickerItemView = ({ visible, item, pickedAmount }: PickerItemViewProps) =>
       )}
     </div>
   );
-};
+}
 
 export const MemoPickerItemView = memo(PickerItemView, (prev, next) => {
   return prev.visible === next.visible && prev.pickedAmount === next.pickedAmount;

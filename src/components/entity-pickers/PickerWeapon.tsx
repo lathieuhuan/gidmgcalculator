@@ -41,24 +41,6 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
     return allWeapons.filter((weapon) => filter.types.includes(weapon.type) && filter.rarities.includes(weapon.rarity));
   }, [filter]);
 
-  const onPickItem: PickerTemplateProps["onPickItem"] = (weapon, isConfigStep) => {
-    if (weapon.type) {
-      const newWeapon = createWeapon({
-        type: weapon.type as WeaponType,
-        code: weapon.code,
-      });
-
-      if (isConfigStep) {
-        return setWeaponConfig({
-          ID: 0,
-          ...newWeapon,
-        });
-      }
-
-      return onPickWeapon(newWeapon);
-    }
-  };
-
   return (
     <PickerTemplate
       title="Weapons"
@@ -118,8 +100,20 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
           </div>
         );
       }}
+      onPickItem={(weaponMold, isConfigStep) => {
+        const weapon = createWeapon(weaponMold);
+
+        if (isConfigStep) {
+          setWeaponConfig({
+            ID: 0,
+            ...weapon,
+          });
+          return true;
+        }
+
+        return onPickWeapon(weapon);
+      }}
       onClose={onClose}
-      onPickItem={onPickItem}
       {...templateProps}
     />
   );

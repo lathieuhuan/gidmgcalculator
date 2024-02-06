@@ -1,7 +1,5 @@
 import type { Rarity, Vision, WeaponType } from "@Src/types";
 
-export type DataType = "character" | "weapon" | "artifact";
-
 export type Filter = {
   type: "vision" | "weaponType" | "";
   value: string;
@@ -12,14 +10,14 @@ export type ItemFilterState = {
   rarities: number[];
 };
 
-export type PickerItem = {
+export type PickedItem = {
   code: number;
   beta?: boolean;
   name: string;
   icon: string;
-  rarity: Rarity;
+  rarity?: Rarity;
   vision?: Vision;
-  /** Weapon type of Artifact type */
+  /** Weapon type or Artifact type */
   type?: string;
   weaponType?: WeaponType;
   cons?: number;
