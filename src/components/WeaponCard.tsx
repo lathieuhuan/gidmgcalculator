@@ -4,12 +4,12 @@ import { useMemo } from "react";
 import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/pure-hooks";
 import { $AppData } from "@Src/services";
-import { getImgSrc, parseWeaponDescription, percentSign, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
+import { parseWeaponDescription, percentSign, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
 
 // Component
-import { BetaMark } from "@Src/pure-components";
+import { BetaMark, Image } from "@Src/pure-components";
 
-const groupStyles = "bg-dark-700 px-2";
+const groupStyles = "bg-dark-700 px-3";
 
 interface WeaponCardProps {
   weapon?: CalcWeapon;
@@ -78,7 +78,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* right */}
         <div className="ml-2">
           <div className={`rounded-lg bg-gradient-${rarity} relative`}>
-            <img className="w-28 h-28" src={getImgSrc(wpData.icon)} alt="" draggable={false} />
+            <Image src={wpData.icon} imgType="weapon" style={{ width: 120, height: 120 }} />
             {wpData.beta && <BetaMark className="absolute bottom-0 right-0" />}
           </div>
 

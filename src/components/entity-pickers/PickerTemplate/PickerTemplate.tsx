@@ -20,7 +20,6 @@ export interface PickerTemplateProps<T extends PickedItem = PickedItem> {
   data: T[];
   hasMultipleMode?: boolean;
   hasConfigStep?: boolean;
-  /** Default to true */
   hasFilter?: boolean;
   /** Default to true */
   filterToggleable?: boolean;
@@ -35,7 +34,7 @@ export const PickerTemplate = <T extends PickedItem = PickedItem>({
   data,
   hasMultipleMode,
   hasConfigStep,
-  hasFilter = true,
+  hasFilter,
   filterToggleable = true,
   initialFilterOn = false,
   renderFilter,
@@ -144,7 +143,7 @@ export const PickerTemplate = <T extends PickedItem = PickedItem>({
           </div>
 
           {hasConfigStep ? (
-            <div className="w-75 overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div>
+            <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div>
           ) : null}
         </div>
 

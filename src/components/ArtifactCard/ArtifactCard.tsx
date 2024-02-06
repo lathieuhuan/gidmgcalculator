@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { FaArrowUp, FaChevronDown } from "react-icons/fa";
 
-import type { CalcArtifact } from "@Src/types";
+import type { AttributeStat, CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
 
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
@@ -17,7 +17,7 @@ import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable" | "space" | "onChangeSubStat"> {
   artifact?: CalcArtifact;
   onEnhance?: (level: number) => void;
-  onChangeMainStatType?: (type: string) => void;
+  onChangeMainStatType?: (type: AttributeStat) => void;
 }
 export const ArtifactCard = ({
   artifact,
@@ -30,18 +30,18 @@ export const ArtifactCard = ({
   const { t } = useTranslation();
   if (!artifact) return null;
 
-  const { beta, name, icon = "" } = $AppData.getArtifactData(artifact) || {};
+  const artData = $AppData.getArtifactData(artifact);
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;
   const levelUpDisabled = artifact.level === maxLevel;
 
   return (
-    <div className="w-full" onDoubleClick={() => console.log(artifact)}>
-      <div className={`px-4 pt-1 bg-rarity-${rarity}`}>
-        <p className="text-xl font-bold text-black truncate">{name}</p>
+    <div className="w-full">
+      <div className={`px-4 pt-1 bg-rarity-${rarity}`} onDoubleClick={() => console.log(artifact)}>
+        <p className="text-xl font-bold text-black truncate">{artData?.name}</p>
       </div>
-      <div className="mt-6 mx-4 flex">
+      <div className="mt-4 mx-4 flex">
         {mutable ? (
           <div className="mr-6 grow flex space-x-6">
             <div className="w-fit">
@@ -82,8 +82,8 @@ export const ArtifactCard = ({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <Image src={icon} imgType="artifact" style={{ width: 104, height: 104 }} />
-          {beta && <BetaMark className="absolute bottom-0 right-0" />}
+          <Image src={artData?.icon ?? ""} imgType="artifact" style={{ width: 104, height: 104 }} />
+          {artData?.beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>
 
@@ -96,7 +96,7 @@ export const ArtifactCard = ({
             <select
               className="pl-8 text-lg text-light-400 appearance-none relative z-10"
               value={mainStatType}
-              onChange={(e) => onChangeMainStatType?.(e.target.value)}
+              onChange={(e) => onChangeMainStatType?.(e.target.value as AttributeStat)}
             >
               {Object.keys(possibleMainStatTypes).map((type) => {
                 return (
@@ -114,7 +114,7 @@ export const ArtifactCard = ({
         </p>
       </div>
 
-      <div className={clsx(mutable && "px-2")}>
+      <div>
         <ArtifactSubstatsControl
           mutable={mutable}
           rarity={rarity}

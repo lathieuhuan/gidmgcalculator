@@ -27,7 +27,7 @@ export const getDataId = (item: UserWeapon | UserArtifact) => `${item.type}-${it
 interface InventoryRackProps {
   listClassName?: string;
   itemClassName?: string;
-  chosenID: number;
+  chosenID?: number;
   chosenIDs?: BooleanRecord;
   itemType: "weapon" | "artifact";
   items: UserWeapon[] | UserArtifact[];

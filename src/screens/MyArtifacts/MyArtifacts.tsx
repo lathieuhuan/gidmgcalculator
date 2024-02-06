@@ -163,21 +163,20 @@ export default function MyArtifacts() {
 
       <PickerArtifact
         active={modalType === "ADD_ARTIFACT"}
-        showMultipleMode
+        hasMultipleMode
+        hasConfigStep
         onPickArtifact={(item) => {
-          if (isMaxArtifactsReached()) {
-            return {
-              isValid: false,
-            };
-          }
+          if (isMaxArtifactsReached()) return false;
+
           const newArtifact: UserArtifact = {
-            ID: Date.now(),
             ...item,
+            ID: Date.now(),
             owner: null,
           };
 
           dispatch(addUserArtifact(newArtifact));
           setChosenID(newArtifact.ID);
+          return true;
         }}
         onClose={closeModal}
       />

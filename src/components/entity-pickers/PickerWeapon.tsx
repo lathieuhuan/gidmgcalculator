@@ -25,14 +25,14 @@ interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" 
   onClose: () => void;
 }
 function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
+  const [filter, setFilter] = useState<ItemFilterState>();
+  const [weaponConfig, setWeaponConfig] = useState<Weapon>();
+
   const allWeapons = useMemo(() => {
     return $AppData
       .getAllWeapons()
       .map((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]));
   }, []);
-
-  const [filter, setFilter] = useState<ItemFilterState>();
-  const [weaponConfig, setWeaponConfig] = useState<Weapon>();
 
   const filteredWeapons = useMemo(() => {
     if (!filter?.types?.length && !filter?.rarities?.length) {
@@ -45,6 +45,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
     <PickerTemplate
       title="Weapons"
       data={filteredWeapons}
+      hasFilter
       initialFilterOn={!forcedType}
       filterToggleable={filter !== undefined}
       renderFilter={(setFilterOn) => {
@@ -65,7 +66,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
       renderItemConfig={(afterPickItem) => {
         return (
           <div className="h-full p-4 bg-dark-900 rounded-lg flex flex-col">
-            <div className="grow hide-scrollbar">
+            <div className="w-70 grow hide-scrollbar">
               <WeaponCard
                 mutable
                 weapon={weaponConfig}
@@ -100,8 +101,8 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
           </div>
         );
       }}
-      onPickItem={(weaponMold, isConfigStep) => {
-        const weapon = createWeapon(weaponMold);
+      onPickItem={(mold, isConfigStep) => {
+        const weapon = createWeapon(mold);
 
         if (isConfigStep) {
           setWeaponConfig({
