@@ -32,8 +32,8 @@ export const WeaponFilter = ({
     operate: typeOperate,
     renderTypeFilter,
   } = useTypeFilter("weapon", initialFilter?.types, {
-    requiredOne: true,
-    withRadios: true
+    required: true,
+    withRadios: true,
   });
   const {
     filteredRarities,

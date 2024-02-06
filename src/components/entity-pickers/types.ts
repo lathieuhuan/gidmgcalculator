@@ -10,7 +10,7 @@ export type ItemFilterState = {
   rarities: number[];
 };
 
-export type PickedItem = {
+export type PickerItem = {
   code: number;
   beta?: boolean;
   name: string;

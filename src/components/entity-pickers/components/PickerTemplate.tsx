@@ -1,13 +1,12 @@
 import clsx from "clsx";
 import { useState, ReactNode } from "react";
 
-import type { Filter, PickedItem } from "../types";
+import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
-import { Modal, Button, CollapseAndMount } from "@Src/pure-components";
-import { CharacterFilter } from "./CharacterFilter";
-import { MemoPickerItemView } from "./Item";
+import { Modal, Button, CollapseAndMount, ItemCase } from "@Src/pure-components";
+import { ItemThumbnail } from "./ItemThumbnail";
 import { FaFilter } from "react-icons/fa";
 
 /** this pick is valid or not */
@@ -15,7 +14,7 @@ type Return = boolean;
 
 export type OnPickItemReturn = Return | Promise<Return>;
 
-export interface PickerTemplateProps<T extends PickedItem = PickedItem> {
+export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   title: string;
   data: T[];
   hasMultipleMode?: boolean;
@@ -29,7 +28,7 @@ export interface PickerTemplateProps<T extends PickedItem = PickedItem> {
   onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
 }
-export const PickerTemplate = <T extends PickedItem = PickedItem>({
+export const PickerTemplate = <T extends PickerItem = PickerItem>({
   title,
   data,
   hasMultipleMode,
@@ -44,6 +43,7 @@ export const PickerTemplate = <T extends PickedItem = PickedItem>({
 }: PickerTemplateProps<T>) => {
   const [filterOn, setFilterOn] = useState(initialFilterOn);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
+  const [chosenCode, setChosenCode] = useState(0);
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
 
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
@@ -67,6 +67,7 @@ export const PickerTemplate = <T extends PickedItem = PickedItem>({
 
     if (hasConfigStep) {
       await onPickItem(item, true);
+      setChosenCode(item.code);
       return;
     }
 
@@ -129,22 +130,20 @@ export const PickerTemplate = <T extends PickedItem = PickedItem>({
                       // { hidden: dataType === "character" && !visibleNames[item.name] }
                     )}
                   >
-                    <div onClick={() => onClickPickerItem(item)}>
-                      <MemoPickerItemView
+                    <ItemCase chosen={item.code === chosenCode} onClick={() => onClickPickerItem(item)}>
+                      <ItemThumbnail
                         visible={visibleItems[item.code]}
                         item={item}
                         pickedAmount={itemCounts[item.code] || 0}
                       />
-                    </div>
+                    </ItemCase>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {hasConfigStep ? (
-            <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div>
-          ) : null}
+          {hasConfigStep ? <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div> : null}
         </div>
 
         <div

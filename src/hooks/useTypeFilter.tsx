@@ -7,17 +7,24 @@ export const useTypeFilter = (
   itemType: "weapon" | "artifact",
   initialFilteredTypes: string[] = [],
   options?: {
-    requiredOne?: boolean;
+    /** Default to 'multi' */
+    mode?: "single" | "multi";
+    required?: boolean;
     withRadios?: boolean;
     onChange?: (filteredTypes: string[]) => void;
   }
 ) => {
   const [types, setTypes] = useState<string[]>(initialFilteredTypes);
 
-  const { requiredOne, withRadios, onChange } = options || {};
+  const { mode = "multi", required, withRadios, onChange } = options || {};
   const icons = Object.entries(itemType === "weapon" ? WEAPON_ICONS : ARTIFACT_ICONS);
 
   const onClickIcon = (active: boolean, index: number, type: string) => {
+    if (mode === "single") {
+      setTypes([type]);
+      return;
+    }
+
     const newTypes = [...types];
     if (active) {
       newTypes.splice(index, 1);
@@ -25,7 +32,7 @@ export const useTypeFilter = (
       newTypes.push(type);
     }
 
-    if (!requiredOne || newTypes.length) {
+    if (!required || newTypes.length) {
       setTypes(newTypes);
       onChange?.(newTypes);
     }

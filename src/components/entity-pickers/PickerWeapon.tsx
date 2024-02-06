@@ -11,8 +11,8 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { Button, Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
-import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./PickerTemplate";
 import { WeaponFilter, WeaponFilterProps } from "./components/WeaponFilter";
+import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
 
 const INITIAL_FITLER_STATE: ItemFilterState = {
   types: ["bow"],
