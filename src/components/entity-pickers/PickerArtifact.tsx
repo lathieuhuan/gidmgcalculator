@@ -10,8 +10,6 @@ import { createArtifact } from "@Src/utils/creators";
 // Component
 import { Modal } from "@Src/pure-components";
 import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
-import { ItemFilter } from "./ItemFilter";
-import { pickProps } from "@Src/utils";
 
 const initialFilter: ItemFilterState = {
   types: ["flower"],
@@ -82,25 +80,25 @@ const ArtifactPicker = ({ forcedType, forFeature, showMultipleMode, onPickArtifa
       title="Artifacts"
       data={filteredArtifacts}
       initialFilterOn={!forcedType}
-      renderFilter={(toggle) => {
-        return (
-          <ItemFilter
-            className="h-full"
-            itemType="artifact"
-            forcedType={forcedType}
-            initialFilter={filter ?? initialFilter}
-            onCancel={toggle}
-            onDone={(newFilter) => {
-              setFilter(newFilter);
-              toggle();
-            }}
-          />
-        );
-      }}
+      // renderFilter={(toggle) => {
+      //   return (
+      //     <ItemFilter
+      //       className="h-full"
+      //       itemType="artifact"
+      //       forcedType={forcedType}
+      //       initialFilter={filter ?? initialFilter}
+      //       onCancel={toggle}
+      //       onDone={(newFilter) => {
+      //         setFilter(newFilter);
+      //         toggle();
+      //       }}
+      //     />
+      //   );
+      // }}
       onClose={onClose}
       onPickItem={onClickArtifact}
     />
   );
 };
 
-export const PickerArtifact = Modal.bareWrap(ArtifactPicker, { preset: "large" });
+export const PickerArtifact = Modal.coreWrap(ArtifactPicker, { preset: "large" });

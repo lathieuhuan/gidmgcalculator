@@ -202,4 +202,4 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   );
 };
 
-export const PickerCharacter = Modal.bareWrap(CharacterPicker, { preset: "large" });
+export const PickerCharacter = Modal.coreWrap(CharacterPicker, { preset: "large" });

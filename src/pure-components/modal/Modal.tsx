@@ -105,6 +105,6 @@ Modal.Header = ModalHeader;
 Modal.Actions = ModalActions;
 Modal.CloseButton = ModalCloseButton;
 Modal.wrap = withModal;
-Modal.bareWrap = withCoreModal;
+Modal.coreWrap = withCoreModal;
 
 export { Modal };

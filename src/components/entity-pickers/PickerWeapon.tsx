@@ -10,17 +10,17 @@ import { createWeapon } from "@Src/utils/creators";
 
 // Component
 import { Button, Modal } from "@Src/pure-components";
-import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./PickerTemplate";
-import { ItemFilter, ItemFilterProps } from "./ItemFilter";
 import { WeaponCard } from "../WeaponCard";
+import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./PickerTemplate";
+import { WeaponFilter, WeaponFilterProps } from "./components/WeaponFilter";
 
-const initialFilter: ItemFilterState = {
+const INITIAL_FITLER_STATE: ItemFilterState = {
   types: ["bow"],
   rarities: [4, 5],
 };
 
 interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
-  forcedType?: ItemFilterProps["forcedType"];
+  forcedType?: WeaponFilterProps["forcedType"];
   onPickWeapon: (info: ReturnType<typeof createWeapon>) => OnPickItemReturn;
   onClose: () => void;
 }
@@ -64,24 +64,25 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
       title="Weapons"
       data={filteredWeapons}
       initialFilterOn={!forcedType}
-      renderFilter={(toggle) => {
+      filterToggleable={filter !== undefined}
+      renderFilter={(setFilterOn) => {
         return (
-          <ItemFilter
+          <WeaponFilter
             className="h-full"
-            itemType="weapon"
             forcedType={forcedType}
-            initialFilter={filter ?? initialFilter}
-            onCancel={toggle}
+            initialFilter={filter ?? INITIAL_FITLER_STATE}
+            disabledCancel={!filter}
+            onCancel={() => setFilterOn(false)}
             onDone={(newFilter) => {
               setFilter(newFilter);
-              toggle();
+              setFilterOn(false);
             }}
           />
         );
       }}
       renderItemConfig={(afterPickItem) => {
         return (
-          <div className="h-full flex flex-col">
+          <div className="h-full p-4 bg-dark-900 rounded-lg flex flex-col">
             <div className="grow hide-scrollbar">
               <WeaponCard
                 mutable
@@ -124,4 +125,4 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
   );
 }
 
-export const PickerWeapon = Modal.bareWrap(WeaponPicker, { preset: "large" });
+export const PickerWeapon = Modal.coreWrap(WeaponPicker, { preset: "large" });

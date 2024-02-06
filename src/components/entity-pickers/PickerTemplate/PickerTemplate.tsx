@@ -5,7 +5,7 @@ import type { DataType, Filter, PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
-import { ModalHeader, Modal, Button, CollapseAndMount } from "@Src/pure-components";
+import { Modal, Button, CollapseAndMount } from "@Src/pure-components";
 import { CharacterFilter } from "./CharacterFilter";
 import { MemoPickerItemView } from "./Item";
 import { FaFilter } from "react-icons/fa";
@@ -20,12 +20,14 @@ export type OnPickItemReturn = Return | Promise<Return>;
 export interface PickerTemplateProps {
   title: string;
   data: PickerItem[];
-  /** Default to true */
-  hasFilter?: boolean;
   hasMultipleMode?: boolean;
   hasConfigStep?: boolean;
+  /** Default to true */
+  hasFilter?: boolean;
+  /** Default to true */
+  filterToggleable?: boolean;
   initialFilterOn?: boolean;
-  renderFilter?: (toggle: () => void) => ReactNode;
+  renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
   onPickItem?: (item: PickerItem, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
@@ -33,9 +35,10 @@ export interface PickerTemplateProps {
 export const PickerTemplate = ({
   title,
   data,
-  hasFilter = true,
   hasMultipleMode,
   hasConfigStep,
+  hasFilter = true,
+  filterToggleable = true,
   initialFilterOn = false,
   renderFilter,
   renderItemConfig,
@@ -49,7 +52,7 @@ export const PickerTemplate = ({
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   const toggleFilter = () => {
-    setFilterOn(!filterOn);
+    if (filterToggleable) setFilterOn(!filterOn);
   };
 
   const afterPickItem = (itemCode: number) => {
@@ -95,6 +98,7 @@ export const PickerTemplate = ({
                 shape="square"
                 size="small"
                 icon={<FaFilter />}
+                disabled={!filterToggleable}
                 onClick={toggleFilter}
               />
             ) : null}
@@ -114,7 +118,7 @@ export const PickerTemplate = ({
         <div className="h-full flex custom-scrollbar gap-4">
           <div
             ref={observedAreaRef}
-            className="md2:pr-2 h-full w-full shrink-0 md1:w-auto md1:shrink md1:min-w-[352px] custom-scrollbar"
+            className="md2:pr-2 h-full w-full shrink-0 md1:w-auto md1:shrink md1:min-w-[352px] grow custom-scrollbar"
           >
             <div className="flex flex-wrap">
               {data.map((item, i) => {
@@ -144,24 +148,24 @@ export const PickerTemplate = ({
           </div>
 
           {hasConfigStep ? (
-            <div className="p-4 bg-dark-900 rounded-lg shrink-0">
-              <div className="w-72 h-full overflow-auto">{renderItemConfig?.(afterPickItem)}</div>
+            <div className="overflow-auto shrink-0" style={{ width: 316 }}>
+              {renderItemConfig?.(afterPickItem)}
             </div>
           ) : null}
         </div>
 
         <div
-          className={clsx("absolute full-stretch bg-black/60 hidden", filterOn ? "md1:block" : "")}
+          className={clsx("absolute full-stretch z-10 bg-black/60 hidden", filterOn && "md1:block")}
           onClick={toggleFilter}
         />
 
         <CollapseAndMount
           active={filterOn}
-          className="absolute top-0 left-0 w-full md1:w-auto"
+          className="absolute top-0 left-0 z-10 w-full md1:w-auto"
           activeHeight="100%"
           moveDuration={300}
         >
-          {renderFilter?.(toggleFilter)}
+          {renderFilter?.(setFilterOn)}
         </CollapseAndMount>
       </div>
     </div>
