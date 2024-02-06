@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Artifact, ArtifactType } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
+import { pickProps } from "@Src/utils";
 import { useTypeFilter } from "@Src/hooks";
 import { createArtifact } from "@Src/utils/creators";
 
@@ -19,15 +20,20 @@ interface ArtifactPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode
 }
 const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...templateProps }: ArtifactPickerProps) => {
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
-  const { renderTypeFilter } = useTypeFilter("artifact", ["flower"], {
+
+  const updateConfig = (update: (prevConfig: Artifact) => Artifact) => {
+    if (artifactConfig) {
+      setArtifactConfig(update(artifactConfig));
+    }
+  };
+
+  const { filteredTypes, renderTypeFilter } = useTypeFilter("artifact", ["flower"], {
     mode: "single",
     onChange: (types) => {
-      if (artifactConfig) {
-        setArtifactConfig({
-          ...artifactConfig,
-          type: types[0] as ArtifactType,
-        });
-      }
+      updateConfig((prevConfig) => {
+        const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
+        return Object.assign(newConfig, pickProps(prevConfig, ["ID", "level", "subStats"]));
+      });
     },
   });
 
@@ -71,31 +77,18 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
                   mutable
                   artifact={artifactConfig}
                   onEnhance={(level) => {
-                    if (artifactConfig) {
-                      setArtifactConfig({
-                        ...artifactConfig,
-                        level,
-                      });
-                    }
+                    updateConfig((prevConfig) => ({ ...prevConfig, level }));
                   }}
-                  onChangeMainStatType={(type) => {
-                    if (artifactConfig) {
-                      setArtifactConfig({
-                        ...artifactConfig,
-                        mainStatType: type,
-                      });
-                    }
+                  onChangeMainStatType={(mainStatType) => {
+                    updateConfig((prevConfig) => ({ ...prevConfig, mainStatType }));
                   }}
                   onChangeSubStat={(index, changes) => {
-                    if (artifactConfig) {
-                      const newSubstats = [...artifactConfig.subStats];
-                      newSubstats[index] = Object.assign(newSubstats[index], changes);
+                    updateConfig((prevConfig) => {
+                      const subStats = [...prevConfig.subStats];
+                      subStats[index] = Object.assign(subStats[index], changes);
 
-                      setArtifactConfig({
-                        ...artifactConfig,
-                        subStats: newSubstats,
-                      });
-                    }
+                      return { ...prevConfig, subStats };
+                    });
                   }}
                 />
               </div>
@@ -105,10 +98,8 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
                   <Button
                     variant="positive"
                     onClick={() => {
-                      if (artifactConfig) {
-                        onPickArtifact(artifactConfig);
-                        afterPickItem(artifactConfig.code);
-                      }
+                      onPickArtifact(artifactConfig);
+                      afterPickItem(artifactConfig.code);
                     }}
                   >
                     Select
@@ -122,7 +113,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
       onPickItem={(mold, isConfigStep) => {
         const artifact = createArtifact({
           ...mold,
-          type: "flower",
+          type: filteredTypes[0] as ArtifactType,
         });
 
         if (isConfigStep) {

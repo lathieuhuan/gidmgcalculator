@@ -19,9 +19,14 @@ export const useTypeFilter = (
   const { mode = "multi", required, withRadios, onChange } = options || {};
   const icons = Object.entries(itemType === "weapon" ? WEAPON_ICONS : ARTIFACT_ICONS);
 
+  const updateTypes = (newTypes: string[]) => {
+    setTypes(newTypes);
+    onChange?.(newTypes);
+  };
+
   const onClickIcon = (active: boolean, index: number, type: string) => {
     if (mode === "single") {
-      setTypes([type]);
+      updateTypes([type]);
       return;
     }
 
@@ -33,18 +38,12 @@ export const useTypeFilter = (
     }
 
     if (!required || newTypes.length) {
-      setTypes(newTypes);
-      onChange?.(newTypes);
+      updateTypes(newTypes);
     }
   };
 
-  const updateFilter = (newTypes: string[]) => {
-    setTypes(newTypes);
-    onChange?.(newTypes);
-  };
-
   const onCheckRadio = (type: string) => {
-    setTypes([type]);
+    updateTypes([type]);
   };
 
   const renderTypeFilter = (className?: ClassValue) => (
@@ -86,7 +85,7 @@ export const useTypeFilter = (
     filteredTypes: types,
     allSelected: types.length === icons.length,
     operate: {
-      updateFilter,
+      updateFilter: updateTypes,
     },
     renderTypeFilter,
   };

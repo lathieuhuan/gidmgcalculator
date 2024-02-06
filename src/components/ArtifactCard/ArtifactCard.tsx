@@ -82,7 +82,7 @@ export const ArtifactCard = ({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <Image src={artData?.icon ?? ""} imgType="artifact" style={{ width: 104, height: 104 }} />
+          <Image src={artData?.icon} alt={artData?.name} imgType="artifact" style={{ width: 104, height: 104 }} />
           {artData?.beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>

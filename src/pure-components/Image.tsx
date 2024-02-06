@@ -11,8 +11,9 @@ const ICONS_BY_TYPE = {
 };
 
 interface ImageProps {
-  src: string;
+  src?: string;
   size?: string;
+  alt?: string;
   className?: string;
   style?: CSSProperties;
   placeholderCls?: string;
@@ -23,6 +24,7 @@ interface ImageProps {
 export const Image = ({
   src,
   size = "w-full h-full",
+  alt = "",
   className,
   style,
   placeholderCls,
@@ -42,7 +44,8 @@ export const Image = ({
         </div>
       )}
       <img
-        src={getImgSrc(src)}
+        src={src ? getImgSrc(src) : ""}
+        alt={alt}
         className={clsx(size, className, imgCls, isError && "hidden")}
         style={style}
         draggable={false}
