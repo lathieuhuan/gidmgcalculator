@@ -1,5 +1,5 @@
 import clsx, { ClassValue } from "clsx";
-import { useRarityFilter, useTypeFilter } from "@Src/hooks";
+import { useRaritySelect, useTypeSelect } from "@Src/hooks";
 import { WEAPON_TYPES } from "@Src/constants";
 import { Button, ButtonGroup } from "@Src/pure-components";
 
@@ -24,36 +24,35 @@ export const WeaponFilter = ({
   onCancel,
   onDone,
 }: WeaponFilterProps) => {
-  const rarityOptions = [5, 4, 3, 2, 1];
-
-  const {
-    filteredTypes,
-    allSelected: allTypesSelected,
-    operate: typeOperate,
-    renderTypeFilter,
-  } = useTypeFilter("weapon", initialFilter?.types, {
+  const selectConfig = {
+    multiple: true,
     required: true,
     withRadios: true,
-  });
-  const {
-    filteredRarities,
-    allSelected: allRaritiesSelected,
-    operate: rarityOperate,
-    renderRarityFilter,
-  } = useRarityFilter(rarityOptions, initialFilter?.rarities);
+  };
+  const rarityOptions = [5, 4, 3, 2, 1];
+
+  const { selectedTypes, allTypesSelected, updateTypes, renderTypeSelect } = useTypeSelect.Weapon(
+    initialFilter?.types,
+    selectConfig
+  );
+  const { selectedRarities, allRaritiesSelected, updateRarities, renderRaritySelect } = useRaritySelect(
+    rarityOptions,
+    initialFilter?.rarities,
+    selectConfig
+  );
 
   const onClickSelectAllTypes = () => {
-    typeOperate.updateFilter([...WEAPON_TYPES]);
+    updateTypes([...WEAPON_TYPES]);
   };
 
   const onClickSelectAllRarities = () => {
-    rarityOperate.updateFilter(rarityOptions);
+    updateRarities(rarityOptions);
   };
 
   const onConfirm = () => {
     onDone({
-      types: filteredTypes,
-      rarities: filteredRarities,
+      types: selectedTypes,
+      rarities: selectedRarities,
     });
   };
 
@@ -70,7 +69,7 @@ export const WeaponFilter = ({
                 Select all
               </Button>
             </div>
-            {renderTypeFilter("justify-center")}
+            {renderTypeSelect("justify-center")}
           </div>
 
           <div className="p-4 rounded bg-dark-900 space-y-6" style={{ minWidth: 240 }}>
@@ -80,7 +79,7 @@ export const WeaponFilter = ({
                 Select all
               </Button>
             </div>
-            {renderRarityFilter()}
+            {renderRaritySelect()}
           </div>
         </div>
       </div>
