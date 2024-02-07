@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import type { Filter } from "../types";
-import { VISION_TYPES, WEAPON_ICONS } from "@Src/constants";
+import { VISION_TYPES, WEAPON_TYPE_IMAGES } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
 import { Vision } from "@Src/pure-components";
 
@@ -36,8 +36,8 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
         </div>
 
         <div className="flex overflow-auto hide-scrollbar">
-          {Object.entries(WEAPON_ICONS).map(([wpType, src], i) => {
-            const chosen = type === "weaponType" && value === wpType;
+          {WEAPON_TYPE_IMAGES.map((item, i) => {
+            const chosen = type === "weaponType" && value === item.type;
             return (
               <img
                 key={i}
@@ -45,11 +45,11 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
                   "ml-6": i,
                   "border-3 border-light-400": chosen,
                 })}
-                src={getImgSrc(src)}
-                alt={wpType}
+                src={getImgSrc(item.src)}
+                alt={item.type}
                 draggable={false}
                 onClick={() => {
-                  onClickOption(chosen, { type: "weaponType", value: wpType });
+                  onClickOption(chosen, { type: "weaponType", value: item.type });
                 }}
               />
             );

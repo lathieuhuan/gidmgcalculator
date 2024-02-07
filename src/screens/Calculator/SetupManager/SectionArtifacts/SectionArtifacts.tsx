@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 
-import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { ARTIFACT_TYPES, ARTIFACT_TYPE_IMAGES } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 
 // Store
@@ -61,7 +61,7 @@ export default function SectionArtifacts() {
           const artifact = artifacts[index];
           const icon = artifact
             ? $AppData.getArtifactData({ code: artifact.code, type })?.icon || ""
-            : ARTIFACT_ICONS[type];
+            : ARTIFACT_TYPE_IMAGES.find((item) => item.type === type)?.src;
 
           return (
             <div

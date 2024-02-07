@@ -1,14 +1,14 @@
 import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
 
-import { ARTIFACT_IMAGES, WEAPON_IMAGES } from "@Src/constants";
+import { ARTIFACT_TYPE_IMAGES, WEAPON_TYPE_IMAGES } from "@Src/constants";
 import { toArray } from "@Src/utils";
 import { ArtifactType, WeaponType } from "@Src/types";
 import { Image, Radio } from "@Src/pure-components";
 
-type TypeOption<T> = {
+type TypeImage<T> = {
   type: T;
-  imgSrc: string;
+  src: string;
 };
 
 type InitialValues<T> = T | T[] | null;
@@ -22,7 +22,7 @@ type Config<T> = {
   onChange?: (selectedTypes: T[]) => void;
 };
 
-function useTypeSelect<T>(options: TypeOption<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
+function useTypeSelect<T>(options: TypeImage<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
   const [selectedTypes, setSelectedTypes] = useState<T[]>(initialValues ? toArray(initialValues) : []);
   const { iconCls, selectedCls, multiple, required, withRadios, onChange } = config || {};
 
@@ -64,7 +64,7 @@ function useTypeSelect<T>(options: TypeOption<T>[], initialValues?: InitialValue
               )}
               onClick={() => onClickIcon(option.type, selected)}
             >
-              <Image src={option.imgSrc} />
+              <Image src={option.src} />
             </button>
 
             {withRadios && (
@@ -98,7 +98,7 @@ function useWeaponTypeSelect(
     ...config,
     selectedCls: "shadow-3px-3px shadow-green-300",
   };
-  return useTypeSelect(WEAPON_IMAGES, initialValues, finalConfig);
+  return useTypeSelect(WEAPON_TYPE_IMAGES, initialValues, finalConfig);
 }
 
 function useArtifactTypeSelect(
@@ -110,7 +110,7 @@ function useArtifactTypeSelect(
     iconCls: "p-1",
     selectedCls: "bg-green-300",
   };
-  return useTypeSelect(ARTIFACT_IMAGES, initialValues, finalConfig);
+  return useTypeSelect(ARTIFACT_TYPE_IMAGES, initialValues, finalConfig);
 }
 
 useTypeSelect.Weapon = useWeaponTypeSelect;
