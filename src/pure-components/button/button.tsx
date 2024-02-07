@@ -9,10 +9,10 @@ type ButtonShape = "rounded" | "square";
 type ButtonSize = "small" | "medium" | "custom";
 
 const colorCls: Partial<Record<ButtonVariant, string>> = {
-  default: "bg-light-400 text-black",
+  default: "bg-light-600 text-black",
   positive: "bg-yellow-400 text-black",
   negative: "bg-red-600 text-light-400",
-  neutral: "bg-green-300 text-black",
+  neutral: "bg-green-200 text-black",
 };
 
 const boneColorCls: Partial<Record<ButtonVariant, string>> = {

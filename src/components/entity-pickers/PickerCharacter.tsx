@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import type { AppCharacter, UserCharacter } from "@Src/types";
 
 import { $AppData } from "@Src/services";
@@ -83,8 +83,6 @@ const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...temp
     return allCharacters;
   }, [allCharacters]);
 
-  console.log(filteredCharacters);
-
   // if (dataType === "character") {
   //   for (const char of data) {
   //     if (!filter.type || char[filter.type] === filter.value) {
@@ -123,7 +121,11 @@ const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...temp
     <PickerTemplate
       title="Characters"
       data={filteredCharacters}
+      hasFilter
       shouldHidePickedItem={templateProps.hasMultipleMode}
+      renderFilter={() => {
+        
+      }}
       onPickItem={(character) => onPickCharacter(character as PickedCharacter)}
       onClose={onClose}
       {...templateProps}
@@ -183,7 +185,4 @@ const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...temp
   );
 };
 
-export const PickerCharacter = Modal.coreWrap(
-  memo(CharacterPicker, () => true),
-  { preset: "large" }
-);
+export const PickerCharacter = Modal.coreWrap(CharacterPicker, { preset: "large" });

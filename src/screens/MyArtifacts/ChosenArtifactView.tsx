@@ -23,7 +23,7 @@ interface ChosenArtifactViewProps {
 export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifactViewProps) => {
   const dispatch = useDispatch();
   const [modalType, setModalType] = useState<"REMOVE_ARTIFACT" | "EQUIP_CHARACTER" | "">("");
-  const [newOwner, setNewOwner] = useState<string | null>(null);
+  const [newOwner, setNewOwner] = useState("");
 
   const closeModal = () => setModalType("");
 
@@ -84,9 +84,9 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
       <PickerCharacter
         active={modalType === "EQUIP_CHARACTER" && !!artifact}
         sourceType="user"
-        filter={({ name }) => name !== artifact?.owner}
-        onPickCharacter={({ name }) => {
-          artifact?.owner ? setNewOwner(name) : swapOwner(name);
+        filter={(character) => character.name !== artifact?.owner}
+        onPickCharacter={(character) => {
+          artifact?.owner ? setNewOwner(character.name) : swapOwner(character.name);
           return true;
         }}
         onClose={closeModal}
@@ -94,7 +94,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
 
       {artifact ? (
         <ConfirmModal
-          active={!!newOwner}
+          active={newOwner !== ""}
           message={
             <>
               <b>{artifact.owner}</b> is currently using "
@@ -103,8 +103,8 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
             </>
           }
           focusConfirm
-          onConfirm={() => swapOwner(newOwner!)}
-          onClose={() => setNewOwner(null)}
+          onConfirm={() => swapOwner(newOwner)}
+          onClose={() => setNewOwner("")}
         />
       ) : null}
 

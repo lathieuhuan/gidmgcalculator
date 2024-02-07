@@ -129,9 +129,9 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
       <PickerCharacter
         active={gridviewOn}
         sourceType="user"
-        onPickCharacter={({ name }) => {
-          dispatch(chooseCharacter(name));
-          scrollList(name);
+        onPickCharacter={(character) => {
+          dispatch(chooseCharacter(character.name));
+          scrollList(character.name);
           return true;
         }}
         onClose={() => setGridviewOn(false)}

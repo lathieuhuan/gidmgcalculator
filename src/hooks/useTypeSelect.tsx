@@ -8,7 +8,7 @@ import { Image, Radio } from "@Src/pure-components";
 
 type TypeImage<T> = {
   type: T;
-  src: string;
+  src: string | JSX.Element;
 };
 
 type InitialValues<T> = T | T[] | null;
@@ -58,13 +58,13 @@ function useTypeSelect<T>(options: TypeImage<T>[], initialValues?: InitialValues
             <button
               type="button"
               className={clsx(
-                "w-10 h-10 glow-on-hover rounded-circle transition duration-150",
+                "w-8 h-8 glow-on-hover rounded-circle transition duration-150",
                 iconCls,
                 selected && selectedCls
               )}
               onClick={() => onClickIcon(option.type, selected)}
             >
-              <Image src={option.src} />
+              {typeof option.src === "string" ? <Image src={option.src} /> : option.src}
             </button>
 
             {withRadios && (
@@ -96,7 +96,7 @@ function useWeaponTypeSelect(
 ) {
   const finalConfig: Config<WeaponType> = {
     ...config,
-    selectedCls: "shadow-3px-3px shadow-green-300",
+    selectedCls: "shadow-3px-3px shadow-green-200",
   };
   return useTypeSelect(WEAPON_TYPE_IMAGES, initialValues, finalConfig);
 }
@@ -108,7 +108,7 @@ function useArtifactTypeSelect(
   const finalConfig: Config<ArtifactType> = {
     ...config,
     iconCls: "p-1",
-    selectedCls: "bg-green-300",
+    selectedCls: "bg-green-200",
   };
   return useTypeSelect(ARTIFACT_TYPE_IMAGES, initialValues, finalConfig);
 }

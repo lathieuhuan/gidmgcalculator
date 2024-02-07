@@ -14,7 +14,7 @@ import CharacterSort from "./CharacterSort";
 import CharacterList from "./CharacterList";
 import CharacterInfo from "./CharacterInfo";
 
-type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;
+type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | "";
 
 export default function MyCharacters() {
   const dispatch = useDispatch();
@@ -22,7 +22,11 @@ export default function MyCharacters() {
   const chosenChar = useSelector(selectChosenChar);
   const userChars = useSelector(selectUserChars);
 
-  const [modalType, setModalType] = useState<ModalType>(null);
+  const [modalType, setModalType] = useState<ModalType>("");
+
+  const closeModal = () => {
+    setModalType("");
+  };
 
   return (
     <div className="h-full flex flex-col bg-dark-500">
@@ -74,10 +78,10 @@ export default function MyCharacters() {
           dispatch(addCharacter(character));
           return true;
         }}
-        onClose={() => setModalType(null)}
+        onClose={closeModal}
       />
 
-      <CharacterSort active={modalType === "SORT_CHARACTERS"} onClose={() => setModalType(null)} />
+      <CharacterSort active={modalType === "SORT_CHARACTERS"} onClose={closeModal} />
     </div>
   );
 }

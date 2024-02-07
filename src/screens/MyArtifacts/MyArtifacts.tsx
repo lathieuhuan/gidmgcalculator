@@ -21,7 +21,7 @@ import { ChosenArtifactView } from "./ChosenArtifactView";
 
 import styles from "../styles.module.scss";
 
-type ModalType = "" | "ADD_ARTIFACT" | "FITLER";
+type ModalType = "ADD_ARTIFACT" | "FITLER" | "";
 
 export default function MyArtifacts() {
   const dispatch = useDispatch();
@@ -107,7 +107,7 @@ export default function MyArtifacts() {
             <button
               className={clsx(
                 "pl-4 py-1 glow-on-hover",
-                isFiltered ? "pr-2 bg-yellow-400 rounded-l-2xl" : "pr-4 bg-light-400 rounded-2xl"
+                isFiltered ? "pr-2 bg-yellow-400 rounded-l-2xl" : "pr-4 bg-light-600 rounded-2xl"
               )}
               onClick={() => setModalType("FITLER")}
             >

@@ -19,7 +19,7 @@ import { OwnerLabel, WeaponCard, InventoryRack, PickerCharacter, PickerWeapon } 
 
 import styles from "../styles.module.scss";
 
-type ModalType = "" | "ADD_WEAPON" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON";
+type ModalType = "ADD_WEAPON" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON" | "";
 
 export default function MyWeapons() {
   const dispatch = useDispatch();
@@ -164,9 +164,9 @@ export default function MyWeapons() {
           filter={({ name, weaponType }) => {
             return weaponType === chosenWeapon.type && name !== chosenWeapon.owner;
           }}
-          onPickCharacter={({ name }) => {
+          onPickCharacter={(character) => {
             if (chosenID) {
-              dispatch(swapWeaponOwner({ weaponID: chosenID, newOwner: name }));
+              dispatch(swapWeaponOwner({ weaponID: chosenID, newOwner: character.name }));
             }
             return true;
           }}

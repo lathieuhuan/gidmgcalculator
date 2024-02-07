@@ -1,10 +1,5 @@
 import type { Rarity, Vision, WeaponType } from "@Src/types";
 
-export type Filter = {
-  type: "vision" | "weaponType" | "";
-  value: string;
-};
-
 export type PickerItem = {
   code: number;
   beta?: boolean;

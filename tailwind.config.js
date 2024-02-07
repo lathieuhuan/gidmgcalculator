@@ -36,8 +36,8 @@ module.exports = {
       transparent: colors.transparent,
       light: {
         100: "#ffffff", // root
-        400: "#e0e0e0",
-        600: "#cccccc",
+        400: "#e0e0e0", // text default
+        600: "#cccccc", // button bg default
         800: "#b8b8b8",
         900: "#adadad",
       },
@@ -61,8 +61,8 @@ module.exports = {
         rose: "#f43f5e",
       },
       green: {
-        // 200: "#89fba9",
-        300: "#62f98e", // root
+        200: "#89fba9", // active color
+        300: "#62f98e", // bonus color (root)
       },
       blue: {
         400: "#60a5fa",
@@ -74,7 +74,7 @@ module.exports = {
       yellow: {
         200: "#f5df8f",
         300: "#f5dc6e", // modified from #f1d46a
-        400: "#edc73d", // root
+        400: "#edc73d", // main (root)
       },
       pyro: "#ff504a",
       hydro: "#2eaaff",

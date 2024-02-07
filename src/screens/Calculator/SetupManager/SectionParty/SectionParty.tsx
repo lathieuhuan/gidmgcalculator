@@ -176,7 +176,7 @@ export default function SectionParty() {
       <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="app"
-        filter={(character) => character.name !== charData.name && party.every((tm) => character.name !== tm?.name)}
+        filter={(character) => character.name !== charData.name && party.every((tm) => tm?.name !== character.name)}
         onPickCharacter={({ name, vision, weaponType }) => {
           const { teammateIndex } = modal;
 

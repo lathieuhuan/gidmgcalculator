@@ -1,6 +1,5 @@
 import clsx from "clsx";
 
-import type { Filter } from "../types";
 import { VISION_TYPES, WEAPON_TYPE_IMAGES } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
 import { Vision } from "@Src/pure-components";
@@ -8,9 +7,7 @@ import { Vision } from "@Src/pure-components";
 interface CharacterFilterProps extends Filter {
   onClickOption: (isChosen: boolean, newFilter: Filter) => void;
 }
-export const CharacterFilter = (props: CharacterFilterProps) => {
-  const { type, value, onClickOption } = props;
-
+export const CharacterFilter = ({ type, value, onClickOption }: CharacterFilterProps) => {
   return (
     <div className="px-4">
       <div className="py-4 flex flex-wrap justify-around">
