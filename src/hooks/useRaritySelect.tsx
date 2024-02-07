@@ -1,5 +1,5 @@
 import clsx, { ClassValue } from "clsx";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { Radio, RarityStars } from "@Src/pure-components";
 
 type Config = {
@@ -36,9 +36,9 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
     updateRarities([rarity]);
   };
 
-  const renderRaritySelect = (className?: ClassValue) => {
+  const renderRaritySelect = (className?: ClassValue, style?: CSSProperties) => {
     return (
-      <div className={clsx("flex flex-col space-y-3", className)}>
+      <div className={clsx("flex flex-col space-y-3", className)} style={style}>
         {options.map((option) => {
           const selected = selectedRarities.includes(option);
 

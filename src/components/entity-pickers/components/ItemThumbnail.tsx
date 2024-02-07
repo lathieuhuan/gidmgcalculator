@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { memo } from "react";
 import { PickerItem } from "../types";
-import { Image, BetaMark, Vision } from "@Src/pure-components";
+import { Image, BetaMark, VisionIcon } from "@Src/pure-components";
 
 interface PickerItemThumbnailProps {
   visible: boolean;
@@ -24,12 +24,7 @@ function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemThumbnai
           )}
         >
           <div className={"aspect-square transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")}>
-            {visible && (
-              <Image
-                src={item.icon}
-                // imgType={itemType}
-              />
-            )}
+            {visible && <Image src={item.icon} imgType={itemType} />}
           </div>
 
           {pickedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p> : null}
@@ -47,7 +42,7 @@ function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemThumbnai
           }
         >
           {item.cons !== undefined && <p className="mr-0.5 text-green-300">C{item.cons}</p>}
-          <Vision type={item.vision} />
+          <VisionIcon type={item.vision} />
         </div>
       )}
     </div>

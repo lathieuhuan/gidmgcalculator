@@ -2,11 +2,11 @@ import clsx, { ClassValue } from "clsx";
 import { useRaritySelect, useIconSelect } from "@Src/hooks";
 import { WEAPON_TYPES } from "@Src/constants";
 import { Button, ButtonGroup } from "@Src/pure-components";
-import { WeaponType } from "@Src/types";
+import { Rarity, WeaponType } from "@Src/types";
 
 export type WeaponFilterState = {
   types: WeaponType[];
-  rarities: number[];
+  rarities: Rarity[];
 };
 
 export interface WeaponFilterProps {
@@ -57,30 +57,28 @@ export const WeaponFilter = ({
   };
 
   return (
-    <div className={clsx("p-4 pt-2 bg-dark-500 flex flex-col", className)}>
-      <div className="grow flex flex-col hide-scrollbar">
-        <p className="w-full text-lg font-semibold">Filter</p>
-
-        <div className="mt-2 flex flex-col md1:flex-row gap-2">
-          <div className="p-4 rounded bg-dark-900 space-y-6">
-            <div className="flex justify-between items-center">
-              <p>Type</p>
-              <Button size="small" disabled={allTypesSelected} onClick={onClickSelectAllTypes}>
-                Select all
-              </Button>
-            </div>
-            {renderTypeSelect("justify-center")}
+    <div className={clsx("p-4 bg-dark-900 flex flex-col", className)}>
+      <div className="grow space-y-4 hide-scrollbar">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p>Filter by Type</p>
+            <Button size="small" disabled={allTypesSelected} onClick={onClickSelectAllTypes}>
+              Select all
+            </Button>
           </div>
+          {renderTypeSelect("px-1")}
+        </div>
 
-          <div className="p-4 rounded bg-dark-900 space-y-6" style={{ minWidth: 240 }}>
-            <div className="flex justify-between items-center">
-              <p>Rarity</p>
-              <Button size="small" disabled={allRaritiesSelected} onClick={onClickSelectAllRarities}>
-                Select all
-              </Button>
-            </div>
-            {renderRaritySelect()}
+        <div className="w-full h-px bg-dark-300" />
+
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p>Filter by Rarity</p>
+            <Button size="small" disabled={allRaritiesSelected} onClick={onClickSelectAllRarities}>
+              Select all
+            </Button>
           </div>
+          {renderRaritySelect(undefined, { maxWidth: "14rem" })}
         </div>
       </div>
 

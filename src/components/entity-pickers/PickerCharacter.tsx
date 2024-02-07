@@ -1,13 +1,15 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { AppCharacter, UserCharacter } from "@Src/types";
 
 import { $AppData } from "@Src/services";
+import { VISION_TYPES, WEAPON_TYPES } from "@Src/constants";
 import { useStoreSnapshot } from "@Src/features";
 import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { Modal } from "@Src/pure-components";
 import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./components/PickerTemplate";
+import { CharacterFilter, CharacterFilterState } from "./components/CharacterFilter";
 
 type PickedCharacterKey = "code" | "beta" | "name" | "icon" | "rarity" | "vision" | "weaponType";
 
@@ -15,12 +17,25 @@ type PickedCharacter = Pick<AppCharacter, PickedCharacterKey> & Partial<Pick<Use
 
 export interface CharacterPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
   sourceType: "app" | "user" | "mixed";
+  initialFilter?: CharacterFilterState;
   filter?: (character: PickedCharacter) => boolean;
   onPickCharacter: (character: PickedCharacter) => OnPickItemReturn;
   onClose: () => void;
 }
-const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...templateProps }: CharacterPickerProps) => {
+const CharacterPicker = ({
+  sourceType,
+  filter: filterFn,
+  initialFilter = {
+    visionTypes: [...VISION_TYPES],
+    weaponTypes: [...WEAPON_TYPES],
+    rarities: [5, 4],
+  },
+  onPickCharacter,
+  onClose,
+  ...templateProps
+}: CharacterPickerProps) => {
   const userChars = useStoreSnapshot((state) => state.database.userChars);
+  const [filter, setFilter] = useState<CharacterFilterState>(initialFilter);
 
   // const inputRef = useRef<HTMLInputElement>(null);
   // const [pickedNames, setPickedNames] = useState<BooleanRecord>({});
@@ -76,12 +91,14 @@ const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...temp
   }, []);
 
   const filteredCharacters = useMemo(() => {
-    if (filter) {
-      return allCharacters.filter(filter);
-    }
-
-    return allCharacters;
-  }, [allCharacters]);
+    return allCharacters.filter(
+      (character) =>
+        (!filterFn || filterFn(character)) &&
+        filter.weaponTypes.includes(character.weaponType) &&
+        filter.visionTypes.includes(character.vision) &&
+        filter.rarities.includes(character.rarity)
+    );
+  }, [allCharacters, filter]);
 
   // if (dataType === "character") {
   //   for (const char of data) {
@@ -123,8 +140,19 @@ const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...temp
       data={filteredCharacters}
       hasFilter
       shouldHidePickedItem={templateProps.hasMultipleMode}
-      renderFilter={() => {
-        
+      filterWrapCls="w-full md1:w-auto"
+      renderFilter={(setFilterOn) => {
+        return (
+          <CharacterFilter
+            className="h-full"
+            initialFilter={filter}
+            onCancel={() => setFilterOn(false)}
+            onDone={(filter) => {
+              setFilter(filter);
+              setFilterOn(false);
+            }}
+          />
+        );
       }}
       onPickItem={(character) => onPickCharacter(character as PickedCharacter)}
       onClose={onClose}

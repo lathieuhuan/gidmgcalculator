@@ -58,7 +58,7 @@ function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValue
             <button
               type="button"
               className={clsx(
-                "w-8 h-8 glow-on-hover rounded-circle transition duration-150",
+                "w-8 h-8 flex-center glow-on-hover rounded-circle transition duration-150",
                 iconCls,
                 selected && selectedCls
               )}

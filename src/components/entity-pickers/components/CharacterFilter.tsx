@@ -1,58 +1,106 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 
-import { VISION_TYPES, WEAPON_TYPE_IMAGES } from "@Src/constants";
-import { getImgSrc } from "@Src/utils";
-import { Vision } from "@Src/pure-components";
+import { VISION_TYPES, WEAPON_TYPES } from "@Src/constants";
+import { useIconSelect, useRaritySelect } from "@Src/hooks";
+import { Rarity, Vision, WeaponType } from "@Src/types";
+import { Button, ButtonGroup, VisionIcon } from "@Src/pure-components";
 
-interface CharacterFilterProps extends Filter {
-  onClickOption: (isChosen: boolean, newFilter: Filter) => void;
+export type CharacterFilterState = {
+  weaponTypes: WeaponType[];
+  visionTypes: Vision[];
+  rarities: Rarity[];
+};
+
+interface CharacterFilterProps {
+  className?: ClassValue;
+  initialFilter?: CharacterFilterState;
+  onDone: (filter: CharacterFilterState) => void;
+  onCancel: () => void;
 }
-export const CharacterFilter = ({ type, value, onClickOption }: CharacterFilterProps) => {
-  return (
-    <div className="px-4">
-      <div className="py-4 flex flex-wrap justify-around">
-        <div className="flex overflow-auto hide-scrollbar">
-          {VISION_TYPES.map((vision, i) => {
-            const chosen = type === "vision" && value === vision;
+export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: CharacterFilterProps) => {
+  const VISION_ICONS = VISION_TYPES.map((type) => {
+    return {
+      type,
+      icon: <VisionIcon type={type} />,
+    };
+  });
+  const selectConfig = {
+    multiple: "withRadios",
+    required: true,
+  } as const;
 
-            return (
-              <button
-                key={i}
-                className={clsx("cursor-pointer rounded-full w-8 h-8 lg:w-10 lg:h-10 shrink-0 flex-center", {
-                  "ml-6": i,
-                  "border-3 border-light-400": chosen,
-                })}
-                onClick={() => {
-                  onClickOption(chosen, { type: "vision", value: vision });
-                }}
-              >
-                <Vision type={vision} size="80%" />
-              </button>
-            );
-          })}
+  const {
+    allTypesSelected: allVisionSelected,
+    selectedTypes: selectedVisions,
+    updateTypes: updateVisions,
+    renderTypeSelect: renderVisionSelect,
+  } = useIconSelect(VISION_ICONS, initialFilter?.visionTypes, {
+    ...selectConfig,
+    iconCls: "text-2xl",
+    selectedCls: "shadow-3px-3px shadow-green-200",
+  });
+
+  const {
+    allTypesSelected: allWeaponSelected,
+    selectedTypes: selectedWeapons,
+    updateTypes: updateWeapons,
+    renderTypeSelect: renderWeaponSelect,
+  } = useIconSelect.Weapon(initialFilter?.weaponTypes, selectConfig);
+
+  const { selectedRarities, renderRaritySelect } = useRaritySelect([5, 4], initialFilter?.rarities, selectConfig);
+
+  const onClickSelectAllVisions = () => {
+    updateVisions([...VISION_TYPES]);
+  };
+
+  const onClickSelectAllWeapons = () => {
+    updateWeapons([...WEAPON_TYPES]);
+  };
+
+  const onConfirm = () => {
+    onDone({
+      weaponTypes: selectedWeapons,
+      visionTypes: selectedVisions,
+      rarities: selectedRarities,
+    });
+  };
+
+  return (
+    <div className={clsx("px-3 py-4 bg-dark-900 flex flex-col", className)}>
+      <div className="grow space-y-4 hide-scrollbar">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p>Filter by Vision</p>
+            <Button size="small" disabled={allVisionSelected} onClick={onClickSelectAllVisions}>
+              Select all
+            </Button>
+          </div>
+          <div className="hide-scrollbar">{renderVisionSelect("px-1 pt-1 justify-center")}</div>
         </div>
 
-        <div className="flex overflow-auto hide-scrollbar">
-          {WEAPON_TYPE_IMAGES.map((item, i) => {
-            const chosen = type === "weaponType" && value === item.type;
-            return (
-              <img
-                key={i}
-                className={clsx("cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11 shrink-0", {
-                  "ml-6": i,
-                  "border-3 border-light-400": chosen,
-                })}
-                src={getImgSrc(item.src)}
-                alt={item.type}
-                draggable={false}
-                onClick={() => {
-                  onClickOption(chosen, { type: "weaponType", value: item.type });
-                }}
-              />
-            );
-          })}
+        <div className="w-full h-px bg-dark-300" />
+
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p>Filter by Weapon</p>
+            <Button size="small" disabled={allWeaponSelected} onClick={onClickSelectAllWeapons}>
+              Select all
+            </Button>
+          </div>
+          {renderWeaponSelect("px-1")}
+        </div>
+
+        <div className="w-full h-px bg-dark-300" />
+
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <p>Filter by Rarity</p>
+          </div>
+          {renderRaritySelect(undefined, { maxWidth: "14rem" })}
         </div>
       </div>
+
+      <ButtonGroup.Confirm className="mt-4" justify="end" focusConfirm onCancel={onCancel} onConfirm={onConfirm} />
     </div>
   );
 };

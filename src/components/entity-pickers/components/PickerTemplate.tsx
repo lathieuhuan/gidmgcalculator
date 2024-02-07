@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import { useState, ReactNode, useRef } from "react";
 import { FaFilter } from "react-icons/fa";
 
@@ -25,6 +25,7 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   /** Default to true */
   filterToggleable?: boolean;
   initialFilterOn?: boolean;
+  filterWrapCls?: ClassValue;
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   /** Remember to handle case shouldHidePickedItem */
   renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
@@ -40,6 +41,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
   hasFilter,
   filterToggleable = true,
   initialFilterOn = false,
+  filterWrapCls,
   renderFilter,
   renderItemConfig,
   onPickItem,
@@ -165,7 +167,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
 
         <CollapseAndMount
           active={filterOn}
-          className="absolute top-0 left-0 z-10 w-full md1:w-auto"
+          className={clsx("absolute top-0 left-0 z-10", filterWrapCls)}
           activeHeight="100%"
           moveDuration={300}
         >

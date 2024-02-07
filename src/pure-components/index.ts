@@ -13,7 +13,7 @@ export * from "./ComplexSelect";
 export * from "./Notification";
 export * from "./Popover";
 export * from "./SharedSpace";
-export * from "./Vision";
+export * from "./VisionIcon";
 export * from "./Switch";
 export * from "./Radio";
 export * from "./ItemCase";
