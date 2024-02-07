@@ -1,32 +1,37 @@
 import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
-import { Image, Radio } from "@Src/pure-components";
-import { ARTIFACT_IMAGES, WEAPON_IMAGES } from "@Src/constants";
 
-type TypeOption = {
-  type: string;
+import { ARTIFACT_IMAGES, WEAPON_IMAGES } from "@Src/constants";
+import { toArray } from "@Src/utils";
+import { ArtifactType, WeaponType } from "@Src/types";
+import { Image, Radio } from "@Src/pure-components";
+
+type TypeOption<T> = {
+  type: T;
   imgSrc: string;
 };
 
-type Config = {
+type InitialValues<T> = T | T[] | null;
+
+type Config<T> = {
   iconCls?: ClassValue;
   selectedCls?: ClassValue;
   multiple?: boolean;
   required?: boolean;
   withRadios?: boolean;
-  onChange?: (selectedTypes: string[]) => void;
+  onChange?: (selectedTypes: T[]) => void;
 };
 
-const useTypeSelect = (options: TypeOption[], initialValues?: string[] | null, config?: Config) => {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(initialValues ?? []);
+function useTypeSelect<T>(options: TypeOption<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
+  const [selectedTypes, setSelectedTypes] = useState<T[]>(initialValues ? toArray(initialValues) : []);
   const { iconCls, selectedCls, multiple, required, withRadios, onChange } = config || {};
 
-  const updateTypes = (newTypes: string[]) => {
+  const updateTypes = (newTypes: T[]) => {
     setSelectedTypes(newTypes);
     onChange?.(newTypes);
   };
 
-  const onClickIcon = (value: string, currentSelected: boolean) => {
+  const onClickIcon = (value: T, currentSelected: boolean) => {
     if (multiple) {
       const newTypes = currentSelected ? selectedTypes.filter((type) => type !== value) : selectedTypes.concat(value);
 
@@ -38,7 +43,7 @@ const useTypeSelect = (options: TypeOption[], initialValues?: string[] | null, c
     }
   };
 
-  const onCheckRadio = (value: string) => {
+  const onCheckRadio = (value: T) => {
     updateTypes([value]);
   };
 
@@ -83,23 +88,32 @@ const useTypeSelect = (options: TypeOption[], initialValues?: string[] | null, c
     updateTypes,
     renderTypeSelect,
   };
-};
+}
 
-useTypeSelect.Weapon = (initialValues?: string[] | null, config?: Omit<Config, "selectedCls">) => {
-  const finalConfig: Config = {
+function useWeaponTypeSelect(
+  initialValues?: InitialValues<WeaponType>,
+  config?: Omit<Config<WeaponType>, "selectedCls">
+) {
+  const finalConfig: Config<WeaponType> = {
     ...config,
     selectedCls: "shadow-3px-3px shadow-green-300",
   };
   return useTypeSelect(WEAPON_IMAGES, initialValues, finalConfig);
-};
+}
 
-useTypeSelect.Artifact = (initialValues?: string[] | null, config?: Omit<Config, "iconCls" | "selectedCls">) => {
-  const finalConfig: Config = {
+function useArtifactTypeSelect(
+  initialValues?: InitialValues<ArtifactType>,
+  config?: Omit<Config<ArtifactType>, "iconCls" | "selectedCls">
+) {
+  const finalConfig: Config<ArtifactType> = {
     ...config,
     iconCls: "p-1",
     selectedCls: "bg-green-300",
   };
   return useTypeSelect(ARTIFACT_IMAGES, initialValues, finalConfig);
-};
+}
+
+useTypeSelect.Weapon = useWeaponTypeSelect;
+useTypeSelect.Artifact = useArtifactTypeSelect;
 
 export { useTypeSelect };

@@ -16,7 +16,7 @@ import { getCalculationStats } from "@Src/calculation";
 import { findById, findByName, getImgSrc } from "@Src/utils";
 
 // Component
-import { StarLine, Button, ConfirmModal, LoadingIcon } from "@Src/pure-components";
+import { Button, ConfirmModal, LoadingIcon, RarityStars } from "@Src/pure-components";
 import { AttributeTable, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
 
@@ -94,7 +94,7 @@ const CharacterInfo = () => {
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
             {!isMobile && <p className={`text-2.5xl text-${vision} font-black`}>{name}</p>}
-            <StarLine className="mt-1" rarity={rarity} />
+            <RarityStars className="mt-1" rarity={rarity} />
 
             <div className="mt-1 flex text-lg">
               <p className="mr-1">Level</p>

@@ -5,7 +5,7 @@ import type { ArtifactFilterCondition } from "./types";
 
 // Hook
 import { useScreenSize } from "@Src/features";
-import { useTypeFilter } from "@Src/hooks";
+import { useTypeSelect } from "@Src/hooks";
 import { useTabs } from "@Src/pure-hooks";
 import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
 
@@ -35,7 +35,7 @@ const ArtifactFilter = ({
     configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
   });
 
-  const { filteredTypes, operate, renderTypeFilter } = useTypeFilter("artifact", initialCondition.types);
+  const { selectedTypes, updateTypes, renderTypeSelect } = useTypeSelect.Artifact(initialCondition.types);
   const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(
     initialCondition.stats,
     artifactType
@@ -53,7 +53,7 @@ const ArtifactFilter = ({
     onConfirm({
       stats: statsFilter,
       codes: filteredCodes,
-      types: filteredTypes as ArtifactType[],
+      types: selectedTypes,
     });
     onClose();
   };
@@ -77,15 +77,15 @@ const ArtifactFilter = ({
               isSmallScreen ? "justify-between" : "mr-4 items-center shrink-0",
             ])}
           >
-            {renderTypeFilter(["mb-6 hide-scrollbar", isSmallScreen ? "justify-center py-4" : "py-2 flex-col"])}
+            {renderTypeSelect(["mb-6 hide-scrollbar", isSmallScreen ? "justify-center py-4" : "py-2 flex-col"])}
 
             <div className="flex">
               <Button
                 size={isSmallScreen ? "small" : "custom"}
                 className={!isSmallScreen && "p-1"}
                 icon={<BiReset className="text-lg" />}
-                disabled={!filteredTypes.length}
-                onClick={() => operate.updateFilter([])}
+                disabled={!selectedTypes.length}
+                onClick={() => updateTypes([])}
               >
                 {isSmallScreen ? "Clear all" : ""}
               </Button>

@@ -1,14 +1,15 @@
+import clsx from "clsx";
 import { useMemo, useState } from "react";
 
 import { Artifact, ArtifactType } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { pickProps } from "@Src/utils";
-import { useTypeFilter } from "@Src/hooks";
+import { useTypeSelect } from "@Src/hooks";
 import { createArtifact } from "@Src/utils/creators";
 
 // Component
-import { Button, Modal } from "@Src/pure-components";
+import { Button, Modal, Star } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
 
@@ -27,8 +28,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
     }
   };
 
-  const { filteredTypes, renderTypeFilter } = useTypeFilter("artifact", ["flower"], {
-    mode: "single",
+  const { selectedTypes, renderTypeSelect } = useTypeSelect.Artifact("flower", {
     onChange: (types) => {
       updateConfig((prevConfig) => {
         const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
@@ -57,17 +57,49 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
     });
   }, []);
 
+  const onClickRarityStar = (num: number) => {
+    if (num >= 4 && num !== artifactConfig?.rarity) {
+      updateConfig((prevConfig) => {
+        return {
+          ...prevConfig,
+          rarity: num,
+          level: Math.min(prevConfig.level, num === 5 ? 20 : 16),
+        };
+      });
+    }
+  };
+
   return (
     <PickerTemplate
       title="Artifacts"
       data={allArtifactSets}
       renderItemConfig={(afterPickItem) => {
         return (
-          <div className="h-full flex flex-col">
+          <div className="h-full flex flex-col custom-scrollbar space-y-4">
             {artifactConfig ? (
-              <div>
-                {renderTypeFilter()}
-                <div></div>
+              <div className="flex flex-col items-center">
+                <div className="space-y-4">
+                  <div className="flex space-x-4">
+                    {Array.from({ length: 5 }, (_, num) => {
+                      const rarity = num + 1;
+
+                      return (
+                        <button
+                          key={num}
+                          className={clsx(
+                            "w-10 h-10 flex-center text-3xl",
+                            artifactConfig.rarity >= rarity ? `text-rarity-${artifactConfig.rarity}` : "text-rarity-1"
+                          )}
+                          onClick={() => onClickRarityStar(rarity)}
+                        >
+                          <Star />
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {renderTypeSelect()}
+                </div>
               </div>
             ) : null}
 
@@ -113,7 +145,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
       onPickItem={(mold, isConfigStep) => {
         const artifact = createArtifact({
           ...mold,
-          type: filteredTypes[0] as ArtifactType,
+          type: selectedTypes[0] as ArtifactType,
         });
 
         if (isConfigStep) {

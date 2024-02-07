@@ -1,11 +1,10 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
-import type { WeaponType } from "@Src/types";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
-import { useTypeFilter } from "@Src/hooks";
+import { useTypeSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
 
 // Store
@@ -29,10 +28,8 @@ export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
 
-  const { filteredTypes, renderTypeFilter } = useTypeFilter("weapon");
-  const { filteredWeapons, totalCount } = useSelector((state) =>
-    selectWeaponInventory(state, filteredTypes as WeaponType[])
-  );
+  const { selectedTypes, renderTypeSelect } = useTypeSelect.Weapon();
+  const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, selectedTypes));
   const chosenWeapon = findById(filteredWeapons, chosenID);
 
   const checkIfMaxWeaponsReached = () => {
@@ -71,7 +68,7 @@ export default function MyWeapons() {
             ]}
           />
           {window.innerWidth >= 500 ? (
-            renderTypeFilter()
+            renderTypeSelect()
           ) : (
             <>
               <Button
@@ -81,7 +78,7 @@ export default function MyWeapons() {
               />
 
               <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
-                <div className="px-4 py-6 shadow-common bg-dark-700">{renderTypeFilter()}</div>
+                <div className="px-4 py-6 shadow-common bg-dark-700">{renderTypeSelect()}</div>
               </CollapseSpace>
             </>
           )}

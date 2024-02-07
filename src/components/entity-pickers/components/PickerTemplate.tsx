@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useRef } from "react";
 
 import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
@@ -41,6 +41,8 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
   onPickItem,
   onClose,
 }: PickerTemplateProps<T>) => {
+  const bodyRef = useRef<HTMLDivElement>(null);
+
   const [filterOn, setFilterOn] = useState(initialFilterOn);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
   const [chosenCode, setChosenCode] = useState(0);
@@ -68,6 +70,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
     if (hasConfigStep) {
       await onPickItem(item, true);
       setChosenCode(item.code);
+      if (bodyRef.current) bodyRef.current.scrollLeft = 999;
       return;
     }
 
@@ -111,7 +114,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
       </Modal.Header>
 
       <div className="p-4 grow overflow-auto relative">
-        <div className="h-full flex custom-scrollbar gap-4">
+        <div ref={bodyRef} className="h-full flex custom-scrollbar gap-4 scroll-smooth">
           <div
             ref={observedAreaRef}
             className="md2:pr-2 h-full w-full shrink-0 md1:w-auto md1:shrink md1:min-w-[352px] grow custom-scrollbar"

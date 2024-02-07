@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 
-import type { Weapon, WeaponType } from "@Src/types";
-import type { ItemFilterState } from "./types";
+import type { Weapon } from "@Src/types";
 import { $AppData } from "@Src/services";
 
 // Util
@@ -11,10 +10,10 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { Button, Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
-import { WeaponFilter, WeaponFilterProps } from "./components/WeaponFilter";
+import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./components/WeaponFilter";
 import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
 
-const INITIAL_FITLER_STATE: ItemFilterState = {
+const INITIAL_FITLER_STATE: WeaponFilterState = {
   types: ["bow"],
   rarities: [4, 5],
 };
@@ -25,7 +24,7 @@ interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" 
   onClose: () => void;
 }
 function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
-  const [filter, setFilter] = useState<ItemFilterState>();
+  const [filter, setFilter] = useState<WeaponFilterState>();
   const [weaponConfig, setWeaponConfig] = useState<Weapon>();
 
   const allWeapons = useMemo(() => {

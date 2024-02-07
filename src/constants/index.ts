@@ -148,7 +148,7 @@ export const ARTIFACT_ICONS: Record<(typeof ARTIFACT_TYPES)[number], string> = {
   circlet: "6/64/Icon_Circlet_of_Logos",
 };
 
-export const WEAPON_IMAGES = [
+export const WEAPON_IMAGES: Array<{ type: (typeof WEAPON_TYPES)[number]; imgSrc: string }> = [
   { type: "bow", imgSrc: "9/97/Weapon-class-bow-icon" },
   { type: "catalyst", imgSrc: "0/02/Weapon-class-catalyst-icon" },
   { type: "claymore", imgSrc: "5/51/Weapon-class-claymore-icon" },
@@ -156,7 +156,7 @@ export const WEAPON_IMAGES = [
   { type: "sword", imgSrc: "9/95/Weapon-class-sword-icon" },
 ];
 
-export const ARTIFACT_IMAGES = [
+export const ARTIFACT_IMAGES: Array<{ type: (typeof ARTIFACT_TYPES)[number]; imgSrc: string }> = [
   { type: "flower", imgSrc: "2/2d/Icon_Flower_of_Life" },
   { type: "plume", imgSrc: "8/8b/Icon_Plume_of_Death" },
   { type: "sands", imgSrc: "9/9f/Icon_Sands_of_Eon" },

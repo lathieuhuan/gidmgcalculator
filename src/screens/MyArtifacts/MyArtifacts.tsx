@@ -2,9 +2,9 @@ import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
-import type { ArtifactType, UserArtifact } from "@Src/types";
+import type { UserArtifact } from "@Src/types";
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
-import { useTypeFilter } from "@Src/hooks";
+import { useTypeSelect } from "@Src/hooks";
 import { findById, indexById } from "@Src/utils";
 
 // Store
@@ -31,11 +31,11 @@ export default function MyArtifacts() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const { operate, renderTypeFilter } = useTypeFilter("artifact", undefined, {
-    onChange: (filteredTypes) => {
+  const { updateTypes, renderTypeSelect } = useTypeSelect.Artifact(null, {
+    onChange: (selectedTypes) => {
       setFilterCondition((prev) => ({
         ...prev,
-        types: filteredTypes as ArtifactType[],
+        types: selectedTypes,
       }));
     },
   });
@@ -101,7 +101,7 @@ export default function MyArtifacts() {
             ]}
           />
 
-          {window.innerWidth >= 600 && renderTypeFilter()}
+          {window.innerWidth >= 600 && renderTypeSelect()}
 
           <div className="flex cursor-pointer">
             <button
@@ -120,7 +120,7 @@ export default function MyArtifacts() {
                 onClick={() => {
                   const { DEFAULT_CONDITION } = ArtifactFilter;
                   setFilterCondition(DEFAULT_CONDITION);
-                  operate.updateFilter(DEFAULT_CONDITION.types);
+                  updateTypes(DEFAULT_CONDITION.types);
                 }}
               >
                 <FaTimes />
@@ -155,7 +155,7 @@ export default function MyArtifacts() {
           initialCondition={filterCondition}
           onConfirm={(contition) => {
             setFilterCondition(contition);
-            operate.updateFilter(contition.types);
+            updateTypes(contition.types);
           }}
           onClose={closeModal}
         />

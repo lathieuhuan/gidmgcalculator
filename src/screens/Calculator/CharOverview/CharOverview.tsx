@@ -18,7 +18,7 @@ import { updateUI } from "@Store/uiSlice";
 import { initNewSessionWithChar } from "@Store/thunks";
 
 // Component
-import { Button, StarLine, Image, BetaMark, ComplexSelect } from "@Src/pure-components";
+import { Button, Image, BetaMark, ComplexSelect, RarityStars } from "@Src/pure-components";
 import { SetupImporter, PickerCharacter } from "@Src/components";
 import contentByTab from "./content";
 
@@ -65,7 +65,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
           <div className="min-w-0 grow">
             <div className="overflow-hidden">
               <p className={`text-2.5xl truncate ${textVision} font-black`}>{char.name}</p>
-              <StarLine className="mt-1" rarity={charData.rarity} />
+              <RarityStars className="mt-1" rarity={charData.rarity} />
             </div>
 
             <div className="mt-1 flex justify-between items-center">

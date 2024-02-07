@@ -5,11 +5,6 @@ export type Filter = {
   value: string;
 };
 
-export type ItemFilterState = {
-  types: string[];
-  rarities: number[];
-};
-
 export type PickerItem = {
   code: number;
   beta?: boolean;
