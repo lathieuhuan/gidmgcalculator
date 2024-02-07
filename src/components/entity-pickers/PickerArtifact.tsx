@@ -78,7 +78,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
           <div className="h-full flex flex-col custom-scrollbar space-y-4">
             {artifactConfig ? (
               <div className="flex flex-col items-center">
-                <div className="space-y-4">
+                <div className="space-y-2">
                   <div className="flex space-x-4">
                     {Array.from({ length: 5 }, (_, num) => {
                       const rarity = num + 1;
@@ -97,6 +97,8 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
                       );
                     })}
                   </div>
+
+                  <div className="w-1/2 h-0.5 mx-auto bg-dark-300" />
 
                   {renderTypeSelect()}
                 </div>

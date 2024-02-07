@@ -22,7 +22,7 @@
   }
 
   input[type="radio"] {
-    @apply appearance-none flex relative;
+    @apply appearance-none flex relative cursor-pointer;
   }
   /* outer */
   input[type="radio"]::after {

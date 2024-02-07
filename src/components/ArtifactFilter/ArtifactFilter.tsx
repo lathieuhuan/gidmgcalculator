@@ -4,7 +4,7 @@ import type { ArtifactType, CalcArtifact } from "@Src/types";
 import type { ArtifactFilterCondition } from "./types";
 
 // Hook
-import { useScreenSize } from "@Src/features";
+import { useScreenWatcher } from "@Src/features";
 import { useTypeSelect } from "@Src/hooks";
 import { useTabs } from "@Src/pure-hooks";
 import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
@@ -29,7 +29,7 @@ const ArtifactFilter = ({
   onConfirm,
   onClose,
 }: ArtifactFilterProps) => {
-  const screenSize = useScreenSize();
+  const screenWatcher = useScreenWatcher();
   const { activeIndex, tabsElmt } = useTabs({
     level: 2,
     configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
@@ -58,7 +58,7 @@ const ArtifactFilter = ({
     onClose();
   };
 
-  const isSmallScreen = ["xs", "sm"].includes(screenSize);
+  const isSmallScreen = !screenWatcher.isFromSize("md1");
 
   const wrapperCls = (isHidden: boolean): ClassValue => {
     return isSmallScreen && ["h-full", isHidden && "hidden"];

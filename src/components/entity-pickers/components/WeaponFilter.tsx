@@ -26,10 +26,9 @@ export const WeaponFilter = ({
   onDone,
 }: WeaponFilterProps) => {
   const selectConfig = {
-    multiple: true,
+    multiple: "withRadios",
     required: true,
-    withRadios: true,
-  };
+  } as const;
   const rarityOptions = [5, 4, 3, 2, 1];
 
   const { selectedTypes, allTypesSelected, updateTypes, renderTypeSelect } = useTypeSelect.Weapon(

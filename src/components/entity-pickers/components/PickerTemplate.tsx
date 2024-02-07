@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useState, ReactNode, useRef } from "react";
+import { FaFilter } from "react-icons/fa";
 
 import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
@@ -7,7 +8,6 @@ import { useIntersectionObserver } from "@Src/pure-hooks";
 // Component
 import { Modal, Button, CollapseAndMount, ItemCase } from "@Src/pure-components";
 import { ItemThumbnail } from "./ItemThumbnail";
-import { FaFilter } from "react-icons/fa";
 
 /** this pick is valid or not */
 type Return = boolean;
@@ -17,6 +17,8 @@ export type OnPickItemReturn = Return | Promise<Return>;
 export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   title: string;
   data: T[];
+  /** Only in multiple mode, implemented in afterPickItem */
+  shouldHidePickedItem?: boolean;
   hasMultipleMode?: boolean;
   hasConfigStep?: boolean;
   hasFilter?: boolean;
@@ -24,6 +26,7 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   filterToggleable?: boolean;
   initialFilterOn?: boolean;
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
+  /** Remember to handle case shouldHidePickedItem */
   renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
   onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
@@ -31,6 +34,7 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
 export const PickerTemplate = <T extends PickerItem = PickerItem>({
   title,
   data,
+  shouldHidePickedItem,
   hasMultipleMode,
   hasConfigStep,
   hasFilter,
@@ -56,8 +60,13 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
 
   const afterPickItem = (itemCode: number) => {
     if (isMultiSelect) {
+      if (shouldHidePickedItem) {
+        observedAreaRef.current?.querySelector(`.${observedItemCls}[data-id="${itemCode}"]`)?.classList.add("hidden");
+        return;
+      }
       const newCounts = { ...itemCounts };
       newCounts[itemCode] = (newCounts[itemCode] || 0) + 1;
+
       return setItemCounts(newCounts);
     }
 

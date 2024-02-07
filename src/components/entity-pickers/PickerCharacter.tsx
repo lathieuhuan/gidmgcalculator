@@ -1,26 +1,26 @@
-import { useMemo } from "react";
-import type { AppCharacter, PartiallyRequired } from "@Src/types";
-import type { PickerItem } from "./types";
+import { memo, useMemo } from "react";
+import type { AppCharacter, UserCharacter } from "@Src/types";
 
 import { $AppData } from "@Src/services";
-import { useSelector } from "@Store/hooks";
+import { useStoreSnapshot } from "@Src/features";
 import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { Modal } from "@Src/pure-components";
-import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
+import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./components/PickerTemplate";
 
-type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
+type PickedCharacterKey = "code" | "beta" | "name" | "icon" | "rarity" | "vision" | "weaponType";
 
-export interface CharacterPickerProps {
-  sourceType: "mixed" | "app" | "user";
-  hasMultipleMode?: PickerTemplateProps["hasMultipleMode"];
-  filter?: (character: AppCharacter) => boolean;
+type PickedCharacter = Pick<AppCharacter, PickedCharacterKey> & Partial<Pick<UserCharacter, "cons" | "artifactIDs">>;
+
+export interface CharacterPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
+  sourceType: "app" | "user" | "mixed";
+  filter?: (character: PickedCharacter) => boolean;
   onPickCharacter: (character: PickedCharacter) => OnPickItemReturn;
   onClose: () => void;
 }
-const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter, onClose }: CharacterPickerProps) => {
-  const userChars = useSelector((state) => state.database.userChars);
+const CharacterPicker = ({ sourceType, filter, onPickCharacter, onClose, ...templateProps }: CharacterPickerProps) => {
+  const userChars = useStoreSnapshot((state) => state.database.userChars);
 
   // const inputRef = useRef<HTMLInputElement>(null);
   // const [pickedNames, setPickedNames] = useState<BooleanRecord>({});
@@ -39,7 +39,51 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   //   };
   // }, [dataType]);
 
-  // const visibleNames: BooleanRecord = {};
+  const allCharacters = useMemo(() => {
+    const pickedKey: PickedCharacterKey[] = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
+    const processedCharacters: PickedCharacter[] = [];
+
+    switch (sourceType) {
+      case "app":
+        for (const characterData of $AppData.getAllCharacters()) {
+          processedCharacters.push(pickProps(characterData, pickedKey));
+        }
+        break;
+      case "user":
+        for (const userChar of userChars) {
+          const characterData = $AppData.getCharData(userChar.name);
+
+          if (characterData) {
+            const character = Object.assign(pickProps(characterData, pickedKey), {
+              cons: userChar.cons,
+              artifactIDs: userChar.artifactIDs,
+            });
+            processedCharacters.push(character);
+          }
+        }
+        break;
+      case "mixed":
+        for (const characterData of $AppData.getAllCharacters()) {
+          const character = pickProps(characterData, pickedKey);
+          const userCharacter = findByName(userChars, character.name);
+
+          processedCharacters.push(Object.assign(character, userCharacter));
+        }
+        break;
+    }
+
+    return processedCharacters;
+  }, []);
+
+  const filteredCharacters = useMemo(() => {
+    if (filter) {
+      return allCharacters.filter(filter);
+    }
+
+    return allCharacters;
+  }, [allCharacters]);
+
+  console.log(filteredCharacters);
 
   // if (dataType === "character") {
   //   for (const char of data) {
@@ -65,29 +109,6 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   //   }
   // }
 
-  // const onPickItem = async (item: PickerItem, index: number) => {
-  //   const { isValid = true } = (await onPickItem(item)) || {};
-
-  //   if (isValid) {
-  //     if (!massAdd) {
-  //       onClose();
-  //     } //
-  //     else if (dataType === "character") {
-  //       setPickedNames((prevPickedNames) => ({
-  //         ...prevPickedNames,
-  //         [item.name]: true,
-  //       }));
-  //     } //
-  //     else {
-  //       setItemCounts((prev) => {
-  //         const newItems = { ...prev };
-  //         newItems[index] = (newItems[index] || 0) + 1;
-  //         return newItems;
-  //       });
-  //     }
-  //   }
-  // };
-
   // const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
   //   if (e.key === "Enter" && keyword) {
   //     const firstVisibleIndex = data.findIndex((item) => visibleNames[item.name]);
@@ -98,54 +119,14 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   //   }
   // };
 
-  const data = useMemo(() => {
-    const characters = $AppData.getAllCharacters();
-    const fields: Array<keyof AppCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
-    const data: PickerItem[] = [];
-
-    if (sourceType === "mixed") {
-      for (const character of characters) {
-        const charData = pickProps(character, fields);
-        const existedChar = findByName(userChars, character.name);
-
-        if (existedChar) {
-          data.push({ ...existedChar, ...charData });
-        } else {
-          data.push(charData);
-        }
-      }
-    } else if (sourceType === "app") {
-      for (const character of Object.values(characters)) {
-        if (!filter || filter(character)) {
-          data.push(pickProps(character, fields));
-        }
-      }
-    } else if (sourceType === "user") {
-      for (const { name, cons, artifactIDs } of userChars) {
-        const found = $AppData.getCharData(name);
-
-        if (found) {
-          if (!filter || filter(found)) {
-            data.push({
-              ...pickProps(found, fields),
-              cons,
-              artifactIDs,
-            });
-          }
-        }
-      }
-    }
-
-    return data;
-  }, []);
-
   return (
     <PickerTemplate
       title="Characters"
-      data={data}
-      hasMultipleMode={hasMultipleMode}
+      data={filteredCharacters}
+      shouldHidePickedItem={templateProps.hasMultipleMode}
       onPickItem={(character) => onPickCharacter(character as PickedCharacter)}
       onClose={onClose}
+      {...templateProps}
     />
     // <div className="h-full flex flex-col">
     //   <div className="p-2">
@@ -202,4 +183,7 @@ const CharacterPicker = ({ sourceType, hasMultipleMode, filter, onPickCharacter,
   );
 };
 
-export const PickerCharacter = Modal.coreWrap(CharacterPicker, { preset: "large" });
+export const PickerCharacter = Modal.coreWrap(
+  memo(CharacterPicker, () => true),
+  { preset: "large" }
+);

@@ -151,7 +151,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
         onPickCharacter={async (pickedChar) => {
           if ($AppData.getCharStatus(pickedChar.name) === "fetched") {
             dispatch(initNewSessionWithChar(pickedChar));
-            return;
+            return true;
           }
           dispatch(updateUI({ loading: true }));
 
@@ -160,17 +160,16 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
           if (response.code === 200) {
             dispatch(initNewSessionWithChar(pickedChar));
             dispatch(updateUI({ loading: false }));
-          } else {
-            notification.error({
-              content: getAppDataError("character", response.code),
-              duration: 0,
-            });
-            dispatch(updateUI({ loading: false }));
-
-            return {
-              isValid: false,
-            };
+            return true;
           }
+
+          notification.error({
+            content: getAppDataError("character", response.code),
+            duration: 0,
+          });
+          dispatch(updateUI({ loading: false }));
+
+          return false;
         }}
         onClose={closeModal}
       />

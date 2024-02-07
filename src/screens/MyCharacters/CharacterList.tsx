@@ -17,17 +17,16 @@ import { Button } from "@Src/pure-components";
 import styles from "./styles.module.scss";
 
 interface TopBarProps {
-  characterNames: string[];
+  characters: Array<{ name: string }>;
   chosenChar: string;
   onCliceSort: () => void;
   onClickWish: () => void;
 }
-export default function CharacterList({ characterNames, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
+export default function CharacterList({ characters, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
   const dispatch = useDispatch();
 
   const [gridviewOn, setGridviewOn] = useState(false);
-
-  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>([characterNames]);
+  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>([characters]);
 
   const scrollList = (name: string) => {
     document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
@@ -57,7 +56,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
   return (
     <div className="w-full flex justify-center bg-dark-700">
       <div className={styles["side-icon-carousel"]}>
-        {characterNames.length ? (
+        {characters.length ? (
           <div className="absolute top-8 right-full flex">
             <Button className="mr-4" variant="positive" icon={<FaSortAmountUpAlt />} onClick={onCliceSort} />
             <Button className="mr-4" variant="positive" icon={<FaTh />} onClick={() => setGridviewOn(true)} />
@@ -66,54 +65,52 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
 
         <div ref={observedAreaRef} className="mt-2 w-full hide-scrollbar">
           <div className="flex">
-            {characterNames.length ? (
-              characterNames.map((name) => {
-                const charData = $AppData.getCharData(name);
-                if (!charData) {
-                  return null;
-                }
-                const { sideIcon, icon } = charData;
-                const visible = visibleItems[name];
+            {characters.map(({ name }) => {
+              const charData = $AppData.getCharData(name);
+              if (!charData) return null;
+              const visible = visibleItems[name];
 
-                return (
+              return (
+                <div
+                  key={name}
+                  id={`side-icon-${name}`}
+                  data-id={name}
+                  className={clsx(
+                    observedItemCls,
+                    "mx-1 border-b-3 border-transparent cursor-pointer",
+                    name === chosenChar && styles["active-cell"]
+                  )}
+                  onClick={() => dispatch(chooseCharacter(name))}
+                >
                   <div
-                    key={name}
-                    id={`side-icon-${name}`}
-                    data-id={name}
                     className={clsx(
-                      observedItemCls,
-                      "mx-1 border-b-3 border-transparent cursor-pointer",
-                      name === chosenChar && styles["active-cell"]
+                      "rounded-circle border-3 border-lesser/30 bg-black/30",
+                      styles["icon-wrapper"],
+                      charData.sideIcon
+                        ? "m-2 " + styles["side-icon-wrapper"]
+                        : "m-1 overflow-hidden " + styles["beta-icon-wrapper"]
                     )}
-                    onClick={() => dispatch(chooseCharacter(name))}
                   >
                     <div
-                      className={clsx(
-                        "rounded-circle border-3 border-lesser/30 bg-black/30",
-                        styles["icon-wrapper"],
-                        sideIcon
-                          ? "m-2 " + styles["side-icon-wrapper"]
-                          : "m-1 overflow-hidden " + styles["beta-icon-wrapper"]
-                      )}
+                      className={
+                        "w-ful h-full transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")
+                      }
                     >
-                      <div
-                        className={
-                          "w-ful h-full transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")
-                        }
-                      >
-                        {visible && <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />}
-                      </div>
+                      {visible && (
+                        <img src={getImgSrc(charData.sideIcon || charData.icon)} alt="icon" draggable={false} />
+                      )}
                     </div>
                   </div>
-                );
-              })
-            ) : (
+                </div>
+              );
+            })}
+            {!characters.length ? (
               <div className="w-full h-20 flex justify-end items-center">
                 <p className="text-2.5xl font-bold text-yellow-400 flex">
                   <span className="mr-2">Add new characters</span> <FaArrowAltCircleUp className="rotate-90" />
                 </p>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -135,6 +132,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
         onPickCharacter={({ name }) => {
           dispatch(chooseCharacter(name));
           scrollList(name);
+          return true;
         }}
         onClose={() => setGridviewOn(false)}
       />

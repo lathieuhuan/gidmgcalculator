@@ -176,9 +176,7 @@ export default function SectionParty() {
       <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="app"
-        filter={({ name }) => {
-          return name !== charData.name && party.every((tm) => name !== tm?.name);
-        }}
+        filter={(character) => character.name !== charData.name && party.every((tm) => character.name !== tm?.name)}
         onPickCharacter={({ name, vision, weaponType }) => {
           const { teammateIndex } = modal;
 
@@ -186,6 +184,7 @@ export default function SectionParty() {
             dispatch(addTeammate({ name, vision, weaponType, teammateIndex }));
             setDetailSlot(teammateIndex);
           }
+          return true;
         }}
         onClose={closeModal}
       />
@@ -193,7 +192,7 @@ export default function SectionParty() {
       {detailSlot !== null && (
         <PickerWeapon
           active={modal.type === "WEAPON" && modal.teammateIndex !== null}
-          weaponType={partyData[detailSlot]?.weaponType || "sword"}
+          forcedType={partyData[detailSlot]?.weaponType}
           onPickWeapon={({ code }) => {
             if (detailSlot !== null) {
               dispatch(
@@ -203,6 +202,7 @@ export default function SectionParty() {
                 })
               );
             }
+            return true;
           }}
           onClose={closeModal}
         />
@@ -210,7 +210,7 @@ export default function SectionParty() {
 
       <PickerArtifact
         active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
-        artifactType="flower"
+        forcedType="flower"
         forFeature="TEAMMATE_MODIFIERS"
         onPickArtifact={({ code }) => {
           if (detailSlot !== null) {
@@ -221,6 +221,7 @@ export default function SectionParty() {
               })
             );
           }
+          return true;
         }}
         onClose={closeModal}
       />

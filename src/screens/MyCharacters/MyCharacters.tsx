@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { createSelector } from "@reduxjs/toolkit";
+
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { addCharacter, chooseCharacter } from "@Store/userDatabaseSlice";
@@ -13,30 +14,36 @@ import CharacterSort from "./CharacterSort";
 import CharacterList from "./CharacterList";
 import CharacterInfo from "./CharacterInfo";
 
-const selectCharacterNames = createSelector(selectUserChars, (userChars) => userChars.map(({ name }) => name));
-
 type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;
 
 export default function MyCharacters() {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const chosenChar = useSelector(selectChosenChar);
-  const characterNames = useSelector(selectCharacterNames);
+  const userChars = useSelector(selectUserChars);
 
   const [modalType, setModalType] = useState<ModalType>(null);
 
   return (
     <div className="h-full flex flex-col bg-dark-500">
-      {window.innerWidth <= 700 ? (
+      {screenWatcher.isFromSize("md2") ? (
+        <CharacterList
+          characters={userChars}
+          chosenChar={chosenChar}
+          onCliceSort={() => setModalType("SORT_CHARACTERS")}
+          onClickWish={() => setModalType("ADD_CHARACTER")}
+        />
+      ) : (
         <div className="py-4 flex bg-dark-700">
-          {characterNames.length ? (
+          {userChars.length ? (
             <div className="w-full flex-center relative">
               <select
                 className="styled-select py-0 text-1.5xl leading-base text-center text-last-center"
                 value={chosenChar}
                 onChange={(e) => dispatch(chooseCharacter(e.target.value))}
               >
-                {characterNames.map((name, i) => (
-                  <option key={i}>{name}</option>
+                {userChars.map((userChar, i) => (
+                  <option key={i}>{userChar.name}</option>
                 ))}
               </select>
               <Button className="ml-6" variant="positive" onClick={() => setModalType("ADD_CHARACTER")}>
@@ -49,29 +56,23 @@ export default function MyCharacters() {
             </Button>
           )}
         </div>
-      ) : (
-        <CharacterList
-          characterNames={characterNames}
-          chosenChar={chosenChar}
-          onCliceSort={() => setModalType("SORT_CHARACTERS")}
-          onClickWish={() => setModalType("ADD_CHARACTER")}
-        />
       )}
 
       <div className="grow flex-center overflow-y-auto">
-        <div className="w-full h-98/100 flex justify-center">{!!characterNames.length && <CharacterInfo />}</div>
+        <div className="w-full h-98/100 flex justify-center">{userChars.length ? <CharacterInfo /> : null}</div>
       </div>
 
       <PickerCharacter
         active={modalType === "ADD_CHARACTER"}
         sourceType="app"
-        needMassAdd
-        filter={({ name }) => !characterNames.includes(name)}
-        onPickCharacter={async (character) => {
-          if (!characterNames.length) {
+        hasMultipleMode
+        filter={(character) => userChars.every((userChar) => userChar.name !== character.name)}
+        onPickCharacter={(character) => {
+          if (!userChars.length) {
             dispatch(chooseCharacter(character.name));
           }
           dispatch(addCharacter(character));
+          return true;
         }}
         onClose={() => setModalType(null)}
       />

@@ -3,15 +3,15 @@ import { useState } from "react";
 import { Radio, RarityStars } from "@Src/pure-components";
 
 type Config = {
-  multiple?: boolean;
+  multiple?: boolean | "withRadios";
   required?: boolean;
-  withRadios?: boolean;
   onChange?: (selectedRarities: number[]) => void;
 };
 
 export const useRaritySelect = (options: number[], initialValues?: number[] | null, config?: Config) => {
   const [selectedRarities, setSelectedRarities] = useState(initialValues ?? []);
-  const { multiple, required, withRadios, onChange } = config || {};
+  const { multiple, required, onChange } = config || {};
+  const withRadios = multiple === "withRadios";
 
   const updateRarities = (newRarities: number[]) => {
     setSelectedRarities(newRarities);
@@ -44,7 +44,12 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
 
           return (
             <div key={option} className="rounded-sm border border-dark-500 flex">
-              <label className={clsx("grow p-2 flex justify-center", withRadios && "border-r border-dark-500")}>
+              <label
+                className={clsx(
+                  "grow p-2 flex justify-center cursor-pointer",
+                  withRadios && "border-r border-dark-500"
+                )}
+              >
                 <input
                   type="checkbox"
                   className="scale-110"
@@ -55,7 +60,7 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
               </label>
 
               {withRadios ? (
-                <label className="px-2 flex-center shrink-0">
+                <label className="px-2 flex-center shrink-0 cursor-pointer">
                   <Radio
                     checked={selectedRarities.length === 1 && selectedRarities[0] === option}
                     onChange={() => onCheckRadio(option)}

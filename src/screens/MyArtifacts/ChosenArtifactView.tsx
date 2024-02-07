@@ -87,6 +87,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
         filter={({ name }) => name !== artifact?.owner}
         onPickCharacter={({ name }) => {
           artifact?.owner ? setNewOwner(name) : swapOwner(name);
+          return true;
         }}
         onClose={closeModal}
       />

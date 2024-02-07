@@ -16,15 +16,15 @@ type InitialValues<T> = T | T[] | null;
 type Config<T> = {
   iconCls?: ClassValue;
   selectedCls?: ClassValue;
-  multiple?: boolean;
+  multiple?: boolean | "withRadios";
   required?: boolean;
-  withRadios?: boolean;
   onChange?: (selectedTypes: T[]) => void;
 };
 
 function useTypeSelect<T>(options: TypeImage<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
   const [selectedTypes, setSelectedTypes] = useState<T[]>(initialValues ? toArray(initialValues) : []);
-  const { iconCls, selectedCls, multiple, required, withRadios, onChange } = config || {};
+  const { iconCls, selectedCls, multiple, required, onChange } = config || {};
+  const withRadios = multiple === "withRadios";
 
   const updateTypes = (newTypes: T[]) => {
     setSelectedTypes(newTypes);
@@ -68,7 +68,7 @@ function useTypeSelect<T>(options: TypeImage<T>[], initialValues?: InitialValues
             </button>
 
             {withRadios && (
-              <label className="w-8 h-8 flex-center">
+              <label className="w-8 h-8 flex-center cursor-pointer">
                 <Radio
                   size="large"
                   checked={selectedTypes.length === 1 && selectedTypes[0] === option.type}

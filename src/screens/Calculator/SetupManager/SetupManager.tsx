@@ -142,6 +142,7 @@ export default function SetupManager() {
           if (artifactIDs) {
             dispatch(pickEquippedArtSet(artifactIDs));
           }
+          return true;
         }}
         onClose={closeModal}
       />
