@@ -4,7 +4,7 @@ import { FaEllipsisH } from "react-icons/fa";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
-import { useTypeSelect } from "@Src/hooks";
+import { useIconSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
 
 // Store
@@ -28,7 +28,7 @@ export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
 
-  const { selectedTypes, renderTypeSelect } = useTypeSelect.Weapon();
+  const { selectedTypes, renderTypeSelect } = useIconSelect.Weapon();
   const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, selectedTypes));
   const chosenWeapon = findById(filteredWeapons, chosenID);
 

@@ -132,20 +132,20 @@ export const REACTION_BONUS_INFO_KEYS = ["pct_", "cRate_", "cDmg_"] as const;
 //   dendro: "f/f4/Element_Dendro",
 // };
 
-export const WEAPON_TYPE_IMAGES: Array<{ type: (typeof WEAPON_TYPES)[number]; src: string }> = [
-  { type: "bow", src: "9/97/Weapon-class-bow-icon" },
-  { type: "catalyst", src: "0/02/Weapon-class-catalyst-icon" },
-  { type: "claymore", src: "5/51/Weapon-class-claymore-icon" },
-  { type: "polearm", src: "9/91/Weapon-class-polearm-icon" },
-  { type: "sword", src: "9/95/Weapon-class-sword-icon" },
+export const WEAPON_TYPE_ICONS: Array<{ type: (typeof WEAPON_TYPES)[number]; icon: string }> = [
+  { type: "bow", icon: "9/97/Weapon-class-bow-icon" },
+  { type: "catalyst", icon: "0/02/Weapon-class-catalyst-icon" },
+  { type: "claymore", icon: "5/51/Weapon-class-claymore-icon" },
+  { type: "polearm", icon: "9/91/Weapon-class-polearm-icon" },
+  { type: "sword", icon: "9/95/Weapon-class-sword-icon" },
 ];
 
-export const ARTIFACT_TYPE_IMAGES: Array<{ type: (typeof ARTIFACT_TYPES)[number]; src: string }> = [
-  { type: "flower", src: "2/2d/Icon_Flower_of_Life" },
-  { type: "plume", src: "8/8b/Icon_Plume_of_Death" },
-  { type: "sands", src: "9/9f/Icon_Sands_of_Eon" },
-  { type: "goblet", src: "3/37/Icon_Goblet_of_Eonothem" },
-  { type: "circlet", src: "6/64/Icon_Circlet_of_Logos" },
+export const ARTIFACT_TYPE_ICONS: Array<{ type: (typeof ARTIFACT_TYPES)[number]; icon: string }> = [
+  { type: "flower", icon: "2/2d/Icon_Flower_of_Life" },
+  { type: "plume", icon: "8/8b/Icon_Plume_of_Death" },
+  { type: "sands", icon: "9/9f/Icon_Sands_of_Eon" },
+  { type: "goblet", icon: "3/37/Icon_Goblet_of_Eonothem" },
+  { type: "circlet", icon: "6/64/Icon_Circlet_of_Logos" },
 ];
 
 export const TRANSFORMATIVE_REACTIONS = [

@@ -3,7 +3,7 @@ import { FaSkull } from "react-icons/fa";
 import { IoDocumentText } from "react-icons/io5";
 
 import type { ArtifactType } from "@Src/types";
-import { ARTIFACT_TYPES, ARTIFACT_TYPE_IMAGES } from "@Src/constants";
+import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { useElementSize } from "@Src/pure-hooks";
 import { $AppData } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
@@ -88,7 +88,7 @@ export default function SetupManager() {
 
       <TypeSelect
         active={prePickerOn}
-        options={ARTIFACT_TYPE_IMAGES}
+        options={ARTIFACT_TYPE_ICONS}
         onSelect={(artifactType) => {
           setModalType(artifactType as ArtifactType);
           setPrePickerOn(false);

@@ -1,5 +1,5 @@
 export * from "./useCharData";
 export * from "./useGetMetadata";
-export * from "./useTypeSelect";
+export * from "./useIconSelect";
 export * from "./useRaritySelect";
 export * from "./useUserItemContainingSetups";

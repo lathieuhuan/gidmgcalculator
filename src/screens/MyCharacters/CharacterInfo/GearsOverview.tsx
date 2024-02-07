@@ -5,7 +5,7 @@ import { FaInfo } from "react-icons/fa";
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-import { ARTIFACT_TYPES, ARTIFACT_TYPE_IMAGES } from "@Src/constants";
+import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { getImgSrc } from "@Src/utils";
 
@@ -83,7 +83,7 @@ export function GearsOverview({
               >
                 <img
                   className="w-full"
-                  src={getImgSrc(ARTIFACT_TYPE_IMAGES.find((item) => item.type === ARTIFACT_TYPES[i])?.src)}
+                  src={getImgSrc(ARTIFACT_TYPE_ICONS.find((item) => item.type === ARTIFACT_TYPES[i])?.icon)}
                   alt=""
                   draggable={false}
                 />

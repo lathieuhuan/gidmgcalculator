@@ -4,7 +4,7 @@ import { Artifact, ArtifactType, Rarity } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { pickProps } from "@Src/utils";
-import { useTypeSelect } from "@Src/hooks";
+import { useIconSelect } from "@Src/hooks";
 import { createArtifact } from "@Src/utils/creators";
 
 // Component
@@ -27,7 +27,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
     }
   };
 
-  const { selectedTypes, renderTypeSelect } = useTypeSelect.Artifact("flower", {
+  const { selectedTypes, renderTypeSelect } = useIconSelect.Artifact("flower", {
     onChange: (types) => {
       updateConfig((prevConfig) => {
         const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });

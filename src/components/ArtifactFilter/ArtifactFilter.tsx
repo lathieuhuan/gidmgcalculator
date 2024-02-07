@@ -5,7 +5,7 @@ import type { ArtifactFilterCondition } from "./types";
 
 // Hook
 import { useScreenWatcher } from "@Src/features";
-import { useTypeSelect } from "@Src/hooks";
+import { useIconSelect } from "@Src/hooks";
 import { useTabs } from "@Src/pure-hooks";
 import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
 
@@ -35,7 +35,7 @@ const ArtifactFilter = ({
     configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
   });
 
-  const { selectedTypes, updateTypes, renderTypeSelect } = useTypeSelect.Artifact(initialCondition.types);
+  const { selectedTypes, updateTypes, renderTypeSelect } = useIconSelect.Artifact(initialCondition.types);
   const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(
     initialCondition.stats,
     artifactType

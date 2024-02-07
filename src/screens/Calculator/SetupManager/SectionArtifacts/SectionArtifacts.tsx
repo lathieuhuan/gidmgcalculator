@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 
-import { ARTIFACT_TYPES, ARTIFACT_TYPE_IMAGES } from "@Src/constants";
+import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 
 // Store
@@ -61,7 +61,7 @@ export default function SectionArtifacts() {
           const artifact = artifacts[index];
           const icon = artifact
             ? $AppData.getArtifactData({ code: artifact.code, type })?.icon || ""
-            : ARTIFACT_TYPE_IMAGES.find((item) => item.type === type)?.src;
+            : ARTIFACT_TYPE_ICONS.find((item) => item.type === type)?.icon;
 
           return (
             <div
@@ -116,6 +116,7 @@ export default function SectionArtifacts() {
             })
           );
           setActiveTabIndex(artifactPicker.slot);
+          return true;
         }}
         onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
       />

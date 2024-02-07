@@ -5,7 +5,7 @@ import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "reac
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { OpenModalFn } from "../types";
 
-import { ARTIFACT_TYPE_IMAGES, ARTIFACT_TYPES } from "@Src/constants";
+import { ARTIFACT_TYPE_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { $AppData } from "@Src/services";
 
 // Store
@@ -168,7 +168,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           return (
             <GearIcon
               key={i}
-              item={{ icon: ARTIFACT_TYPE_IMAGES.find((item) => item.type === ARTIFACT_TYPES[i])?.src || "" }}
+              item={{ icon: ARTIFACT_TYPE_ICONS.find((item) => item.type === ARTIFACT_TYPES[i])?.icon || "" }}
             />
           );
         })}

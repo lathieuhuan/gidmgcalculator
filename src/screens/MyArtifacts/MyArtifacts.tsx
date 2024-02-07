@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 
 import type { UserArtifact } from "@Src/types";
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
-import { useTypeSelect } from "@Src/hooks";
+import { useIconSelect } from "@Src/hooks";
 import { findById, indexById } from "@Src/utils";
 
 // Store
@@ -31,7 +31,7 @@ export default function MyArtifacts() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const { updateTypes, renderTypeSelect } = useTypeSelect.Artifact(null, {
+  const { updateTypes, renderTypeSelect } = useIconSelect.Artifact(null, {
     onChange: (selectedTypes) => {
       setFilterCondition((prev) => ({
         ...prev,

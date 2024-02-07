@@ -1,5 +1,5 @@
 import clsx, { ClassValue } from "clsx";
-import { useRaritySelect, useTypeSelect } from "@Src/hooks";
+import { useRaritySelect, useIconSelect } from "@Src/hooks";
 import { WEAPON_TYPES } from "@Src/constants";
 import { Button, ButtonGroup } from "@Src/pure-components";
 import { WeaponType } from "@Src/types";
@@ -31,7 +31,7 @@ export const WeaponFilter = ({
   } as const;
   const rarityOptions = [5, 4, 3, 2, 1];
 
-  const { selectedTypes, allTypesSelected, updateTypes, renderTypeSelect } = useTypeSelect.Weapon(
+  const { selectedTypes, allTypesSelected, updateTypes, renderTypeSelect } = useIconSelect.Weapon(
     initialFilter?.types,
     selectConfig
   );

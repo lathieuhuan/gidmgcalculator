@@ -1,14 +1,14 @@
 import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
 
-import { ARTIFACT_TYPE_IMAGES, WEAPON_TYPE_IMAGES } from "@Src/constants";
+import { ARTIFACT_TYPE_ICONS, WEAPON_TYPE_ICONS } from "@Src/constants";
 import { toArray } from "@Src/utils";
 import { ArtifactType, WeaponType } from "@Src/types";
 import { Image, Radio } from "@Src/pure-components";
 
-type TypeImage<T> = {
+type IconOption<T> = {
   type: T;
-  src: string | JSX.Element;
+  icon: string | JSX.Element;
 };
 
 type InitialValues<T> = T | T[] | null;
@@ -21,7 +21,7 @@ type Config<T> = {
   onChange?: (selectedTypes: T[]) => void;
 };
 
-function useTypeSelect<T>(options: TypeImage<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
+function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
   const [selectedTypes, setSelectedTypes] = useState<T[]>(initialValues ? toArray(initialValues) : []);
   const { iconCls, selectedCls, multiple, required, onChange } = config || {};
   const withRadios = multiple === "withRadios";
@@ -64,7 +64,7 @@ function useTypeSelect<T>(options: TypeImage<T>[], initialValues?: InitialValues
               )}
               onClick={() => onClickIcon(option.type, selected)}
             >
-              {typeof option.src === "string" ? <Image src={option.src} /> : option.src}
+              {typeof option.icon === "string" ? <Image src={option.icon} /> : option.icon}
             </button>
 
             {withRadios && (
@@ -98,7 +98,7 @@ function useWeaponTypeSelect(
     ...config,
     selectedCls: "shadow-3px-3px shadow-green-200",
   };
-  return useTypeSelect(WEAPON_TYPE_IMAGES, initialValues, finalConfig);
+  return useIconSelect(WEAPON_TYPE_ICONS, initialValues, finalConfig);
 }
 
 function useArtifactTypeSelect(
@@ -110,10 +110,10 @@ function useArtifactTypeSelect(
     iconCls: "p-1",
     selectedCls: "bg-green-200",
   };
-  return useTypeSelect(ARTIFACT_TYPE_IMAGES, initialValues, finalConfig);
+  return useIconSelect(ARTIFACT_TYPE_ICONS, initialValues, finalConfig);
 }
 
-useTypeSelect.Weapon = useWeaponTypeSelect;
-useTypeSelect.Artifact = useArtifactTypeSelect;
+useIconSelect.Weapon = useWeaponTypeSelect;
+useIconSelect.Artifact = useArtifactTypeSelect;
 
-export { useTypeSelect };
+export { useIconSelect };
