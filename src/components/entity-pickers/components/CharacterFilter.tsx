@@ -37,7 +37,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
   } = useIconSelect(VISION_ICONS, initialFilter?.visionTypes, {
     ...selectConfig,
     iconCls: "text-2xl",
-    selectedCls: "shadow-3px-3px shadow-green-200",
+    selectedCls: "shadow-3px-3px shadow-blue-400",
   });
 
   const {

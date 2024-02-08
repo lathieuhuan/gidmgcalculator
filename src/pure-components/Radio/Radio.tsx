@@ -24,7 +24,7 @@ export const Radio = ({ size = "small", checked, onChange }: RadioProps) => {
       />
       <span
         className={clsx(
-          "styled-radio-visual flex rounded-circle border-2 border-light-600 peer-checked:border-blue-600 select-none",
+          "styled-radio-visual flex rounded-circle border-2 border-light-800 peer-checked:border-blue-600 select-none",
           sizeCls[size]
         )}
       />

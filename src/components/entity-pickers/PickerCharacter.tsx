@@ -138,6 +138,7 @@ const CharacterPicker = ({
     <PickerTemplate
       title="Characters"
       data={filteredCharacters}
+      hasSearch
       hasFilter
       shouldHidePickedItem={templateProps.hasMultipleMode}
       filterWrapCls="w-full md1:w-auto"

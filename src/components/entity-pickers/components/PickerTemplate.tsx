@@ -1,12 +1,12 @@
 import clsx, { ClassValue } from "clsx";
-import { useState, ReactNode, useRef } from "react";
-import { FaFilter } from "react-icons/fa";
+import { useState, ReactNode, useRef, useEffect } from "react";
+import { FaFilter, FaSearch } from "react-icons/fa";
 
 import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
-import { Modal, Button, CollapseAndMount, ItemCase, Checkbox } from "@Src/pure-components";
+import { Modal, Button, ItemCase, Checkbox, Input, CollapseSpace } from "@Src/pure-components";
 import { ItemThumbnail } from "./ItemThumbnail";
 
 /** this pick is valid or not */
@@ -21,6 +21,7 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   shouldHidePickedItem?: boolean;
   hasMultipleMode?: boolean;
   hasConfigStep?: boolean;
+  hasSearch?: boolean;
   hasFilter?: boolean;
   /** Default to true */
   filterToggleable?: boolean;
@@ -29,6 +30,7 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   /** Remember to handle case shouldHidePickedItem */
   renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
+  onChangeKeyword?: (keyword: string) => void;
   onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
 }
@@ -38,26 +40,38 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
   shouldHidePickedItem,
   hasMultipleMode,
   hasConfigStep,
+  hasSearch,
   hasFilter,
   filterToggleable = true,
   initialFilterOn = false,
   filterWrapCls,
   renderFilter,
   renderItemConfig,
+  onChangeKeyword,
   onPickItem,
   onClose,
 }: PickerTemplateProps<T>) => {
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  const [filterOn, setFilterOn] = useState(initialFilterOn);
+  const [activeTool, setActiveTool] = useState<"FILTER" | "SEARCH" | "">(initialFilterOn ? "SEARCH" : "");
+  // const [filterOn, setFilterOn] = useState(initialFilterOn);
+  // const [searchOn, setSearchOn] = useState(false);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [chosenCode, setChosenCode] = useState(0);
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
 
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const toggleFilter = () => {
-    if (filterToggleable) setFilterOn(!filterOn);
+    // if (filterToggleable) setFilterOn(!filterOn);
+    console.log(activeTool);
+
+    if (filterToggleable) setActiveTool(activeTool === "FILTER" ? "" : "FILTER");
   };
 
   const afterPickItem = (itemCode: number) => {
@@ -99,32 +113,64 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
       <Modal.CloseButton onClick={onClose} />
 
       <Modal.Header withDivider>
-        <div className="pr-8 flex items-center justify-between relative">
-          <div className="flex items-center">
-            {hasFilter ? (
-              <Button
-                className="mr-2 shadow-common"
-                variant={filterOn ? "neutral" : "default"}
-                shape="square"
-                size="small"
-                icon={<FaFilter />}
-                disabled={!filterToggleable}
-                onClick={toggleFilter}
-              />
-            ) : null}
-            <span>{title}</span>
-          </div>
+        <div className="flex items-center justify-between relative">
+          <div>{title}</div>
 
-          {hasMultipleMode ? (
-            <label className="h-6 flex items-center">
-              <Checkbox className="mr-2" onChange={setIsMultiSelect} />
-              <span className="text-base text-light-400">Multiple</span>
-            </label>
-          ) : null}
+          <div className="mr-6 pr-4 flex items-center">
+            <div className="flex items-center gap-3">
+              {hasSearch ? (
+                <Button
+                  className="shadow-common"
+                  // variant={searchOn ? "neutral" : "default"}
+                  variant={activeTool === "SEARCH" ? "neutral" : "default"}
+                  shape="square"
+                  size="small"
+                  icon={<FaSearch />}
+                  // onClick={() => setSearchOn(!searchOn)}
+                  onClick={() => setActiveTool(activeTool === "SEARCH" ? "" : "SEARCH")}
+                />
+              ) : null}
+              {hasFilter ? (
+                <Button
+                  className="shadow-common"
+                  // variant={filterOn ? "neutral" : "default"}
+                  variant={activeTool === "FILTER" ? "neutral" : "default"}
+                  shape="square"
+                  size="small"
+                  icon={<FaFilter />}
+                  disabled={!filterToggleable}
+                  onClick={toggleFilter}
+                />
+              ) : null}
+            </div>
+
+            {hasMultipleMode ? (
+              <label
+                className={clsx(
+                  "pl-2 h-6 flex items-center",
+                  (hasSearch || hasFilter) && "ml-2 border-l border-dark-300"
+                )}
+              >
+                <Checkbox className="mr-2" onChange={setIsMultiSelect} />
+                <span className="text-base text-light-400">Multiple</span>
+              </label>
+            ) : null}
+          </div>
         </div>
       </Modal.Header>
 
-      <div className="p-4 grow overflow-auto relative">
+      <div className="p-4 grow overflow-hidden relative">
+        <CollapseSpace active={activeTool === "SEARCH"}>
+          <div className="pb-2 flex justify-center">
+            <Input
+              className="w-24 ml-3 px-2 py-1 leading-5 font-semibold shadow-common"
+              placeholder="Search..."
+              onChange={onChangeKeyword}
+              // onKeyDown={onKeyDown}
+            />
+          </div>
+        </CollapseSpace>
+
         <div ref={bodyRef} className="h-full flex custom-scrollbar gap-4 scroll-smooth">
           <div
             ref={observedAreaRef}
@@ -161,18 +207,22 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
         </div>
 
         <div
-          className={clsx("absolute full-stretch z-10 bg-black/60 hidden", filterOn && "md1:block")}
+          className={clsx("absolute full-stretch z-10 bg-black/60 hidden", activeTool === "FILTER" && "md1:block")}
           onClick={toggleFilter}
         />
 
-        <CollapseAndMount
-          active={filterOn}
-          className={clsx("absolute top-0 left-0 z-10", filterWrapCls)}
-          activeHeight="100%"
-          moveDuration={300}
+        <div
+          className={clsx(
+            "absolute top-0 left-full z-10 h-full transition-transform duration-300",
+            // filterOn && "-translate-x-full",
+            activeTool === "FILTER" && "-translate-x-full",
+            !mounted && "hidden",
+            filterWrapCls
+          )}
         >
-          {renderFilter?.(setFilterOn)}
-        </CollapseAndMount>
+          {/* {renderFilter?.(setFilterOn)} */}
+          {renderFilter?.((on) => setActiveTool(on ? "FILTER" : ""))}
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 .styled-radio-visual {
   &:before {
     content: "";
-    @apply w-full h-full rounded-circle bg-light-600 opacity-0 transition-opacity duration-200;
+    @apply w-full h-full rounded-circle opacity-0 transition-opacity duration-200;
   }
 }
 
