@@ -8,7 +8,7 @@ import { useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
-import { Table, CollapseSpace } from "@Src/pure-components";
+import { Table, CollapseSpace, Checkbox } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 
@@ -142,10 +142,9 @@ const OverwriteOption = ({ visible, label, name, expanded, children, onClickSeeD
   return (
     <div>
       <div className="px-4 flex items-center justify-between">
-        <label className="mr-4 flex">
-          <input type="checkbox" name={name} className="scale-150" />
-          <span className="ml-2">{label}</span>
-        </label>
+        <Checkbox className="mr-4" name={name}>
+          {label}
+        </Checkbox>
 
         <div className="flex items-center">
           <FaChevronRight className={"text-xs" + (expanded ? " rotate-90" : "")} />

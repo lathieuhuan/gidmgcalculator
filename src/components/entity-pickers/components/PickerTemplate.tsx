@@ -6,7 +6,7 @@ import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
-import { Modal, Button, CollapseAndMount, ItemCase } from "@Src/pure-components";
+import { Modal, Button, CollapseAndMount, ItemCase, Checkbox } from "@Src/pure-components";
 import { ItemThumbnail } from "./ItemThumbnail";
 
 /** this pick is valid or not */
@@ -117,7 +117,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
 
           {hasMultipleMode ? (
             <label className="h-6 flex items-center">
-              <input type="checkbox" className="mr-2 scale-110" onChange={(e) => setIsMultiSelect(e.target.checked)} />
+              <Checkbox className="mr-2" onChange={setIsMultiSelect} />
               <span className="text-base text-light-400">Multiple</span>
             </label>
           ) : null}

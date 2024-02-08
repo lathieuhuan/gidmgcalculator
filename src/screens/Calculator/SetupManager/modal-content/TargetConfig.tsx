@@ -12,7 +12,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { Input } from "@Src/pure-components";
+import { Checkbox, Input } from "@Src/pure-components";
 import { ComboBox } from "./ComboBox";
 
 export function TargetConfig() {
@@ -109,9 +109,8 @@ export function TargetConfig() {
                 const checked = target.inputs?.[index] === 1;
 
                 inputElement = (
-                  <input
-                    type="checkbox"
-                    className="mr-1.5 scale-150 lg:scale-180"
+                  <Checkbox
+                    className="mr-1.5"
                     checked={checked}
                     onChange={() => onChangeTargetInputs(checked ? 0 : 1, index)}
                   />

@@ -16,4 +16,5 @@ export * from "./SharedSpace";
 export * from "./VisionIcon";
 export * from "./Switch";
 export * from "./Radio";
+export * from "./Checkbox";
 export * from "./ItemCase";

@@ -1,6 +1,6 @@
 import clsx, { ClassValue } from "clsx";
 import { CSSProperties, useState } from "react";
-import { Radio, RarityStars } from "@Src/pure-components";
+import { Checkbox, Radio, RarityStars } from "@Src/pure-components";
 
 type Config = {
   multiple?: boolean | "withRadios";
@@ -45,17 +45,9 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
           return (
             <div key={option} className="rounded-sm border border-dark-500 flex">
               <label
-                className={clsx(
-                  "grow p-2 flex justify-center cursor-pointer",
-                  withRadios && "border-r border-dark-500"
-                )}
+                className={clsx("grow p-2 flex items-center cursor-pointer", withRadios && "border-r border-dark-500")}
               >
-                <input
-                  type="checkbox"
-                  className="scale-110"
-                  checked={selected}
-                  onChange={() => onClickStarline(option, selected)}
-                />
+                <Checkbox size="small" checked={selected} onChange={() => onClickStarline(option, selected)} />
                 <RarityStars className="ml-2 grow" rarity={option} />
               </label>
 

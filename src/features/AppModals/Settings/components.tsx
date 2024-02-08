@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Checkbox } from "@Src/pure-components";
 
 interface SectionProps {
   title: string;
@@ -22,7 +23,7 @@ export const CheckSetting = ({ label, ...rest }: CheckSettingProps) => {
   return (
     <label className="flex items-center justify-between hover:text-green-300">
       <span>{label}</span>
-      <input type="checkbox" className="ml-4 mr-1 scale-180" {...rest} />
+      <Checkbox className="ml-4" {...rest} />
     </label>
   );
 };

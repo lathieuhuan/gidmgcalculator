@@ -65,7 +65,9 @@ module.exports = {
         300: "#62f98e", // bonus color (root)
       },
       blue: {
-        400: "#60a5fa",
+        400: "#5ca8ff",
+        // 500: "#3392ff"
+        600: "#0075ff" // active root
       },
       orange: {
         // 400: "#fba64b",

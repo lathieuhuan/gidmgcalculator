@@ -20,32 +20,6 @@
   a {
     @apply text-green-300;
   }
-
-  input[type="radio"] {
-    @apply appearance-none flex relative cursor-pointer;
-  }
-  /* outer */
-  input[type="radio"]::after {
-    content: "";
-    @apply absolute top-0 left-0 w-full h-full rounded-circle border-2 border-light-800 select-none;
-  }
-  input[type="radio"]:checked::after {
-    @apply border-green-200;
-  }
-  /* input[type="radio"]:disabled::after {
-    @apply bg-light-100/50 border-light-900;
-  } */
-  /* inner */
-  input[type="radio"]::before {
-    content: "";
-    @apply w-full h-full rounded-circle bg-green-200 select-none scale-0 transition-transform duration-150 ease-linear;
-  }
-  /* input[type="radio"]:disabled::before {
-    @apply bg-dark-300;
-  } */
-  input[type="radio"]:checked::before {
-    @apply scale-100;
-  }
 }
 
 @layer components {
