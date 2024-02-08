@@ -1,12 +1,13 @@
-import clsx, { ClassValue } from "clsx";
+import clsx from "clsx";
 import { useState, ReactNode, useRef, useEffect } from "react";
 import { FaFilter, FaSearch } from "react-icons/fa";
 
 import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
+import { useScreenWatcher } from "@Src/features";
 
 // Component
-import { Modal, Button, ItemCase, Checkbox, Input, CollapseSpace } from "@Src/pure-components";
+import { Modal, Button, ItemCase, Checkbox, Input, CollapseSpace, Drawer } from "@Src/pure-components";
 import { ItemThumbnail } from "./ItemThumbnail";
 
 /** this pick is valid or not */
@@ -26,11 +27,10 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   /** Default to true */
   filterToggleable?: boolean;
   initialFilterOn?: boolean;
-  filterWrapCls?: ClassValue;
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   /** Remember to handle case shouldHidePickedItem */
   renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
-  onChangeKeyword?: (keyword: string) => void;
+  onCancelFilter?: () => void;
   onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
 }
@@ -44,40 +44,53 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
   hasFilter,
   filterToggleable = true,
   initialFilterOn = false,
-  filterWrapCls,
   renderFilter,
   renderItemConfig,
-  onChangeKeyword,
+  onCancelFilter,
   onPickItem,
   onClose,
 }: PickerTemplateProps<T>) => {
   const bodyRef = useRef<HTMLDivElement>(null);
+  const screenWatcher = useScreenWatcher();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [activeTool, setActiveTool] = useState<"FILTER" | "SEARCH" | "">(initialFilterOn ? "SEARCH" : "");
-  // const [filterOn, setFilterOn] = useState(initialFilterOn);
-  // const [searchOn, setSearchOn] = useState(false);
+  const [filterOn, setFilterOn] = useState(initialFilterOn);
+  const [searchOn, setSearchOn] = useState(false);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [chosenCode, setChosenCode] = useState(0);
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
+  const [hiddenCodes, setHiddenCodes] = useState(new Set<number>());
 
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   useEffect(() => {
-    setMounted(true);
+    const focus = (e: KeyboardEvent) => {
+      if (hasSearch && e.key.length === 1 && document.activeElement !== inputRef.current) {
+        inputRef.current?.focus();
+      }
+    };
+    document.body.addEventListener("keydown", focus);
+
+    return () => {
+      document.body.removeEventListener("keydown", focus);
+    };
   }, []);
 
-  const toggleFilter = () => {
-    // if (filterToggleable) setFilterOn(!filterOn);
-    console.log(activeTool);
+  const toggleFilter = (on?: boolean) => {
+    if (filterToggleable) {
+      const newFilterOn = on ?? !filterOn;
+      setFilterOn(newFilterOn);
 
-    if (filterToggleable) setActiveTool(activeTool === "FILTER" ? "" : "FILTER");
+      if (!newFilterOn) onCancelFilter?.();
+    }
   };
 
   const afterPickItem = (itemCode: number) => {
     if (isMultiSelect) {
       if (shouldHidePickedItem) {
-        observedAreaRef.current?.querySelector(`.${observedItemCls}[data-id="${itemCode}"]`)?.classList.add("hidden");
+        observedAreaRef.current
+          ?.querySelector(`.${observedItemCls}[data-id="${itemCode}"]`)
+          ?.setAttribute("hidden", "true");
         return;
       }
       const newCounts = { ...itemCounts };
@@ -108,6 +121,34 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
     ? "max-w-1/3 basis-1/3 lg:max-w-1/5 lg:basis-1/5"
     : "max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-1/8";
 
+  const searchInput = (
+    <Input
+      ref={inputRef}
+      className="w-24 px-2 py-1 text-base leading-5 font-semibold shadow-common"
+      placeholder="Search..."
+      onChange={(keyword) => {
+        const lowerKw = keyword.toLowerCase();
+        const newHiddenCodes = new Set<number>();
+
+        if (lowerKw.length >= 2) {
+          observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`).forEach((elmt) => {
+            if (elmt.hasAttribute("hidden") || !elmt.getAttribute("data-name")?.toLowerCase().includes(lowerKw)) {
+              const code = elmt.getAttribute("data-id") ?? "";
+              newHiddenCodes.add(+code);
+            }
+          });
+        }
+        setHiddenCodes(newHiddenCodes);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && e.currentTarget.value.length >= 2) {
+          const firstVisibleItem = data.find((item) => !hiddenCodes.has(item.code));
+          if (firstVisibleItem) onClickPickerItem(firstVisibleItem);
+        }
+      }}
+    />
+  );
+
   return (
     <div className="h-full flex flex-col rounded-lg shadow-white-glow">
       <Modal.CloseButton onClick={onClose} />
@@ -118,7 +159,8 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
 
           <div className="mr-6 pr-4 flex items-center">
             <div className="flex items-center gap-3">
-              {hasSearch ? (
+              {hasSearch ? searchInput : null}
+              {/* {hasSearch ? (
                 <Button
                   className="shadow-common"
                   // variant={searchOn ? "neutral" : "default"}
@@ -126,20 +168,18 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
                   shape="square"
                   size="small"
                   icon={<FaSearch />}
-                  // onClick={() => setSearchOn(!searchOn)}
                   onClick={() => setActiveTool(activeTool === "SEARCH" ? "" : "SEARCH")}
                 />
-              ) : null}
+              ) : null} */}
               {hasFilter ? (
                 <Button
                   className="shadow-common"
-                  // variant={filterOn ? "neutral" : "default"}
-                  variant={activeTool === "FILTER" ? "neutral" : "default"}
+                  variant={filterOn ? "neutral" : "default"}
                   shape="square"
                   size="small"
                   icon={<FaFilter />}
                   disabled={!filterToggleable}
-                  onClick={toggleFilter}
+                  onClick={() => toggleFilter()}
                 />
               ) : null}
             </div>
@@ -160,16 +200,9 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
       </Modal.Header>
 
       <div className="p-4 grow overflow-hidden relative">
-        <CollapseSpace active={activeTool === "SEARCH"}>
-          <div className="pb-2 flex justify-center">
-            <Input
-              className="w-24 ml-3 px-2 py-1 leading-5 font-semibold shadow-common"
-              placeholder="Search..."
-              onChange={onChangeKeyword}
-              // onKeyDown={onKeyDown}
-            />
-          </div>
-        </CollapseSpace>
+        {/* <CollapseSpace active={searchOn}>
+          <div className="pb-2 flex justify-center">{searchInput}</div>
+        </CollapseSpace> */}
 
         <div ref={bodyRef} className="h-full flex custom-scrollbar gap-4 scroll-smooth">
           <div
@@ -182,12 +215,13 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
                   <div
                     key={`${item.code}-${item.rarity}`}
                     data-id={item.code}
+                    data-name={item.name}
                     className={clsx(
                       "grow-0 relative",
                       observedItemCls,
                       itemWidth,
-                      item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1.5 sm:p-2"
-                      // { hidden: dataType === "character" && !visibleNames[item.name] }
+                      item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1.5 sm:p-2",
+                      hiddenCodes.has(item.code) && "hidden"
                     )}
                   >
                     <ItemCase chosen={item.code === chosenCode} onClick={() => onClickPickerItem(item)}>
@@ -206,23 +240,13 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
           {hasConfigStep ? <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div> : null}
         </div>
 
-        <div
-          className={clsx("absolute full-stretch z-10 bg-black/60 hidden", activeTool === "FILTER" && "md1:block")}
-          onClick={toggleFilter}
-        />
-
-        <div
-          className={clsx(
-            "absolute top-0 left-full z-10 h-full transition-transform duration-300",
-            // filterOn && "-translate-x-full",
-            activeTool === "FILTER" && "-translate-x-full",
-            !mounted && "hidden",
-            filterWrapCls
-          )}
+        <Drawer
+          active={filterOn}
+          activeWidth={screenWatcher.isFromSize("md1") ? undefined : "100%"}
+          onClose={() => toggleFilter(false)}
         >
-          {/* {renderFilter?.(setFilterOn)} */}
-          {renderFilter?.((on) => setActiveTool(on ? "FILTER" : ""))}
-        </div>
+          {renderFilter?.(setFilterOn)}
+        </Drawer>
       </div>
     </div>
   );

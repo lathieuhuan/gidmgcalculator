@@ -1,6 +1,6 @@
 export * from "./button";
 export * from "./span";
-export * from "./collapse";
+export * from "./hidden-spaces";
 export * from "./loading";
 export * from "./modal";
 export * from "./table";
