@@ -12,7 +12,7 @@ import type {
 import { BACKEND_URL, GENSHIN_DEV_URL } from "@Src/constants";
 import { findByCode, pickProps, toArray } from "@Src/utils";
 import { CharacterSubscriber, DataControl, Metadata, Response, Update } from "./types";
- 
+
 export class AppDataService {
   private isFetchedMetadata = false;
 
@@ -229,14 +229,19 @@ export class AppDataService {
 
   // ========== WEAPONS ==========
 
-  getAllWeapons(type?: WeaponType) {
-    if (type) {
+  getAllWeapons(type?: WeaponType): AppWeapon[];
+  getAllWeapons<T>(transform: (weapon: AppWeapon) => T): T[];
+  getAllWeapons<T>(arg?: WeaponType | ((weapon: AppWeapon) => T)): AppWeapon[] | T[] {
+    if (typeof arg === "string") {
       return this.weapons.reduce<AppWeapon[]>((acc, weapon) => {
-        if (weapon.data.type === type) {
+        if (weapon.data.type === arg) {
           acc.push(weapon.data);
         }
         return acc;
       }, []);
+    }
+    if (typeof arg === "function") {
+      return this.weapons.map((weapon) => arg(weapon.data));
     }
 
     return this.weapons.map((weapon) => weapon.data);

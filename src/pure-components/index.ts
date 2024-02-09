@@ -1,6 +1,6 @@
 export * from "./button";
 export * from "./span";
-export * from "./hidden-spaces";
+export * from "./collapse";
 export * from "./loading";
 export * from "./modal";
 export * from "./table";
@@ -12,6 +12,7 @@ export * from "./Image";
 export * from "./ComplexSelect";
 export * from "./Notification";
 export * from "./Popover";
+export * from "./Drawer";
 export * from "./SharedSpace";
 export * from "./VisionIcon";
 export * from "./Switch";

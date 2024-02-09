@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useRef, useState } from "react";
 
 import type { Weapon } from "@Src/types";
 import { $AppData } from "@Src/services";
@@ -13,7 +13,7 @@ import { WeaponCard } from "../WeaponCard";
 import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./components/WeaponFilter";
 import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
 
-const INITIAL_FITLER_STATE: WeaponFilterState = {
+const INITIAL_FITLER: WeaponFilterState = {
   types: ["bow"],
   rarities: [4, 5],
 };
@@ -24,40 +24,43 @@ interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" 
   onClose: () => void;
 }
 function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
-  const [filter, setFilter] = useState<WeaponFilterState>();
+  const allWeapons = useRef(
+    $AppData.getAllWeapons((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]))
+  );
+
   const [weaponConfig, setWeaponConfig] = useState<Weapon>();
+  const [hiddenCodes, setHiddenCodes] = useState(new Set(allWeapons.current.map((weapon) => weapon.code)));
 
-  const allWeapons = useMemo(() => {
-    return $AppData
-      .getAllWeapons()
-      .map((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]));
-  }, []);
+  const onConfirmFilter = (filter: WeaponFilterState) => {
+    const newHiddenCodes = new Set<number>();
 
-  const filteredWeapons = useMemo(() => {
-    if (!filter?.types?.length && !filter?.rarities?.length) {
-      return [];
-    }
-    return allWeapons.filter((weapon) => filter.types.includes(weapon.type) && filter.rarities.includes(weapon.rarity));
-  }, [filter]);
+    allWeapons.current.forEach((weapon) => {
+      if (!filter.types.includes(weapon.type) || !filter.rarities.includes(weapon.rarity)) {
+        newHiddenCodes.add(weapon.code);
+      }
+    });
+    setHiddenCodes(newHiddenCodes);
+  };
 
   return (
     <PickerTemplate
       title="Weapons"
-      data={filteredWeapons}
+      data={allWeapons.current}
+      hiddenCodes={hiddenCodes}
       hasFilter
       initialFilterOn={!forcedType}
-      filterToggleable={filter !== undefined}
+      // filterToggleable={filter !== undefined}
       filterWrapWidth={300}
       renderFilter={(setFilterOn) => {
         return (
           <WeaponFilter
             className="h-full"
             forcedType={forcedType}
-            initialFilter={filter ?? INITIAL_FITLER_STATE}
-            disabledCancel={!filter}
+            initialFilter={INITIAL_FITLER}
+            // disabledCancel={!filter}
             onCancel={() => setFilterOn(false)}
             onDone={(newFilter) => {
-              setFilter(newFilter);
+              onConfirmFilter(newFilter);
               setFilterOn(false);
             }}
           />

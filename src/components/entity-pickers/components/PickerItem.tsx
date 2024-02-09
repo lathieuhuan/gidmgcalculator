@@ -23,7 +23,7 @@ interface PickerItemProps {
   pickedAmount?: number;
 }
 function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemProps) {
-  const itemType = item.vision ? "character" : item.weaponType ? "weapon" : "artifact";
+  const itemType = item.vision ? "character" : "weapon"; // not worth checking artifact or weapon
 
   return (
     <div className="relative">

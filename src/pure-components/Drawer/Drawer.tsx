@@ -6,24 +6,26 @@ type DrawerState = {
   active: boolean;
 };
 
-export interface HorizontalScrollProps {
+export interface DrawerProps {
   className?: ClassValue;
   style?: CSSProperties;
   active?: boolean;
   activeWidth?: CSSProperties["width"];
   closeOnMaskClick?: boolean;
+  destroyOnClose?: boolean;
   children: React.ReactNode;
   onClose?: () => void;
 }
-export const HorizontalScroll = ({
+export const Drawer = ({
   className,
   style,
   active,
   activeWidth,
   closeOnMaskClick = true,
+  destroyOnClose,
   children,
   onClose,
-}: HorizontalScrollProps) => {
+}: DrawerProps) => {
   const [state, setState] = useState<DrawerState>({
     mounted: false,
     active: false,
@@ -83,7 +85,7 @@ export const HorizontalScroll = ({
           ...style,
         }}
       >
-        <div className="shrink-0 grow">{state.mounted && children}</div>
+        <div className="shrink-0 grow">{!destroyOnClose || state.mounted ? children : null}</div>
       </div>
     </div>
   );
