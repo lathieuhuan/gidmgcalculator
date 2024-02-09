@@ -75,7 +75,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
         return (
           <ArtifactConfig
             config={artifactConfig}
-            typeSelect={renderTypeSelect()}
+            typeSelect={forcedType ? null : renderTypeSelect()}
             onChangeRarity={onChangeRarity}
             onUpdateConfig={(properties) => {
               updateConfig((prevConfig) => ({ ...prevConfig, ...properties }));
@@ -97,6 +97,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
           setArtifactConfig({
             ID: 0,
             ...artifact,
+            ...(forcedType ? { type: forcedType } : undefined),
           });
           return true;
         }

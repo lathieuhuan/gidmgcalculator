@@ -103,7 +103,8 @@ export default function SectionArtifacts() {
 
       <PickerArtifact
         active={artifactPicker.active}
-        artifactType={ARTIFACT_TYPES[artifactPicker.slot]}
+        hasConfigStep
+        forcedType={ARTIFACT_TYPES[artifactPicker.slot]}
         onPickArtifact={(item) => {
           dispatch(
             changeArtifact({

@@ -61,13 +61,13 @@ module.exports = {
         rose: "#f43f5e",
       },
       green: {
-        200: "#89fba9", // active color
+        // 200: "#89fba9",
         300: "#62f98e", // bonus color (root)
       },
       blue: {
         400: "#5ca8ff",
         // 500: "#3392ff"
-        600: "#0075ff" // active root
+        600: "#0075ff", // active color (root)
       },
       orange: {
         // 400: "#fba64b",

@@ -75,7 +75,7 @@ export default function SectionWeapon() {
 
       <PickerWeapon
         active={pickerOn}
-        weaponType={weapon.type}
+        forcedType={weapon.type}
         onPickWeapon={(item) => {
           dispatch(
             changeWeapon({
@@ -83,6 +83,7 @@ export default function SectionWeapon() {
               ID: Date.now(),
             })
           );
+          return true;
         }}
         onClose={() => setPickerOn(false)}
       />

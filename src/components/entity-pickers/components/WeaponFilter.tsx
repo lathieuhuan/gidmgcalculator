@@ -25,7 +25,7 @@ export const WeaponFilter = ({
   onCancel,
   onDone,
 }: WeaponFilterProps) => {
-  const selectConfig = {
+  const config = {
     multiple: "withRadios",
     required: true,
   } as const;
@@ -33,12 +33,12 @@ export const WeaponFilter = ({
 
   const { selectedTypes, allTypesSelected, updateTypes, renderTypeSelect } = useIconSelect.Weapon(
     initialFilter?.types,
-    selectConfig
+    config
   );
   const { selectedRarities, allRaritiesSelected, updateRarities, renderRaritySelect } = useRaritySelect(
     rarityOptions,
     initialFilter?.rarities,
-    selectConfig
+    config
   );
 
   const onClickSelectAllTypes = () => {
@@ -51,7 +51,7 @@ export const WeaponFilter = ({
 
   const onConfirm = () => {
     onDone({
-      types: selectedTypes,
+      types: forcedType ? [forcedType] : selectedTypes,
       rarities: selectedRarities,
     });
   };
@@ -59,17 +59,21 @@ export const WeaponFilter = ({
   return (
     <div className={clsx("p-4 bg-dark-900 flex flex-col", className)}>
       <div className="grow space-y-4 hide-scrollbar">
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p>Filter by Type</p>
-            <Button size="small" disabled={allTypesSelected} onClick={onClickSelectAllTypes}>
-              Select all
-            </Button>
-          </div>
-          {renderTypeSelect("px-1")}
-        </div>
+        {forcedType ? null : (
+          <>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <p>Filter by Type</p>
+                <Button size="small" disabled={allTypesSelected} onClick={onClickSelectAllTypes}>
+                  Select all
+                </Button>
+              </div>
+              {renderTypeSelect("px-1")}
+            </div>
 
-        <div className="w-full h-px bg-dark-300" />
+            <div className="w-full h-px bg-dark-300" />
+          </>
+        )}
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">

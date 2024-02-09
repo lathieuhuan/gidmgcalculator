@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
-import type { Weapon } from "@Src/types";
+import type { AppWeapon, Weapon } from "@Src/types";
 import { $AppData } from "@Src/services";
 
 // Util
@@ -18,24 +18,43 @@ const INITIAL_FITLER: WeaponFilterState = {
   rarities: [4, 5],
 };
 
+const getAllWeapons = () => {
+  console.log("run");
+
+  return $AppData.getAllWeapons((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]));
+};
+
 interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
   forcedType?: WeaponFilterProps["forcedType"];
   onPickWeapon: (info: ReturnType<typeof createWeapon>) => OnPickItemReturn;
   onClose: () => void;
 }
 function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
-  const allWeapons = useRef(
-    $AppData.getAllWeapons((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]))
-  );
+  const allWeapons = useMemo(() => {
+    const weapons = $AppData.getAllWeapons();
+    const transformWeapon = (weapon: AppWeapon) =>
+      pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]);
+
+    if (forcedType) {
+      return weapons.reduce<Array<ReturnType<typeof transformWeapon>>>((accumulator, weapon) => {
+        if (weapon.type === forcedType) {
+          accumulator.push(transformWeapon(weapon));
+        }
+        return accumulator;
+      }, []);
+    }
+
+    return weapons.map(transformWeapon);
+  }, []);
 
   const [ready, setReady] = useState(!!forcedType);
   const [weaponConfig, setWeaponConfig] = useState<Weapon>();
-  const [hiddenCodes, setHiddenCodes] = useState(new Set(allWeapons.current.map((weapon) => weapon.code)));
+  const [hiddenCodes, setHiddenCodes] = useState(new Set(forcedType ? [] : allWeapons.map((weapon) => weapon.code)));
 
   const onConfirmFilter = (filter: WeaponFilterState) => {
     const newHiddenCodes = new Set<number>();
 
-    allWeapons.current.forEach((weapon) => {
+    allWeapons.forEach((weapon) => {
       if (!filter.types.includes(weapon.type) || !filter.rarities.includes(weapon.rarity)) {
         newHiddenCodes.add(weapon.code);
       }
@@ -48,7 +67,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
   return (
     <PickerTemplate
       title="Weapons"
-      data={allWeapons.current}
+      data={allWeapons}
       hiddenCodes={hiddenCodes}
       emptyText="No weapons found"
       hasFilter
