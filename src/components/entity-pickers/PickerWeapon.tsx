@@ -28,6 +28,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
     $AppData.getAllWeapons((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]))
   );
 
+  const [ready, setReady] = useState(!!forcedType);
   const [weaponConfig, setWeaponConfig] = useState<Weapon>();
   const [hiddenCodes, setHiddenCodes] = useState(new Set(allWeapons.current.map((weapon) => weapon.code)));
 
@@ -40,6 +41,8 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
       }
     });
     setHiddenCodes(newHiddenCodes);
+
+    if (!ready) setReady(true);
   };
 
   return (
@@ -49,7 +52,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
       hiddenCodes={hiddenCodes}
       hasFilter
       initialFilterOn={!forcedType}
-      // filterToggleable={filter !== undefined}
+      filterToggleable={ready}
       filterWrapWidth={300}
       renderFilter={(setFilterOn) => {
         return (
@@ -57,7 +60,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
             className="h-full"
             forcedType={forcedType}
             initialFilter={INITIAL_FITLER}
-            // disabledCancel={!filter}
+            disabledCancel={!ready}
             onCancel={() => setFilterOn(false)}
             onDone={(newFilter) => {
               onConfirmFilter(newFilter);
@@ -74,14 +77,10 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
                 mutable
                 weapon={weaponConfig}
                 refine={(refi) => {
-                  if (weaponConfig) {
-                    setWeaponConfig({ ...weaponConfig, refi });
-                  }
+                  if (weaponConfig) setWeaponConfig({ ...weaponConfig, refi });
                 }}
                 upgrade={(level) => {
-                  if (weaponConfig) {
-                    setWeaponConfig({ ...weaponConfig, level });
-                  }
+                  if (weaponConfig) setWeaponConfig({ ...weaponConfig, level });
                 }}
               />
             </div>

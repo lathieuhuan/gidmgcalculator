@@ -12,7 +12,7 @@ export type WeaponFilterState = {
 export interface WeaponFilterProps {
   className?: ClassValue;
   initialFilter?: WeaponFilterState;
-  forcedType?: string;
+  forcedType?: WeaponType;
   disabledCancel?: boolean;
   onCancel: () => void;
   onDone: (filter: WeaponFilterState) => void;

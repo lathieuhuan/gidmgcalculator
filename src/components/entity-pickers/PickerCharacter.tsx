@@ -35,7 +35,6 @@ const CharacterPicker = ({
   ...templateProps
 }: CharacterPickerProps) => {
   const userChars = useStoreSnapshot((state) => state.database.userChars);
-  const [filter, setFilter] = useState<CharacterFilterState>(initialFilter);
 
   const allCharacters = useMemo(() => {
     const pickedKey: PickedCharacterKey[] = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
@@ -70,23 +69,31 @@ const CharacterPicker = ({
         break;
     }
 
-    return processedCharacters;
+    return filterFn ? processedCharacters.filter(filterFn) : processedCharacters;
   }, []);
 
-  const filteredCharacters = useMemo(() => {
-    return allCharacters.filter(
-      (character) =>
-        (!filterFn || filterFn(character)) &&
-        filter.weaponTypes.includes(character.weaponType) &&
-        filter.visionTypes.includes(character.vision) &&
-        filter.rarities.includes(character.rarity)
-    );
-  }, [allCharacters, filter]);
+  const [hiddenCodes, setHiddenCodes] = useState(new Set<number>());
+
+  const onConfirmFilter = (filter: CharacterFilterState) => {
+    const newHiddenCodes = new Set<number>();
+
+    allCharacters.forEach((character) => {
+      if (
+        !filter.weaponTypes.includes(character.weaponType) ||
+        !filter.visionTypes.includes(character.vision) ||
+        !filter.rarities.includes(character.rarity)
+      ) {
+        newHiddenCodes.add(character.code);
+      }
+    });
+    setHiddenCodes(newHiddenCodes);
+  };
 
   return (
     <PickerTemplate
       title="Characters"
-      data={filteredCharacters}
+      data={allCharacters}
+      hiddenCodes={hiddenCodes}
       hasSearch
       hasFilter
       shouldHidePickedItem={templateProps.hasMultipleMode}
@@ -94,10 +101,10 @@ const CharacterPicker = ({
         return (
           <CharacterFilter
             className="h-full"
-            initialFilter={filter}
+            initialFilter={initialFilter}
             onCancel={() => setFilterOn(false)}
             onDone={(filter) => {
-              setFilter(filter);
+              onConfirmFilter(filter);
               setFilterOn(false);
             }}
           />
