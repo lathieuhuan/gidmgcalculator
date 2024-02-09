@@ -68,6 +68,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   const [pickedCodes, setPickedCodes] = useState(new Set<number>());
   const [keyword, setKeyword] = useState("");
   const [empty, setEmpty] = useState(false);
+  const [overflow, setOverflow] = useState(true);
 
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
@@ -89,6 +90,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   }, [searchOn]);
 
   useLayoutEffect(() => {
+    // check if no item visible
     const itemElmts = observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`) || [];
     let visibleElmtCount = 0;
 
@@ -96,6 +98,18 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
       if (window.getComputedStyle(elmt).display !== "none") visibleElmtCount++;
     }
     setEmpty(!visibleElmtCount);
+
+    // check if container overflow to add padding right
+    const itemContainer = bodyRef.current?.querySelector(".item-container");
+    const { parentElement } = itemContainer || {};
+    const newOverflow = Boolean(
+      itemContainer?.clientHeight &&
+        parentElement?.clientHeight &&
+        itemContainer.clientHeight > parentElement.clientHeight
+    );
+    if (newOverflow !== overflow) {
+      setOverflow(newOverflow);
+    }
   }, [hiddenCodes, pickedCodes, keyword]);
 
   const toggleFilter = (on?: boolean) => {
@@ -123,9 +137,11 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
     if (!onPickItem) return;
 
     if (hasConfigStep) {
-      await onPickItem(item, true);
-      setChosenCode(item.code);
-      if (bodyRef.current) bodyRef.current.scrollLeft = 999;
+      if (item.code !== chosenCode) {
+        await onPickItem(item, true);
+        setChosenCode(item.code);
+        if (bodyRef.current) bodyRef.current.scrollLeft = 999;
+      }
       return;
     }
 
@@ -133,10 +149,6 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
       afterPickItem(item.code);
     }
   };
-
-  const itemWidthCls = hasConfigStep
-    ? "max-w-1/3 basis-1/3 lg:max-w-1/5 lg:basis-1/5"
-    : "max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-1/8";
 
   let searchTool: JSX.Element | null = null;
   const searchInput = (
@@ -172,7 +184,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   );
 
   if (hasSearch) {
-    if (screenWatcher.isFromSize("md1")) {
+    if (screenWatcher.isFromSize("sm")) {
       searchTool = searchInput;
     } else {
       searchTool = (
@@ -199,12 +211,19 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
     }
   }
 
+  const itemWidthCls = [
+    "max-w-1/3 basis-1/3 sm:w-1/4 sm:basis-1/4",
+    hasConfigStep
+      ? "xm:max-w-1/3 xm:basis-1/3 lg:max-w-1/5 lg:basis-1/5"
+      : "md:max-w-1/5 md:basis-1/5 xm:max-w-1/6 xm:basis-1/6 lg:max-w-1/8 lg:basis-1/8",
+  ];
+
   const renderData = () => {
     const shouldCheckKeyword = keyword.length >= 1;
     const lowerKeyword = keyword.toLowerCase();
 
     return (
-      <div className="flex flex-wrap">
+      <div className="item-container flex flex-wrap">
         {data.map((item, i) => {
           const hidden =
             pickedCodes.has(item.code) ||
@@ -216,13 +235,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
               key={item.code}
               data-id={item.code}
               data-name={item.name}
-              className={clsx(
-                "grow-0 relative",
-                observedItemCls,
-                itemWidthCls,
-                item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1.5 sm:p-2",
-                hidden && "hidden"
-              )}
+              className={clsx("grow-0 relative p-2", observedItemCls, itemWidthCls, hidden && "hidden")}
             >
               <ItemCase chosen={item.code === chosenCode} onClick={() => onClickPickerItem(item)}>
                 <PickerItem visible={visibleItems[item.code]} item={item} pickedAmount={itemCounts[item.code] || 0} />
@@ -274,12 +287,13 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
         </div>
       </Modal.Header>
 
-      <div className="p-4 grow overflow-hidden relative">
+      <div className="p-3 pb-4 sm:p-4 grow overflow-hidden relative">
         <div ref={bodyRef} className="h-full flex custom-scrollbar gap-4 scroll-smooth">
           <div
             ref={observedAreaRef}
             className={clsx(
-              "md2:pr-2 h-full w-full shrink-0 md1:w-auto md1:shrink md1:min-w-[352px] grow custom-scrollbar",
+              "h-full w-full shrink-0 md:w-auto md:shrink md:min-w-[400px] xm:min-w-0 grow custom-scrollbar",
+              overflow && "xm:pr-2",
               searchOn && "pt-6"
             )}
           >
@@ -293,7 +307,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
 
         <Drawer
           active={filterOn}
-          activeWidth={screenWatcher.isFromSize("md1") ? filterWrapWidth : "100%"}
+          activeWidth={screenWatcher.isFromSize("sm") ? filterWrapWidth : "100%"}
           closeOnMaskClick={filterToggleable}
           onClose={() => toggleFilter(false)}
         >
