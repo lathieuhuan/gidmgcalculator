@@ -1,14 +1,28 @@
 import clsx from "clsx";
 import { memo } from "react";
-import { PickerItem } from "../types";
 import { Image, BetaMark, VisionIcon } from "@Src/pure-components";
+import { Rarity, Vision, WeaponType } from "@Src/types";
 
-interface PickerItemThumbnailProps {
+export type PickerItemModel = {
+  code: number;
+  beta?: boolean;
+  name: string;
+  icon: string;
+  rarity?: Rarity;
+  vision?: Vision;
+  /** Weapon type or Artifact type */
+  type?: string;
+  weaponType?: WeaponType;
+  cons?: number;
+  artifactIDs?: (number | null)[];
+};
+
+interface PickerItemProps {
   visible: boolean;
-  item: PickerItem;
+  item: PickerItemModel;
   pickedAmount?: number;
 }
-function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemThumbnailProps) {
+function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemProps) {
   const itemType = item.vision ? "character" : item.weaponType ? "weapon" : "artifact";
 
   return (
@@ -49,6 +63,6 @@ function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemThumbnai
   );
 }
 
-export const ItemThumbnail = memo(PickerItemThumbnail, (prev, next) => {
+export const PickerItem = memo(PickerItemThumbnail, (prev, next) => {
   return prev.visible === next.visible && prev.pickedAmount === next.pickedAmount;
 });

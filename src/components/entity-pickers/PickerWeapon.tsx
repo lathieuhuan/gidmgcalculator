@@ -47,7 +47,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
       hasFilter
       initialFilterOn={!forcedType}
       filterToggleable={filter !== undefined}
-      filterWrapCls="w-full md1:w-auto"
+      filterWrapWidth={300}
       renderFilter={(setFilterOn) => {
         return (
           <WeaponFilter

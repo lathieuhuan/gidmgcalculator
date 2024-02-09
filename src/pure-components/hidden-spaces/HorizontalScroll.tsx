@@ -1,13 +1,12 @@
 import clsx, { ClassValue } from "clsx";
 import { CSSProperties, useEffect, useState } from "react";
-import { useElementSize } from "@Src/pure-hooks";
 
 type DrawerState = {
   mounted: boolean;
   active: boolean;
 };
 
-export interface DrawerProps {
+export interface HorizontalScrollProps {
   className?: ClassValue;
   style?: CSSProperties;
   active?: boolean;
@@ -16,7 +15,7 @@ export interface DrawerProps {
   children: React.ReactNode;
   onClose?: () => void;
 }
-export const Drawer = ({
+export const HorizontalScroll = ({
   className,
   style,
   active,
@@ -24,9 +23,7 @@ export const Drawer = ({
   closeOnMaskClick = true,
   children,
   onClose,
-}: DrawerProps) => {
-  const [ref, { width }] = useElementSize<HTMLDivElement>();
-
+}: HorizontalScrollProps) => {
   const [state, setState] = useState<DrawerState>({
     mounted: false,
     active: false,
@@ -76,15 +73,17 @@ export const Drawer = ({
       />
 
       <div
-        className={clsx("absolute top-0 right-0 z-10 h-full transition-size", durationCls, className)}
+        className={clsx(
+          "absolute top-0 right-0 z-10 h-full overflow-hidden transition-size flex",
+          durationCls,
+          className
+        )}
         style={{
-          width: state.active ? activeWidth || width : 0,
+          width: state.active ? activeWidth : 0,
           ...style,
         }}
       >
-        <div ref={ref} className="w-fit min-w-fit h-full" style={{ width: activeWidth }}>
-          {children}
-        </div>
+        <div className="shrink-0 grow">{state.mounted && children}</div>
       </div>
     </div>
   );

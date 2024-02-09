@@ -2,28 +2,40 @@ import clsx from "clsx";
 import { useState, ReactNode, useRef, useEffect } from "react";
 import { FaFilter, FaSearch } from "react-icons/fa";
 
-import type { PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 import { useScreenWatcher } from "@Src/features";
 
 // Component
-import { Modal, Button, ItemCase, Checkbox, Input, CollapseSpace, Drawer } from "@Src/pure-components";
-import { ItemThumbnail } from "./ItemThumbnail";
+import {
+  Modal,
+  Button,
+  ItemCase,
+  Checkbox,
+  Input,
+  CollapseSpace,
+  HorizontalScroll,
+  HorizontalScrollProps,
+} from "@Src/pure-components";
+import { PickerItem, PickerItemModel } from "./PickerItem";
 
 /** this pick is valid or not */
 type Return = boolean;
 
 export type OnPickItemReturn = Return | Promise<Return>;
 
-export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
+export interface PickerTemplateProps<T extends PickerItemModel = PickerItemModel> {
   title: string;
   data: T[];
+  /** Default to 'No data' */
+  emptyText?: string;
   /** Only in multiple mode, implemented in afterPickItem */
   shouldHidePickedItem?: boolean;
   hasMultipleMode?: boolean;
   hasConfigStep?: boolean;
   hasSearch?: boolean;
   hasFilter?: boolean;
+  /** Default to 360px */
+  filterWrapWidth?: HorizontalScrollProps["activeWidth"];
   /** Default to true */
   filterToggleable?: boolean;
   initialFilterOn?: boolean;
@@ -34,14 +46,16 @@ export interface PickerTemplateProps<T extends PickerItem = PickerItem> {
   onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
   onClose: () => void;
 }
-export const PickerTemplate = <T extends PickerItem = PickerItem>({
+export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   title,
   data,
+  emptyText,
   shouldHidePickedItem,
   hasMultipleMode,
   hasConfigStep,
   hasSearch,
   hasFilter,
+  filterWrapWidth = 360,
   filterToggleable = true,
   initialFilterOn = false,
   renderFilter,
@@ -126,6 +140,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
       ref={inputRef}
       className="w-24 px-2 py-1 text-base leading-5 font-semibold shadow-common"
       placeholder="Search..."
+      disabled={filterOn}
       onChange={(keyword) => {
         const lowerKw = keyword.toLowerCase();
         const newHiddenCodes = new Set<number>();
@@ -225,7 +240,7 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
                     )}
                   >
                     <ItemCase chosen={item.code === chosenCode} onClick={() => onClickPickerItem(item)}>
-                      <ItemThumbnail
+                      <PickerItem
                         visible={visibleItems[item.code]}
                         item={item}
                         pickedAmount={itemCounts[item.code] || 0}
@@ -235,18 +250,25 @@ export const PickerTemplate = <T extends PickerItem = PickerItem>({
                 );
               })}
             </div>
+
+            {data.length ? null : (
+              <div>
+                <p>{emptyText}</p>
+              </div>
+            )}
           </div>
 
           {hasConfigStep ? <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div> : null}
         </div>
 
-        <Drawer
+        <HorizontalScroll
           active={filterOn}
-          activeWidth={screenWatcher.isFromSize("md1") ? undefined : "100%"}
+          activeWidth={screenWatcher.isFromSize("md1") ? filterWrapWidth : "100%"}
+          closeOnMaskClick={filterToggleable}
           onClose={() => toggleFilter(false)}
         >
           {renderFilter?.(setFilterOn)}
-        </Drawer>
+        </HorizontalScroll>
       </div>
     </div>
   );

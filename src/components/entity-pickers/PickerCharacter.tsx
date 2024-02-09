@@ -37,10 +37,6 @@ const CharacterPicker = ({
   const userChars = useStoreSnapshot((state) => state.database.userChars);
   const [filter, setFilter] = useState<CharacterFilterState>(initialFilter);
 
-  // const inputRef = useRef<HTMLInputElement>(null);
-  // const [pickedNames, setPickedNames] = useState<BooleanRecord>({});
-  // const [keyword, setKeyword] = useState("");
-
   const allCharacters = useMemo(() => {
     const pickedKey: PickedCharacterKey[] = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
     const processedCharacters: PickedCharacter[] = [];
