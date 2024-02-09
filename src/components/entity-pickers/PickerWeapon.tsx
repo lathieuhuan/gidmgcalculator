@@ -50,6 +50,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
       title="Weapons"
       data={allWeapons.current}
       hiddenCodes={hiddenCodes}
+      emptyText="No weapons found"
       hasFilter
       initialFilterOn={!forcedType}
       filterToggleable={ready}

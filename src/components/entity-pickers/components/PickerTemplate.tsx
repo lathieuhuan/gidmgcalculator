@@ -41,7 +41,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   title,
   data,
   hiddenCodes,
-  emptyText,
+  emptyText = "No data",
   shouldHidePickedItem,
   hasMultipleMode,
   hasConfigStep,
@@ -55,17 +55,19 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   onPickItem,
   onClose,
 }: PickerTemplateProps<T>) => {
+  const screenWatcher = useScreenWatcher();
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timeoutId = useRef<NodeJS.Timeout>();
-  const screenWatcher = useScreenWatcher();
 
   const [filterOn, setFilterOn] = useState(initialFilterOn);
   const [searchOn, setSearchOn] = useState(false);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
   const [chosenCode, setChosenCode] = useState(0);
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
+  const [pickedCodes, setPickedCodes] = useState(new Set<number>());
   const [keyword, setKeyword] = useState("");
+  const [empty, setEmpty] = useState(false);
 
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
@@ -86,6 +88,16 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
     if (searchOn) inputRef.current?.focus();
   }, [searchOn]);
 
+  useLayoutEffect(() => {
+    const itemElmts = observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`) || [];
+    let visibleElmtCount = 0;
+
+    for (const elmt of itemElmts) {
+      if (window.getComputedStyle(elmt).display !== "none") visibleElmtCount++;
+    }
+    setEmpty(!visibleElmtCount);
+  }, [hiddenCodes, pickedCodes, keyword]);
+
   const toggleFilter = (on?: boolean) => {
     if (filterToggleable) setFilterOn(on ?? !filterOn);
   };
@@ -93,9 +105,9 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
   const afterPickItem = (itemCode: number) => {
     if (isMultiSelect) {
       if (shouldHidePickedItem) {
-        observedAreaRef.current
-          ?.querySelector(`.${observedItemCls}[data-id="${itemCode}"]`)
-          ?.setAttribute("hidden", "true");
+        const newPickedCodes = new Set(pickedCodes).add(itemCode);
+
+        setPickedCodes(newPickedCodes);
         return;
       }
       const newCounts = { ...itemCounts };
@@ -195,6 +207,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
       <div className="flex flex-wrap">
         {data.map((item, i) => {
           const hidden =
+            pickedCodes.has(item.code) ||
             (shouldCheckKeyword && !item.name.toLowerCase().includes(lowerKeyword)) ||
             (hiddenCodes?.has(item.code) ?? false);
 
@@ -272,11 +285,7 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
           >
             {renderData()}
 
-            {data.length ? null : (
-              <div>
-                <p>{emptyText}</p>
-              </div>
-            )}
+            {empty ? <p className="py-4 text-light-800 text-lg text-center">{emptyText}</p> : null}
           </div>
 
           {hasConfigStep ? <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div> : null}

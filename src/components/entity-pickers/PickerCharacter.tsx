@@ -94,6 +94,7 @@ const CharacterPicker = ({
       title="Characters"
       data={allCharacters}
       hiddenCodes={hiddenCodes}
+      emptyText="No characters found"
       hasSearch
       hasFilter
       shouldHidePickedItem={templateProps.hasMultipleMode}

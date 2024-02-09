@@ -70,6 +70,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
     <PickerTemplate
       title="Artifacts"
       data={allArtifactSets}
+      emptyText="No artifacts found"
       renderItemConfig={(afterPickItem) => {
         return (
           <ArtifactConfig
