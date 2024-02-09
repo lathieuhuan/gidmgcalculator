@@ -20,6 +20,7 @@ interface ArtifactPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode
 }
 const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...templateProps }: ArtifactPickerProps) => {
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
+  const [maxRarity, setMaxRarity] = useState(5);
 
   const updateConfig = (update: (prevConfig: Artifact) => Artifact) => {
     if (artifactConfig) {
@@ -75,6 +76,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
         return (
           <ArtifactConfig
             config={artifactConfig}
+            maxRarity={maxRarity}
             typeSelect={forcedType ? null : renderTypeSelect()}
             onChangeRarity={onChangeRarity}
             onUpdateConfig={(properties) => {
@@ -99,6 +101,8 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
             ...artifact,
             ...(forcedType ? { type: forcedType } : undefined),
           });
+          setMaxRarity(mold.rarity);
+
           return true;
         }
 

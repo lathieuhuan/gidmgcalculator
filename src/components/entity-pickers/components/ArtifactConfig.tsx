@@ -6,6 +6,7 @@ import { ArtifactCard } from "../../ArtifactCard";
 interface ArtifactConfigProps {
   config?: Artifact;
   typeSelect?: React.ReactNode;
+  maxRarity?: number;
   onChangeRarity?: (rarity: Rarity) => void;
   onUpdateConfig?: (props: Partial<Artifact>) => void;
   onSelect?: (config: Artifact) => void;
@@ -13,12 +14,13 @@ interface ArtifactConfigProps {
 export const ArtifactConfig = ({
   config,
   typeSelect,
+  maxRarity = 5,
   onChangeRarity,
   onUpdateConfig,
   onSelect,
 }: ArtifactConfigProps) => {
   const onClickRarityStar = (num: number) => {
-    if (num >= 4 && num !== config?.rarity) {
+    if (num !== config?.rarity) {
       onChangeRarity?.(num);
     }
   };
@@ -32,18 +34,23 @@ export const ArtifactConfig = ({
             <div className="flex gap-4">
               {Array.from({ length: 5 }, (_, num) => {
                 const rarity = num + 1;
+                const disabled = rarity < 4;
 
-                return (
+                return num < maxRarity ? (
                   <button
                     key={num}
                     className={clsx(
                       "w-8 h-8 flex-center text-3xl",
+                      disabled && "opacity-50",
                       config.rarity >= rarity ? `text-rarity-${config.rarity}` : "text-rarity-1"
                     )}
+                    disabled={disabled}
                     onClick={() => onClickRarityStar(rarity)}
                   >
                     <Star />
                   </button>
+                ) : (
+                  <div className="w-8 h-8 shrink-0" />
                 );
               })}
             </div>
