@@ -22,6 +22,7 @@ interface EntitySelectTemplateProps {
   /** Default to true */
   filterToggleable?: boolean;
   initialFilterOn?: boolean;
+  extra?: ReactNode;
   children: (args: EntitySelectRenderArgs) => ReactNode;
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   onClose: () => void;
@@ -34,6 +35,7 @@ export const EntitySelectTemplate = ({
   filterWrapWidth = 360,
   filterToggleable = true,
   initialFilterOn = false,
+  extra,
   children,
   renderFilter,
   onClose,
@@ -83,21 +85,6 @@ export const EntitySelectTemplate = ({
           setKeyword(value);
         }, 150);
       }}
-      // onKeyDown={(e) => {
-      //   if (e.key === "Enter" && e.currentTarget.value.length) {
-      //     const itemElmts = observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`) || [];
-
-      //     for (const elmt of itemElmts) {
-      //       if (window.getComputedStyle(elmt).display !== "none") {
-      //         const code = elmt.getAttribute("data-id");
-      //         const foundItem = code ? data.find((item) => item.code === +code) : undefined;
-
-      //         if (foundItem) onClickPickerItem(foundItem);
-      //         return;
-      //       }
-      //     }
-      //   }
-      // }}
     />
   );
 
@@ -138,6 +125,8 @@ export const EntitySelectTemplate = ({
           <div>{title}</div>
 
           <div className="mr-4 pr-4 flex items-center">
+            {extra}
+
             <div className="flex items-center gap-3">
               {searchTool}
 

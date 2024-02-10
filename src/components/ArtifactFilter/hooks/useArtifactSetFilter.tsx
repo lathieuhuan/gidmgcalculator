@@ -1,6 +1,6 @@
 import clsx, { ClassValue } from "clsx";
-import { useState } from "react";
-import { BiReset } from "react-icons/bi";
+import { useMemo, useState } from "react";
+import { FaEraser } from "react-icons/fa";
 
 import type { ArtifactType, CalcArtifact } from "@Src/types";
 import { Button, Image } from "@Src/pure-components";
@@ -8,32 +8,29 @@ import { $AppData } from "@Src/services";
 import { findByCode } from "@Src/utils";
 import { ArtifactFilterSet } from "../types";
 
-const toInitialFilterSets = (
+export function useArtifactSetFilter(
   artifacts: CalcArtifact[],
   chosenCodes: number[],
   artifactType: ArtifactType = "flower"
-) => {
-  const result: ArtifactFilterSet[] = [];
+) {
+  const initialSets = useMemo(() => {
+    const result: ArtifactFilterSet[] = [];
 
-  for (const { code } of artifacts) {
-    if (!findByCode(result, code)) {
-      const { icon = "" } = $AppData.getArtifactData({ code, type: artifactType }) || {};
+    for (const { code } of artifacts) {
+      if (!findByCode(result, code)) {
+        const { icon = "" } = $AppData.getArtifactData({ code, type: artifactType }) || {};
 
-      result.push({
-        code,
-        chosen: chosenCodes.includes(code),
-        icon,
-      });
+        result.push({
+          code,
+          chosen: chosenCodes.includes(code),
+          icon,
+        });
+      }
     }
-  }
-  return result;
-};
+    return result;
+  }, []);
 
-export function useArtifactSetFilter(artifacts: CalcArtifact[], chosenCodes: number[], artifactType?: ArtifactType) {
-  //
-  const [filterSets, setFilterSets] = useState<ArtifactFilterSet[]>(
-    toInitialFilterSets(artifacts, chosenCodes, artifactType)
-  );
+  const [filterSets, setFilterSets] = useState<ArtifactFilterSet[]>(initialSets);
 
   const toggleSet = (index: number) => {
     setFilterSets((prev) => {
@@ -72,7 +69,7 @@ export function useArtifactSetFilter(artifacts: CalcArtifact[], chosenCodes: num
         <div className="shrink-0 flex space-x-2">
           <Button
             size="small"
-            icon={<BiReset className="text-lg" />}
+            icon={<FaEraser />}
             disabled={filterSets.every((set) => !set.chosen)}
             onClick={clearFilter}
           >

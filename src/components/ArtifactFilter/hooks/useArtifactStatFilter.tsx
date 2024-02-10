@@ -1,6 +1,6 @@
 import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
-import { BiReset } from "react-icons/bi";
+import { FaEraser } from "react-icons/fa";
 
 import type { ArtifactType } from "@Src/types";
 import type { ArtifactStatFilterCondition, ArtifactStatFilterOption } from "../types";
@@ -146,7 +146,7 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
         </div>
 
         <div className="mt-4 flex space-x-2">
-          <Button size="small" icon={<BiReset className="text-lg" />} disabled={!resetable} onClick={clearFilter}>
+          <Button size="small" icon={<FaEraser />} disabled={!resetable} onClick={clearFilter}>
             Clear all
           </Button>
         </div>

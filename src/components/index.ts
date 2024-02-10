@@ -3,7 +3,7 @@ export * from "./ArtifactFilter";
 export * from "./AttributeTable";
 export * from "./CharacterPortrait";
 export * from "./DamageDisplay";
-export * from "./ItemThumb";
+export * from "./ItemThumbnail";
 export * from "./ModifierTemplate";
 export * from "./OwnerLabel";
 export * from "./SetBonusesDisplay";

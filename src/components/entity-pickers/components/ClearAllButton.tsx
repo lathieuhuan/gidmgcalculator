@@ -1,5 +1,5 @@
 import { Button } from "@Src/pure-components";
-import { BiReset } from "react-icons/bi";
+import { FaEraser } from "react-icons/fa";
 
 interface ClearAllButtonProps {
   disabled?: boolean;
@@ -7,7 +7,7 @@ interface ClearAllButtonProps {
 }
 export const ClearAllButton = (props: ClearAllButtonProps) => {
   return (
-    <Button size="small" icon={<BiReset className="text-lg" />} {...props}>
+    <Button size="small" icon={<FaEraser />} {...props}>
       Clear all
     </Button>
   );

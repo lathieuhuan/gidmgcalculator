@@ -13,7 +13,6 @@ import { Input } from "@Src/pure-components";
 
 export interface ArtifactSubstatsControlProps {
   mutable?: boolean;
-  space?: string;
   rarity: Rarity;
   mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];
@@ -24,7 +23,6 @@ export const ArtifactSubstatsControl = ({
   mainStatType,
   subStats,
   rarity,
-  space,
   onChangeSubStat,
 }: ArtifactSubstatsControlProps) => {
   const { t } = useTranslation();
@@ -78,9 +76,11 @@ export const ArtifactSubstatsControl = ({
           </div>
         ) : (
           <div key={i} className={`mt-2 pt-2 pb-1 flex items-center bg-dark-700`}>
-            <p className={space}>•</p>
+            <p className="mx-3">•</p>
             <p>
-              <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")}>{t(type)}</span>
+              <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")}>
+                {t(type)}
+              </span>
               <span className={isValid ? "text-green-300" : "text-red-200"}>
                 +{value}
                 {percentSign(type)}

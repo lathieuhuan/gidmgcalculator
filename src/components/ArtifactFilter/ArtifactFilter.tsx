@@ -1,5 +1,5 @@
 import clsx, { ClassValue } from "clsx";
-import { BiReset } from "react-icons/bi";
+import { FaEraser } from "react-icons/fa";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
 import type { ArtifactFilterState } from "./types";
 
@@ -86,7 +86,7 @@ const ArtifactFilter = ({
               <Button
                 size={isSmallScreen ? "small" : "custom"}
                 className={!isSmallScreen && "p-1"}
-                icon={<BiReset className="text-lg" />}
+                icon={<FaEraser className="text-lg" />}
                 disabled={!selectedTypes.length}
                 onClick={() => updateTypes([])}
               >

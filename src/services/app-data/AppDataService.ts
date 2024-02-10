@@ -265,7 +265,7 @@ export class AppDataService {
 
   getArtifactData(artifact: { code: number; type: ArtifactType }) {
     const data = this.getArtifactSetData(artifact.code);
-    if (data) {
+    if (data && data[artifact.type]) {
       const { name, icon } = data[artifact.type];
       return { beta: data.beta, name, icon };
     }

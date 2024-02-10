@@ -7,14 +7,14 @@ import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { useTranslation } from "@Src/pure-hooks";
 import { $AppData } from "@Src/services";
-import { getImgSrc, percentSign } from "@Src/utils";
+import { percentSign } from "@Src/utils";
 
 // Component
 import { BetaMark, Button, Image } from "@Src/pure-components";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
 import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 
-interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable" | "space" | "onChangeSubStat"> {
+interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable" | "onChangeSubStat"> {
   artifact?: CalcArtifact;
   onEnhance?: (level: number) => void;
   onChangeMainStatType?: (type: AttributeStat) => void;
@@ -22,7 +22,6 @@ interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable"
 export const ArtifactCard = ({
   artifact,
   mutable,
-  space,
   onEnhance,
   onChangeMainStatType,
   onChangeSubStat,
@@ -120,7 +119,6 @@ export const ArtifactCard = ({
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={artifact.subStats}
-          space={space}
           onChangeSubStat={onChangeSubStat}
         />
       </div>

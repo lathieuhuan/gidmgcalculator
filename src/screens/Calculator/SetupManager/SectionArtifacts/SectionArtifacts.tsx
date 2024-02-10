@@ -110,8 +110,8 @@ export default function SectionArtifacts() {
             changeArtifact({
               pieceIndex: artifactPicker.slot,
               newPiece: {
-                ID: Date.now(),
                 ...item,
+                ID: Date.now(),
               },
               shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
             })

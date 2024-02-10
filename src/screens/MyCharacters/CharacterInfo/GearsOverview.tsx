@@ -10,8 +10,8 @@ import { $AppData } from "@Src/services";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { Button, CloseButton } from "@Src/pure-components";
-import { ItemThumb } from "@Src/components";
+import { Button, CloseButton, ItemCase } from "@Src/pure-components";
+import { ItemThumbnail } from "@Src/components";
 
 const bonusStyles = (active: boolean) => {
   return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-dark-700"];
@@ -45,12 +45,14 @@ export function GearsOverview({
 
     return (
       <div className="p-1 w-1/3">
-        <div onClick={() => toggleDetails("weapon")}>
-          <ItemThumb
-            item={{ beta, icon, rarity, ...rest, owner: undefined }}
-            chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
-          />
-        </div>
+        <ItemCase
+          chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
+          onClick={() => toggleDetails("weapon")}
+        >
+          {(className) => (
+            <ItemThumbnail className={className} item={{ beta, icon, rarity, ...rest, owner: undefined }} />
+          )}
+        </ItemCase>
       </div>
     );
   };
@@ -63,17 +65,19 @@ export function GearsOverview({
         {artifacts.map((artifact, i) =>
           artifact ? (
             <div key={i} className="p-1 w-1/3">
-              <div onClick={() => toggleDetails(i)}>
-                <ItemThumb
-                  item={{
-                    rarity: artifact.rarity,
-                    level: artifact.level,
-                    icon: $AppData.getArtifactData(artifact)?.icon || "",
-                    setupIDs: artifact.setupIDs,
-                  }}
-                  chosen={window.innerWidth < 686 ? false : activeDetails === i}
-                />
-              </div>
+              <ItemCase chosen={window.innerWidth < 686 ? false : activeDetails === i} onClick={() => toggleDetails(i)}>
+                {(className) => (
+                  <ItemThumbnail
+                    className={className}
+                    item={{
+                      rarity: artifact.rarity,
+                      level: artifact.level,
+                      icon: $AppData.getArtifactData(artifact)?.icon || "",
+                      setupIDs: artifact.setupIDs,
+                    }}
+                  />
+                )}
+              </ItemCase>
             </div>
           ) : (
             <div key={i} className="p-1 w-1/3" style={{ minHeight: 124 }}>

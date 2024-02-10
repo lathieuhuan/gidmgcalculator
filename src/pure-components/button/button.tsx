@@ -86,10 +86,9 @@ export const ToggleButton = ({ active, variant = "default", className, ...rest }
   return <Button {...rest} variant="custom" className={[className, active && colorCls[variant]]} />;
 };
 
-export interface CloseButtonProps
-  extends Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled"> {
-  //
-}
-export const CloseButton = ({ boneOnly, ...rest }: CloseButtonProps) => {
+export const CloseButton = ({
+  boneOnly,
+  ...rest
+}: Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled">) => {
   return <Button variant={boneOnly ? "default" : "negative"} icon={<FaTimes />} boneOnly={boneOnly} {...rest} />;
 };

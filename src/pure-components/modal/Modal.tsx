@@ -1,6 +1,6 @@
 import clsx, { ClassValue } from "clsx";
 import { ModalCore, ModalCoreProps } from "./ModalCore";
-import { ModalActions, ModalActionsProps, ModalCloseButton, ModalHeader, ModalHeaderProps } from "./modal-components";
+import { ModalActions, ModalActionsProps, ModalCloseButton, ModalHeader } from "./modal-components";
 
 export interface ModalProps
   extends ModalCoreProps,

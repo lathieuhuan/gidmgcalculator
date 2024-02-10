@@ -28,7 +28,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
     }
   };
 
-  const { selectedTypes, renderTypeSelect } = useIconSelect.Artifact("flower", {
+  const { selectedTypes, renderTypeSelect } = useIconSelect.Artifact(forcedType || "flower", {
     onChange: (types) => {
       updateConfig((prevConfig) => {
         const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
@@ -92,7 +92,7 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
       onPickItem={(mold, isConfigStep) => {
         const artifact = createArtifact({
           ...mold,
-          type: selectedTypes[0] as ArtifactType,
+          type: selectedTypes[0],
         });
 
         if (isConfigStep) {

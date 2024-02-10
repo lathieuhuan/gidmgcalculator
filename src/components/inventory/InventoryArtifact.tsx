@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
@@ -31,18 +31,19 @@ const ArtifactInventory = ({
   onClose,
 }: ArtifactInventoryProps) => {
   const [ref, { height }] = useElementSize<HTMLDivElement>();
+  const fixedType = useRef(artifactType);
 
   const [showingCurrent, setShowingCurrent] = useState(false);
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
   const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_CONDITION);
 
   const artifacts = useStoreSnapshot((state) =>
-    selectUserArts(state).filter((artifact) => artifact.type === artifactType)
+    selectUserArts(state).filter((artifact) => artifact.type === fixedType.current)
   );
 
   const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(artifacts, filter), [artifacts, filter]);
 
-  const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(artifactType)];
+  const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(fixedType.current)];
 
   return (
     <EntitySelectTemplate
@@ -53,7 +54,7 @@ const ArtifactInventory = ({
         return (
           <div className="h-full p-4 bg-dark-500">
             <ArtifactFilter
-              artifactType={artifactType}
+              artifactType={fixedType.current}
               artifacts={artifacts}
               initialCondition={filter}
               onConfirm={setFilter}
@@ -79,7 +80,7 @@ const ArtifactInventory = ({
               <div ref={ref} className="grow rounded-lg bg-dark-900 overflow-auto">
                 <div className="h-full p-4 flex flex-col hide-scrollbar">
                   <div className="w-64 grow hide-scrollbar">
-                    <ArtifactCard mutable={false} artifact={chosenArtifact} space="mx-3" />
+                    <ArtifactCard mutable={false} artifact={chosenArtifact} />
                   </div>
 
                   {chosenArtifact && chosenArtifact.owner !== owner ? (
@@ -118,7 +119,7 @@ const ArtifactInventory = ({
                   }}
                 >
                   <div className="w-64 p-4 pr-2 pb-2 h-full flex flex-col bg-dark-900 rounded-l-lg">
-                    <ArtifactCard mutable={false} artifact={currentArtifact} space="mx-3" />
+                    <ArtifactCard mutable={false} artifact={currentArtifact} />
 
                     <p className="mt-4 text-center text-orange-500">Current equipment</p>
                   </div>

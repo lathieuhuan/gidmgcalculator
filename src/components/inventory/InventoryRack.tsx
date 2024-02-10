@@ -10,7 +10,8 @@ import { $AppData } from "@Src/services";
 import { isUserWeapon } from "@Src/utils";
 
 // Component
-import { ItemThumb } from "../ItemThumb";
+import { ItemCase } from "@Src/pure-components";
+import { ItemThumbnail } from "../ItemThumbnail";
 
 export const getWeaponInfo = ({ code, owner, refi, level, setupIDs }: UserWeapon) => {
   const { beta, name, icon = "", rarity = 5 } = $AppData.getWeaponData(code) || {};
@@ -113,7 +114,7 @@ export const InventoryRack = ({
       <div ref={observeArea} className="grow custom-scrollbar xm:pr-2">
         {!ready && (
           <div ref={pioneerRef} className="opacity-0">
-            <ItemThumb item={{ icon: "", level: "1/20", rarity: 5 }} />
+            <ItemThumbnail item={{ icon: "", level: "1/20", rarity: 5 }} />
           </div>
         )}
 
@@ -128,7 +129,7 @@ export const InventoryRack = ({
                   key={item.ID}
                   data-id={item.code}
                   className={clsx(
-                    "p-2 transition-opacity duration-400",
+                    "p-2 transition-opacity duration-400 relative",
                     isOnPage && "inventory-item",
                     isOnPage && visible ? "opacity-100" : "opacity-0 !p-0",
                     itemCls
@@ -147,12 +148,14 @@ export const InventoryRack = ({
                           <FaMinus />
                         </button>
                       )}
-                      <div onClick={() => onClickItem?.(item)}>
-                        <ItemThumb
-                          item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
-                          chosen={item.ID === chosenID}
-                        />
-                      </div>
+                      <ItemCase chosen={item.ID === chosenID} onClick={() => onClickItem?.(item)}>
+                        {(className) => (
+                          <ItemThumbnail
+                            className={className}
+                            item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                          />
+                        )}
+                      </ItemCase>
                     </>
                   ) : null}
                 </div>

@@ -18,15 +18,16 @@ export type PickerItemModel = {
 };
 
 interface PickerItemProps {
+  className?: string;
   visible: boolean;
   item: PickerItemModel;
   pickedAmount?: number;
 }
-function PickerItemThumbnail({ visible, item, pickedAmount }: PickerItemProps) {
+function PickerItemThumbnail({ className, visible, item, pickedAmount }: PickerItemProps) {
   const itemType = item.vision ? "character" : "weapon"; // not worth checking artifact or weapon
 
   return (
-    <div className="item-body rounded-lg cursor-pointer relative">
+    <div className={clsx("rounded-lg cursor-pointer relative", className)}>
       {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
 
       <div

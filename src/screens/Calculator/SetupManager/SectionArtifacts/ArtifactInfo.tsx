@@ -37,7 +37,7 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
 
   const { type, rarity = 5, level, mainStatType } = artifact;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
-  const mainStatValues = availableMainStatTypes[mainStatType]![rarity];
+  const mainStatValue = availableMainStatTypes[mainStatType]?.[rarity]?.[level] ?? 0;
   const maxLevel = rarity === 5 ? 20 : 16;
 
   const closeModal = () => {
@@ -84,7 +84,7 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
             </div>
           )}
           <p className={`pl-8 text-2xl leading-7 text-rarity-${rarity} font-bold`}>
-            {mainStatValues[level] + percentSign(mainStatType)}
+            {mainStatValue + percentSign(mainStatType)}
           </p>
         </div>
       </div>
@@ -96,7 +96,6 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={artifact.subStats}
-          space="mx-4"
           onChangeSubStat={(subStatIndex, changeInfo) => {
             dispatch(
               updateArtifact({

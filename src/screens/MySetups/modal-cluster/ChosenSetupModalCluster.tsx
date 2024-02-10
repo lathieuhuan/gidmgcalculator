@@ -77,7 +77,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
             if (artifact) {
               return (
                 <div key={i} className="px-1 shrink-0" style={{ width: "14.5rem" }}>
-                  <ArtifactCard artifact={artifact} space="mx-2" />
+                  <ArtifactCard artifact={artifact} />
                   <OwnerLabel item={artifact} />
                 </div>
               );

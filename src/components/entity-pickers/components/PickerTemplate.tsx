@@ -183,7 +183,14 @@ function PickerOptions<T extends PickerItemModel = PickerItemModel>({
                   onClick={() => onClickPickerItem(item)}
                   onDoubleClick={() => onDoubleClickPickerItem(item)}
                 >
-                  <PickerItem visible={visibleItems[item.code]} item={item} pickedAmount={itemCounts[item.code] || 0} />
+                  {(className) => (
+                    <PickerItem
+                      className={className}
+                      visible={visibleItems[item.code]}
+                      item={item}
+                      pickedAmount={itemCounts[item.code] || 0}
+                    />
+                  )}
                 </ItemCase>
               </div>
             );
