@@ -150,6 +150,14 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
     }
   };
 
+  const onDoubleClickPickerItem = async (item: T) => {
+    if (!onPickItem || !hasConfigStep) return;
+
+    if (await onPickItem(item, false)) {
+      afterPickItem(item.code);
+    }
+  };
+
   let searchTool: JSX.Element | null = null;
   const searchInput = (
     <Input
@@ -235,9 +243,13 @@ export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
               key={item.code}
               data-id={item.code}
               data-name={item.name}
-              className={clsx("grow-0 relative p-2", observedItemCls, itemWidthCls, hidden && "hidden")}
+              className={clsx("grow-0 p-2 relative", observedItemCls, itemWidthCls, hidden && "hidden")}
             >
-              <ItemCase chosen={item.code === chosenCode} onClick={() => onClickPickerItem(item)}>
+              <ItemCase
+                chosen={item.code === chosenCode}
+                onClick={() => onClickPickerItem(item)}
+                onDoubleClick={() => onDoubleClickPickerItem(item)}
+              >
                 <PickerItem visible={visibleItems[item.code]} item={item} pickedAmount={itemCounts[item.code] || 0} />
               </ItemCase>
             </div>
