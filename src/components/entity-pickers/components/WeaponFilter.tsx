@@ -1,8 +1,8 @@
 import clsx, { ClassValue } from "clsx";
 import { useRaritySelect, useIconSelect } from "@Src/hooks";
-import { WEAPON_TYPES } from "@Src/constants";
-import { Button, ButtonGroup } from "@Src/pure-components";
+import { ButtonGroup } from "@Src/pure-components";
 import { Rarity, WeaponType } from "@Src/types";
+import { ClearAllButton } from "./ClearAllButton";
 
 export type WeaponFilterState = {
   types: WeaponType[];
@@ -25,29 +25,16 @@ export const WeaponFilter = ({
   onCancel,
   onDone,
 }: WeaponFilterProps) => {
-  const config = {
-    multiple: "withRadios",
-    required: true,
-  } as const;
   const rarityOptions = [5, 4, 3, 2, 1];
 
-  const { selectedTypes, allTypesSelected, updateTypes, renderTypeSelect } = useIconSelect.Weapon(
-    initialFilter?.types,
-    config
-  );
-  const { selectedRarities, allRaritiesSelected, updateRarities, renderRaritySelect } = useRaritySelect(
+  const { selectedTypes, updateTypes, renderTypeSelect } = useIconSelect.Weapon(initialFilter?.types, {
+    multiple: true,
+  });
+  const { selectedRarities, updateRarities, renderRaritySelect } = useRaritySelect(
     rarityOptions,
     initialFilter?.rarities,
-    config
+    { multiple: true }
   );
-
-  const onClickSelectAllTypes = () => {
-    updateTypes([...WEAPON_TYPES]);
-  };
-
-  const onClickSelectAllRarities = () => {
-    updateRarities(rarityOptions);
-  };
 
   const onConfirm = () => {
     onDone({
@@ -64,9 +51,7 @@ export const WeaponFilter = ({
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <p>Filter by Type</p>
-                <Button size="small" disabled={allTypesSelected} onClick={onClickSelectAllTypes}>
-                  Select all
-                </Button>
+                <ClearAllButton disabled={!selectedTypes.length} onClick={() => updateTypes([])} />
               </div>
               {renderTypeSelect("px-1")}
             </div>
@@ -78,9 +63,7 @@ export const WeaponFilter = ({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <p>Filter by Rarity</p>
-            <Button size="small" disabled={allRaritiesSelected} onClick={onClickSelectAllRarities}>
-              Select all
-            </Button>
+            <ClearAllButton disabled={!selectedRarities.length} onClick={() => updateRarities([])} />
           </div>
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}
         </div>

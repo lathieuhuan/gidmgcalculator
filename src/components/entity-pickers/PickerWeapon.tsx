@@ -18,11 +18,9 @@ const INITIAL_FITLER: WeaponFilterState = {
   rarities: [4, 5],
 };
 
-const getAllWeapons = () => {
-  console.log("run");
+const transformWeapon = (weapon: AppWeapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]);
 
-  return $AppData.getAllWeapons((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]));
-};
+type WeaponData = Array<ReturnType<typeof transformWeapon>>;
 
 interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
   forcedType?: WeaponFilterProps["forcedType"];
@@ -32,11 +30,9 @@ interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" 
 function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
   const allWeapons = useMemo(() => {
     const weapons = $AppData.getAllWeapons();
-    const transformWeapon = (weapon: AppWeapon) =>
-      pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]);
 
     if (forcedType) {
-      return weapons.reduce<Array<ReturnType<typeof transformWeapon>>>((accumulator, weapon) => {
+      return weapons.reduce<WeaponData>((accumulator, weapon) => {
         if (weapon.type === forcedType) {
           accumulator.push(transformWeapon(weapon));
         }
@@ -53,9 +49,14 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
 
   const onConfirmFilter = (filter: WeaponFilterState) => {
     const newHiddenCodes = new Set<number>();
+    const typeFiltered = filter.types.length !== 0;
+    const rarityFiltered = filter.rarities.length !== 0;
 
     allWeapons.forEach((weapon) => {
-      if (!filter.types.includes(weapon.type) || !filter.rarities.includes(weapon.rarity)) {
+      if (
+        (typeFiltered && !filter.types.includes(weapon.type)) ||
+        (rarityFiltered && !filter.rarities.includes(weapon.rarity))
+      ) {
         newHiddenCodes.add(weapon.code);
       }
     });

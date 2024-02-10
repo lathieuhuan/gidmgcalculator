@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import type { AppCharacter, UserCharacter } from "@Src/types";
 
 import { $AppData } from "@Src/services";
-import { VISION_TYPES, WEAPON_TYPES } from "@Src/constants";
 import { useStoreSnapshot } from "@Src/features";
 import { findByName, pickProps } from "@Src/utils";
 
@@ -25,11 +24,7 @@ export interface CharacterPickerProps extends Pick<PickerTemplateProps, "hasMult
 const CharacterPicker = ({
   sourceType,
   filter: filterFn,
-  initialFilter = {
-    visionTypes: [...VISION_TYPES],
-    weaponTypes: [...WEAPON_TYPES],
-    rarities: [5, 4],
-  },
+  initialFilter,
   onPickCharacter,
   onClose,
   ...templateProps
@@ -76,12 +71,15 @@ const CharacterPicker = ({
 
   const onConfirmFilter = (filter: CharacterFilterState) => {
     const newHiddenCodes = new Set<number>();
+    const visionFiltered = filter.visionTypes.length !== 0;
+    const weaponFiltered = filter.weaponTypes.length !== 0;
+    const rarityFiltered = filter.rarities.length !== 0;
 
     allCharacters.forEach((character) => {
       if (
-        !filter.weaponTypes.includes(character.weaponType) ||
-        !filter.visionTypes.includes(character.vision) ||
-        !filter.rarities.includes(character.rarity)
+        (visionFiltered && !filter.visionTypes.includes(character.vision)) ||
+        (weaponFiltered && !filter.weaponTypes.includes(character.weaponType)) ||
+        (rarityFiltered && !filter.rarities.includes(character.rarity))
       ) {
         newHiddenCodes.add(character.code);
       }

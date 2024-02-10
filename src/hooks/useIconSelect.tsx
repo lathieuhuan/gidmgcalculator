@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ARTIFACT_TYPE_ICONS, WEAPON_TYPE_ICONS } from "@Src/constants";
 import { toArray } from "@Src/utils";
 import { ArtifactType, WeaponType } from "@Src/types";
-import { Image, Radio } from "@Src/pure-components";
+import { Image } from "@Src/pure-components";
 
 type IconOption<T> = {
   type: T;
@@ -16,15 +16,15 @@ type InitialValues<T> = T | T[] | null;
 type Config<T> = {
   iconCls?: ClassValue;
   selectedCls?: ClassValue;
-  multiple?: boolean | "withRadios";
-  required?: boolean;
+  multiple?: boolean;
+  // required?: boolean;
   onChange?: (selectedTypes: T[]) => void;
 };
 
 function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
   const [selectedTypes, setSelectedTypes] = useState<T[]>(initialValues ? toArray(initialValues) : []);
-  const { iconCls, selectedCls, multiple, required, onChange } = config || {};
-  const withRadios = multiple === "withRadios";
+  const { iconCls, selectedCls, multiple, onChange } = config || {};
+  // const withRadios = multiple === "withRadios";
 
   const updateTypes = (newTypes: T[]) => {
     setSelectedTypes(newTypes);
@@ -32,20 +32,18 @@ function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValue
   };
 
   const onClickIcon = (value: T, currentSelected: boolean) => {
-    if (multiple) {
-      const newTypes = currentSelected ? selectedTypes.filter((type) => type !== value) : selectedTypes.concat(value);
+    const newTypes = multiple
+      ? currentSelected
+        ? selectedTypes.filter((type) => type !== value)
+        : selectedTypes.concat(value)
+      : [value];
 
-      if (!required || newTypes.length) {
-        updateTypes(newTypes);
-      }
-    } else {
-      updateTypes([value]);
-    }
+    updateTypes(newTypes);
   };
 
-  const onCheckRadio = (value: T) => {
-    updateTypes([value]);
-  };
+  // const onCheckRadio = (value: T) => {
+  //   updateTypes([value]);
+  // };
 
   const renderTypeSelect = (className?: ClassValue) => (
     <div className={clsx("flex items-center gap-4", className)}>
@@ -67,7 +65,7 @@ function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValue
               {typeof option.icon === "string" ? <Image src={option.icon} /> : option.icon}
             </button>
 
-            {withRadios && (
+            {/* {withRadios && (
               <label className="w-8 h-8 flex-center cursor-pointer">
                 <Radio
                   size="large"
@@ -75,7 +73,7 @@ function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValue
                   onChange={() => onCheckRadio(option.type)}
                 />
               </label>
-            )}
+            )} */}
           </div>
         );
       })}
@@ -84,7 +82,7 @@ function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValue
 
   return {
     selectedTypes,
-    allTypesSelected: selectedTypes.length === options.length,
+    // allTypesSelected: selectedTypes.length === options.length,
     updateTypes,
     renderTypeSelect,
   };
