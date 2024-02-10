@@ -25,8 +25,6 @@ import { DamageDisplay } from "@Src/components";
 import { ChosenSetupModalCluster, MySetupsModalCluster } from "./modal-cluster";
 import { SetupTemplate } from "./SetupTemplate";
 
-import styles from "../styles.module.scss";
-
 export default function MySetups() {
   const dispatch = useDispatch();
   const userSetups = useSelector(selectUserSetups);
@@ -139,7 +137,7 @@ export default function MySetups() {
 
   return (
     <WarehouseLayout.Wrapper>
-      <WarehouseLayout className={styles["setup-WarehouseLayout"]}>
+      <WarehouseLayout>
         <WarehouseLayout.ButtonBar>
           <Button className="mr-4" variant="positive" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
           <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>

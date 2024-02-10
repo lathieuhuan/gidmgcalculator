@@ -10,6 +10,7 @@ export * from "./SetBonusesDisplay";
 export * from "./TeammateItems";
 export * from "./TypeSelect";
 export * from "./WeaponCard";
+export * from "./EntitySelectTemplate";
 export * from "./ability-list";
 export * from "./inventory";
 export * from "./modifiers";

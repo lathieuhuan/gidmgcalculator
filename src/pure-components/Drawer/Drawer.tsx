@@ -75,17 +75,13 @@ export const Drawer = ({
       />
 
       <div
-        className={clsx(
-          "absolute top-0 right-0 z-10 h-full overflow-hidden transition-size flex",
-          durationCls,
-          className
-        )}
+        className={clsx("absolute top-0 right-0 z-10 h-full overflow-hidden transition-size", durationCls, className)}
         style={{
           width: state.active ? activeWidth : 0,
           ...style,
         }}
       >
-        <div className="shrink-0 grow">{!destroyOnClose || state.mounted ? children : null}</div>
+        {!destroyOnClose || state.mounted ? children : null}
       </div>
     </div>
   );

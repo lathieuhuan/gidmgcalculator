@@ -1,7 +1,7 @@
 import clsx, { ClassValue } from "clsx";
 import { BiReset } from "react-icons/bi";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
-import type { ArtifactFilterCondition } from "./types";
+import type { ArtifactFilterState } from "./types";
 
 // Hook
 import { useScreenWatcher } from "@Src/features";
@@ -15,9 +15,9 @@ import { Button, Modal } from "@Src/pure-components";
 export interface ArtifactFilterProps {
   artifactType?: ArtifactType;
   artifacts: CalcArtifact[];
-  initialCondition: ArtifactFilterCondition;
+  initialCondition: ArtifactFilterState;
   showTypeFilter?: boolean;
-  onConfirm: (filterCondition: ArtifactFilterCondition) => void;
+  onConfirm: (filterCondition: ArtifactFilterState) => void;
   onClose: () => void;
 }
 
@@ -35,7 +35,10 @@ const ArtifactFilter = ({
     configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
   });
 
-  const { selectedTypes, updateTypes, renderTypeSelect } = useIconSelect.Artifact(initialCondition.types);
+  const { selectedTypes, updateTypes, renderTypeSelect } = useIconSelect.Artifact(initialCondition.types, {
+    size: "large",
+    multiple: true,
+  });
   const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(
     initialCondition.stats,
     artifactType
@@ -58,7 +61,7 @@ const ArtifactFilter = ({
     onClose();
   };
 
-  const isSmallScreen = !screenWatcher.isFromSize("md1");
+  const isSmallScreen = !screenWatcher.isFromSize("md");
 
   const wrapperCls = (isHidden: boolean): ClassValue => {
     return isSmallScreen && ["h-full", isHidden && "hidden"];
@@ -66,9 +69,9 @@ const ArtifactFilter = ({
 
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-4 md1:hidden">{tabsElmt}</div>
+      <div className="mb-4 md:hidden">{tabsElmt}</div>
 
-      <div className={clsx("grow overflow-hidden", !isSmallScreen && "md2:px-4 flex space-x-4")}>
+      <div className={clsx("grow overflow-hidden", !isSmallScreen && "xm:px-4 flex space-x-4")}>
         {showTypeFilter ? (
           <div
             className={clsx([
@@ -100,7 +103,7 @@ const ArtifactFilter = ({
         <div className={clsx([wrapperCls(activeIndex !== 1), "grow"])}>
           {renderArtifactSetFilter(
             null,
-            clsx("grid", isSmallScreen ? "grid-cols-4" : "grid-cols-3 md2:grid-cols-4 lg:grid-cols-6")
+            "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-4 xm:grid-cols-6 lg:grid-cols-8"
           )}
         </div>
       </div>

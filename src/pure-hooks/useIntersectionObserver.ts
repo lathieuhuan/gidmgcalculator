@@ -27,9 +27,7 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
     });
 
     observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`).forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
+      observer.observe(item);
     });
 
     return () => observer.disconnect();

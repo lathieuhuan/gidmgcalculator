@@ -25,22 +25,20 @@ export const getArtifactInfo = ({ code, type, owner, rarity, level, setupIDs }: 
 export const getDataId = (item: UserWeapon | UserArtifact) => `${item.type}-${item.code}`;
 
 interface InventoryRackProps {
-  listClassName?: string;
-  itemClassName?: string;
+  data: UserWeapon[] | UserArtifact[];
+  itemCls?: string;
+  emptyText?: string;
   chosenID?: number;
   chosenIDs?: BooleanRecord;
-  itemType: "weapon" | "artifact";
-  items: UserWeapon[] | UserArtifact[];
   onUnchooseItem?: (item: UserWeapon | UserArtifact) => void;
   onClickItem?: (item: UserWeapon | UserArtifact) => void;
 }
 export const InventoryRack = ({
-  listClassName = "",
-  itemClassName = "",
+  data,
+  itemCls,
+  emptyText = "No data",
   chosenID,
   chosenIDs,
-  itemType,
-  items,
   onUnchooseItem,
   onClickItem,
 }: InventoryRackProps) => {
@@ -48,22 +46,22 @@ export const InventoryRack = ({
   const pioneerRef = useRef<HTMLDivElement>(null);
   const heightRef = useRef(0);
 
-  const [isReady, setIsReady] = useState(false);
+  const [ready, setReady] = useState(false);
   const [itemsVisible, setItemsVisible] = useState<BooleanRecord>({});
   const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {
-    if (items.length && !chosenID) {
-      onClickItem?.(items[0] as any);
+    if (data.length && !chosenID) {
+      onClickItem?.(data[0] as any);
     }
     if (pioneerRef.current) {
       heightRef.current = pioneerRef.current.clientHeight;
-      setIsReady(true);
+      setReady(true);
     }
   }, []);
 
   useEffect(() => {
-    if (isReady) {
+    if (ready) {
       const handleIntersection: IntersectionObserverCallback = (entries) => {
         entries.forEach((entry) => {
           const dataId = entry.target.getAttribute("data-id");
@@ -83,16 +81,14 @@ export const InventoryRack = ({
       });
 
       observeArea.current?.querySelectorAll(".inventory-item").forEach((item) => {
-        if (item) {
-          observer.observe(item);
-        }
+        observer.observe(item);
       });
 
       return () => observer.disconnect();
     }
-  }, [isReady, items, pageNo]);
+  }, [ready, data, pageNo]);
 
-  const deadEnd = Math.ceil(items.length / INVENTORY_PAGE_SIZE) - 1;
+  const deadEnd = Math.ceil(data.length / INVENTORY_PAGE_SIZE) - 1;
   const firstIndex = INVENTORY_PAGE_SIZE * pageNo;
   const nextFirstIndex = firstIndex + INVENTORY_PAGE_SIZE;
 
@@ -103,93 +99,83 @@ export const InventoryRack = ({
   };
 
   const goBack = () => {
-    if (pageNo > 0) {
-      setPageNo((prev) => prev - 1);
-
-      resetScroll();
-    }
+    setPageNo((prev) => prev - 1);
+    resetScroll();
   };
 
   const goNext = () => {
-    if (pageNo < deadEnd) {
-      setPageNo((prev) => prev + 1);
-
-      resetScroll();
-    }
+    setPageNo((prev) => prev + 1);
+    resetScroll();
   };
 
   return (
-    <div className="pr-2 w-full flex flex-col" style={{ minWidth: "22rem" }}>
-      <div ref={observeArea} className={"custom-scrollbar " + listClassName}>
-        {!isReady && (
-          <div ref={pioneerRef} className={"opacity-0 " + itemClassName}>
+    <div className="w-full flex flex-col" style={{ minWidth: "21rem" }}>
+      <div ref={observeArea} className="grow custom-scrollbar xm:pr-2">
+        {!ready && (
+          <div ref={pioneerRef} className="opacity-0">
             <ItemThumb item={{ icon: "", level: "1/20", rarity: 5 }} />
           </div>
         )}
 
-        {isReady ? (
-          items.length ? (
-            <div className="flex flex-wrap">
-              {items.map((item, index) => {
-                const isOnPage = index >= firstIndex && index < nextFirstIndex;
-                const dataId = getDataId(item);
+        {ready && data.length ? (
+          <div className="flex flex-wrap">
+            {data.map((item, index) => {
+              const isOnPage = index >= firstIndex && index < nextFirstIndex;
+              const visible = itemsVisible[item.code];
 
-                return (
-                  <div
-                    key={item.ID}
-                    data-id={dataId}
-                    className={clsx(
-                      "transition-opacity duration-400",
-                      itemClassName,
-                      isOnPage && "inventory-item",
-                      isOnPage && itemsVisible[dataId] ? "opacity-100" : "opacity-0 !p-0"
-                    )}
-                    style={{
-                      height: isOnPage ? (itemsVisible[dataId] ? "auto" : heightRef.current) : 0,
-                    }}
-                  >
-                    {isOnPage && itemsVisible[dataId] ? (
-                      <>
-                        {chosenIDs?.[item.ID] && (
-                          <button
-                            className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-red-600 rounded-md"
-                            onClick={() => onUnchooseItem?.(item)}
-                          >
-                            <FaMinus />
-                          </button>
-                        )}
-                        <div onClick={() => onClickItem?.(item)}>
-                          <ItemThumb
-                            item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
-                            chosen={item.ID === chosenID}
-                          />
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="w-full pt-8 flex-center">
-              <p className="text-xl font-bold text-red-100">No {itemType} to display</p>
-            </div>
-          )
+              return (
+                <div
+                  key={item.ID}
+                  data-id={item.code}
+                  className={clsx(
+                    "p-2 transition-opacity duration-400",
+                    isOnPage && "inventory-item",
+                    isOnPage && visible ? "opacity-100" : "opacity-0 !p-0",
+                    itemCls
+                  )}
+                  style={{
+                    height: isOnPage ? (visible ? "auto" : heightRef.current) : 0,
+                  }}
+                >
+                  {isOnPage && visible ? (
+                    <>
+                      {chosenIDs?.[item.ID] && (
+                        <button
+                          className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-red-600 rounded-md"
+                          onClick={() => onUnchooseItem?.(item)}
+                        >
+                          <FaMinus />
+                        </button>
+                      )}
+                      <div onClick={() => onClickItem?.(item)}>
+                        <ItemThumb
+                          item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                          chosen={item.ID === chosenID}
+                        />
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
         ) : null}
+
+        {ready && !data.length ? <p className="py-4 text-light-800 text-lg text-center">{emptyText}</p> : null}
       </div>
 
-      {items.length ? (
-        <div className="pt-2 pb-1 flex-center space-x-2">
-          <button onClick={goBack}>
-            <FaCaretRight className={"rotate-180 " + (pageNo > 0 ? "glow-on-hover" : "opacity-50")} size="1.75rem" />
+      {data.length && deadEnd ? (
+        <div className="pt-2 flex-center space-x-2">
+          <button className="glow-on-hover disabled:opacity-50" disabled={pageNo <= 0} onClick={goBack}>
+            <FaCaretRight className="rotate-180" size="1.75rem" />
           </button>
 
-          <p className="font-bold">
+          <p className="font-semibold">
             <span className="text-orange-500">{pageNo + 1}</span> / {deadEnd + 1}
           </p>
 
-          <button onClick={goNext}>
-            <FaCaretRight className={pageNo < deadEnd ? "glow-on-hover" : "opacity-50"} size="1.75rem" />
+          <button className="glow-on-hover disabled:opacity-50" disabled={pageNo >= deadEnd} onClick={goNext}>
+            <FaCaretRight size="1.75rem" />
           </button>
         </div>
       ) : null}

@@ -1,25 +1,34 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
+import { createSelector } from "@reduxjs/toolkit";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
 import { useIconSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
+import { WeaponType } from "@Src/types";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
 import { addUserWeapon, removeWeapon, sortWeapons, swapWeaponOwner, updateUserWeapon } from "@Store/userDatabaseSlice";
+import { selectUserWps } from "@Store/userDatabaseSlice/selectors";
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
 import { OwnerLabel, WeaponCard, InventoryRack, PickerCharacter, PickerWeapon } from "@Src/components";
 
-import styles from "../styles.module.scss";
-
 type ModalType = "ADD_WEAPON" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON" | "";
+
+const selectWeaponInventory = createSelector(
+  selectUserWps,
+  (_: unknown, types: WeaponType[]) => types,
+  (userWps, types) => ({
+    filteredWeapons: types.length ? userWps.filter((wp) => types.includes(wp.type)) : userWps,
+    totalCount: userWps.length,
+  })
+);
 
 export default function MyWeapons() {
   const dispatch = useDispatch();
@@ -84,19 +93,18 @@ export default function MyWeapons() {
           )}
         </WarehouseLayout.ButtonBar>
 
-        <WarehouseLayout.Body className="hide-scrollbar">
+        <WarehouseLayout.Body className="hide-scrollbar gap-2">
           <InventoryRack
-            listClassName={styles.list}
-            itemClassName={styles.item}
+            data={filteredWeapons}
+            emptyText="No weapons found"
+            itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
             chosenID={chosenID}
-            itemType="weapon"
-            items={filteredWeapons}
             onClickItem={(item) => setChosenID(item.ID)}
           />
 
           <div className="flex flex-col">
             <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
-              <div className="w-75 grow hide-scrollbar">
+              <div className="w-68 grow hide-scrollbar">
                 {chosenWeapon ? (
                   <WeaponCard
                     mutable
@@ -109,7 +117,6 @@ export default function MyWeapons() {
               {chosenWeapon ? (
                 <ButtonGroup
                   className="mt-4"
-                  justify="end"
                   buttons={[
                     {
                       text: "Remove",

@@ -57,7 +57,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
       <div className="grow space-y-4 hide-scrollbar">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <p>Filter by Vision</p>
+            <p className="whitespace-nowrap">Filter by Vision</p>
             <ClearAllButton disabled={!selectedVisions.length} onClick={() => updateVisions([])} />
           </div>
           <div className="hide-scrollbar">{renderVisionSelect("p-1 justify-center")}</div>
@@ -67,7 +67,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <p>Filter by Weapon</p>
+            <p className="whitespace-nowrap">Filter by Weapon</p>
             <ClearAllButton disabled={!selectedWeapons.length} onClick={() => updateWeapons([])} />
           </div>
           {renderWeaponSelect("px-1")}
@@ -77,7 +77,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <p>Filter by Rarity</p>
+            <p className="whitespace-nowrap">Filter by Rarity</p>
           </div>
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}
         </div>

@@ -11,9 +11,12 @@ type IconOption<T> = {
   icon: string | JSX.Element;
 };
 
+type SelectSize = "medium" | "large";
+
 type InitialValues<T> = T | T[] | null;
 
 type Config<T> = {
+  size?: SelectSize;
   iconCls?: ClassValue;
   selectedCls?: ClassValue;
   multiple?: boolean;
@@ -21,9 +24,14 @@ type Config<T> = {
   onChange?: (selectedTypes: T[]) => void;
 };
 
+const sizeCls: Record<SelectSize, string> = {
+  medium: "w-8 h-8",
+  large: "w-10 h-10",
+};
+
 function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValues<T>, config?: Config<T>) {
   const [selectedTypes, setSelectedTypes] = useState<T[]>(initialValues ? toArray(initialValues) : []);
-  const { iconCls, selectedCls, multiple, onChange } = config || {};
+  const { size = "medium", iconCls, selectedCls, multiple, onChange } = config || {};
   // const withRadios = multiple === "withRadios";
 
   const updateTypes = (newTypes: T[]) => {
@@ -56,7 +64,8 @@ function useIconSelect<T>(options: IconOption<T>[], initialValues?: InitialValue
             <button
               type="button"
               className={clsx(
-                "w-8 h-8 flex-center glow-on-hover rounded-circle transition duration-150",
+                "flex-center glow-on-hover rounded-circle transition duration-150",
+                sizeCls[size],
                 iconCls,
                 selected && selectedCls
               )}

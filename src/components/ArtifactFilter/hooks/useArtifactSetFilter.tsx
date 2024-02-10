@@ -47,7 +47,7 @@ export function useArtifactSetFilter(artifacts: CalcArtifact[], chosenCodes: num
     setFilterSets(filterSets.map((set) => ({ ...set, chosen: false })));
   };
 
-  const renderArtifactSetFilter = (className: ClassValue = "", setsWrapCls = "") => {
+  const renderArtifactSetFilter = (className?: ClassValue, setsWrapCls = "") => {
     return (
       <div className={clsx("w-full h-full flex flex-col space-y-4", className)}>
         <div className="grow hide-scrollbar">

@@ -1,13 +1,14 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import type { UserWeapon, WeaponType } from "@Src/types";
 
-import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
-import { useSelector } from "@Store/hooks";
+import { selectUserWps } from "@Store/userDatabaseSlice/selectors";
+import { useStoreSnapshot } from "@Src/features";
 
 // Component
-import { Button, Modal, ModalHeader } from "@Src/pure-components";
+import { Button, Modal } from "@Src/pure-components";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
+import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
 
 interface WeaponInventoryProps {
@@ -18,58 +19,51 @@ interface WeaponInventoryProps {
   onClose: () => void;
 }
 const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose }: WeaponInventoryProps) => {
-  const weaponTypeRef = useRef([weaponType]);
-
-  const { filteredWeapons } = useSelector((state) => selectWeaponInventory(state, weaponTypeRef.current));
+  const items = useStoreSnapshot((state) => selectUserWps(state).filter((weapon) => weapon.type === weaponType));
 
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-2">
-        <ModalHeader>
-          <div />
-          <ModalHeader.Text>{weaponType}</ModalHeader.Text>
-          <ModalHeader.RightEnd onClickClose={onClose} />
-        </ModalHeader>
-      </div>
+    <EntitySelectTemplate title="My Weapons" onClose={onClose}>
+      {() => {
+        return (
+          <div className="h-full flex custom-scrollbar gap-2 scroll-smooth">
+            <InventoryRack
+              data={items}
+              itemCls="max-w-1/3 basis-1/3 md:w-1/4 md:basis-1/4 lg:max-w-1/6 lg:basis-1/6"
+              emptyText="No weapons found"
+              chosenID={chosenWeapon?.ID || 0}
+              onClickItem={(item) => setChosenWeapon(item as UserWeapon)}
+            />
 
-      <div className="p-2 pr-4 grow flex hide-scrollbar">
-        <InventoryRack
-          listClassName="inventory-list"
-          itemClassName="inventory-item"
-          chosenID={chosenWeapon?.ID || 0}
-          itemType="weapon"
-          items={filteredWeapons}
-          onClickItem={(item) => setChosenWeapon(item as UserWeapon)}
-        />
+            <div className="flex flex-col">
+              <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
+                <div className="w-68 grow hide-scrollbar">
+                  <WeaponCard weapon={chosenWeapon} />
+                </div>
 
-        <div className="flex flex-col">
-          <div className="p-4 rounded-lg bg-dark-900 flex flex-col hide-scrollbar" style={{ minHeight: "28rem" }}>
-            <div className="w-68 grow hide-scrollbar">
-              <WeaponCard weapon={chosenWeapon} />
-            </div>
-
-            {chosenWeapon && chosenWeapon.owner !== owner ? (
-              <div className="mt-4 flex justify-center">
-                <Button
-                  variant="positive"
-                  onClick={() => {
-                    onClickButton(chosenWeapon);
-                    onClose();
-                  }}
-                >
-                  {buttonText}
-                </Button>
+                {chosenWeapon && chosenWeapon.owner !== owner ? (
+                  <div className="mt-4 flex justify-center">
+                    <Button
+                      variant="positive"
+                      onClick={() => {
+                        onClickButton(chosenWeapon);
+                        onClose();
+                      }}
+                    >
+                      {buttonText}
+                    </Button>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
-          </div>
 
-          <OwnerLabel item={chosenWeapon} />
-        </div>
-      </div>
-    </div>
+              {chosenWeapon ? <OwnerLabel item={chosenWeapon} /> : null}
+            </div>
+          </div>
+        );
+      }}
+    </EntitySelectTemplate>
   );
 };
 
-export const InventoryWeapon = Modal.wrap(WeaponInventory, { preset: "large" });
+export const InventoryWeapon = Modal.coreWrap(WeaponInventory, { preset: "large" });

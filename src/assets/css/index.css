@@ -124,32 +124,3 @@ body {
     box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;
   }
 }
-
-.inventory-list {
-  height: 100%;
-  flex-grow: 1;
-  padding-right: 0.5rem;
-  overflow: auto;
-}
-
-.inventory-item {
-  position: relative;
-  flex-grow: 0;
-  flex-basis: 33.33%;
-  max-width: 33.33%;
-  padding: 0.5rem;
-}
-
-@media (min-width: 768px) {
-  .inventory-item {
-    max-width: 25%;
-    flex-basis: 25%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .inventory-item {
-    max-width: 16.66%;
-    flex-basis: 16.66%;
-  }
-}

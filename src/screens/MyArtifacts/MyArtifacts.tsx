@@ -16,10 +16,8 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, Modal, WarehouseLayout } from "@Src/pure-components";
-import { InventoryRack, PickerArtifact, ArtifactFilter, ArtifactFilterCondition } from "@Src/components";
+import { InventoryRack, PickerArtifact, ArtifactFilter, ArtifactFilterState } from "@Src/components";
 import { ChosenArtifactView } from "./ChosenArtifactView";
-
-import styles from "../styles.module.scss";
 
 type ModalType = "ADD_ARTIFACT" | "FITLER" | "";
 
@@ -29,7 +27,7 @@ export default function MyArtifacts() {
 
   const [chosenID, setChosenID] = useState(0);
   const [modalType, setModalType] = useState<ModalType>("");
-  const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
+  const [filterCondition, setFilterCondition] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_CONDITION);
 
   const { updateTypes, renderTypeSelect } = useIconSelect.Artifact(null, {
     onChange: (selectedTypes) => {
@@ -107,16 +105,18 @@ export default function MyArtifacts() {
             <button
               className={clsx(
                 "pl-4 py-1 glow-on-hover",
-                isFiltered ? "pr-2 bg-yellow-400 rounded-l-2xl" : "pr-4 bg-light-600 rounded-2xl"
+                isFiltered
+                  ? "pr-2 text-light-400 bg-blue-600 rounded-l-2xl"
+                  : "pr-4 text-black bg-light-600 rounded-2xl"
               )}
               onClick={() => setModalType("FITLER")}
             >
-              <p className="text-black font-bold">Filter</p>
+              <p className="font-bold">Filter</p>
             </button>
 
             {isFiltered && (
               <div
-                className="pl-2 pr-3 rounded-r-2xl bg-red-600 flex-center glow-on-hover"
+                className="pl-2 pr-3 rounded-r-2xl text-black bg-light-400 flex-center glow-on-hover"
                 onClick={() => {
                   const { DEFAULT_CONDITION } = ArtifactFilter;
                   setFilterCondition(DEFAULT_CONDITION);
@@ -129,15 +129,15 @@ export default function MyArtifacts() {
           </div>
         </WarehouseLayout.ButtonBar>
 
-        <WarehouseLayout.Body className="hide-scrollbar">
+        <WarehouseLayout.Body className="hide-scrollbar gap-2">
           <InventoryRack
-            listClassName={styles.list}
-            itemClassName={styles.item}
+            data={filteredArtifacts}
+            emptyText="No artifacts found"
+            itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
             chosenID={chosenID || 0}
-            itemType="artifact"
-            items={filteredArtifacts}
             onClickItem={(item) => setChosenID(item.ID)}
           />
+
           <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
         </WarehouseLayout.Body>
       </WarehouseLayout>

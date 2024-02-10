@@ -1,24 +1,18 @@
-import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { createSelector } from "@reduxjs/toolkit";
 
 import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
-import { useSelector } from "@Store/hooks";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
+import { useStoreSnapshot } from "@Src/features";
+import { useElementSize } from "@Src/pure-hooks";
 
 // Conponent
-import { ButtonGroup, CollapseAndMount, Modal, ModalHeader } from "@Src/pure-components";
+import { ButtonGroup, Modal } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
-import { ArtifactFilter, ArtifactFilterCondition } from "../ArtifactFilter";
+import { ArtifactFilter, ArtifactFilterState } from "../ArtifactFilter";
+import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
-
-const selectArtifactsByType = createSelector(
-  selectUserArts,
-  (_: unknown, type: ArtifactType) => type,
-  (userArts, type) => userArts.filter((p) => p.type === type)
-);
 
 interface ArtifactInventoryProps {
   artifactType: ArtifactType;
@@ -36,111 +30,108 @@ const ArtifactInventory = ({
   onClickButton,
   onClose,
 }: ArtifactInventoryProps) => {
-  const [filterActive, setFilterActive] = useState(false);
+  const [ref, { height }] = useElementSize<HTMLDivElement>();
+
   const [showingCurrent, setShowingCurrent] = useState(false);
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
-  const [filterCondition, setFilterCondition] = useState<ArtifactFilterCondition>(ArtifactFilter.DEFAULT_CONDITION);
+  const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const artifacts = useSelector((state) => selectArtifactsByType(state, artifactType));
-
-  const filteredArtifacts = useMemo(
-    () => ArtifactFilter.filterArtifacts(artifacts, filterCondition),
-    [artifacts, filterCondition]
+  const artifacts = useStoreSnapshot((state) =>
+    selectUserArts(state).filter((artifact) => artifact.type === artifactType)
   );
+
+  const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(artifacts, filter), [artifacts, filter]);
 
   const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(artifactType)];
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="pt-2 px-2">
-        <ModalHeader>
-          <div className="pl-4 flex items-center space-x-2">
-            <ModalHeader.FilterButton active={filterActive} onClick={() => setFilterActive(!filterActive)} />
-            {filterActive && <span className="font-bold text-black">Filter</span>}
-          </div>
-          <ModalHeader.Text>{artifactType}</ModalHeader.Text>
-          <ModalHeader.RightEnd onClickClose={onClose} />
-        </ModalHeader>
-      </div>
-
-      <div className="p-2 pt-4 pr-4 grow hide-scrollbar relative">
-        <CollapseAndMount
-          className="absolute top-0 left-0 z-20 w-full px-2"
-          active={filterActive}
-          activeHeight="100%"
-          moveDuration={150}
-        >
-          <div className="h-full bg-dark-500 rounded-b-lg flex justify-center">
+    <EntitySelectTemplate
+      title="My Artifacts"
+      hasFilter
+      filterWrapWidth="100%"
+      renderFilter={(setFilterOn) => {
+        return (
+          <div className="h-full p-4 bg-dark-500">
             <ArtifactFilter
               artifactType={artifactType}
               artifacts={artifacts}
-              initialCondition={filterCondition}
-              onConfirm={setFilterCondition}
-              onClose={() => setFilterActive(false)}
+              initialCondition={filter}
+              onConfirm={setFilter}
+              onClose={() => setFilterOn(false)}
             />
           </div>
-        </CollapseAndMount>
+        );
+      }}
+      onClose={onClose}
+    >
+      {() => {
+        return (
+          <div className="h-full flex custom-scrollbar gap-2 scroll-smooth">
+            <InventoryRack
+              data={filteredArtifacts}
+              itemCls="max-w-1/3 basis-1/3 md:w-1/4 md:basis-1/4 lg:max-w-1/6 lg:basis-1/6"
+              emptyText="No artifacts found"
+              chosenID={chosenArtifact?.ID || 0}
+              onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
+            />
 
-        <div className="h-full flex hide-scrollbar">
-          <InventoryRack
-            listClassName="inventory-list"
-            itemClassName="inventory-item"
-            chosenID={chosenArtifact?.ID || 0}
-            itemType="artifact"
-            items={filteredArtifacts}
-            onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
-          />
+            <div className="flex flex-col relative">
+              <div ref={ref} className="grow rounded-lg bg-dark-900 overflow-auto">
+                <div className="h-full p-4 flex flex-col hide-scrollbar">
+                  <div className="w-64 grow hide-scrollbar">
+                    <ArtifactCard mutable={false} artifact={chosenArtifact} space="mx-3" />
+                  </div>
 
-          <div className="flex flex-col">
-            <div className={clsx("p-4 rounded-lg bg-dark-900 flex flex-col relative", !chosenArtifact && "h-full")}>
+                  {chosenArtifact && chosenArtifact.owner !== owner ? (
+                    <ButtonGroup
+                      className="mt-4"
+                      buttons={[
+                        {
+                          text: "Compare",
+                          variant: showingCurrent ? "neutral" : "default",
+                          disabled: !currentArtifact,
+                          onClick: () => setShowingCurrent(!showingCurrent),
+                        },
+                        {
+                          text: buttonText,
+                          variant: "positive",
+                          onClick: () => {
+                            onClickButton(chosenArtifact);
+                            onClose();
+                          },
+                        },
+                      ]}
+                    />
+                  ) : null}
+                </div>
+              </div>
+
               {currentArtifact ? (
                 <div
-                  className="absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200"
-                  style={{ width: showingCurrent ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
+                  className={
+                    "absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200 " +
+                    (showingCurrent ? "w-64" : "w-0")
+                  }
+                  style={{
+                    height,
+                    right: "calc(100% - 1rem)",
+                  }}
                 >
-                  <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-dark-900 rounded-l-lg">
+                  <div className="w-64 p-4 pr-2 pb-2 h-full flex flex-col bg-dark-900 rounded-l-lg">
                     <ArtifactCard mutable={false} artifact={currentArtifact} space="mx-3" />
 
-                    <div className="pt-4 grow flex-center">
-                      <p className="text-orange-500 text-center">Current equipment</p>
-                    </div>
+                    <p className="mt-4 text-center text-orange-500">Current equipment</p>
                   </div>
                 </div>
               ) : null}
 
-              <div className="w-64 hide-scrollbar">
-                {chosenArtifact ? <ArtifactCard mutable={false} artifact={chosenArtifact} space="mx-3" /> : null}
-              </div>
-
-              {chosenArtifact && chosenArtifact.owner !== owner ? (
-                <ButtonGroup
-                  className="mt-6"
-                  buttons={[
-                    {
-                      text: "Compare",
-                      variant: showingCurrent ? "neutral" : "default",
-                      disabled: !currentArtifact,
-                      onClick: () => setShowingCurrent(!showingCurrent),
-                    },
-                    {
-                      text: buttonText,
-                      variant: "positive",
-                      onClick: () => {
-                        onClickButton(chosenArtifact);
-                        onClose();
-                      },
-                    },
-                  ]}
-                />
-              ) : null}
+              {chosenArtifact ? <OwnerLabel item={chosenArtifact} /> : null}
             </div>
-
-            <OwnerLabel item={chosenArtifact} />
           </div>
-        </div>
-      </div>
-    </div>
+        );
+      }}
+    </EntitySelectTemplate>
   );
 };
 
-export const InventoryArtifact = Modal.wrap(ArtifactInventory, { preset: "large" });
+export const InventoryArtifact = Modal.coreWrap(ArtifactInventory, { preset: "large" });

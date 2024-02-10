@@ -13,7 +13,7 @@ export interface ArtifactStatFilterCondition {
   subs: ArtifactStatFilterOption[];
 }
 
-export type ArtifactFilterCondition = {
+export type ArtifactFilterState = {
   stats: ArtifactStatFilterCondition;
   codes: number[];
   types: ArtifactType[];

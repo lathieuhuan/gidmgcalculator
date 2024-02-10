@@ -59,7 +59,9 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
 
           {subStat ? (
             <div className={"grow pt-1 flex flex-col justify-center " + groupStyles}>
-              <p className="font-semibold">{t(subStat.type)}</p>
+              <p className={"font-semibold leading-6 " + (["er_", "em"].includes(subStat.type) ? "text-sm" : "text-base")}>
+                {t(subStat.type)}
+              </p>
               <p className={`text-rarity-${rarity} text-2xl leading-7 font-bold`}>
                 {weaponSubStatValue(subStat.scale, level)}
                 {percentSign(subStat.type)}
@@ -78,7 +80,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* right */}
         <div className="ml-2">
           <div className={`rounded-lg bg-gradient-${rarity} relative`}>
-            <Image src={wpData.icon} imgType="weapon" style={{ width: 120, height: 120 }} />
+            <Image src={wpData.icon} imgType="weapon" style={{ width: 112, height: 112 }} />
             {wpData.beta && <BetaMark className="absolute bottom-0 right-0" />}
           </div>
 
@@ -103,8 +105,8 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-semibold text-orange-500">{wpData.passiveName}</p>
-        <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
+        <p className="text-sm font-semibold text-orange-500">{wpData.passiveName}</p>
+        <p className="indent-4 text-base" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>
   );

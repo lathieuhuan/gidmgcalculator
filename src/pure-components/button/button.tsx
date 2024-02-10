@@ -62,7 +62,7 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "text-sm flex-center font-bold",
+    "text-sm flex-center font-bold whitespace-nowrap",
     iconPosition === "end" && "flex-row-reverse",
     boneOnly ? boneColorCls[variant] : colorCls[variant],
     shapeCls[shape],

@@ -50,7 +50,7 @@ export const WeaponFilter = ({
           <>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <p>Filter by Type</p>
+                <p className="whitespace-nowrap">Filter by Type</p>
                 <ClearAllButton disabled={!selectedTypes.length} onClick={() => updateTypes([])} />
               </div>
               {renderTypeSelect("px-1")}
@@ -62,7 +62,7 @@ export const WeaponFilter = ({
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <p>Filter by Rarity</p>
+            <p className="whitespace-nowrap">Filter by Rarity</p>
             <ClearAllButton disabled={!selectedRarities.length} onClick={() => updateRarities([])} />
           </div>
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}

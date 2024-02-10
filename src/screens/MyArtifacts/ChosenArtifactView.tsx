@@ -37,7 +37,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
     <Fragment>
       <div className="flex flex-col">
         <div className="p-4 rounded-lg bg-dark-900 grow flex flex-col">
-          <div className="w-75 grow hide-scrollbar" style={{ height: "26rem" }}>
+          <div className="w-68 grow hide-scrollbar" style={{ height: "26rem" }}>
             {artifact ? (
               <ArtifactCard
                 artifact={artifact}
