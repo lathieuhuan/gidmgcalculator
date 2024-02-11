@@ -27,10 +27,13 @@ module.exports = {
   ],
   theme: {
     screens: {
-      sm: "440px",
-      md1: "610px",
-      md2: "769px",
-      lg: "1025px",
+      xs: "320px",
+      sm: "480px",
+      md: "640px",
+      xm: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     colors: {
       transparent: colors.transparent,
@@ -61,13 +64,13 @@ module.exports = {
         rose: "#f43f5e",
       },
       green: {
-        // 200: "#89fba9",
+        200: "#89fba9", // active color
         300: "#62f98e", // bonus color (root)
       },
       blue: {
         400: "#5ca8ff",
         // 500: "#3392ff"
-        600: "#0075ff", // active color (root)
+        600: "#0075ff", // root
       },
       orange: {
         // 400: "#fba64b",
@@ -135,6 +138,7 @@ module.exports = {
       },
       maxWidth: {
         "1/3": "33.333333%",
+        "1/4": "25%",
         "1/5": "20%",
         "1/6": "16.666666%",
         "1/8": "12.5%",
