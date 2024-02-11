@@ -29,7 +29,7 @@ export const Checkbox = ({ className, size = "medium", readOnly, children, onCha
         onChange={(e) => onChange?.(e.target.checked)}
         {...rest}
       />
-      <span className="styled-checkbox-visual absolute full-stretch bg-blue-600 opacity-0 peer-checked:opacity-100 transition-opacity duration-150 select-none" />
+      <span className="styled-checkbox-visual absolute full-stretch bg-green-200 opacity-0 peer-checked:opacity-100 transition-opacity duration-150 select-none" />
     </span>
   );
 

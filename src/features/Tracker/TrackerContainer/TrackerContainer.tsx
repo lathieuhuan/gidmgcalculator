@@ -90,7 +90,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   };
 
   return (
-    <div className="mt-2 grow custom-scrollbar cursor-default" onDoubleClick={() => console.log(result)}>
+    <div className="h-full custom-scrollbar cursor-default" onDoubleClick={() => console.log(result)}>
       <CollapseList
         list={[
           {

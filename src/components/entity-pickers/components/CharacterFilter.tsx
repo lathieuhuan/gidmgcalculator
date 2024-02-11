@@ -34,7 +34,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
   } = useIconSelect(ELEMENT_ICONS, initialFilter?.elementTypes, {
     multiple: true,
     iconCls: "text-2xl",
-    selectedCls: "shadow-3px-3px shadow-blue-400",
+    selectedCls: "shadow-3px-3px shadow-green-200",
   });
 
   const {

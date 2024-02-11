@@ -112,7 +112,6 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
 
       <div className="pt-4 pb-1 flex justify-evenly items-center">
         <Button
-          variant="negative"
           icon={<FaTrashAlt />}
           onClick={() => {
             dispatch(changeArtifact({ pieceIndex, newPiece: null }));
@@ -120,18 +119,17 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
           }}
         />
 
-        <Button variant="neutral" icon={<FaSave />} onClick={() => setIsSaving(true)} />
+        <Button icon={<FaSave />} onClick={() => setIsSaving(true)} />
 
         <Button
           className="w-8 h-8"
           disabled={level === maxLevel}
-          variant="neutral"
           onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
         >
           {maxLevel}
         </Button>
 
-        <Button variant="positive" icon={<FaSyncAlt />} onClick={onClickChangePiece} />
+        <Button icon={<FaSyncAlt />} onClick={onClickChangePiece} />
       </div>
 
       <Modal.Core active={isSaving} preset="small" onClose={closeModal}>

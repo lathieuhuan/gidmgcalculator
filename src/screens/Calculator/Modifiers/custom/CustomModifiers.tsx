@@ -152,7 +152,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
           active={modalOn}
           title="Add custom buffs"
           className="bg-dark-900"
-          style={{ minWidth: 302 }}
+          style={{ minWidth: 304 }}
           withActions
           withHeaderDivider={false}
           formId="buff-creator"

@@ -103,7 +103,7 @@ function useWeaponTypeSelect(
 ) {
   const finalConfig: Config<WeaponType> = {
     ...config,
-    selectedCls: "shadow-3px-3px shadow-blue-400",
+    selectedCls: "shadow-3px-3px shadow-green-200",
   };
   return useIconSelect(WEAPON_TYPE_ICONS, initialValues, finalConfig);
 }
@@ -115,7 +115,7 @@ function useArtifactTypeSelect(
   const finalConfig: Config<ArtifactType> = {
     ...config,
     iconCls: "p-1",
-    selectedCls: "bg-blue-400",
+    selectedCls: "bg-green-200",
   };
   return useIconSelect(ARTIFACT_TYPE_ICONS, initialValues, finalConfig);
 }

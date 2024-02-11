@@ -10,7 +10,7 @@ export const GearIcon = ({ item: { beta, icon, rarity }, disabled, onClick }: Ge
   return (
     <button
       className={
-        `w-14 h-14 p-1 rounded flex bg-gradient-${rarity} ` +
+        `w-16 h-16 p-1 rounded flex bg-gradient-${rarity} ` +
         (onClick && !disabled ? "glow-on-hover" : "cursor-default opacity-50")
       }
       disabled={disabled}

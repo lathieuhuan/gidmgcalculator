@@ -113,7 +113,7 @@ export const InventoryRack = ({
     <div className="w-full flex flex-col" style={{ minWidth: "21rem" }}>
       <div ref={observeArea} className="grow custom-scrollbar xm:pr-2">
         {!ready && (
-          <div ref={pioneerRef} className="opacity-0">
+          <div ref={pioneerRef} className={clsx("opacity-0", itemCls)}>
             <ItemThumbnail item={{ icon: "", level: "1/20", rarity: 5 }} />
           </div>
         )}

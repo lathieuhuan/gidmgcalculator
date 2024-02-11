@@ -7,11 +7,11 @@ type IProps = {
 };
 
 const WarehouseLayout = ({ className, ...rest }: IProps) => {
-  return <div className={clsx("relative h-full pt-12 md2:pt-14", styles.warehouse, className)} {...rest} />;
+  return <div className={clsx("relative h-full pt-12 xm:pt-14", styles.warehouse, className)} {...rest} />;
 };
 
 WarehouseLayout.Wrapper = (props: IProps) => {
-  return <div className="py-4 md2:py-8 h-full flex-center bg-dark-700" {...props} />;
+  return <div className="py-4 xm:py-6 h-full flex-center bg-dark-700" {...props} />;
 };
 
 WarehouseLayout.ButtonBar = ({ className, children }: IProps) => {

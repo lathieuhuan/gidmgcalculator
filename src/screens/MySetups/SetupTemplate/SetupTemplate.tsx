@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "react-icons/fa";
 
@@ -19,7 +20,7 @@ import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
 
 // Component
-import { Button, Image, Modal } from "@Src/pure-components";
+import { Button, ButtonGroup, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
 import { TeammateDetail } from "../modal-content";
 import { GearIcon } from "./GearIcon";
@@ -93,7 +94,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
       );
 
       mainCharacter = (
-        <div className="mx-auto lg:mx-0 flex">
+        <div className="flex">
           <Image size="w-20 h-20" src={appChar.icon} imgType="character" />
 
           <div className="ml-4 flex-col justify-between">
@@ -107,8 +108,8 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
       );
     }
 
-    const teammate = (
-      <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
+    const teammate = party.filter(Boolean).length ? (
+      <div className="flex space-x-4">
         {party.map((teammate, teammateIndex) => {
           const dataTeammate = teammate && $AppData.getCharacter(teammate.name);
           if (!dataTeammate) return null;
@@ -118,10 +119,10 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           return (
             <div
               key={teammateIndex}
-              className={
-                "w-18 h-18 cursor-pointer" +
-                (isCalculated ? " rounded-circle shadow-3px-3px shadow-yellow-400 cursor-pointer" : "")
-              }
+              className={clsx(
+                "w-18 h-18 cursor-pointer",
+                isCalculated && " rounded-circle shadow-3px-3px shadow-yellow-400 cursor-pointer"
+              )}
             >
               <CharacterPortrait
                 code={dataTeammate.code}
@@ -137,10 +138,10 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           );
         })}
       </div>
-    );
+    ) : null;
 
     const gears = (
-      <div className="mt-4 mx-auto grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         {appWeapon ? (
           <GearIcon item={appWeapon} disabled={!isFetched} onClick={openModal("WEAPON")} />
         ) : (
@@ -181,7 +182,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
   return (
     <>
       <div className="pr-1 flex justify-between flex-col lg:flex-row" onDoubleClick={() => console.log(setup)}>
-        <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
+        <div className="flex items-center">
           {isOriginal ? null : window.innerWidth > 1025 ? (
             <Button
               className="hover:text-red-400 group"
@@ -200,9 +201,8 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           <p className="px-1 text-xl text-orange-500 font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
-        <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">
+        <div className="mt-2 lg:mt-0 pb-2 flex space-x-3 justify-end">
           <Button
-            variant="positive"
             icon={<FaWrench />}
             disabled={!weapon}
             onClick={() => {
@@ -221,13 +221,12 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
             }}
           />
 
-          <Button variant="neutral" icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP")} />
+          <Button icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP")} />
 
           {isOriginal ? (
-            <Button variant="negative" icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP")} />
+            <Button icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP")} />
           ) : (
             <Button
-              variant="neutral"
               icon={<FaPlus />}
               disabled={!allIDs || Object.keys(allIDs).length >= 4}
               onClick={openModal("COMBINE_MORE")}
@@ -236,31 +235,34 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         </div>
       </div>
 
-      <div className="px-4 pt-4 pb-3 rounded-lg bg-dark-900 flex flex-col lg:flex-row">
-        <div className="flex flex-col">
+      <div className="px-4 pt-4 pb-3 rounded-lg bg-dark-900 flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col gap-4">
           {display.mainCharacter}
           {display.teammate}
         </div>
 
-        <div className="hidden lg:block w-0.5 mx-4 bg-dark-500" />
+        <div className="hidden lg:block w-0.5 bg-dark-500" />
 
-        <div className="mt-4 lg:mt-0 flex flex-col">
-          <div className="flex justify-center space-x-4">
-            <button
-              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
-              disabled={!isFetched}
-              onClick={openModal("STATS")}
-            >
-              Stats
-            </button>
-            <button
-              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
-              disabled={!isFetched}
-              onClick={openModal("MODIFIERS")}
-            >
-              Modifiers
-            </button>
-          </div>
+        <div className="flex flex-col gap-4">
+          <ButtonGroup
+            justify="start"
+            buttons={[
+              {
+                text: "Stats",
+                variant: "custom",
+                className: "bg-dark-500",
+                disabled: !isFetched,
+                onClick: openModal("STATS"),
+              },
+              {
+                text: "Modifiers",
+                variant: "custom",
+                className: "bg-dark-500",
+                disabled: !isFetched,
+                onClick: openModal("MODIFIERS"),
+              },
+            ]}
+          />
 
           {display.gears}
         </div>

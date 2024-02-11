@@ -22,8 +22,6 @@ import { useTranslation } from "@Src/pure-hooks";
 // Component
 import { Input } from "@Src/pure-components";
 
-import styles from "./styles.module.scss";
-
 type CustomBuffCategory = CustomBuffCtrl["category"];
 
 const CATEGORIES: Record<
@@ -156,8 +154,8 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
   );
 
   return (
-    <div className={clsx("flex flex-col", styles["buff-ctrl-creator"])}>
-      <div className="flex flex-col md1:flex-row">
+    <div className="flex flex-col">
+      <div className="flex flex-col sm:flex-row">
         {Object.entries(CATEGORIES).map(([category, { label }], index) => {
           const chosen = config.category === category;
 
@@ -166,8 +164,8 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
               key={category}
               className={clsx(
                 "px-4 py-1",
-                !index && "rounded-t md1:rounded-tr-none md1:rounded-l",
-                index === 3 && "rounded-b md1:rounded-bl-none md1:rounded-r",
+                !index && "rounded-t sm:rounded-tr-none sm:rounded-l",
+                index === 3 && "rounded-b sm:rounded-bl-none sm:rounded-r",
                 chosen ? "bg-light-400" : "bg-dark-500"
               )}
               onMouseDown={(e) => e.preventDefault()}
@@ -185,7 +183,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
 
       <form id="buff-creator" className="mt-6" onSubmit={onSubmit}>
         {subTypes ? (
-          <div className="flex flex-col md1:flex-row md1:justify-end md1:items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2">
             {categorySelect}
 
             <div className="flex items-center justify-between gap-2">
@@ -212,7 +210,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-center md1:justify-end gap-2">
+          <div className="flex items-center justify-center sm:justify-end gap-2">
             {categorySelect}
             {valueInput}
           </div>

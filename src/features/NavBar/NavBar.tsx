@@ -49,7 +49,7 @@ export function NavBar() {
   return (
     <div className="absolute top-0 left-0 right-0 bg-black/60">
       <div className="flex">
-        <div className="hidden lg:flex">
+        <div className="hidden xm:flex">
           <NavTabs
             className="px-2 py-1"
             activeClassName="bg-dark-900 text-orange-500"
@@ -96,7 +96,7 @@ export function NavBar() {
                 <ActionButton label="Guides" icon={<FaQuestionCircle />} onClick={openModal("GUIDES")} />
 
                 <NavTabs
-                  className="px-4 py-2 lg:hidden"
+                  className="px-4 py-2 xm:hidden"
                   activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
                   ready={appReady}
                   onClickTab={(tab) => {

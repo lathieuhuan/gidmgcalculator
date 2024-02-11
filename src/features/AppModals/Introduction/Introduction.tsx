@@ -62,10 +62,10 @@ export const Introduction = (props: ModalControl) => {
       title={
         <>
           <div className="flex flex-col items-center">
-            {renderTitle("Welcome to GI DMG Calculator", "hidden md1:block")}
+            {renderTitle("Welcome to GI DMG Calculator", "hidden md:block")}
 
-            <p className="text-xl font-semibold md1:hidden">Welcome to</p>
-            {renderTitle("GI DMG Calculator", "md1:hidden")}
+            <p className="text-xl font-semibold md:hidden">Welcome to</p>
+            {renderTitle("GI DMG Calculator", "md:hidden")}
           </div>
 
           <MetadataRefetcher
@@ -159,7 +159,7 @@ export const Introduction = (props: ModalControl) => {
               ))}
             </div>
           ) : supporters.length ? (
-            <ul className="ml-4 text-yellow-400 columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
+            <ul className="ml-4 text-yellow-400 columns-1 md:columns-2 xm:columns-3 lg:columns-4">
               {supporters.map((name, i) => (
                 <li key={i}>{name}</li>
               ))}

@@ -1,7 +1,7 @@
 .styled-checkbox {
   .styled-checkbox-visual::before {
     content: "";
-    @apply absolute border-3 border-t-0 border-light-400 opacity-0 transition-opacity duration-150 ease-linear;
+    @apply absolute border-3 border-t-0 border-black opacity-0 transition-opacity duration-150 ease-linear;
     inset-inline-start: 25%;
     border-inline-start: 0;
   }

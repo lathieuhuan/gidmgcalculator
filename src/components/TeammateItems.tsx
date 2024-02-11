@@ -43,7 +43,7 @@ export const TeammateItems = ({
           </button>
 
           <div className="overflow-hidden">
-            <p className={`text-rarity-${appWeapon.rarity} text-lg font-semibold truncate`}>{appWeapon.name}</p>
+            <p className={`text-rarity-${appWeapon.rarity} text-base font-semibold truncate`}>{appWeapon.name}</p>
             {mutable ? (
               appWeapon.rarity >= 3 && (
                 <div className="flex items-center">
@@ -83,8 +83,8 @@ export const TeammateItems = ({
 
         <p
           className={clsx(
-            "mt-1 grow font-medium truncate",
-            artifactSetName ? "text-light-400 text-lg" : "text-light-800"
+            "mt-1 grow font-medium text-base truncate",
+            artifactSetName ? "text-light-400" : "text-light-800"
           )}
         >
           {artifactSetName || "No artifact buff / debuff"}

@@ -65,7 +65,6 @@ export default function SetupManager() {
         <div className="flex-center">
           <Button
             className="mx-auto"
-            variant="positive"
             icon={<IoDocumentText />}
             onClick={() => dispatch(updateUI({ highManagerActive: true }))}
           />
@@ -97,7 +96,6 @@ export default function SetupManager() {
         footer={
           <div className="mt-4 flex justify-center">
             <Button
-              variant="positive"
               onClick={() => {
                 setModalType("CHARACTERS_PICKER");
                 setPrePickerOn(false);

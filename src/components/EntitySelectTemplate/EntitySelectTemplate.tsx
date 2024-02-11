@@ -133,7 +133,7 @@ export const EntitySelectTemplate = ({
               {hasFilter ? (
                 <Button
                   className="shadow-common"
-                  variant={filterOn ? "neutral" : "default"}
+                  variant={filterOn ? "active" : "default"}
                   shape="square"
                   size="small"
                   icon={<FaFilter />}

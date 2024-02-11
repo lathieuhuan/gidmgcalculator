@@ -31,7 +31,7 @@ export const Menu = () => {
     {
       icon: FaExpandArrowsAlt,
       text: "Expand",
-      className: "hover:bg-light-800 hidden md1:flex",
+      className: "hover:bg-light-800 hidden xm:flex",
       onClick: () => setResultsEnlarged(true),
     },
   ];

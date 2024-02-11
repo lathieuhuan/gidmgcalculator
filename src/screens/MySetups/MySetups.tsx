@@ -16,6 +16,7 @@ import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
+import { useScreenWatcher } from "@Src/features";
 import { useCharData } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
@@ -27,6 +28,7 @@ import { SetupTemplate } from "./SetupTemplate";
 
 export default function MySetups() {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const userSetups = useSelector(selectUserSetups);
   const chosenSetupID = useSelector(selectChosenSetupID);
 
@@ -85,11 +87,11 @@ export default function MySetups() {
       }
 
       return setupDisplay ? (
-        <div key={key} id={`setup-${setup.ID}`} className="p-1">
+        <div key={key} id={`setup-${setup.ID}`} className="w-full p-1">
           <div
             className={clsx(
               "px-2 pt-3 pb-2 rounded-lg bg-dark-500",
-              setup.ID === chosenSetupID ? "shadow-green-300 shadow-5px-1px" : "shadow-common"
+              setup.ID === chosenSetupID ? "shadow-5px-1px shadow-green-200" : "shadow-common"
             )}
             onClick={() => dispatch(chooseUserSetup(setup.ID))}
           >
@@ -139,23 +141,24 @@ export default function MySetups() {
     <WarehouseLayout.Wrapper>
       <WarehouseLayout>
         <WarehouseLayout.ButtonBar>
-          <Button className="mr-4" variant="positive" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
-          <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
-            Combine
-          </Button>
+          <Button className="mr-4" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
+          <Button onClick={openModal("FIRST_COMBINE")}>Combine</Button>
         </WarehouseLayout.ButtonBar>
 
-        <WarehouseLayout.Body className="pb-2 custom-scrollbar">
+        <WarehouseLayout.Body className="gap-2 custom-scrollbar">
           <div
             className={clsx(
-              userSetups.length && "p-1 pr-3",
-              "lg:grow shrink-0 flex flex-col items-start hide-scrollbar scroll-smooth space-y-3"
+              userSetups.length && "p-1 xm:pr-3",
+              "shrink-0 flex flex-col items-start custom-scrollbar scroll-smooth space-y-3"
             )}
+            // style={{
+            //   minWidth: screenWatcher.isFromSize("md") ? "544px" : "",
+            // }}
           >
             {setupList}
           </div>
 
-          <div className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
+          <div className="shrink-0 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
             {chosenSetupInfo}
           </div>
         </WarehouseLayout.Body>

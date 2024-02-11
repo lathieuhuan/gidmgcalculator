@@ -39,7 +39,12 @@ const Modal = ({
   return (
     <ModalCore
       {...coreProps}
-      className={clsx("flex flex-col", !coreProps.preset && "rounded-lg shadow-white-glow", className)}
+      className={clsx(
+        "flex flex-col",
+        withActions && "pb-4",
+        !coreProps.preset && "rounded-lg shadow-white-glow",
+        className
+      )}
       closable={closable}
     >
       <ModalHeader withDivider={withHeaderDivider}>{title}</ModalHeader>

@@ -2,7 +2,7 @@ import clsx, { ClassValue } from "clsx";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
 
-type ButtonVariant = "default" | "positive" | "negative" | "neutral" | "custom";
+type ButtonVariant = "default" | "positive" | "negative" | "neutral" | "active" | "custom";
 
 type ButtonShape = "rounded" | "square";
 
@@ -12,6 +12,7 @@ const colorCls: Partial<Record<ButtonVariant, string>> = {
   default: "bg-light-600 text-black",
   positive: "bg-yellow-400 text-black",
   negative: "bg-red-600 text-light-400",
+  active: "bg-green-200 text-black",
   neutral: "bg-blue-400 text-black",
 };
 
@@ -62,7 +63,7 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "text-sm flex-center font-bold whitespace-nowrap",
+    "text-sm flex-center font-bold not shadow-common whitespace-nowrap",
     iconPosition === "end" && "flex-row-reverse",
     boneOnly ? boneColorCls[variant] : colorCls[variant],
     shapeCls[shape],

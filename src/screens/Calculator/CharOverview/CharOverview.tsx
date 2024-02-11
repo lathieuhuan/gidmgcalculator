@@ -57,7 +57,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
             onClick={() => setModalType("CHARACTER_PICKER")}
             style={{ width: 88, height: 88 }}
           >
-            <Button className="absolute -top-2.5 -left-2.5 z-10" variant="positive" icon={<FaSyncAlt />} />
+            <Button className="absolute -top-2 -left-2 z-10" icon={<FaSyncAlt />} />
             {appChar.beta ? <BetaMark className="absolute -top-2 -right-2 z-10" /> : null}
             <Image className="cursor-pointer" src={appChar.icon} imgType="character" />
           </div>
@@ -131,10 +131,10 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
     body = (
       <div className="w-full flex flex-col items-center space-y-2">
         <Button variant="positive" onClick={() => setModalType("CHARACTER_PICKER")}>
-          Choose a character
+          Select a character
         </Button>
         <p>or</p>
-        <Button variant="positive" disabled={!appReady} onClick={() => setModalType("IMPORT_SETUP")}>
+        <Button disabled={!appReady} onClick={() => setModalType("IMPORT_SETUP")}>
           Import a setup
         </Button>
       </div>
