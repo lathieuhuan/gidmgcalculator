@@ -50,11 +50,11 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
 interface SelfDebuffsProps {
   char: CharInfo;
   selfDebuffCtrls: ModifierCtrl[];
-  charData: AppCharacter;
+  appChar: AppCharacter;
   partyData: PartyData;
   debuffs: Debuff_Character[];
 }
-export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuffs }: SelfDebuffsProps) {
+export function SelfDebuffs({ char, selfDebuffCtrls, appChar, partyData, debuffs }: SelfDebuffsProps) {
   const content: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach((ctrl) => {
@@ -68,7 +68,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuff
           key={ctrl.index}
           mutable={false}
           heading={debuff.src}
-          description={parseAbilityDescription(debuff, { char, charData, partyData }, inputs, true)}
+          description={parseAbilityDescription(debuff, { char, appChar, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "team")}
         />
@@ -90,7 +90,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
   party.forEach((teammate) => {
     if (!teammate || !teammate.debuffCtrls.length) return;
 
-    const teammateData = $AppData.getCharData(teammate.name);
+    const teammateData = $AppData.getCharacter(teammate.name);
     if (!teammateData) return;
 
     const { name, debuffs = [] } = teammateData;
@@ -114,7 +114,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
             key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={debuff.src}
-            description={parseAbilityDescription(debuff, { char, charData: teammateData, partyData }, inputs, false)}
+            description={parseAbilityDescription(debuff, { char, appChar: teammateData, partyData }, inputs, false)}
             inputs={inputs}
             inputConfigs={debuff.inputConfigs}
           />
@@ -133,7 +133,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
   artDebuffCtrls.forEach((ctrl) => {
-    const data = $AppData.getArtifactSetData(ctrl.code);
+    const data = $AppData.getArtifactSet(ctrl.code);
     if (!data) return;
 
     const { name, debuffs = [] } = data;

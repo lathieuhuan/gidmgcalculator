@@ -17,8 +17,8 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
   const [atDetail, setAtDetail] = useState(false);
   const [detailIndex, setDetailIndex] = useState(-1);
 
-  const charData = $AppData.getCharData(char.name);
-  const numOfActives = Object.keys(charData.activeTalents).length;
+  const appChar = $AppData.getCharacter(char.name);
+  const numOfActives = Object.keys(appChar.activeTalents).length;
 
   return (
     <SharedSpace
@@ -26,7 +26,7 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
       leftPart={
         <TalentOverview
           char={char}
-          charData={charData}
+          appChar={appChar}
           party={party}
           onChangeLevel={onChangeTalentLevel}
           onClickInfoSign={(newIndex) => {
@@ -36,9 +36,9 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
         />
       }
       rightPart={
-        detailIndex !== -1 && detailIndex < numOfActives + charData.passiveTalents.length ? (
+        detailIndex !== -1 && detailIndex < numOfActives + appChar.passiveTalents.length ? (
           <TalentDetail
-            charData={charData}
+            appChar={appChar}
             detailIndex={detailIndex}
             onChangeDetailIndex={setDetailIndex}
             onClose={() => {

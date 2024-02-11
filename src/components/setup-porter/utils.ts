@@ -12,7 +12,7 @@ import type {
   SetupImportInfo,
   Target,
   Teammate,
-  Vision,
+  ElementType,
   CustomBuffCtrlCategory,
   AttackPatternBonusKey,
   Reaction,
@@ -29,7 +29,7 @@ import {
   ATTACK_PATTERN_INFO_KEYS,
   ATTACK_PATTERNS,
   REACTIONS,
-  VISION_TYPES,
+  ELEMENT_TYPES,
 } from "@Src/constants";
 import { $AppData } from "@Src/services";
 
@@ -60,12 +60,12 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   } = calcSetup;
 
   try {
-    const charData = $AppData.getCharData(char.name);
-    if (!charData) {
+    const appChar = $AppData.getCharacter(char.name);
+    if (!appChar) {
       throw new Error("Character not found");
     }
 
-    const { code: charCode = 0 } = charData;
+    const { code: charCode = 0 } = appChar;
     const { cons, NAs, ES, EB } = char;
 
     const _charCode = [charCode, LEVELS.indexOf(char.level), cons, NAs, ES, EB].join(DIVIDERS[1]);
@@ -100,7 +100,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 
     const _teammateCodes = party.map((tm, i) => {
       if (tm) {
-        const { code: tmCode } = $AppData.getCharData(tm.name) || {};
+        const { code: tmCode } = $AppData.getCharacter(tm.name) || {};
         const { weapon, artifact } = tm;
 
         return [
@@ -120,7 +120,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
       elmtModCtrls.reaction,
       elmtModCtrls.infuse_reaction,
       +elmtModCtrls.superconduct,
-      elmtModCtrls.absorption ? VISION_TYPES.indexOf(elmtModCtrls.absorption) : "",
+      elmtModCtrls.absorption ? ELEMENT_TYPES.indexOf(elmtModCtrls.absorption) : "",
     ].join(DIVIDERS[1]);
 
     const _resonancesCode = elmtModCtrls.resonances
@@ -304,9 +304,9 @@ export const decodeSetup = (code: string): SetupImportInfo => {
 
   const resonances = _resonancesCode
     ? split(_resonancesCode, 1).map((rsn) => {
-        const [vision, activated, inputs] = split(rsn, 2);
+        const [elementType, activated, inputs] = split(rsn, 2);
         const resonance: Resonance = {
-          vision: vision as Vision,
+          vision: elementType as ElementType,
           activated: activated === "1",
         };
         if (inputs) {
@@ -360,7 +360,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
   } as Target;
 
   if (tgVariant) {
-    target.variantType = tgVariant as Vision;
+    target.variantType = tgVariant as ElementType;
   }
   if (tgInputs) {
     target.inputs = tgInputs.split(DIVIDERS[2]).map(Number);
@@ -407,7 +407,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
         infuse_reaction: (infuse_reaction as AttackReaction) || null,
         resonances,
         superconduct: superconduct === "1",
-        absorption: absorption ? VISION_TYPES[+absorption] : null,
+        absorption: absorption ? ELEMENT_TYPES[+absorption] : null,
       },
       customInfusion: {
         element: _infuseElmtIndex ? ATTACK_ELEMENTS[+_infuseElmtIndex] : "phys",

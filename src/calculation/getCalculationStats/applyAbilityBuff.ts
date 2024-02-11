@@ -1,4 +1,4 @@
-import { VISION_TYPES } from "@Src/constants";
+import { ELEMENT_TYPES } from "@Src/constants";
 import {
   Bonus_Character,
   BonusStack_Character,
@@ -10,7 +10,7 @@ import {
   ExtraMax_Character,
   BonusConfig_Character,
 } from "@Src/types";
-import { countVision, toArray } from "@Src/utils";
+import { countElements, toArray } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { CalcUltilInfo } from "../types";
 import { CharacterCal, applyModifier } from "../utils";
@@ -80,7 +80,7 @@ const getStackValue = (
     }
     case "nation": {
       let count = info.partyData.reduce((total, teammate) => {
-        return total + (teammate?.nation === info.charData.nation ? 1 : 0);
+        return total + (teammate?.nation === info.appChar.nation ? 1 : 0);
       }, 0);
       if (stack.nation === "different") {
         count = info.partyData.filter(Boolean).length - count;
@@ -89,7 +89,7 @@ const getStackValue = (
       break;
     }
     case "energy": {
-      result = info.charData.EBcost;
+      result = info.appChar.EBcost;
       break;
     }
     case "resolve": {
@@ -100,7 +100,7 @@ const getStackValue = (
       const level = finalTalentLv({
         talentType: "EB",
         char: info.char,
-        charData: info.charData,
+        appChar: info.appChar,
         partyData: info.partyData,
       });
       const stackPerEnergy = Math.min(Math.ceil(14.5 + level * 0.5), 20);
@@ -145,14 +145,14 @@ export const getIntialBonusValue = (
 
   switch (indexSrc.type) {
     case "vision":
-      const { visionType } = indexSrc;
-      const visionCount = info.partyData.length ? countVision(info.partyData, info.charData) : {};
+      const { visionType: elementType } = indexSrc;
+      const elementCount = info.partyData.length ? countElements(info.partyData, info.appChar) : {};
       const input =
-        visionType === "various"
-          ? Object.keys(visionCount).length
-          : typeof visionType === "string"
-          ? visionCount[visionType] ?? 0
-          : visionType.reduce((total, type) => total + (visionCount[type] ?? 0), 0);
+        elementType === "various"
+          ? Object.keys(elementCount).length
+          : typeof elementType === "string"
+          ? elementCount[elementType] ?? 0
+          : elementType.reduce((total, type) => total + (elementCount[type] ?? 0), 0);
 
       index += input;
       break;
@@ -163,7 +163,7 @@ export const getIntialBonusValue = (
       index += finalTalentLv({
         talentType: indexSrc.talent,
         char: info.char,
-        charData: info.charData,
+        appChar: info.appChar,
         partyData: info.partyData,
       });
       break;
@@ -282,11 +282,11 @@ const applyAbilityBuff = ({ description, buff, infoWrap: info, inputs, fromSelf,
             info.calcItemBuffs.push(genExclusiveBuff(description, mixed.id, mixed.path, bonusValue));
             break;
           case "INP_ELMT":
-            const visionIndex = inputs[mixed ?? 0];
-            applyModifier(description, info.totalAttr, VISION_TYPES[visionIndex], bonusValue, info.tracker);
+            const elmtIndex = inputs[mixed ?? 0];
+            applyModifier(description, info.totalAttr, ELEMENT_TYPES[elmtIndex], bonusValue, info.tracker);
             break;
           case "ELM_NA":
-            if (info.charData.weaponType === "catalyst" || info.infusedElement !== "phys") {
+            if (info.appChar.weaponType === "catalyst" || info.infusedElement !== "phys") {
               applyModifier(description, info.attPattBonus, "NA.pct_", bonusValue, info.tracker);
             }
             break;

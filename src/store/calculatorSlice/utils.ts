@@ -4,7 +4,7 @@ import { calculateAll } from "@Src/calculation";
 
 export const getCharDataFromState = (state: CalculatorState) => {
   const setup = state.setupsById[state.activeId];
-  return $AppData.getCharData(setup.char.name);
+  return $AppData.getCharacter(setup.char.name);
 };
 
 export function calculate(state: CalculatorState, all?: boolean) {

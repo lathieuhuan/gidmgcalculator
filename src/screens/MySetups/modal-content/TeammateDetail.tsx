@@ -19,7 +19,7 @@ export const TeammateDetail = ({
   onSwitchSetup,
   onCalculateTeammateSetup,
 }: TeammateDetailProps) => {
-  const data = $AppData.getCharData(teammate.name);
+  const data = $AppData.getCharacter(teammate.name);
   if (!data) return null;
 
   return (

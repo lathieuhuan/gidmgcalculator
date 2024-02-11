@@ -14,7 +14,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
       {setBonuses.length > 0 ? (
         setBonuses.map((bonus, index) => {
           const content = [];
-          const data = $AppData.getArtifactSetData(bonus.code);
+          const data = $AppData.getArtifactSet(bonus.code);
           if (!data) return;
           const { descriptions } = data;
 

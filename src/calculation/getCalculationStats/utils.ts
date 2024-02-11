@@ -48,12 +48,12 @@ export const addTrackerRecord = (list: TrackerRecord[] | undefined, desc: string
 
 interface InitiateTotalAttrArgs {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   weapon: CalcWeapon;
-  weaponData: AppWeapon;
+  appWeapon: AppWeapon;
   tracker?: Tracker;
 }
-export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker }: InitiateTotalAttrArgs) => {
+export const initiateTotalAttr = ({ char, appChar, weapon, appWeapon, tracker }: InitiateTotalAttrArgs) => {
   const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
@@ -61,7 +61,7 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   }
 
   // Character inner stats
-  const [base_hp, base_atk, base_def] = charData.stats[LEVELS.indexOf(char.level)];
+  const [base_hp, base_atk, base_def] = appChar.stats[LEVELS.indexOf(char.level)];
 
   const innerStats = {
     base_hp,
@@ -72,7 +72,7 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   const scaleIndex = Math.max(ascsFromLv(char.level) - 1, 0);
   const bonusScale = [0, 1, 2, 2, 3, 4][scaleIndex];
 
-  addOrInit(innerStats, charData.statBonus.type, charData.statBonus.value * bonusScale);
+  addOrInit(innerStats, appChar.statBonus.type, appChar.statBonus.value * bonusScale);
   addOrInit(innerStats, "cRate_", 5);
   addOrInit(innerStats, "cDmg_", 50);
   addOrInit(innerStats, "er_", 100);
@@ -80,7 +80,7 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   addOrInit(innerStats, "caAtkSpd_", 100);
 
   // Kokomi
-  if (charData.code === 42) {
+  if (appChar.code === 42) {
     innerStats.cRate_ -= 100;
     innerStats.healB_ = 25;
   }
@@ -99,7 +99,7 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   }
 
   // Weapon main stat
-  const weaponAtk = weaponMainStatValue(weaponData.mainStatScale, weapon.level);
+  const weaponAtk = weaponMainStatValue(appWeapon.mainStatScale, weapon.level);
   totalAttr.base_atk += weaponAtk;
   addTrackerRecord(tracker?.totalAttr.atk, "Weapon main stat", weaponAtk);
 

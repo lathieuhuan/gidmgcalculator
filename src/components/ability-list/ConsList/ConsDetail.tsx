@@ -55,16 +55,16 @@ const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
 };
 
 interface ConsDetailProps {
-  charData: AppCharacter;
+  appChar: AppCharacter;
   consLv: number;
   onChangeConsLv?: (newLv: number) => void;
   onClose?: () => void;
 }
-export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  const { vision, constellation, talentLvBonus = {}, activeTalents } = charData;
+export const ConsDetail = ({ appChar, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
+  const { vision: elementType, constellation, talentLvBonus = {}, activeTalents } = appChar;
   const consInfo = constellation[consLv - 1] || {};
 
-  const { isLoading, isError, descriptions } = useConsDescriptions(charData.name, {
+  const { isLoading, isError, descriptions } = useConsDescriptions(appChar.name, {
     auto: !constellation[0].description,
   });
 
@@ -87,11 +87,11 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
         forTalent={false}
         currentIndex={consLv - 1}
         images={constellation.map((cons) => cons.image)}
-        vision={vision}
+        elementType={elementType}
         onClickBack={() => onChangeConsLv?.(consLv - 1)}
         onClickNext={() => onChangeConsLv?.(consLv + 1)}
       />
-      <p className={`text-xl text-${vision} font-bold`}>{consInfo.name}</p>
+      <p className={`text-xl text-${elementType} font-bold`}>{consInfo.name}</p>
       <p className="text-lg">
         Constellation Lv. <Green b>{consLv}</Green>
       </p>

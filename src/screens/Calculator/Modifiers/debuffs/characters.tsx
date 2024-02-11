@@ -24,11 +24,11 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
     (state) => state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls
   );
 
-  const charData = $AppData.getCharData(char.name) || {};
+  const appChar = $AppData.getCharacter(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach((ctrl) => {
-    const debuff = findByIndex(charData.debuffs || [], ctrl.index);
+    const debuff = findByIndex(appChar.debuffs || [], ctrl.index);
 
     if (debuff && isGranted(debuff, char)) {
       const { inputs = [] } = ctrl;
@@ -46,7 +46,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         <ModifierTemplate
           key={ctrl.index}
           heading={debuff.src}
-          description={parseAbilityDescription(debuff, { char, charData, partyData }, inputs, true)}
+          description={parseAbilityDescription(debuff, { char, appChar, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}
@@ -85,7 +85,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
   const char = useSelector(selectChar);
   const dispatch = useDispatch();
 
-  const teammateData = $AppData.getCharData(teammate.name);
+  const teammateData = $AppData.getCharacter(teammate.name);
   if (!teammateData) return null;
 
   const modifierElmts: JSX.Element[] = [];
@@ -110,7 +110,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
       <ModifierTemplate
         key={ctrl.index}
         heading={debuff.src}
-        description={parseAbilityDescription(debuff, { char, charData: teammateData, partyData }, inputs, false)}
+        description={parseAbilityDescription(debuff, { char, appChar: teammateData, partyData }, inputs, false)}
         inputs={inputs}
         inputConfigs={inputConfigs}
         checked={ctrl.activated}

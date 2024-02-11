@@ -66,8 +66,8 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
         <div ref={observedAreaRef} className="mt-2 w-full hide-scrollbar">
           <div className="flex">
             {characters.map(({ name }) => {
-              const charData = $AppData.getCharData(name);
-              if (!charData) return null;
+              const appChar = $AppData.getCharacter(name);
+              if (!appChar) return null;
               const visible = visibleItems[name];
 
               return (
@@ -86,7 +86,7 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
                     className={clsx(
                       "rounded-circle border-3 border-lesser/30 bg-black/30",
                       styles["icon-wrapper"],
-                      charData.sideIcon
+                      appChar.sideIcon
                         ? "m-2 " + styles["side-icon-wrapper"]
                         : "m-1 overflow-hidden " + styles["beta-icon-wrapper"]
                     )}
@@ -97,7 +97,7 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
                       }
                     >
                       {visible && (
-                        <img src={getImgSrc(charData.sideIcon || charData.icon)} alt="icon" draggable={false} />
+                        <img src={getImgSrc(appChar.sideIcon || appChar.icon)} alt="icon" draggable={false} />
                       )}
                     </div>
                   </div>

@@ -26,7 +26,7 @@ import {
 } from "@Src/utils";
 import { cleanupCalcSetup, isUserSetup } from "@Src/utils/setup";
 import {
-  createArtDebuffCtrls,
+  createArtifactDebuffCtrls,
   createArtifact,
   createArtifactBuffCtrls,
   createCharInfo,
@@ -75,12 +75,12 @@ export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
     const { userWps, userArts } = getState().database;
 
     const ID = Date.now();
-    const charData = $AppData.getCharData(pickedChar.name);
+    const appChar = $AppData.getCharacter(pickedChar.name);
     const data = parseUserCharacter({
       pickedChar,
       userWps,
       userArts,
-      weaponType: charData.weaponType,
+      weaponType: appChar.weaponType,
       seedID: ID + 1,
     });
     const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
@@ -96,7 +96,7 @@ export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
           wpBuffCtrls: data.wpBuffCtrls,
           artifacts: data.artifacts,
           artBuffCtrls: data.artBuffCtrls,
-          artDebuffCtrls: createArtDebuffCtrls(),
+          artDebuffCtrls: createArtifactDebuffCtrls(),
           party: [null, null, null],
           elmtModCtrls: createElmtModCtrls(),
           customBuffCtrls: [],
@@ -325,7 +325,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
       let artifacts: CalcArtifacts = [null, null, null, null, null];
 
       if (artifact.code) {
-        const { variants = [] } = $AppData.getArtifactSetData(artifact.code) || {};
+        const { variants = [] } = $AppData.getArtifactSet(artifact.code) || {};
         const maxRarity = variants[variants.length - 1];
 
         if (maxRarity) {
@@ -375,7 +375,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
             wpBuffCtrls: createWeaponBuffCtrls(true, actualWeapon),
             artifacts,
             artBuffCtrls: createArtifactBuffCtrls(true, { code: artifact.code }),
-            artDebuffCtrls: createArtDebuffCtrls(),
+            artDebuffCtrls: createArtifactDebuffCtrls(),
             party,
             elmtModCtrls: createElmtModCtrls(),
             customBuffCtrls: [],

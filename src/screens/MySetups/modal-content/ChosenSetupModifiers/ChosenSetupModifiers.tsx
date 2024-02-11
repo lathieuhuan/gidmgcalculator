@@ -44,10 +44,10 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
     customDebuffCtrls,
     target,
   } = chosenSetup;
-  const { charData, infusedElement, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
+  const { appChar, infusedElement, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
 
-  const partyData = $AppData.getPartyData(party);
-  const { title, variant, statuses } = $AppData.getTargetData(target);
+  const partyData = $AppData.getPartyInfo(party);
+  const { title, variant, statuses } = $AppData.getTargetInfo(target);
 
   return (
     <div className="h-full px-4 flex space-x-4">
@@ -60,7 +60,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
             },
             {
               heading: "Self",
-              body: <SelfDebuffs {...{ char, selfDebuffCtrls, charData, partyData, debuffs }} />,
+              body: <SelfDebuffs {...{ char, selfDebuffCtrls, appChar, partyData, debuffs }} />,
             },
             {
               heading: "Party",
@@ -86,14 +86,14 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
               body: (
                 <ElementBuffs
                   charLv={char.level}
-                  vision={charData?.vision}
+                  elementType={appChar?.vision}
                   {...{ elmtModCtrls, rxnBonus, infusedElement }}
                 />
               ),
             },
             {
               heading: "Self",
-              body: <SelfBuffs {...{ char, charData, selfBuffCtrls, partyData, buffs, innateBuffs }} />,
+              body: <SelfBuffs {...{ char, appChar, selfBuffCtrls, partyData, buffs, innateBuffs }} />,
             },
             {
               heading: "Party",

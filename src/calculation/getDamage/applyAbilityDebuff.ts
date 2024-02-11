@@ -1,4 +1,4 @@
-import { VISION_TYPES } from "@Src/constants";
+import { ELEMENT_TYPES } from "@Src/constants";
 import { Penalty_Character, DebuffInfoWrap, PenaltyConfig_Character } from "@Src/types";
 import { toArray } from "@Src/utils";
 import { CalcUltilInfo } from "../types";
@@ -39,8 +39,8 @@ const applyAbilityDebuff = ({ description, effects, infoWrap: info, inputs, from
         if (typeof target === "string") {
           applyModifier(description, info.resistReduct, target, penaltyValue, info.tracker);
         } else {
-          const visionIndex = inputs[target.index ?? 0];
-          applyModifier(description, info.resistReduct, VISION_TYPES[visionIndex], penaltyValue, info.tracker);
+          const elmtIndex = inputs[target.index ?? 0];
+          applyModifier(description, info.resistReduct, ELEMENT_TYPES[elmtIndex], penaltyValue, info.tracker);
         }
       }
     }

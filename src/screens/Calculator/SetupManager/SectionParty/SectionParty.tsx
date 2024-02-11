@@ -33,7 +33,7 @@ export default function SectionParty() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
 
-  const charData = $AppData.getCharData(char.name);
+  const appChar = $AppData.getCharacter(char.name);
 
   const [modal, setModal] = useState<ModalState>({
     type: "",
@@ -41,7 +41,7 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
-  const partyData = useMemo(() => $AppData.getPartyData(party), [party]);
+  const partyData = useMemo(() => $AppData.getPartyInfo(party), [party]);
 
   const isCombined = findById(setupManageInfos, activeId)?.type === "combined";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];
@@ -176,12 +176,12 @@ export default function SectionParty() {
       <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="app"
-        filter={(character) => character.name !== charData.name && party.every((tm) => tm?.name !== character.name)}
+        filter={(character) => character.name !== appChar.name && party.every((tm) => tm?.name !== character.name)}
         onPickCharacter={({ name, vision, weaponType }) => {
           const { teammateIndex } = modal;
 
           if (teammateIndex !== null) {
-            dispatch(addTeammate({ name, vision, weaponType, teammateIndex }));
+            dispatch(addTeammate({ name, elementType: vision, weaponType, teammateIndex }));
             setDetailSlot(teammateIndex);
           }
           return true;

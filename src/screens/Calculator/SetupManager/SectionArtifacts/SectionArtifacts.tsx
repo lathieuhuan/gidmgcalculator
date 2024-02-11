@@ -60,7 +60,7 @@ export default function SectionArtifacts() {
         {ARTIFACT_TYPES.map((type, index) => {
           const artifact = artifacts[index];
           const icon = artifact
-            ? $AppData.getArtifactData({ code: artifact.code, type })?.icon || ""
+            ? $AppData.getArtifact({ code: artifact.code, type })?.icon || ""
             : ARTIFACT_TYPE_ICONS.find((item) => item.type === type)?.icon;
 
           return (

@@ -14,7 +14,6 @@ export * from "./Notification";
 export * from "./Popover";
 export * from "./Drawer";
 export * from "./SharedSpace";
-export * from "./VisionIcon";
 export * from "./Switch";
 export * from "./Radio";
 export * from "./Checkbox";

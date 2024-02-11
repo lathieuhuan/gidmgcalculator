@@ -8,7 +8,7 @@ import type {
   ModInputConfig,
   Nation,
   Rarity,
-  Vision,
+  ElementType,
   WeaponType,
 } from "./global";
 
@@ -35,7 +35,7 @@ export type AppCharacter = {
   sideIcon: string;
   rarity: Rarity;
   nation: Nation;
-  vision: Vision;
+  vision: ElementType;
   weaponType: WeaponType;
   EBcost: number;
   talentLvBonus?: Partial<Record<Talent, number>>;
@@ -158,11 +158,11 @@ export type ExtendedUsableCondition_Character = UsableCondition_Character & {
   /** On Chongyun */
   forWeapons?: WeaponType[];
   /** On Chevreuse */
-  forElmts?: Vision[];
+  forElmts?: ElementType[];
   /** On Gorou, Nilou, Chevreuse */
-  partyElmtCount?: Partial<Record<Vision, number>>;
+  partyElmtCount?: Partial<Record<ElementType, number>>;
   /** On Nilou, Chevreuse */
-  partyOnlyElmts?: Vision[];
+  partyOnlyElmts?: ElementType[];
 };
 
 export type LevelScale_Character = {
@@ -242,7 +242,7 @@ export type ValueOption_Character = {
   indexSrc:
     | {
         type: "vision";
-        visionType: "various" | Vision | Vision[];
+        visionType: "various" | ElementType | ElementType[];
       }
     | {
         /** On Neuvillette */
@@ -327,7 +327,7 @@ type PenaltyTarget =
   | ResistanceReductionKey
   | {
       type: "inp_elmt";
-      /** Input's index to get Vision index. Default to 0 */
+      /** Input's index to get ElementType index. Default to 0 */
       index?: number;
     };
 

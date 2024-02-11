@@ -43,7 +43,7 @@ const CharacterPicker = ({
         break;
       case "user":
         for (const userChar of userChars) {
-          const characterData = $AppData.getCharData(userChar.name);
+          const characterData = $AppData.getCharacter(userChar.name);
 
           if (characterData) {
             const character = Object.assign(pickProps(characterData, pickedKey), {
@@ -71,13 +71,13 @@ const CharacterPicker = ({
 
   const onConfirmFilter = (filter: CharacterFilterState) => {
     const newHiddenCodes = new Set<number>();
-    const visionFiltered = filter.visionTypes.length !== 0;
+    const elementFiltered = filter.elementTypes.length !== 0;
     const weaponFiltered = filter.weaponTypes.length !== 0;
     const rarityFiltered = filter.rarities.length !== 0;
 
     allCharacters.forEach((character) => {
       if (
-        (visionFiltered && !filter.visionTypes.includes(character.vision)) ||
+        (elementFiltered && !filter.elementTypes.includes(character.vision)) ||
         (weaponFiltered && !filter.weaponTypes.includes(character.weaponType)) ||
         (rarityFiltered && !filter.rarities.includes(character.rarity))
       ) {

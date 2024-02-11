@@ -154,7 +154,7 @@ export function convertFromGoodFormat(data: any) {
 
   for (const char of result.characters) {
     if (!char.weaponID) {
-      const { weaponType } = $AppData.getCharData(char.name)! || {};
+      const { weaponType } = $AppData.getCharacter(char.name)! || {};
       const weaponID = seedID++;
       const newWeapon = createWeapon({ type: weaponType });
 

@@ -42,7 +42,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
       {options.map((setup) => {
         const { ID } = setup;
         const picked = pickedIDs.includes(ID);
-        const { code = 0, icon = "" } = $AppData.getCharData(setup.char.name) || {};
+        const { code = 0, icon = "" } = $AppData.getCharacter(setup.char.name) || {};
 
         return (
           <div
@@ -64,7 +64,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
               </div>
               {setup.party.map((teammate, j) => {
                 if (teammate) {
-                  const { code = 0, icon = "" } = $AppData.getCharData(teammate.name) || {};
+                  const { code = 0, icon = "" } = $AppData.getCharacter(teammate.name) || {};
 
                   return (
                     <div key={j} className="w-16 rounded-circle">

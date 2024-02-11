@@ -14,8 +14,8 @@ type ReactionKey = {
 export type TableKey = AttackPatternKey | ReactionKey;
 
 export const getTableKeys = (charName: string) => {
-  const charData = $AppData.getCharData(charName);
-  if (!charData) {
+  const appChar = $AppData.getCharacter(charName);
+  if (!appChar) {
     return {
       tableKeys: [],
     };
@@ -25,7 +25,7 @@ export const getTableKeys = (charName: string) => {
     subs: [],
   };
   for (const na of NORMAL_ATTACKS) {
-    NAs.subs = NAs.subs.concat(charData.calcList[na].map(({ name }) => name));
+    NAs.subs = NAs.subs.concat(appChar.calcList[na].map(({ name }) => name));
   }
 
   const result: TableKey[] = [NAs];
@@ -33,7 +33,7 @@ export const getTableKeys = (charName: string) => {
   for (const attPatt of ["ES", "EB"] as const) {
     result.push({
       main: attPatt,
-      subs: charData.calcList[attPatt].map(({ name }) => name),
+      subs: appChar.calcList[attPatt].map(({ name }) => name),
     });
   }
 
@@ -44,7 +44,7 @@ export const getTableKeys = (charName: string) => {
 
   return {
     tableKeys: result,
-    charData,
+    appChar,
   };
 };
 

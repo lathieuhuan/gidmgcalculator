@@ -48,7 +48,7 @@ interface CreateArtifactArgs {
   code: number;
   rarity: Rarity;
 }
-export function createArtifact({ type, code, rarity }: CreateArtifactArgs): Omit<CalcArtifact, "ID"> {
+export const createArtifact = ({ type, code, rarity }: CreateArtifactArgs): Omit<CalcArtifact, "ID"> => {
   const { artLevel } = $AppSettings.get();
   return {
     type,
@@ -63,13 +63,13 @@ export function createArtifact({ type, code, rarity }: CreateArtifactArgs): Omit
       { type: "cDmg_", value: 0 },
     ],
   };
-}
+};
 
 type Modifier = {
   index: number;
   inputConfigs?: ModInputConfig[];
 };
-function createModCrtl(mod: Modifier, forSelf: boolean) {
+const createModCrtl = (mod: Modifier, forSelf: boolean) => {
   const ctrl: ModifierCtrl = { index: mod.index, activated: false };
 
   if (mod.inputConfigs) {
@@ -83,12 +83,12 @@ function createModCrtl(mod: Modifier, forSelf: boolean) {
     if (initialValues.length) ctrl.inputs = initialValues;
   }
   return ctrl;
-}
+};
 
-export function createCharModCtrls(forSelf: boolean, name: string) {
+export const createCharModCtrls = (forSelf: boolean, name: string) => {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = $AppData.getCharData(name) || {};
+  const { buffs = [], debuffs = [] } = $AppData.getCharacter(name) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
@@ -103,14 +103,14 @@ export function createCharModCtrls(forSelf: boolean, name: string) {
     debuffCtrls.push(createModCrtl(debuff, forSelf));
   }
   return [buffCtrls, debuffCtrls];
-}
+};
 
 interface RefModifier {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
 }
-function createBuffCtrls(forSelf: boolean, buffs: RefModifier[]) {
+const createBuffCtrls = (forSelf: boolean, buffs: RefModifier[]) => {
   const buffCtrls: ModifierCtrl[] = [];
 
   for (const buff of buffs) {
@@ -119,33 +119,33 @@ function createBuffCtrls(forSelf: boolean, buffs: RefModifier[]) {
     }
   }
   return buffCtrls;
-}
+};
 
-export function createWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
-  const { buffs = [] } = $AppData.getWeaponData(weapon.code) || {};
+export const createWeaponBuffCtrls = (forSelf: boolean, weapon: { type: WeaponType; code: number }) => {
+  const { buffs = [] } = $AppData.getWeapon(weapon.code) || {};
   return createBuffCtrls(forSelf, buffs);
-}
+};
 
-export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
+export const createArtifactBuffCtrls = (forSelf: boolean, hasCode?: { code?: number }) => {
   if (!hasCode?.code) {
     return [];
   }
-  const { buffs = [] } = $AppData.getArtifactSetData(hasCode.code) || {};
+  const { buffs = [] } = $AppData.getArtifactSet(hasCode.code) || {};
   return createBuffCtrls(forSelf, buffs);
-}
+};
 
-export function createArtDebuffCtrls(): ArtifactDebuffCtrl[] {
+export const createArtifactDebuffCtrls = (): ArtifactDebuffCtrl[] => {
   return [
     { code: 15, activated: false, index: 0, inputs: [0] },
     { code: 33, activated: false, index: 0 },
   ];
-}
+};
 
 interface CreateTeammateArgs {
   name: string;
   weaponType: WeaponType;
 }
-export function createTeammate({ name, weaponType }: CreateTeammateArgs): Teammate {
+export const createTeammate = ({ name, weaponType }: CreateTeammateArgs): Teammate => {
   const [buffCtrls, debuffCtrls] = createCharModCtrls(false, name);
   const weaponCode = DEFAULT_WEAPON_CODE[weaponType];
 
@@ -164,7 +164,7 @@ export function createTeammate({ name, weaponType }: CreateTeammateArgs): Teamma
       buffCtrls: [],
     },
   };
-}
+};
 
 export const createElmtModCtrls = (): ElementModCtrl => ({
   infuse_reaction: null,
@@ -174,10 +174,10 @@ export const createElmtModCtrls = (): ElementModCtrl => ({
   absorption: null,
 });
 
-export function createTarget() {
+export const createTarget = () => {
   const result = { code: 0, level: 1, resistances: {} } as Target;
   for (const elmt of ATTACK_ELEMENTS) {
     result.resistances[elmt] = 10;
   }
   return result;
-}
+};

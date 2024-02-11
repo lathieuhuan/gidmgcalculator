@@ -21,21 +21,21 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { t } = useTranslation();
   if (!weapon) return null;
 
-  const wpData = $AppData.getWeaponData(weapon.code)!;
+  const appWeapon = $AppData.getWeapon(weapon.code)!;
   const { level, refi } = weapon;
-  const { rarity, subStat } = wpData;
+  const { rarity, subStat } = appWeapon;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   const passiveDescription = useMemo(() => {
-    if (!wpData.descriptions) {
+    if (!appWeapon.descriptions) {
       return "";
     }
-    return wpData.descriptions.map((content) => parseWeaponDescription(content, refi)).join(" ");
+    return appWeapon.descriptions.map((content) => parseWeaponDescription(content, refi)).join(" ");
   }, [weapon.code, refi]);
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
-      <p className={`text-2xl text-rarity-${rarity} font-bold`}>{wpData.name}</p>
+      <p className={`text-2xl text-rarity-${rarity} font-bold`}>{appWeapon.name}</p>
 
       <div className="mt-2 flex">
         {/* left */}
@@ -72,7 +72,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
           <div className={"grow pt-1 flex flex-col justify-center " + groupStyles}>
             <p className="font-semibold">Base ATK</p>
             <p className={`text-rarity-${rarity} text-2.5xl font-bold`}>
-              {weaponMainStatValue(wpData.mainStatScale, level)}
+              {weaponMainStatValue(appWeapon.mainStatScale, level)}
             </p>
           </div>
         </div>
@@ -80,8 +80,8 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* right */}
         <div className="ml-2">
           <div className={`rounded-lg bg-gradient-${rarity} relative`}>
-            <Image src={wpData.icon} imgType="weapon" style={{ width: 112, height: 112 }} />
-            {wpData.beta && <BetaMark className="absolute bottom-0 right-0" />}
+            <Image src={appWeapon.icon} imgType="weapon" style={{ width: 112, height: 112 }} />
+            {appWeapon.beta && <BetaMark className="absolute bottom-0 right-0" />}
           </div>
 
           {rarity >= 3 && (
@@ -105,7 +105,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-sm font-semibold text-orange-500">{wpData.passiveName}</p>
+        <p className="text-sm font-semibold text-orange-500">{appWeapon.passiveName}</p>
         <p className="indent-4 text-base" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>

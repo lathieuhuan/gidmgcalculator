@@ -29,7 +29,7 @@ export const ArtifactCard = ({
   const { t } = useTranslation();
   if (!artifact) return null;
 
-  const artData = $AppData.getArtifactData(artifact);
+  const appArtifact = $AppData.getArtifact(artifact);
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;
@@ -38,7 +38,7 @@ export const ArtifactCard = ({
   return (
     <div className="w-full">
       <div className={`px-4 pt-1 bg-rarity-${rarity}`} onDoubleClick={() => console.log(artifact)}>
-        <p className="text-xl font-bold text-black truncate">{artData?.name}</p>
+        <p className="text-xl font-bold text-black truncate">{appArtifact?.name}</p>
       </div>
       <div className="mt-4 mx-4 flex">
         {mutable ? (
@@ -81,8 +81,8 @@ export const ArtifactCard = ({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <Image src={artData?.icon} alt={artData?.name} imgType="artifact" style={{ width: 104, height: 104 }} />
-          {artData?.beta && <BetaMark className="absolute bottom-0 right-0" />}
+          <Image src={appArtifact?.icon} alt={appArtifact?.name} imgType="artifact" style={{ width: 104, height: 104 }} />
+          {appArtifact?.beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>
 

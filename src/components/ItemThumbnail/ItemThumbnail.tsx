@@ -18,7 +18,7 @@ interface ItemThumbProps {
 export const ItemThumbnail = ({ className, item }: ItemThumbProps) => {
   //
   const renderSideIcon = (owner: string) => {
-    const { icon = "", sideIcon } = $AppData.getCharData(owner) || {};
+    const { icon = "", sideIcon } = $AppData.getCharacter(owner) || {};
     return (
       <div
         className={clsx(

@@ -14,12 +14,12 @@ import { ItemCase } from "@Src/pure-components";
 import { ItemThumbnail } from "../ItemThumbnail";
 
 export const getWeaponInfo = ({ code, owner, refi, level, setupIDs }: UserWeapon) => {
-  const { beta, name, icon = "", rarity = 5 } = $AppData.getWeaponData(code) || {};
+  const { beta, name, icon = "", rarity = 5 } = $AppData.getWeapon(code) || {};
   return { beta, name, icon, rarity, level, refi, owner, setupIDs };
 };
 
 export const getArtifactInfo = ({ code, type, owner, rarity, level, setupIDs }: UserArtifact) => {
-  const { beta, name, icon = "" } = $AppData.getArtifactData({ code, type }) || {};
+  const { beta, name, icon = "" } = $AppData.getArtifact({ code, type }) || {};
   return { beta, name, icon, rarity, level, owner, setupIDs };
 };
 

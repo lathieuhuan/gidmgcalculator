@@ -4,21 +4,21 @@ import { $AppData } from "@Src/services";
 
 export const calculateChosenSetup = (chosenSetup: UserSetup, weapon: UserWeapon | null, artifacts: UserArtifacts) => {
   const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-  const charData = $AppData.getCharData(char.name);
+  const appChar = $AppData.getCharacter(char.name);
 
-  if (charData && weapon) {
+  if (appChar && weapon) {
     const result = calculateAll({ char, weapon, artifacts, ...rest }, target);
 
     return {
-      charData,
+      appChar,
       totalAttr: result.totalAttr,
       artAttr: result.artAttr,
       rxnBonus: result.rxnBonus,
       damage: result.dmgResult,
       infusedElement: result.infusedElement,
-      innateBuffs: charData.innateBuffs || [],
-      buffs: charData.buffs || [],
-      debuffs: charData.debuffs || [],
+      innateBuffs: appChar.innateBuffs || [],
+      buffs: appChar.buffs || [],
+      debuffs: appChar.debuffs || [],
     };
   }
 };

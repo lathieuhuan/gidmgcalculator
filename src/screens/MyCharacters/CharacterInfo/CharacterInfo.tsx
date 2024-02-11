@@ -39,7 +39,7 @@ const selectChosenInfo = createSelector(
 const CharacterInfo = () => {
   const dispatch = useDispatch();
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
-  const { isLoading, error, charData } = useCharData(char.name);
+  const { isLoading, error, appChar } = useCharData(char.name);
 
   const [removing, setRemoving] = useState(false);
 
@@ -64,14 +64,14 @@ const CharacterInfo = () => {
     );
   }
 
-  if (!charData || !weapon) {
+  if (!appChar || !weapon) {
     return null;
   }
-  const { name, icon, rarity, vision } = charData;
+  const { name, icon, rarity, vision: elementType } = appChar;
 
   const { totalAttr, artAttr } = getCalculationStats({
     char,
-    charData,
+    appChar,
     weapon,
     artifacts,
   });
@@ -93,13 +93,13 @@ const CharacterInfo = () => {
         <div className="flex" onDoubleClick={() => console.log(char, weapon, artifacts)}>
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
-            {!isMobile && <p className={`text-2.5xl text-${vision} font-black`}>{name}</p>}
+            {!isMobile && <p className={`text-2.5xl text-${elementType} font-black`}>{name}</p>}
             <RarityStars className="mt-1" rarity={rarity} />
 
             <div className="mt-1 flex text-lg">
               <p className="mr-1">Level</p>
               <select
-                className={`text-right text-last-right text-${vision} font-semibold`}
+                className={`text-right text-last-right text-${elementType} font-semibold`}
                 value={char.level}
                 onChange={(e) => dispatch(updateUserCharacter({ name, level: e.target.value as Level }))}
               >

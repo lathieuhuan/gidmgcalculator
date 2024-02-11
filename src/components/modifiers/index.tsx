@@ -1,4 +1,4 @@
-import type { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
+import type { AmplifyingReaction, QuickenReaction, ElementType } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { round } from "@Src/utils";
 
@@ -13,7 +13,7 @@ export const renderModifiers = (modifiers: (JSX.Element | null)[], type: "buffs"
   );
 };
 
-export const renderVapMeltHeading = (element: Vision, reaction: AmplifyingReaction) => (
+export const renderVapMeltHeading = (element: ElementType, reaction: AmplifyingReaction) => (
   <>
     <span className="capitalize">{reaction}</span>{" "}
     <span className="text-light-800 font-normal">
@@ -22,21 +22,21 @@ export const renderVapMeltHeading = (element: Vision, reaction: AmplifyingReacti
   </>
 );
 
-export const renderVapMeltDescription = (element: Vision, mult: number) => (
+export const renderVapMeltDescription = (element: ElementType, mult: number) => (
   <>
     Increases <span className={`text-${element} capitalize`}>{element} DMG</span> by <Green b>{round(mult, 3)}</Green>{" "}
     times.
   </>
 );
 
-export const renderQuickenHeading = (element: Vision, reaction: QuickenReaction) => (
+export const renderQuickenHeading = (element: ElementType, reaction: QuickenReaction) => (
   <>
     <span className="capitalize">{reaction}</span>{" "}
     <span className="text-light-800 font-normal">({element === "electro" ? "Electro" : "Dendro"} on Quicken)</span>
   </>
 );
 
-export const renderQuickenDescription = (element: Vision, value: number) => (
+export const renderQuickenDescription = (element: ElementType, value: number) => (
   <>
     Increase base <span className={`text-${element} capitalize`}>{element} DMG</span> by <Green b>{value}</Green>.
   </>

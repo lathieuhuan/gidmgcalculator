@@ -55,7 +55,7 @@ export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] 
 
 export const ARTIFACT_TYPES = ["flower", "plume", "sands", "goblet", "circlet"] as const;
 
-export const VISION_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
+export const ELEMENT_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
 
 export const LEVELS = [
   "1/20",
@@ -78,7 +78,7 @@ export const NORMAL_ATTACKS = ["NA", "CA", "PA"] as const;
 
 export const ATTACK_PATTERNS = [...NORMAL_ATTACKS, "ES", "EB"] as const;
 
-export const ATTACK_ELEMENTS = [...VISION_TYPES, "phys"] as const;
+export const ATTACK_ELEMENTS = [...ELEMENT_TYPES, "phys"] as const;
 
 export const TALENT_TYPES = ["NAs", "ES", "EB", "altSprint"] as const;
 
@@ -122,7 +122,7 @@ export const ATTACK_ELEMENT_INFO_KEYS = ["flat", "cRate_", "cDmg_"] as const;
 
 export const REACTION_BONUS_INFO_KEYS = ["pct_", "cRate_", "cDmg_"] as const;
 
-// export const VISION_ICONS = {
+// export const ELEMENT_ICONS = {
 //   pyro: "e/e8/Element_Pyro",
 //   cryo: "8/88/Element_Cryo",
 //   hydro: "3/35/Element_Hydro",
@@ -177,7 +177,7 @@ export const BASE_REACTION_DAMAGE: Record<number, number> = {
   90: 1446.85,
 };
 
-export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"];
+export const RESONANCE_ELEMENT_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"];
 
 export const DEFAULT_WEAPON_CODE = {
   bow: 11,

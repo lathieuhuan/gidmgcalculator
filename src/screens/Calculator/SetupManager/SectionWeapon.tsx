@@ -21,7 +21,7 @@ export default function SectionWeapon() {
   const weapon = useSelector(selectWeapon);
   const [pickerOn, setPickerOn] = useState(false);
 
-  const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeaponData(weapon.code) || {};
+  const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeapon(weapon.code) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (

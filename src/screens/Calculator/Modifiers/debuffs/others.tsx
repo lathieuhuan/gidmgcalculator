@@ -21,7 +21,7 @@ export function ElementDebuffs() {
   const elmtModCtrls = useSelector(selectElmtModCtrls);
 
   const { resonances, superconduct } = elmtModCtrls;
-  const geoResonance = resonances.find(({ vision }) => vision === "geo");
+  const geoResonance = resonances.find((resonance) => resonance.vision === "geo");
 
   return (
     <div className="pt-2 space-y-3">
@@ -99,7 +99,7 @@ export function ArtifactDebuffs() {
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
-    const data = $AppData.getArtifactSetData(ctrl.code);
+    const data = $AppData.getArtifactSet(ctrl.code);
     if (!data) return;
 
     const { debuffs = [] } = data;

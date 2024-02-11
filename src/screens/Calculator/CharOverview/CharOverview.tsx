@@ -46,8 +46,8 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
   let body;
 
   if (touched) {
-    const charData = $AppData.getCharData(char.name);
-    const textVision = `text-${charData.vision}`;
+    const appChar = $AppData.getCharacter(char.name);
+    const elmtText = `text-${appChar.vision}`;
 
     body = (
       <div className="h-full flex flex-col">
@@ -58,21 +58,21 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
             style={{ width: 88, height: 88 }}
           >
             <Button className="absolute -top-2.5 -left-2.5 z-10" variant="positive" icon={<FaSyncAlt />} />
-            {charData.beta ? <BetaMark className="absolute -top-2 -right-2 z-10" /> : null}
-            <Image className="cursor-pointer" src={charData.icon} imgType="character" />
+            {appChar.beta ? <BetaMark className="absolute -top-2 -right-2 z-10" /> : null}
+            <Image className="cursor-pointer" src={appChar.icon} imgType="character" />
           </div>
 
           <div className="min-w-0 grow">
             <div className="overflow-hidden">
-              <p className={`text-2.5xl truncate ${textVision} font-black`}>{char.name}</p>
-              <RarityStars className="mt-1" rarity={charData.rarity} />
+              <p className={`text-2.5xl truncate ${elmtText} font-black`}>{char.name}</p>
+              <RarityStars className="mt-1" rarity={appChar.rarity} />
             </div>
 
             <div className="mt-1 flex justify-between items-center">
               <div className="flex items-center text-lg">
                 <p className="mr-1">Level</p>
                 <select
-                  className={`${textVision} font-bold text-right text-last-right`}
+                  className={`font-bold ${elmtText} text-right text-last-right`}
                   value={char.level}
                   onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
                 >
@@ -87,7 +87,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
               <div
                 className={
                   "ml-4 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-dark-700 " +
-                  `${textVision} leading-none font-bold cursor-default relative group`
+                  `leading-none ${elmtText} font-bold cursor-default relative group`
                 }
               >
                 <span>C{char.cons}</span>

@@ -22,10 +22,10 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
 
-  const charData = $AppData.getCharData(char.name);
+  const appChar = $AppData.getCharacter(char.name);
   const existedSetup = findById(useStoreSnapshot(selectUserSetups), manageInfo.ID);
 
-  const [input, setInput] = useState(existedSetup ? existedSetup.name : `${charData.name} setup`);
+  const [input, setInput] = useState(existedSetup ? existedSetup.name : `${appChar.name} setup`);
 
   const saveSetup = () => {
     dispatch(saveSetupThunk(manageInfo.ID, input));

@@ -36,7 +36,7 @@ export function GearsOverview({
   //
   const renderWeaponThumb = () => {
     const { type, code, ...rest } = weapon;
-    const dataWeapon = $AppData.getWeaponData(weapon.code);
+    const dataWeapon = $AppData.getWeapon(weapon.code);
 
     if (!dataWeapon) {
       return null;
@@ -72,7 +72,7 @@ export function GearsOverview({
                     item={{
                       rarity: artifact.rarity,
                       level: artifact.level,
-                      icon: $AppData.getArtifactData(artifact)?.icon || "",
+                      icon: $AppData.getArtifact(artifact)?.icon || "",
                       setupIDs: artifact.setupIDs,
                     }}
                   />
@@ -109,11 +109,11 @@ export function GearsOverview({
             {setBonuses.length ? (
               <>
                 <p className="text-green-300 font-medium">
-                  {$AppData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
+                  {$AppData.getArtifactSet(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
                   <p className="mt-1 text-green-300 font-medium">
-                    {$AppData.getArtifactSetData(setBonuses[1].code)?.name} (2)
+                    {$AppData.getArtifactSet(setBonuses[1].code)?.name} (2)
                   </p>
                 ) : null}
               </>

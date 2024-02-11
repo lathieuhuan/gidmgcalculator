@@ -1,5 +1,5 @@
 import type { WeaponBonus, BuffInfoWrap, WeaponBonusStack, WeaponBuff } from "@Src/types";
-import { countVision, toArray } from "@Src/utils";
+import { countElements, toArray } from "@Src/utils";
 import { applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
 
@@ -14,7 +14,7 @@ const isUsableBonus = (bonus: WeaponBonus, info: BuffInfoWrap, inputs: number[])
 
     if (source === "various_vision") {
       if (info.partyData.length) {
-        input = Object.keys(countVision(info.partyData, info.charData)).length;
+        input = Object.keys(countElements(info.partyData, info.appChar)).length;
       } else {
         return false;
       }
@@ -34,7 +34,7 @@ const isUsableBonus = (bonus: WeaponBonus, info: BuffInfoWrap, inputs: number[])
   return true;
 };
 
-const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr }: BuffInfoWrap, inputs: number[]) => {
+const getStackValue = (stack: WeaponBonusStack, { appChar, partyData, totalAttr }: BuffInfoWrap, inputs: number[]) => {
   switch (stack.type) {
     case "input": {
       const { index = 0, doubledAt } = stack;
@@ -60,7 +60,7 @@ const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr
     }
     case "vision": {
       const { element, max } = stack;
-      const { [charData.vision]: sameCount = 0, ...others } = countVision(partyData);
+      const { [appChar.vision]: sameCount = 0, ...others } = countElements(partyData);
       let stackValue = 0;
 
       if (element === "different") {
@@ -72,12 +72,12 @@ const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr
       return max ? Math.min(stackValue, max) : stackValue;
     }
     case "energy": {
-      return partyData.reduce((result, data) => result + (data?.EBcost ?? 0), charData.EBcost);
+      return partyData.reduce((result, data) => result + (data?.EBcost ?? 0), appChar.EBcost);
     }
     case "nation": {
       return partyData.reduce(
         (result, data) => result + (data?.nation === "liyue" ? 1 : 0),
-        charData.nation === "liyue" ? 1 : 0
+        appChar.nation === "liyue" ? 1 : 0
       );
     }
   }
@@ -156,7 +156,7 @@ const applyWeaponBuff = ({ description, buff, infoWrap: info, inputs, refi, isFi
       if (bonusValue) {
         const { ATTR, PATT } = bonus.targets;
         if (ATTR) {
-          const attributeKey = ATTR === "own_elmt" ? info.charData.vision : ATTR;
+          const attributeKey = ATTR === "own_elmt" ? info.appChar.vision : ATTR;
           applyModifier(description, info.totalAttr, attributeKey, bonusValue, info.tracker);
         }
         if (PATT) {

@@ -1,5 +1,5 @@
 import {
-  VISION_TYPES,
+  ELEMENT_TYPES,
   WEAPON_TYPES,
   ARTIFACT_TYPES,
   LEVELS,
@@ -23,7 +23,7 @@ export type WeaponType = (typeof WEAPON_TYPES)[number];
 
 export type ArtifactType = (typeof ARTIFACT_TYPES)[number];
 
-export type Vision = (typeof VISION_TYPES)[number];
+export type ElementType = (typeof ELEMENT_TYPES)[number];
 
 export type NormalAttack = (typeof NORMAL_ATTACKS)[number];
 

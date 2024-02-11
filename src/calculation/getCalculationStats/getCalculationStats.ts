@@ -25,7 +25,7 @@ import applyWeaponBuff from "./applyWeaponBuff";
 
 export const getCalculationStats = ({
   char,
-  charData,
+  appChar,
   selfBuffCtrls,
   weapon,
   wpBuffCtrls,
@@ -42,8 +42,8 @@ export const getCalculationStats = ({
   const { refi } = weapon;
   const setBonuses = getArtifactSetBonuses(artifacts);
 
-  const weaponData = $AppData.getWeaponData(weapon.code)!;
-  const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
+  const appWeapon = $AppData.getWeapon(weapon.code)!;
+  const totalAttr = initiateTotalAttr({ char, appChar, weapon, appWeapon, tracker });
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
 
   // const usedWeaponMods: UsedMod[] = [];
@@ -63,7 +63,7 @@ export const getCalculationStats = ({
 
   const infoWrap: BuffInfoWrap = {
     char,
-    charData,
+    appChar,
     partyData,
     totalAttr,
     attPattBonus,
@@ -76,7 +76,7 @@ export const getCalculationStats = ({
 
   const APPLY_SELF_BUFFS = (isFinal: boolean) => {
     const charBuffCtrls = selfBuffCtrls || [];
-    const { innateBuffs = [], buffs = [] } = charData;
+    const { innateBuffs = [], buffs = [] } = appChar;
 
     for (const buff of innateBuffs) {
       if (isGranted(buff, char)) {
@@ -107,11 +107,11 @@ export const getCalculationStats = ({
   };
 
   const APPLY_WEAPON_BONUSES = (isFinal: boolean) => {
-    if (weaponData.bonuses) {
+    if (appWeapon.bonuses) {
       applyWeaponBuff({
-        description: `${weaponData.name} bonus`,
+        description: `${appWeapon.name} bonus`,
         buff: {
-          effects: weaponData.bonuses,
+          effects: appWeapon.bonuses,
         },
         refi,
         inputs: [],
@@ -122,14 +122,14 @@ export const getCalculationStats = ({
   };
 
   const APPLY_MAIN_WEAPON_BUFFS = (isFinal: boolean) => {
-    if (!weaponData.buffs || !wpBuffCtrls?.length) return;
+    if (!appWeapon.buffs || !wpBuffCtrls?.length) return;
 
     for (const ctrl of wpBuffCtrls) {
-      const buff = findByIndex(weaponData.buffs, ctrl.index);
+      const buff = findByIndex(appWeapon.buffs, ctrl.index);
 
       if (ctrl.activated && buff) {
         applyWeaponBuff({
-          description: `${weaponData.name} activated`,
+          description: `${appWeapon.name} activated`,
           buff,
           infoWrap,
           inputs: ctrl.inputs ?? [],
@@ -144,7 +144,7 @@ export const getCalculationStats = ({
     for (const { code, bonusLv } of setBonuses) {
       //
       for (let i = 0; i <= bonusLv; i++) {
-        const data = $AppData.getArtifactSetData(code);
+        const data = $AppData.getArtifactSet(code);
         const buff = data?.setBonuses?.[i];
 
         if (buff && buff.effects) {
@@ -213,7 +213,7 @@ export const getCalculationStats = ({
 
   const APPLY_TEAMMATE_BUFFS = (party: Teammate[]) => {
     for (const teammate of party) {
-      const { name, buffs = [] } = $AppData.getCharData(teammate.name);
+      const { name, buffs = [] } = $AppData.getCharacter(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
         const buff = findByIndex(buffs, index);
@@ -231,7 +231,7 @@ export const getCalculationStats = ({
       // #to-check: should be applied before main weapon buffs?
       (() => {
         const { code, refi } = teammate.weapon;
-        const { name, buffs = [] } = $AppData.getWeaponData(code) || {};
+        const { name, buffs = [] } = $AppData.getWeapon(code) || {};
 
         for (const ctrl of teammate.weapon.buffCtrls) {
           const buff = findByIndex(buffs, ctrl.index);
@@ -250,7 +250,7 @@ export const getCalculationStats = ({
 
       (() => {
         const { code } = teammate.artifact;
-        const { name, buffs = [] } = $AppData.getArtifactSetData(code) || {};
+        const { name, buffs = [] } = $AppData.getArtifactSet(code) || {};
 
         for (const ctrl of teammate.artifact.buffCtrls) {
           const buff = findByIndex(buffs, ctrl.index);
@@ -268,7 +268,7 @@ export const getCalculationStats = ({
     }
   };
 
-  const mainArtifactData = setBonuses[0]?.code ? $AppData.getArtifactSetData(setBonuses[0].code) : undefined;
+  const mainArtifactData = setBonuses[0]?.code ? $AppData.getArtifactSet(setBonuses[0].code) : undefined;
   const APLY_MAIN_ARTIFACT_BUFFS = (isFinal: boolean) => {
     if (!mainArtifactData) return;
 
@@ -299,10 +299,10 @@ export const getCalculationStats = ({
   const artAttr = addArtifactAttributes(artifacts, totalAttr, tracker);
 
   // ========== ADD WEAPON SUBSTAT ==========
-  if (weaponData.subStat) {
-    const { type, scale } = weaponData.subStat;
+  if (appWeapon.subStat) {
+    const { type, scale } = appWeapon.subStat;
     const value = weaponSubStatValue(scale, weapon.level);
-    applyModifier(`${weaponData.name} sub-stat`, totalAttr, type, value, tracker);
+    applyModifier(`${appWeapon.name} sub-stat`, totalAttr, type, value, tracker);
   }
 
   APPLY_WEAPON_BONUSES(false);
@@ -310,20 +310,20 @@ export const getCalculationStats = ({
   APPLY_CUSTOM_BUFFS();
 
   // APPLY RESONANCE BUFFS
-  for (const { vision, activated, inputs } of resonances) {
+  for (const { vision: elementType, activated, inputs } of resonances) {
     if (activated) {
-      const { key, value } = RESONANCE_STAT[vision];
+      const { key, value } = RESONANCE_STAT[elementType];
       let xtraValue = 0;
-      const desc = `${vision} resonance`;
+      const desc = `${elementType} resonance`;
 
-      if (vision === "dendro" && inputs) {
+      if (elementType === "dendro" && inputs) {
         if (inputs[0]) xtraValue += 30;
         if (inputs[1]) xtraValue += 20;
       }
 
       applyModifier(desc, totalAttr, key, value + xtraValue, tracker);
 
-      if (vision === "geo") {
+      if (elementType === "geo") {
         applyModifier(desc, attPattBonus, "all.pct_", 15, tracker);
       }
     }

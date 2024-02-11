@@ -20,7 +20,7 @@ import type {
   CalcItem,
   CalcItemBonus,
   BuffInfoWrap,
-  Vision,
+  ElementType,
 } from "@Src/types";
 
 export type UsedMod = {
@@ -30,13 +30,13 @@ export type UsedMod = {
 
 export type CalcUltilInfo = {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   partyData: PartyData;
 };
 
 export type GetCalculationStatsArgs = {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   weapon: CalcWeapon;
   artifacts: CalcArtifacts;
 
@@ -60,7 +60,7 @@ export interface CalculateItemArgs
   target: Target;
   rxnMult: number;
   calcItemBonues: CalcItemBonus[];
-  absorbedElmt?: Vision;
+  absorbedElmt?: ElementType;
   resistReduct: ResistanceReduction;
   record: TrackerCalcItemRecord;
 }

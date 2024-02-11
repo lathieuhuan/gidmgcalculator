@@ -16,7 +16,7 @@ import { ButtonGroup, Popover, SharedSpace, Modal } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
-    const { name, rarity } = $AppData.getCharData(char.name);
+    const { name, rarity } = $AppData.getCharacter(char.name);
     return { name, level: char.level, rarity, index };
   })
 );

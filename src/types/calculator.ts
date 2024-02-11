@@ -17,7 +17,7 @@ import type {
   PartiallyRequired,
   Reaction,
   TotalAttributeStat,
-  Vision,
+  ElementType,
   Weapon,
   WeaponType,
 } from "./global";
@@ -97,7 +97,7 @@ export type Party = (Teammate | null)[];
 // PARTY ends
 
 export type Resonance = {
-  vision: Vision;
+  vision: ElementType;
   activated: boolean;
   inputs?: ModifierInput[];
 };
@@ -107,7 +107,7 @@ export type AttackReaction = null | "melt" | "vaporize" | "aggravate" | "spread"
 export type ElementModCtrl = {
   infuse_reaction: AttackReaction;
   reaction: AttackReaction;
-  absorption: Vision | null;
+  absorption: ElementType | null;
   superconduct: boolean;
   resonances: Resonance[];
 };
@@ -133,7 +133,7 @@ export type CustomDebuffCtrl = {
 export type Target = {
   code: number;
   level: number;
-  variantType?: Vision;
+  variantType?: ElementType;
   inputs?: number[];
   resistances: Record<AttackElement, number>;
 };
@@ -196,7 +196,7 @@ export type PartyData = (TeammateData | null)[];
 
 export type BuffInfoWrap = {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   partyData: PartyData;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
@@ -210,7 +210,7 @@ export type BuffInfoWrap = {
 export type DebuffInfoWrap = {
   char: CharInfo;
   resistReduct: ResistanceReduction;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   partyData: PartyData;
   tracker?: Tracker;
 };

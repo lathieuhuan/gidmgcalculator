@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import { memo } from "react";
-import { Image, BetaMark, VisionIcon } from "@Src/pure-components";
-import { Rarity, Vision, WeaponType } from "@Src/types";
+import { Image, BetaMark } from "@Src/pure-components";
+import { ElementIcon } from "@Src/components";
+import { Rarity, ElementType, WeaponType } from "@Src/types";
 
 export type PickerItemModel = {
   code: number;
@@ -9,7 +10,7 @@ export type PickerItemModel = {
   name: string;
   icon: string;
   rarity?: Rarity;
-  vision?: Vision;
+  vision?: ElementType;
   /** Weapon type or Artifact type */
   type?: string;
   weaponType?: WeaponType;
@@ -55,7 +56,7 @@ function PickerItemThumbnail({ className, visible, item, pickedAmount }: PickerI
           )}
         >
           {item.cons !== undefined && <p className="mr-0.5 text-green-300">C{item.cons}</p>}
-          <VisionIcon type={item.vision} />
+          <ElementIcon type={item.vision} />
         </div>
       )}
     </div>

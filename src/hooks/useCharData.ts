@@ -72,7 +72,7 @@ export const useCharData = (name?: string) => {
 
     switch ($AppData.getCharStatus(name)) {
       case "fetched":
-        onSuccess($AppData.getCharData(name));
+        onSuccess($AppData.getCharacter(name));
         break;
       case "fetching":
         onFetching();
@@ -98,6 +98,6 @@ export const useCharData = (name?: string) => {
     isError: status === "error",
     isSuccess: status === "success",
     error: state.current.error,
-    charData: state.current.data,
+    appChar: state.current.data,
   };
 };

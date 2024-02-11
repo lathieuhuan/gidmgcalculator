@@ -9,7 +9,7 @@ import type {
   Party,
   PartyData,
   ReactionBonus,
-  Vision,
+  ElementType,
   InnateBuff_Character,
   Level,
   AttackElement,
@@ -41,15 +41,15 @@ interface ElementBuffsProps {
   elmtModCtrls: ElementModCtrl;
   infusedElement: AttackElement;
   rxnBonus: ReactionBonus;
-  vision: Vision;
+  elementType: ElementType;
 }
-export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, vision }: ElementBuffsProps) {
+export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, elementType }: ElementBuffsProps) {
   const content = [];
   const { resonances, reaction, infuse_reaction } = elmtModCtrls;
 
-  for (const { vision } of resonances) {
-    const { name, description } = resonanceRenderInfo[vision];
-    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} description={description} />);
+  for (const { vision: resonanceType } of resonances) {
+    const { name, description } = resonanceRenderInfo[resonanceType];
+    content.push(<ModifierTemplate key={resonanceType} mutable={false} heading={name} description={description} />);
   }
 
   if (infusedElement !== "phys") {
@@ -69,7 +69,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
 
   const addAttackReaction = (attReaction: "reaction" | "infuse_reaction") => {
     const reation = attReaction === "reaction" ? reaction : infuse_reaction;
-    const element = attReaction === "reaction" ? vision : infusedElement;
+    const element = attReaction === "reaction" ? elementType : infusedElement;
 
     if (element === "phys") {
       return;
@@ -102,13 +102,13 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
 
 interface SelfBuffsProps {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   buffs: Buff_Character[];
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
   innateBuffs: InnateBuff_Character[];
 }
-export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
+export function SelfBuffs({ char, appChar, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
@@ -117,7 +117,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
         key={"innate-" + index}
         mutable={false}
         heading={buff.src}
-        description={parseAbilityDescription(buff, { char, charData, partyData }, [], true)}
+        description={parseAbilityDescription(buff, { char, appChar, partyData }, [], true)}
       />
     );
   });
@@ -133,7 +133,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
           key={ctrl.index}
           mutable={false}
           heading={buff.src}
-          description={parseAbilityDescription(buff, { char, charData, partyData }, inputs, true)}
+          description={parseAbilityDescription(buff, { char, appChar, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "team")}
         />
@@ -155,7 +155,7 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
   party.forEach((teammate) => {
     if (!teammate || !teammate.buffCtrls.length) return;
 
-    const teammateData = $AppData.getCharData(teammate.name);
+    const teammateData = $AppData.getCharacter(teammate.name);
     if (!teammateData) return;
 
     const { name, buffs = [] } = teammateData;
@@ -179,7 +179,7 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
             key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={buff.src}
-            description={parseAbilityDescription(buff, { char, charData: teammateData, partyData }, inputs, false)}
+            description={parseAbilityDescription(buff, { char, appChar: teammateData, partyData }, inputs, false)}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />

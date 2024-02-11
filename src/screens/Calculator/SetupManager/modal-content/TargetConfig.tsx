@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 
-import type { AttackElement, Vision } from "@Src/types";
+import type { AttackElement, ElementType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 import { useTranslation } from "@Src/pure-hooks";
 import { $AppData } from "@Src/services";
@@ -20,17 +20,17 @@ export function TargetConfig() {
   const { t } = useTranslation();
 
   const target = useSelector(selectTarget);
-  const monsData = $AppData.getMonsData(target);
+  const monster = $AppData.getMonster(target);
 
-  if (!monsData) {
+  if (!monster) {
     return null;
   }
 
-  const { variant } = monsData;
-  const inputConfigs = monsData.inputConfigs ? toArray(monsData.inputConfigs) : [];
+  const { variant } = monster;
+  const inputConfigs = monster.inputConfigs ? toArray(monster.inputConfigs) : [];
 
   const onChangeElementVariant = (e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(updateTarget({ variantType: e.target.value as Vision }));
+    dispatch(updateTarget({ variantType: e.target.value as ElementType }));
   };
 
   const onChangeTargetResistance = (attElmt: AttackElement) => {
@@ -72,7 +72,7 @@ export function TargetConfig() {
           <ComboBox
             className="mt-3"
             targetCode={target.code}
-            targetTitle={monsData.title}
+            targetTitle={monster.title}
             onSelectMonster={({ monsterCode, inputs, variantType }) => {
               dispatch(
                 updateTarget({

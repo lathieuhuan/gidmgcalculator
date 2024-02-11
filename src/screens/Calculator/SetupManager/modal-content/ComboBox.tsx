@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { ChangeEvent, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-import type { Vision, AppMonster } from "@Src/types";
+import type { ElementType, AppMonster } from "@Src/types";
 import { toArray } from "@Src/utils";
 import { $AppData } from "@Src/services";
 
@@ -10,7 +10,7 @@ interface ComboBoxProps {
   className: string;
   targetCode: number;
   targetTitle: string;
-  onSelectMonster: (args: { monsterCode: number; inputs: number[]; variantType?: Vision }) => void;
+  onSelectMonster: (args: { monsterCode: number; inputs: number[]; variantType?: ElementType }) => void;
 }
 export const ComboBox = ({ className, targetCode, targetTitle, onSelectMonster }: ComboBoxProps) => {
   const [keyword, setKeyword] = useState("");

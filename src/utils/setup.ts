@@ -13,7 +13,7 @@ import type { CalculatorState } from "@Store/calculatorSlice/types";
 
 import { $AppData } from "@Src/services";
 import { getArtifactSetBonuses } from "./calculation";
-import { createArtDebuffCtrls, createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
+import { createArtifactDebuffCtrls, createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
 import { deepCopy, findByIndex } from "./pure-utils";
 import { isGranted, userItemToCalcItem } from "./utils";
 
@@ -60,7 +60,7 @@ export function cleanupCalcSetup(
   options?: CleanupCalcSetupOptions
 ): UserSetupCalcInfo {
   const { char, weapon, artifacts, ...data } = calculator.setupsById[setupID];
-  const { buffs = [], debuffs = [] } = $AppData.getCharData(char.name) || {};
+  const { buffs = [], debuffs = [] } = $AppData.getCharacter(char.name) || {};
   const party: Party = [];
 
   for (const teammate of data.party) {
@@ -170,7 +170,7 @@ export const restoreCalcSetup = (data: CalcSetup) => {
     wpBuffCtrls: restoreModCtrls(wpBuffCtrls, data.wpBuffCtrls),
     party,
     artBuffCtrls: restoreModCtrls(artBuffCtrls, data.artBuffCtrls),
-    artDebuffCtrls: restoreModCtrls(createArtDebuffCtrls(), data.artDebuffCtrls),
+    artDebuffCtrls: restoreModCtrls(createArtifactDebuffCtrls(), data.artDebuffCtrls),
   };
 
   return output;

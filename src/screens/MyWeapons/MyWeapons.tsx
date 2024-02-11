@@ -186,7 +186,7 @@ export default function MyWeapons() {
           active={modalType === "REMOVE_WEAPON"}
           message={
             <>
-              Remove "<b>{$AppData.getWeaponData(chosenWeapon.code).name}</b>"?{" "}
+              Remove "<b>{$AppData.getWeapon(chosenWeapon.code).name}</b>"?{" "}
               {chosenWeapon.owner ? (
                 <>
                   It is currently used by <b>{chosenWeapon.owner}</b>.

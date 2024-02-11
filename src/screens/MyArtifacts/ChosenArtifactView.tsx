@@ -98,7 +98,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           message={
             <>
               <b>{artifact.owner}</b> is currently using "
-              <b>{$AppData.getArtifactData(artifact)?.name || "<name missing>"}</b>
+              <b>{$AppData.getArtifact(artifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }
@@ -113,7 +113,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           active={modalType === "REMOVE_ARTIFACT"}
           message={
             <>
-              Remove "<b>{$AppData.getArtifactSetData(artifact.code)?.name}</b>" ({artifact.type})?{" "}
+              Remove "<b>{$AppData.getArtifactSet(artifact.code)?.name}</b>" ({artifact.type})?{" "}
               {artifact.owner ? (
                 <>
                   It is currently used by <b>{artifact.owner}</b>.

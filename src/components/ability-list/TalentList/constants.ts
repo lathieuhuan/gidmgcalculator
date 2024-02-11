@@ -1,6 +1,6 @@
-import type { Vision, WeaponType } from "@Src/types";
+import type { ElementType, WeaponType } from "@Src/types";
 
-export const NORMAL_ATTACK_ICONS: Partial<Record<`${WeaponType}_${Vision}`, string>> = {
+export const NORMAL_ATTACK_ICONS: Record<`${WeaponType}_${ElementType}`, string> = {
   bow_pyro: "7/7f/Bow_Pyro",
   bow_cryo: "a/a9/Bow_Cryo",
   bow_hydro: "6/62/Bow_Hydro",
@@ -9,6 +9,7 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${WeaponType}_${Vision}`, stri
   bow_anemo: "5/5b/Bow_Anemo",
   bow_dendro: "a/a9/Bow_Dendro",
   catalyst_pyro: "8/80/Catalyst_Pyro",
+  catalyst_cryo: "0/03/Catalyst_Cryo",
   catalyst_hydro: "7/77/Catalyst_Hydro",
   catalyst_electro: "e/e7/Catalyst_Electro",
   catalyst_geo: "e/e1/Catalyst_Geo",
@@ -16,6 +17,7 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${WeaponType}_${Vision}`, stri
   catalyst_dendro: "c/c4/Catalyst_Dendro",
   claymore_pyro: "5/57/Claymore_Pyro",
   claymore_cryo: "9/99/Claymore_Cryo",
+  claymore_hydro: "",
   claymore_geo: "6/65/Claymore_Geo",
   claymore_electro: "0/0f/Claymore_Electro",
   claymore_dendro: "5/5a/Claymore_Dendro",

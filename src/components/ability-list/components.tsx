@@ -2,7 +2,7 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 import { FaCaretRight, FaQuestion } from "react-icons/fa";
 
-import type { Vision } from "@Src/types";
+import type { ElementType } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 import styles from "./styles.module.scss";
@@ -10,11 +10,11 @@ import styles from "./styles.module.scss";
 interface AbilityImgProps {
   className?: string;
   img?: string;
-  vision: Vision;
+  elementType: ElementType;
   active?: boolean;
   onClick?: () => void;
 }
-export const AbilityIcon = ({ className, img, vision, active = true, onClick }: AbilityImgProps) => {
+export const AbilityIcon = ({ className, img, elementType, active = true, onClick }: AbilityImgProps) => {
   const commonClassNames = ["transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
 
   return img ? (
@@ -28,8 +28,8 @@ export const AbilityIcon = ({ className, img, vision, active = true, onClick }: 
   ) : (
     <div
       className={clsx(
-        `min-w-13 h-13 rounded-full bg-${vision} flex-center`,
-        styles[vision],
+        `min-w-13 h-13 rounded-full bg-${elementType} flex-center`,
+        styles[elementType],
         commonClassNames,
         className
       )}
@@ -61,7 +61,7 @@ const Caret = ({ toRight, onClick }: CaretProps) => {
 interface SlideShowProps {
   currentIndex: number;
   images: (string | undefined)[];
-  vision: Vision;
+  elementType: ElementType;
   forTalent: boolean;
   topLeftNote?: ReactNode;
   onClickBack: () => void;
@@ -70,7 +70,7 @@ interface SlideShowProps {
 export const SlideShow = ({
   currentIndex,
   images,
-  vision,
+  elementType,
   forTalent,
   topLeftNote,
   onClickBack,
@@ -87,7 +87,7 @@ export const SlideShow = ({
             style={{ transform: `translateX(-${currentIndex * 3.5}rem)` }}
           >
             {images.map((img, i) => (
-              <AbilityIcon key={i} className="!min-w-[3.5rem] !w-14 !h-14" img={img} vision={vision} />
+              <AbilityIcon key={i} className="!min-w-[3.5rem] !w-14 !h-14" img={img} elementType={elementType} />
             ))}
           </div>
         </div>

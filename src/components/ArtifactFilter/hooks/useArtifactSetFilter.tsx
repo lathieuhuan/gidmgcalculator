@@ -18,7 +18,7 @@ export function useArtifactSetFilter(
 
     for (const { code } of artifacts) {
       if (!findByCode(result, code)) {
-        const { icon = "" } = $AppData.getArtifactData({ code, type: artifactType }) || {};
+        const { icon = "" } = $AppData.getArtifact({ code, type: artifactType }) || {};
 
         result.push({
           code,

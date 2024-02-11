@@ -1,14 +1,15 @@
 import clsx, { ClassValue } from "clsx";
 
-import { VISION_TYPES } from "@Src/constants";
+import { ELEMENT_TYPES } from "@Src/constants";
 import { useIconSelect, useRaritySelect } from "@Src/hooks";
-import { Rarity, Vision, WeaponType } from "@Src/types";
-import { ButtonGroup, VisionIcon } from "@Src/pure-components";
+import { Rarity, ElementType, WeaponType } from "@Src/types";
+import { ElementIcon } from "@Src/components";
+import { ButtonGroup } from "@Src/pure-components";
 import { ClearAllButton } from "./ClearAllButton";
 
 export type CharacterFilterState = {
   weaponTypes: WeaponType[];
-  visionTypes: Vision[];
+  elementTypes: ElementType[];
   rarities: Rarity[];
 };
 
@@ -19,18 +20,18 @@ interface CharacterFilterProps {
   onCancel: () => void;
 }
 export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: CharacterFilterProps) => {
-  const VISION_ICONS = VISION_TYPES.map((type) => {
+  const ELEMENT_ICONS = ELEMENT_TYPES.map((type) => {
     return {
       type,
-      icon: <VisionIcon type={type} />,
+      icon: <ElementIcon type={type} />,
     };
   });
 
   const {
-    selectedTypes: selectedVisions,
-    updateTypes: updateVisions,
-    renderTypeSelect: renderVisionSelect,
-  } = useIconSelect(VISION_ICONS, initialFilter?.visionTypes, {
+    selectedTypes: selectedElements,
+    updateTypes: updateElements,
+    renderTypeSelect: renderElementSelect,
+  } = useIconSelect(ELEMENT_ICONS, initialFilter?.elementTypes, {
     multiple: true,
     iconCls: "text-2xl",
     selectedCls: "shadow-3px-3px shadow-blue-400",
@@ -47,7 +48,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
   const onConfirm = () => {
     onDone({
       weaponTypes: selectedWeapons,
-      visionTypes: selectedVisions,
+      elementTypes: selectedElements,
       rarities: selectedRarities,
     });
   };
@@ -57,10 +58,10 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
       <div className="grow space-y-4 hide-scrollbar">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <p className="whitespace-nowrap">Filter by Vision</p>
-            <ClearAllButton disabled={!selectedVisions.length} onClick={() => updateVisions([])} />
+            <p className="whitespace-nowrap">Filter by Element</p>
+            <ClearAllButton disabled={!selectedElements.length} onClick={() => updateElements([])} />
           </div>
-          <div className="hide-scrollbar">{renderVisionSelect("p-1 justify-center")}</div>
+          <div className="hide-scrollbar">{renderElementSelect("p-1 justify-center")}</div>
         </div>
 
         <div className="w-full h-px bg-dark-300" />

@@ -212,12 +212,12 @@ export class AppDataService {
     return control?.status || "unfetched";
   }
 
-  getCharData(name: string) {
+  getCharacter(name: string) {
     const control = this.getCharacterControl(name);
     return control!.data;
   }
 
-  getPartyData(party: Party): PartyData {
+  getPartyInfo(party: Party): PartyData {
     return party.map((teammate) => {
       if (teammate) {
         const keys: Array<keyof AppCharacter> = ["code", "name", "icon", "nation", "vision", "weaponType", "EBcost"];
@@ -247,7 +247,7 @@ export class AppDataService {
     return this.weapons.map((weapon) => weapon.data);
   }
 
-  getWeaponData(code: number) {
+  getWeapon(code: number) {
     const control = this.getItemControl("weapons", code)!;
     return control!.data;
   }
@@ -258,13 +258,13 @@ export class AppDataService {
     return this.artifacts.map((artifact) => artifact.data);
   }
 
-  getArtifactSetData(code: number) {
+  getArtifactSet(code: number) {
     // no artifact with code 0
     return code ? this.getItemControl("artifacts", code)?.data : undefined;
   }
 
-  getArtifactData(artifact: { code: number; type: ArtifactType }) {
-    const data = this.getArtifactSetData(artifact.code);
+  getArtifact(artifact: { code: number; type: ArtifactType }) {
+    const data = this.getArtifactSet(artifact.code);
     if (data && data[artifact.type]) {
       const { name, icon } = data[artifact.type];
       return { beta: data.beta, name, icon };
@@ -278,17 +278,17 @@ export class AppDataService {
     return this.monsters;
   }
 
-  getMonsData({ code }: { code: number }) {
+  getMonster({ code }: { code: number }) {
     return findByCode(this.monsters, code);
   }
 
-  getTargetData(target: Target) {
-    const dataMonster = this.getMonsData(target);
+  getTargetInfo(target: Target) {
+    const monster = this.getMonster(target);
     let variant = "";
     const statuses: string[] = [];
 
-    if (target.variantType && dataMonster?.variant) {
-      for (const type of dataMonster.variant.types) {
+    if (target.variantType && monster?.variant) {
+      for (const type of monster.variant.types) {
         if (typeof type === "string") {
           if (type === target.variantType) {
             variant = target.variantType;
@@ -301,8 +301,8 @@ export class AppDataService {
       }
     }
 
-    if (target.inputs?.length && dataMonster?.inputConfigs) {
-      const inputConfigs = toArray(dataMonster.inputConfigs);
+    if (target.inputs?.length && monster?.inputConfigs) {
+      const inputConfigs = toArray(monster.inputConfigs);
 
       target.inputs.forEach((input, index) => {
         const { label, type = "check", options = [] } = inputConfigs[index] || {};
@@ -326,8 +326,8 @@ export class AppDataService {
     }
 
     return {
-      title: dataMonster?.title,
-      names: dataMonster?.names,
+      title: monster?.title,
+      names: monster?.names,
       variant,
       statuses,
     };

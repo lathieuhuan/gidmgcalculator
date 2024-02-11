@@ -33,7 +33,7 @@ export default function SetupManager() {
   const char = useSelector(selectChar);
   const artifacts = useSelector(selectArtifacts);
 
-  const charData = $AppData.getCharData(char.name);
+  const appChar = $AppData.getCharacter(char.name);
 
   const [modalType, setModalType] = useState<ModalType>("");
   const [prePickerOn, setPrePickerOn] = useState(false);
@@ -111,7 +111,7 @@ export default function SetupManager() {
 
       <InventoryWeapon
         active={modalType === "WEAPONS_PICKER"}
-        weaponType={charData.weaponType}
+        weaponType={appChar.weaponType}
         buttonText="Pick"
         onClickButton={(weapon) => {
           dispatch(changeWeapon(userItemToCalcItem(weapon)));

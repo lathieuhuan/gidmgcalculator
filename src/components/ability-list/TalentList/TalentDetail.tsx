@@ -21,20 +21,20 @@ const styles = {
 };
 
 interface TalentDetailProps {
-  charData: AppCharacter;
+  appChar: AppCharacter;
   detailIndex: number;
   onChangeDetailIndex: (newIndex: number) => void;
   onClose: () => void;
 }
-export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClose }: TalentDetailProps) => {
+export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClose }: TalentDetailProps) => {
   const { t } = useTranslation();
-  const { weaponType, vision, activeTalents } = charData;
+  const { weaponType, vision: elementType, activeTalents } = appChar;
 
   const [talentLevel, setTalentLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
 
   const { ES, EB, altSprint } = activeTalents;
-  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`] || "", ES.image, EB.image];
+  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${elementType}`] || "", ES.image, EB.image];
 
   if (altSprint) {
     images.push(altSprint.image);
@@ -44,7 +44,7 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
   // }
 
   const talents = useMemo(() => {
-    return processActiveTalents(charData, talentLevel, {
+    return processActiveTalents(appChar, talentLevel, {
       atk: t("atk"),
       base_atk: t("base_atk"),
       def: t("def"),
@@ -88,7 +88,7 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
           forTalent
           currentIndex={detailIndex}
           images={images}
-          vision={vision}
+          elementType={elementType}
           onClickBack={() => {
             if (detailIndex >= 1) onChangeDetailIndex(detailIndex - 1);
           }}
@@ -98,7 +98,7 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
           topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talent.type)}</p>}
         />
 
-        <p className={`text-xl font-bold text-${vision} text-center`}>{talent.name}</p>
+        <p className={`text-xl font-bold text-${elementType} text-center`}>{talent.name}</p>
         {/* <div className="my-2 py-1 flex-center bg-light-400 rounded-2xl">
           <p className="font-bold text-black cursor-default">Skill Attributes</p>
         </div> */}
@@ -159,11 +159,11 @@ interface ProcessedActiveTalent {
   stats: ProcessedStat[];
 }
 function processActiveTalents(
-  charData: AppCharacter,
+  appChar: AppCharacter,
   level: number,
   label: Record<TalentAttributeType, string>
 ): ProcessedActiveTalent[] {
-  const { vision, weaponType, EBcost, activeTalents, multFactorConf, calcList } = charData;
+  const { vision: elementType, weaponType, EBcost, activeTalents, multFactorConf, calcList } = appChar;
   const { NAs, ES, EB } = activeTalents;
 
   const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
@@ -174,7 +174,7 @@ function processActiveTalents(
 
   for (const attPatt of ATTACK_PATTERNS) {
     const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
-    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt, multFactorConf);
+    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, elementType, attPatt, multFactorConf);
 
     for (const stat of calcList[attPatt]) {
       const multFactors = toArray(stat.multFactors);

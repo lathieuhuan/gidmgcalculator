@@ -15,7 +15,7 @@ import {
   ATTACK_PATTERNS,
   BASE_REACTION_DAMAGE,
   TRANSFORMATIVE_REACTIONS,
-  VISION_TYPES,
+  ELEMENT_TYPES,
 } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
@@ -30,7 +30,7 @@ import calculateItem from "./calculateItem";
 
 export default function getDamage({
   char,
-  charData,
+  appChar,
   selfDebuffCtrls,
   artDebuffCtrls,
   party,
@@ -52,10 +52,10 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { multFactorConf, calcList, weaponType, vision, debuffs } = charData;
+  const { multFactorConf, calcList, weaponType, vision: elementType, debuffs } = appChar;
   const infoWrap: DebuffInfoWrap = {
     char,
-    charData,
+    appChar,
     partyData,
     resistReduct,
     tracker,
@@ -83,7 +83,7 @@ export default function getDamage({
 
   // APPLY PARTY DEBUFFS
   for (const teammate of realParty(party)) {
-    const { debuffs = [] } = $AppData.getCharData(teammate.name);
+    const { debuffs = [] } = $AppData.getCharacter(teammate.name);
 
     for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);
@@ -103,12 +103,12 @@ export default function getDamage({
   // APPLY ARTIFACT DEBUFFS
   for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
-      const { name, debuffs = [] } = $AppData.getArtifactSetData(code) || {};
+      const { name, debuffs = [] } = $AppData.getArtifactSet(code) || {};
 
       if (debuffs[index]) {
         const { value, path, inpIndex = 0 } = debuffs[index].effects;
         const elementIndex = inputs?.[inpIndex] ?? 0;
-        const finalPath = path === "inp_elmt" ? VISION_TYPES[elementIndex] : path;
+        const finalPath = path === "inp_elmt" ? ELEMENT_TYPES[elementIndex] : path;
         applyModifier(`${name} / 4-piece activated`, resistReduct, finalPath, value, tracker);
       }
     }
@@ -145,14 +145,14 @@ export default function getDamage({
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
-    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT, multFactorConf);
-    const level = finalTalentLv({ charData, talentType: resultKey, char, partyData });
+    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, elementType, ATT_PATT, multFactorConf);
+    const level = finalTalentLv({ appChar, talentType: resultKey, char, partyData });
 
     for (const stat of calcList[ATT_PATT]) {
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
       let attElmt =
-        (stat.subAttPatt === "FCA" ? vision : stat.attElmt === "absorb" ? absorption : stat.attElmt) ??
+        (stat.subAttPatt === "FCA" ? elementType : stat.attElmt === "absorb" ? absorption : stat.attElmt) ??
         defaultInfo.attElmt;
       let actualReaction = reaction;
       let rxnMult = 1;

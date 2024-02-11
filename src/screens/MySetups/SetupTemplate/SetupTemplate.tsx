@@ -75,26 +75,26 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const charData = $AppData.getCharData(char.name);
-    const weaponData = weapon ? $AppData.getWeaponData(weapon.code) : undefined;
+    const appChar = $AppData.getCharacter(char.name);
+    const appWeapon = weapon ? $AppData.getWeapon(weapon.code) : undefined;
 
-    if (charData) {
+    if (appChar) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
         return finalTalentLv({
           char,
-          charData,
+          appChar,
           talentType,
-          partyData: $AppData.getPartyData(party),
+          partyData: $AppData.getPartyInfo(party),
         });
       });
 
       const renderSpan = (text: string | number) => (
-        <span className={`font-medium text-${charData.vision}`}>{text}</span>
+        <span className={`font-medium text-${appChar.vision}`}>{text}</span>
       );
 
       mainCharacter = (
         <div className="mx-auto lg:mx-0 flex">
-          <Image size="w-20 h-20" src={charData.icon} imgType="character" />
+          <Image size="w-20 h-20" src={appChar.icon} imgType="character" />
 
           <div className="ml-4 flex-col justify-between">
             <p className="text-lg">Level {renderSpan(char.level)}</p>
@@ -110,7 +110,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const teammate = (
       <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && $AppData.getCharData(teammate.name);
+          const dataTeammate = teammate && $AppData.getCharacter(teammate.name);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];
@@ -141,22 +141,22 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
     const gears = (
       <div className="mt-4 mx-auto grid grid-cols-3 gap-2">
-        {weaponData ? (
-          <GearIcon item={weaponData} disabled={!isFetched} onClick={openModal("WEAPON")} />
+        {appWeapon ? (
+          <GearIcon item={appWeapon} disabled={!isFetched} onClick={openModal("WEAPON")} />
         ) : (
           <GearIcon item={{ icon: "7/7b/Icon_Inventory_Weapons" }} />
         )}
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
-            const artifactData = $AppData.getArtifactData(artifact);
+            const appArtifact = $AppData.getArtifact(artifact);
 
-            return artifactData ? (
+            return appArtifact ? (
               <GearIcon
                 key={i}
                 item={{
-                  icon: artifactData.icon,
-                  beta: artifactData.beta,
+                  icon: appArtifact.icon,
+                  beta: appArtifact.beta,
                   rarity: artifact.rarity || 5,
                 }}
                 disabled={!isFetched}

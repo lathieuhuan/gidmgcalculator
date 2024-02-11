@@ -18,14 +18,15 @@ import { AbilityIcon } from "../components";
 
 interface TalentOverviewProps {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   party?: Party;
   onChangeLevel: (talentType: "NAs" | "ES" | "EB", newLevel: number) => void;
   onClickInfoSign: (index: number) => void;
 }
-export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
-  const { vision, weaponType, activeTalents, passiveTalents } = charData;
-  const partyData = party ? $AppData.getPartyData(party) : undefined;
+export const TalentOverview = ({ char, appChar, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
+  const { vision: elementType, weaponType, activeTalents, passiveTalents } = appChar;
+  const partyData = party ? $AppData.getPartyInfo(party) : undefined;
+  const elmtText = `text-${elementType}`;
 
   return (
     <div className="h-full hide-scrollbar flex flex-col space-y-3">
@@ -33,7 +34,7 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
         const talentName = activeTalents[talentType]?.name;
         const talentImg = talentType === "NAs" ? undefined : activeTalents[talentType]?.image;
         const xtraLv = totalXtraTalentLv({
-          charData,
+          appChar,
           talentType,
           char,
           partyData,
@@ -43,8 +44,8 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
           <div key={i} className="flex">
             <AbilityIcon
               className="my-2 mr-2"
-              img={talentImg === undefined ? NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`]! : talentImg}
-              vision={vision}
+              img={talentImg === undefined ? NORMAL_ATTACK_ICONS[`${weaponType}_${elementType}`] : talentImg}
+              elementType={elementType}
             />
             <div className="grow flex items-center">
               <div className="px-2">
@@ -52,10 +53,10 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
                 <div className="flex items-center">
                   <p className="mr-1">Lv.</p>
                   {talentType === "altSprint" ? (
-                    <p className={`ml-1 text-${vision} font-bold`}>1</p>
+                    <p className={`ml-1 ${elmtText} font-bold`}>1</p>
                   ) : (
                     <select
-                      className={`text-${vision} font-bold`}
+                      className={`${elmtText} font-bold`}
                       value={char[talentType]}
                       onChange={(e) => onChangeLevel(talentType, +e.target.value)}
                     >
@@ -87,13 +88,13 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
 
         return (
           <div key={i} className="flex">
-            <AbilityIcon className="my-2 mr-2" active={active} img={talent.image} vision={vision} />
+            <AbilityIcon className="my-2 mr-2" active={active} img={talent.image} elementType={elementType} />
             <div className="grow flex items-center">
               <div className={clsx("px-2", !active && "opacity-50")}>
                 <p className="font-bold">{talent.name}</p>
                 <div className="flex">
                   <p className="mr-2">Lv.</p>
-                  <p className={`text-${vision} font-bold`}>1</p>
+                  <p className={`${elmtText} font-bold`}>1</p>
                 </div>
               </div>
               {/* <Button

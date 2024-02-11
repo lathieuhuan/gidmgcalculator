@@ -26,30 +26,30 @@ export const TeammateItems = ({
   onClickRemoveArtifact,
 }: TeammateItemsProps) => {
   const { weapon, artifact } = teammate;
-  const weaponData = $AppData.getWeaponData(weapon.code);
-  const { name: artifactSetName, flower } = $AppData.getArtifactSetData(artifact.code) || {};
+  const appWeapon = $AppData.getWeapon(weapon.code);
+  const { name: artifactSetName, flower } = $AppData.getArtifactSet(artifact.code) || {};
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (
     <div className={className}>
-      {weaponData && (
+      {appWeapon && (
         <div className="flex">
           <button
-            className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
+            className={`w-14 h-14 mr-2 rounded bg-gradient-${appWeapon.rarity} shrink-0`}
             disabled={!mutable}
             onClick={onClickWeapon}
           >
-            <img src={getImgSrc(weaponData.icon)} alt="weapon" draggable={false} />
+            <img src={getImgSrc(appWeapon.icon)} alt="weapon" draggable={false} />
           </button>
 
           <div className="overflow-hidden">
-            <p className={`text-rarity-${weaponData.rarity} text-lg font-semibold truncate`}>{weaponData.name}</p>
+            <p className={`text-rarity-${appWeapon.rarity} text-lg font-semibold truncate`}>{appWeapon.name}</p>
             {mutable ? (
-              weaponData.rarity >= 3 && (
+              appWeapon.rarity >= 3 && (
                 <div className="flex items-center">
                   <span>Refinement</span>
                   <select
-                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
+                    className={`ml-2 pr-1 text-rarity-${appWeapon.rarity} text-right`}
                     value={weapon.refi}
                     onChange={(e) => onChangeWeaponRefinement?.(+e.target.value)}
                   >
@@ -65,7 +65,7 @@ export const TeammateItems = ({
               )
             ) : (
               <p>
-                Refinement <span className={`ml-1 text-rarity-${weaponData.rarity} font-semibold`}>{weapon.refi}</span>
+                Refinement <span className={`ml-1 text-rarity-${appWeapon.rarity} font-semibold`}>{weapon.refi}</span>
               </p>
             )}
           </div>

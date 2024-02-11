@@ -31,7 +31,7 @@ export const renderWeaponModifiers = ({
   ctrls,
   getHanlders,
 }: RenderWeaponModifiersArgs) => {
-  const data = $AppData.getWeaponData(weapon.code);
+  const data = $AppData.getWeapon(weapon.code);
   if (!data) return [];
   const { buffs = [], descriptions = [] } = data;
 

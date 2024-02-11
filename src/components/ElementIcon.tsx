@@ -1,11 +1,11 @@
-import type { Vision } from "@Src/types";
+import type { ElementType } from "@Src/types";
 
-interface VisionIconProps {
-  type: Vision;
+interface ElementIconProps {
+  type: ElementType;
   size?: string | number;
 }
 
-export const VisionIcon = ({ type, size = "1em" }: VisionIconProps) => {
+export const ElementIcon = ({ type, size = "1em" }: ElementIconProps) => {
   const props = {
     width: size,
     height: size,

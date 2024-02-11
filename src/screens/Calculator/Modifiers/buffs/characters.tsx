@@ -23,10 +23,10 @@ export function SelfBuffs() {
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
-  const charData = $AppData.getCharData(char.name);
-  const partyData = $AppData.getPartyData(useSelector(selectParty));
+  const appChar = $AppData.getCharacter(char.name);
+  const partyData = $AppData.getPartyInfo(useSelector(selectParty));
 
-  const { innateBuffs = [], buffs = [] } = $AppData.getCharData(char.name) || {};
+  const { innateBuffs = [], buffs = [] } = $AppData.getCharacter(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
@@ -36,7 +36,7 @@ export function SelfBuffs() {
           key={`innate-${index}`}
           mutable={false}
           heading={buff.src}
-          description={parseAbilityDescription(buff, { char, charData, partyData }, [], true)}
+          description={parseAbilityDescription(buff, { char, appChar, partyData }, [], true)}
         />
       );
     }
@@ -61,7 +61,7 @@ export function SelfBuffs() {
         <ModifierTemplate
           key={`self-${ctrl.index}`}
           heading={buff.src}
-          description={parseAbilityDescription(buff, { char, charData, partyData }, inputs, true)}
+          description={parseAbilityDescription(buff, { char, appChar, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}
@@ -83,7 +83,7 @@ export function SelfBuffs() {
 
 export function PartyBuffs() {
   const party = useSelector(selectParty);
-  const partyData = $AppData.getPartyData(useSelector(selectParty));
+  const partyData = $AppData.getPartyInfo(useSelector(selectParty));
   const modifierElmts: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {
@@ -104,7 +104,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const char = useSelector(selectChar);
 
   const modifierElmts: JSX.Element[] = [];
-  const teammateData = $AppData.getCharData(teammate.name);
+  const teammateData = $AppData.getCharacter(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { inputs = [] } = ctrl;
@@ -126,7 +126,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         key={ctrl.index}
         checked={ctrl.activated}
         heading={buff.src}
-        description={parseAbilityDescription(buff, { char, charData: teammateData, partyData }, inputs, false)}
+        description={parseAbilityDescription(buff, { char, appChar: teammateData, partyData }, inputs, false)}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onToggle={() => {
