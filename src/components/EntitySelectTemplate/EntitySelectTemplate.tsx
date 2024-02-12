@@ -95,8 +95,7 @@ export const EntitySelectTemplate = ({
       searchTool = (
         <div className="relative">
           <Button
-            className="shadow-common"
-            variant={searchOn ? "neutral" : "default"}
+            variant={searchOn ? "active" : "default"}
             shape="square"
             size="small"
             disabled={filterOn}
@@ -132,7 +131,6 @@ export const EntitySelectTemplate = ({
 
               {hasFilter ? (
                 <Button
-                  className="shadow-common"
                   variant={filterOn ? "active" : "default"}
                   shape="square"
                   size="small"

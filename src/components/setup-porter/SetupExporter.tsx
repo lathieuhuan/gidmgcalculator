@@ -63,4 +63,4 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
   );
 };
 
-export const SetupExporter = Modal.wrap(SetupExporterCore, { preset: "small" });
+export const SetupExporter = Modal.coreWrap(SetupExporterCore, { preset: "small" });

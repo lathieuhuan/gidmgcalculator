@@ -89,7 +89,7 @@ const ArtifactInventory = ({
                       buttons={[
                         {
                           text: "Compare",
-                          variant: showingCurrent ? "neutral" : "default",
+                          variant: showingCurrent ? "active" : "default",
                           disabled: !currentArtifact,
                           onClick: () => setShowingCurrent(!showingCurrent),
                         },

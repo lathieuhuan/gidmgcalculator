@@ -12,7 +12,7 @@ import { useTranslation } from "@Src/pure-hooks";
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Component
-import { ToggleButton, CloseButton, Input, Modal } from "@Src/pure-components";
+import { CloseButton, Input, Modal, Button } from "@Src/pure-components";
 import { CopySection } from "../../components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
@@ -73,22 +73,14 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
   return (
     <div className="flex flex-col">
       <div className="mt-3 flex justify-between">
-        <ToggleButton
+        <Button
           icon={<FaTrashAlt />}
-          variant="negative"
-          active={modCtrls.length !== 0}
           disabled={modCtrls.length === 0}
           onClick={() => {
             dispatch(updateCustomModCtrls({ actionType: "replace", ctrls: [] }));
           }}
         />
-        <ToggleButton
-          icon={<FaPlus />}
-          variant="positive"
-          active={modCtrls.length <= 9}
-          disabled={modCtrls.length > 9}
-          onClick={() => setModalOn(true)}
-        />
+        <Button icon={<FaPlus />} variant="positive" disabled={modCtrls.length > 9} onClick={() => setModalOn(true)} />
       </div>
 
       {copyOptions.length ? <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} /> : null}

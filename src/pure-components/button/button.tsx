@@ -2,7 +2,7 @@ import clsx, { ClassValue } from "clsx";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
 
-type ButtonVariant = "default" | "positive" | "negative" | "neutral" | "active" | "custom";
+type ButtonVariant = "default" | "positive" | "negative" | "active" | "custom";
 
 type ButtonShape = "rounded" | "square";
 
@@ -13,14 +13,13 @@ const colorCls: Partial<Record<ButtonVariant, string>> = {
   positive: "bg-yellow-400 text-black",
   negative: "bg-red-600 text-light-400",
   active: "bg-green-200 text-black",
-  neutral: "bg-blue-400 text-black",
 };
 
 const boneColorCls: Partial<Record<ButtonVariant, string>> = {
   default: "text-light-400",
   positive: "text-yellow-400",
   negative: "text-red-600",
-  neutral: "text-green-300",
+  active: "text-green-200",
 };
 
 const shapeCls: Record<ButtonShape, string> = {
@@ -63,9 +62,9 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "text-sm flex-center font-bold not shadow-common whitespace-nowrap",
+    "text-sm flex-center font-bold not whitespace-nowrap",
     iconPosition === "end" && "flex-row-reverse",
-    boneOnly ? boneColorCls[variant] : colorCls[variant],
+    boneOnly ? boneColorCls[variant] : [colorCls[variant], "shadow-common"],
     shapeCls[shape],
     rest.disabled ? "opacity-50" : "glow-on-hover",
     className,
@@ -77,14 +76,6 @@ export const Button = ({
       {children ? <span>{children}</span> : null}
     </button>
   );
-};
-
-interface ToggleButtonProps extends Omit<ButtonProps, "boneOnly"> {
-  active?: boolean;
-  variant?: Exclude<ButtonVariant, "custom">;
-}
-export const ToggleButton = ({ active, variant = "default", className, ...rest }: ToggleButtonProps) => {
-  return <Button {...rest} variant="custom" className={[className, active && colorCls[variant]]} />;
 };
 
 export const CloseButton = ({

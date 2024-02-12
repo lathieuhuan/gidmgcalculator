@@ -39,16 +39,20 @@ const DownloadOptions = () => {
   };
 
   return (
-    <div className="p-4 flex flex-col bg-dark-700">
-      <Button className="mt-4 mx-auto" variant="positive" icon={<FaDownload />} onClick={onClickDownload}>
+    <div className="flex flex-col space-y-4">
+      <Button className="mx-auto" variant="positive" icon={<FaDownload />} onClick={onClickDownload}>
         Download
       </Button>
 
-      <p className="mt-4 text-center text-red-100">
+      <p className="text-center text-red-100">
         Please DO NOT modify this file if you don't understand how it works.
       </p>
     </div>
   );
 };
 
-export const Download = Modal.wrap(DownloadOptions, { preset: "small", withCloseButton: true });
+export const Download = Modal.wrap(DownloadOptions, {
+  preset: "small",
+  title: "Download",
+  className: "bg-dark-700",
+});

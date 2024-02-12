@@ -1,5 +1,5 @@
 import type { TextareaHTMLAttributes } from "react";
-import { ButtonGroup, type ButtonGroupItem } from "@Src/pure-components";
+import { ButtonGroup, Modal, type ButtonGroupItem } from "@Src/pure-components";
 
 interface PorterLayoutProps {
   heading: string;
@@ -13,23 +13,27 @@ interface PorterLayoutProps {
 }
 export const PorterLayout = ({ heading, message, textareaAttrs, moreButtons, onClose }: PorterLayoutProps) => {
   return (
-    <div className="px-6 pt-4 pb-6 bg-dark-900 relative">
-      <p className="mb-2 px-2 text-xl text-orange-500 text-center font-bold">{heading}</p>
-      <textarea className="w-full p-2 text-black rounded resize-none" rows={15} {...textareaAttrs} />
+    <div className="bg-dark-900 relative">
+      <Modal.Header>{heading}</Modal.Header>
 
-      {message ? (
-        <p
-          className={
-            "mt-2 text-center" +
-            (message.type ? (message.type === "success" ? " text-green-300" : " text-red-100") : "")
-          }
-        >
-          {message.text}
-        </p>
-      ) : null}
+      <div className="p-4 flex flex-col">
+        <textarea className="w-full p-2 text-black rounded resize-none" rows={15} {...textareaAttrs} />
+
+        {message ? (
+          <p
+            className={
+              "mt-2 text-center" +
+              (message.type ? (message.type === "success" ? " text-green-300" : " text-red-100") : "")
+            }
+          >
+            {message.text}
+          </p>
+        ) : null}
+      </div>
 
       <ButtonGroup
-        className="mt-4"
+        className="p-4"
+        justify="end"
         buttons={[
           {
             text: "Cancel",
@@ -38,6 +42,8 @@ export const PorterLayout = ({ heading, message, textareaAttrs, moreButtons, onC
           ...moreButtons,
         ]}
       />
+
+      <Modal.CloseButton onClick={onClose} />
     </div>
   );
 };

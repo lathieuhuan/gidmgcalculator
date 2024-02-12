@@ -61,7 +61,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
             <p className="whitespace-nowrap">Filter by Element</p>
             <ClearAllButton disabled={!selectedElements.length} onClick={() => updateElements([])} />
           </div>
-          <div className="hide-scrollbar">{renderElementSelect("p-1 justify-center")}</div>
+          <div className="hide-scrollbar">{renderElementSelect("p-1")}</div>
         </div>
 
         <div className="w-full h-px bg-dark-300" />

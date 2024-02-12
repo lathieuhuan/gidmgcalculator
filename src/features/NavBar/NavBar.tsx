@@ -52,8 +52,8 @@ export function NavBar() {
         <div className="hidden xm:flex">
           <NavTabs
             className="px-2 py-1"
-            activeClassName="bg-dark-900 text-orange-500"
-            idleClassName="bg-dark-500 hover:text-yellow-400"
+            activeClassName="bg-dark-900"
+            idleClassName="bg-dark-500 glow-on-hover"
             ready={appReady}
             onClickTab={onClickTab}
           />
@@ -63,7 +63,6 @@ export function NavBar() {
           <Button
             variant="positive"
             shape="square"
-            className="shadow-common"
             icon={<FaDonate />}
             onClick={openModal("DONATE")}
           >

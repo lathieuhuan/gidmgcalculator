@@ -39,6 +39,7 @@ const ButtonGroup = ({ className, justify = "center", buttons, space = "default"
 };
 
 export interface ConfirmButtonGroupProps extends Pick<ButtonGroupProps, "className" | "justify"> {
+  danger?: boolean;
   disabledConfirm?: boolean;
   focusConfirm?: boolean;
   /** Default to 'Cancel' */
@@ -51,6 +52,7 @@ export interface ConfirmButtonGroupProps extends Pick<ButtonGroupProps, "classNa
   onConfirm?: () => void;
 }
 ButtonGroup.Confirm = ({
+  danger,
   disabledConfirm,
   focusConfirm,
   cancelText = "Cancel",
@@ -67,7 +69,7 @@ ButtonGroup.Confirm = ({
         { text: cancelText, onClick: onCancel, ...cancelButtonProps },
         {
           text: confirmText,
-          variant: "positive",
+          variant: danger ? "negative" : "positive",
           disabled: disabledConfirm,
           autoFocus: focusConfirm,
           onClick: onConfirm,

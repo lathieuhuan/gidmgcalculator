@@ -5,7 +5,7 @@ import { $AppData } from "@Src/services";
 
 // Conponent
 import { CloseButton, Green, Dim, LoadingIcon } from "@Src/pure-components";
-import { SlideShow } from "../components";
+import { SlideShow } from "../ability-list-components";
 
 const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
   const { auto = true } = options || {};

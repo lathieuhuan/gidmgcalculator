@@ -6,7 +6,7 @@ import { $AppData } from "@Src/services";
 
 // Conponent
 import { Button, SharedSpace } from "@Src/pure-components";
-import { AbilityIcon } from "../components";
+import { AbilityIcon } from "../ability-list-components";
 import { ConsDetail } from "./ConsDetail";
 
 interface ConsListProps {

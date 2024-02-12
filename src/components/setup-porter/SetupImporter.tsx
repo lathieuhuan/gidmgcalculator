@@ -64,4 +64,4 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
   );
 };
 
-export const SetupImporter = Modal.wrap(SetupImporterCore, { preset: "small" });
+export const SetupImporter = Modal.coreWrap(SetupImporterCore, { preset: "small" });

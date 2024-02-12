@@ -12,7 +12,7 @@ import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Component
 import { CloseButton, StatsTable } from "@Src/pure-components";
-import { SlideShow } from "../components";
+import { SlideShow } from "../ability-list-components";
 
 const styles = {
   row: "pb-1 text-sm",

@@ -191,8 +191,7 @@ function HighManagerCore() {
                 Add
               </Button>
               <Button
-                variant="custom"
-                className="w-full bg-blue-400 text-black"
+                className="w-full text-black"
                 icon={<BiImport className="text-xl" />}
                 onClick={() => setImportManageOn(true)}
               >

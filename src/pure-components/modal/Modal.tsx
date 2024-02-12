@@ -54,23 +54,24 @@ const Modal = ({
       </div>
 
       {withActions && (
-        <ModalActions
-          {...{
-            className: "px-4",
-            withDivider: withFooterDivider,
-            disabledConfirm,
-            focusConfirm,
-            showCancel,
-            cancelText,
-            confirmText,
-            formId,
-            cancelButtonProps,
-            confirmButtonProps,
-            moreActions,
-            onCancel: coreProps.onClose,
-            onConfirm,
-          }}
-        />
+        <div className="px-4">
+          <ModalActions
+            {...{
+              withDivider: withFooterDivider,
+              disabledConfirm,
+              focusConfirm,
+              showCancel,
+              cancelText,
+              confirmText,
+              formId,
+              cancelButtonProps,
+              confirmButtonProps,
+              moreActions,
+              onCancel: coreProps.onClose,
+              onConfirm,
+            }}
+          />
+        </div>
       )}
 
       {withCloseButton ? <ModalCloseButton disabled={!closable} onClick={coreProps.onClose} /> : null}
@@ -78,9 +79,20 @@ const Modal = ({
   );
 };
 
+type WithModalPropsKey =
+  | "preset"
+  | "title"
+  | "className"
+  | "bodyCls"
+  | "formId"
+  | "withActions"
+  | "withCloseButton"
+  | "withHeaderDivider"
+  | "withFooterDivider";
+
 function withModal<T>(
   Component: (props: T) => JSX.Element | null,
-  modalProps?: Partial<Pick<ModalProps, "title" | "preset" | "withCloseButton" | "className">>
+  modalProps?: Partial<Pick<ModalProps, WithModalPropsKey>>
 ) {
   return (props: Pick<ModalProps, "active" | "closable" | "closeOnMaskClick" | "onClose"> & T): JSX.Element => {
     return (

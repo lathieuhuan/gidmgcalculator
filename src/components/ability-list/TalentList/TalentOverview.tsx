@@ -14,7 +14,7 @@ import { totalXtraTalentLv } from "@Src/utils/calculation";
 
 // Component
 import { Button } from "@Src/pure-components";
-import { AbilityIcon } from "../components";
+import { AbilityIcon } from "../ability-list-components";
 
 interface TalentOverviewProps {
   char: CharInfo;

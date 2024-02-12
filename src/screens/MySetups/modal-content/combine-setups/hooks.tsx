@@ -12,7 +12,7 @@ interface UseCombineManagerArgs {
   limit: number;
 }
 
-export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
+export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => {
   const [pickedIDs, setPickedIDs] = useState<number[]>([]);
   const [isError, setIsError] = useState(false);
 
@@ -48,26 +48,26 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
           <div
             key={ID}
             className={clsx(
-              "p-4 rounded-lg bg-dark-900 flex flex-col md1:flex-row md1:items-center",
+              "p-4 rounded-lg bg-dark-900 flex flex-col md:flex-row md:items-center",
               !picked && !notFull && "opacity-50",
               picked && "shadow-green-300"
             )}
             style={{ boxShadow: picked ? "0 0 5px 1px var(--tw-shadow-color) inset" : undefined }}
             onClick={() => onClickOption(ID, picked)}
           >
-            <div className="md1:w-40 md1:mr-4">
+            <div className="md:w-40 md:mr-4">
               <p className="text-lg font-bold text-orange-500 cursor-default">{setup.name}</p>
             </div>
-            <div className="mt-2 md1:mt-0 flex space-x-4">
-              <div className="w-16 rounded-circle shadow-3px-2px shadow-orange-500">
-                <CharacterPortrait {...{ code, icon }} />
+            <div className="mt-2 md:mt-0 flex space-x-4">
+              <div className="w-16">
+                <CharacterPortrait className="shadow-3px-2px shadow-orange-500" {...{ code, icon }} />
               </div>
               {setup.party.map((teammate, j) => {
                 if (teammate) {
                   const { code = 0, icon = "" } = $AppData.getCharacter(teammate.name) || {};
 
                   return (
-                    <div key={j} className="w-16 rounded-circle">
+                    <div key={j} className="w-16">
                       <CharacterPortrait {...{ code, icon }} />
                     </div>
                   );
@@ -87,4 +87,4 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
     combineMenu,
     setIsError,
   };
-}
+};
