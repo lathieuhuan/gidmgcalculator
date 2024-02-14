@@ -7,13 +7,13 @@ import { $AppData } from "@Src/services";
 // Conponent
 import { Button, SharedSpace } from "@Src/pure-components";
 import { AbilityIcon } from "../ability-list-components";
-import { ConsDetail } from "./ConsDetail";
+import { ConstellationDetail } from "./ConstellationDetail";
 
-interface ConsListProps {
+interface ConstellationListProps {
   char: CharInfo;
   onClickIcon: (index: number) => void;
 }
-export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
+export const ConstellationList = ({ char, onClickIcon }: ConstellationListProps) => {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
@@ -64,7 +64,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
       }
       rightPart={
         consLv ? (
-          <ConsDetail
+          <ConstellationDetail
             appChar={appChar}
             consLv={consLv}
             onChangeConsLv={setConsLv}

@@ -1,6 +1,6 @@
 import type { ElementType, WeaponType } from "@Src/types";
 
-export const NORMAL_ATTACK_ICONS: Record<`${WeaponType}_${ElementType}`, string> = {
+const NORMAL_ATTACK_ICONS: Record<`${WeaponType}_${ElementType}`, string> = {
   bow_pyro: "7/7f/Bow_Pyro",
   bow_cryo: "a/a9/Bow_Cryo",
   bow_hydro: "6/62/Bow_Hydro",
@@ -37,3 +37,5 @@ export const NORMAL_ATTACK_ICONS: Record<`${WeaponType}_${ElementType}`, string>
   sword_anemo: "0/04/Sword_Anemo",
   sword_dendro: "5/5e/Sword_Dendro",
 };
+
+export default NORMAL_ATTACK_ICONS;

@@ -1,8 +1,11 @@
 import clsx, { ClassValue } from "clsx";
 
 import { ELEMENT_TYPES } from "@Src/constants";
-import { useIconSelect, useRaritySelect } from "@Src/hooks";
-import { Rarity, ElementType, WeaponType } from "@Src/types";
+import { useWeaponTypeSelect } from "@Src/hooks";
+import { useIconSelect, useRaritySelect } from "@Src/pure-hooks";
+import { ElementType, Rarity, WeaponType } from "@Src/types";
+
+// Component
 import { ElementIcon } from "@Src/components";
 import { ButtonGroup } from "@Src/pure-components";
 import { ClearAllButton } from "./ClearAllButton";
@@ -28,28 +31,26 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
   });
 
   const {
-    selectedTypes: selectedElements,
-    updateTypes: updateElements,
-    renderTypeSelect: renderElementSelect,
+    selectedIcons: elementTypes,
+    updateSelectedIcons: updateElementTypes,
+    renderIconSelect: renderElementSelect,
   } = useIconSelect(ELEMENT_ICONS, initialFilter?.elementTypes, {
     multiple: true,
     iconCls: "text-2xl",
     selectedCls: "shadow-3px-3px shadow-green-200",
   });
 
-  const {
-    selectedTypes: selectedWeapons,
-    updateTypes: updateWeapons,
-    renderTypeSelect: renderWeaponSelect,
-  } = useIconSelect.Weapon(initialFilter?.weaponTypes, { multiple: true });
+  const { weaponTypes, updateWeaponTypes, renderWeaponTypeSelect } = useWeaponTypeSelect(initialFilter?.weaponTypes, {
+    multiple: true,
+  });
 
-  const { selectedRarities, renderRaritySelect } = useRaritySelect([5, 4], initialFilter?.rarities, { multiple: true });
+  const { rarities, renderRaritySelect } = useRaritySelect([5, 4], initialFilter?.rarities, { multiple: true });
 
   const onConfirm = () => {
     onDone({
-      weaponTypes: selectedWeapons,
-      elementTypes: selectedElements,
-      rarities: selectedRarities,
+      weaponTypes,
+      elementTypes,
+      rarities,
     });
   };
 
@@ -59,7 +60,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <p className="whitespace-nowrap">Filter by Element</p>
-            <ClearAllButton disabled={!selectedElements.length} onClick={() => updateElements([])} />
+            <ClearAllButton disabled={!elementTypes.length} onClick={() => updateElementTypes([])} />
           </div>
           <div className="hide-scrollbar">{renderElementSelect("p-1")}</div>
         </div>
@@ -69,9 +70,9 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <p className="whitespace-nowrap">Filter by Weapon</p>
-            <ClearAllButton disabled={!selectedWeapons.length} onClick={() => updateWeapons([])} />
+            <ClearAllButton disabled={!weaponTypes.length} onClick={() => updateWeaponTypes([])} />
           </div>
-          {renderWeaponSelect("px-1")}
+          {renderWeaponTypeSelect("px-1")}
         </div>
 
         <div className="w-full h-px bg-dark-300" />

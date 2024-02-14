@@ -5,7 +5,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
-import { useIconSelect } from "@Src/hooks";
+import { useWeaponTypeSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
 import { UserWeapon, WeaponType } from "@Src/types";
 
@@ -37,8 +37,8 @@ export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
 
-  const { selectedTypes, renderTypeSelect } = useIconSelect.Weapon();
-  const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, selectedTypes));
+  const { weaponTypes, renderWeaponTypeSelect } = useWeaponTypeSelect();
+  const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, weaponTypes));
   const chosenWeapon = findById(filteredWeapons, chosenID);
 
   const checkIfMaxWeaponsReached = () => {
@@ -77,7 +77,7 @@ export default function MyWeapons() {
             ]}
           />
           {window.innerWidth >= 500 ? (
-            renderTypeSelect()
+            renderWeaponTypeSelect()
           ) : (
             <>
               <Button
@@ -87,7 +87,7 @@ export default function MyWeapons() {
               />
 
               <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
-                <div className="px-4 py-6 shadow-common bg-dark-700">{renderTypeSelect()}</div>
+                <div className="px-4 py-6 shadow-common bg-dark-700">{renderWeaponTypeSelect()}</div>
               </CollapseSpace>
             </>
           )}

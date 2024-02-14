@@ -16,7 +16,7 @@ import { pickEquippedArtSet } from "@Store/thunks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { InventoryArtifact, InventoryWeapon, Tavern, TypeSelect } from "@Src/components";
+import { ArtifactInventory, WeaponInventory, Tavern, TypeSelect } from "@Src/components";
 import { Button, Modal } from "@Src/pure-components";
 import { SetupSelect } from "./SetupSelect";
 import { TargetConfig } from "./modal-content";
@@ -26,7 +26,13 @@ import SectionParty from "./SectionParty";
 import SectionTarget from "./SectionTarget";
 import SectionWeapon from "./SectionWeapon";
 
-type ModalType = "CHARACTERS_PICKER" | "WEAPONS_PICKER" | ArtifactType | "SHARE_SETUP_SUPPORTER" | "TARGET_CONFIG" | "";
+type ModalType =
+  | "CHARACTERS_SELECT"
+  | "WEAPONS_SELECT"
+  | "ARTIFACTS_SELECT"
+  | "SHARE_SETUP_SUPPORTER"
+  | "TARGET_CONFIG"
+  | "";
 
 export default function SetupManager() {
   const dispatch = useDispatch();
@@ -73,11 +79,14 @@ export default function SetupManager() {
         <div className="flex justify-end space-x-1">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400"
-            onClick={() => setModalType("WEAPONS_PICKER")}
+            onClick={() => setModalType("WEAPONS_SELECT")}
           >
             <img src={getImgSrc("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
-          <button className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400" onClick={() => setPrePickerOn(true)}>
+          <button
+            className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400"
+            onClick={() => setModalType("ARTIFACTS_SELECT")}
+          >
             <img src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           </button>
         </div>
@@ -85,7 +94,7 @@ export default function SetupManager() {
 
       <HighManager height={height} />
 
-      <TypeSelect
+      {/* <TypeSelect
         active={prePickerOn}
         options={ARTIFACT_TYPE_ICONS}
         onSelect={(artifactType) => {
@@ -97,7 +106,7 @@ export default function SetupManager() {
           <div className="mt-4 flex justify-center">
             <Button
               onClick={() => {
-                setModalType("CHARACTERS_PICKER");
+                setModalType("CHARACTERS_SELECT");
                 setPrePickerOn(false);
               }}
             >
@@ -105,27 +114,27 @@ export default function SetupManager() {
             </Button>
           </div>
         }
-      />
+      /> */}
 
-      <InventoryWeapon
-        active={modalType === "WEAPONS_PICKER"}
+      <WeaponInventory
+        active={modalType === "WEAPONS_SELECT"}
         weaponType={appChar.weaponType}
-        buttonText="Pick"
+        buttonText="Select"
         onClickButton={(weapon) => {
           dispatch(changeWeapon(userItemToCalcItem(weapon)));
         }}
         onClose={closeModal}
       />
 
-      <InventoryArtifact
-        active={["flower", "plume", "sands", "goblet", "circlet"].includes(modalType)}
+      <ArtifactInventory
+        active={modalType === "ARTIFACTS_SELECT"}
         artifactType={modalType as ArtifactType}
         currentArtifacts={artifacts}
-        buttonText="Pick"
+        buttonText="Select"
         onClickButton={(artifact) => {
           dispatch(
             changeArtifact({
-              pieceIndex: ARTIFACT_TYPES.indexOf(modalType as ArtifactType),
+              pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
               newPiece: userItemToCalcItem(artifact),
             })
           );
@@ -134,7 +143,7 @@ export default function SetupManager() {
       />
 
       <Tavern
-        active={modalType === "CHARACTERS_PICKER"}
+        active={modalType === "CHARACTERS_SELECT"}
         sourceType="user"
         onSelectCharacter={(character) => {
           if (character.artifactIDs) {

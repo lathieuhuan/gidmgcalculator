@@ -4,13 +4,13 @@ import { Artifact, ArtifactType, Rarity } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { pickProps } from "@Src/utils";
-import { useIconSelect } from "@Src/hooks";
+import { useArtifactTypeSelect } from "@Src/hooks";
 import { createArtifact } from "@Src/utils/creators";
 
 // Component
 import { Modal } from "@Src/pure-components";
-import { AppEntitySelect, AppEntitySelectProps } from "./app-entity-selects-components/AppEntitySelect";
-import { ArtifactConfig } from "./app-entity-selects-components/ArtifactConfig";
+import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
+import { ArtifactConfig } from "./components/ArtifactConfig";
 
 interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
   forFeature?: "TEAMMATE_MODIFIERS";
@@ -28,7 +28,7 @@ const ArtifactSmith = ({ forFeature, forcedType, onForgeArtifact, onClose, ...te
     }
   };
 
-  const { selectedTypes, renderTypeSelect } = useIconSelect.Artifact(forcedType || "flower", {
+  const { artifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(forcedType || "flower", {
     onChange: (types) => {
       updateConfig((prevConfig) => {
         const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
@@ -77,7 +77,7 @@ const ArtifactSmith = ({ forFeature, forcedType, onForgeArtifact, onClose, ...te
           <ArtifactConfig
             config={artifactConfig}
             maxRarity={maxRarity}
-            typeSelect={forcedType ? null : renderTypeSelect()}
+            typeSelect={forcedType ? null : renderArtifactTypeSelect()}
             onChangeRarity={onChangeRarity}
             onUpdateConfig={(properties) => {
               updateConfig((prevConfig) => ({ ...prevConfig, ...properties }));
@@ -92,7 +92,7 @@ const ArtifactSmith = ({ forFeature, forcedType, onForgeArtifact, onClose, ...te
       onSelect={(mold, isConfigStep) => {
         const artifact = createArtifact({
           ...mold,
-          type: selectedTypes[0],
+          type: artifactTypes[0],
         });
 
         if (isConfigStep) {

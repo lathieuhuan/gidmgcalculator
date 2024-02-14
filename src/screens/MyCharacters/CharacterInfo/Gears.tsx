@@ -14,7 +14,7 @@ import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDataba
 
 // Component
 import { CloseButton, SharedSpace } from "@Src/pure-components";
-import { InventoryWeapon, InventoryArtifact } from "@Src/components";
+import { WeaponInventory, ArtifactInventory } from "@Src/components";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
 
@@ -124,7 +124,7 @@ export default function Gears(props: GearsProps) {
         </div>
       )}
 
-      <InventoryWeapon
+      <WeaponInventory
         active={inventoryCode === 5}
         owner={oldOwner}
         weaponType={weapon.type}
@@ -137,7 +137,7 @@ export default function Gears(props: GearsProps) {
         onClose={() => setInventoryCode(-1)}
       />
 
-      <InventoryArtifact
+      <ArtifactInventory
         active={inventoryCode >= 0 && inventoryCode < 5}
         currentArtifacts={artifacts}
         artifactType={ARTIFACT_TYPES[inventoryCode]}

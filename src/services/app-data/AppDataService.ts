@@ -179,7 +179,7 @@ export class AppDataService {
         const descriptions: string[] = [];
 
         constellation.forEach((cons, i) => {
-          const description = response.constellations[i].description || "[Description missing]";
+          const description = response.constellations[i]?.description || "[Description missing]";
 
           descriptions.push(description);
           cons.description = description;

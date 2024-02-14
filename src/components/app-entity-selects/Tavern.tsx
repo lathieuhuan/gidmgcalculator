@@ -7,8 +7,8 @@ import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { Modal } from "@Src/pure-components";
-import { AppEntitySelect, AppEntitySelectProps } from "./app-entity-selects-components/AppEntitySelect";
-import { CharacterFilter, CharacterFilterState } from "./app-entity-selects-components/CharacterFilter";
+import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
+import { CharacterFilter, CharacterFilterState } from "./components/CharacterFilter";
 
 type SelectedCharacterKey = "code" | "beta" | "name" | "icon" | "rarity" | "vision" | "weaponType";
 

@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 
 import type { UserArtifact } from "@Src/types";
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
-import { useIconSelect } from "@Src/hooks";
+import { useArtifactTypeSelect } from "@Src/hooks";
 import { findById, indexById } from "@Src/utils";
 
 // Store
@@ -29,7 +29,7 @@ export default function MyArtifacts() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterCondition, setFilterCondition] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_CONDITION);
 
-  const { updateTypes, renderTypeSelect } = useIconSelect.Artifact(null, {
+  const { updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(null, {
     onChange: (selectedTypes) => {
       setFilterCondition((prev) => ({
         ...prev,
@@ -99,7 +99,7 @@ export default function MyArtifacts() {
             ]}
           />
 
-          {window.innerWidth >= 600 && renderTypeSelect()}
+          {window.innerWidth >= 600 && renderArtifactTypeSelect()}
 
           <div className="flex cursor-pointer">
             <button
@@ -118,7 +118,7 @@ export default function MyArtifacts() {
                 onClick={() => {
                   const { DEFAULT_CONDITION } = ArtifactFilter;
                   setFilterCondition(DEFAULT_CONDITION);
-                  updateTypes(DEFAULT_CONDITION.types);
+                  updateArtifactTypes(DEFAULT_CONDITION.types);
                 }}
               >
                 <FaTimes />
@@ -153,7 +153,7 @@ export default function MyArtifacts() {
           initialCondition={filterCondition}
           onConfirm={(contition) => {
             setFilterCondition(contition);
-            updateTypes(contition.types);
+            updateArtifactTypes(contition.types);
           }}
           onClose={closeModal}
         />

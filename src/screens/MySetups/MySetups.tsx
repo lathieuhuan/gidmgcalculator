@@ -17,7 +17,7 @@ import { isUserSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
 import { useScreenWatcher } from "@Src/features";
-import { useCharData } from "@Src/hooks";
+import { useAppCharacter } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Component
@@ -38,7 +38,7 @@ export default function MySetups() {
   })();
 
   const { itemsBySetupID } = useSetupItems(userSetups);
-  const { isLoading, error } = useCharData(chosenSetup?.char.name);
+  const { isLoading, error } = useAppCharacter(chosenSetup?.char.name);
   // const isLoading = true;
   // const error = null;
 

@@ -10,8 +10,8 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { Button, Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
-import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./app-entity-selects-components/WeaponFilter";
-import { AppEntitySelect, AppEntitySelectProps } from "./app-entity-selects-components/AppEntitySelect";
+import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./components/WeaponFilter";
+import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
 
 const INITIAL_FITLER: WeaponFilterState = {
   types: ["bow"],

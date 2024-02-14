@@ -4,7 +4,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { useCharData } from "@Src/hooks";
+import { useAppCharacter } from "@Src/hooks";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -17,7 +17,7 @@ import { findById, findByName, getImgSrc } from "@Src/utils";
 
 // Component
 import { Button, ConfirmModal, LoadingIcon, RarityStars } from "@Src/pure-components";
-import { AttributeTable, TalentList, ConsList } from "@Src/components";
+import { AttributeTable, TalentList, ConstellationList } from "@Src/components";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(
@@ -39,7 +39,7 @@ const selectChosenInfo = createSelector(
 const CharacterInfo = () => {
   const dispatch = useDispatch();
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
-  const { isLoading, error, appChar } = useCharData(char.name);
+  const { isLoading, error, appChar } = useAppCharacter(char.name);
 
   const [removing, setRemoving] = useState(false);
 
@@ -120,7 +120,7 @@ const CharacterInfo = () => {
 
       <div className="p-4 rounded-lg bg-dark-900">
         <div className="h-full w-75">
-          <ConsList
+          <ConstellationList
             char={char}
             onClickIcon={(i) => {
               dispatch(

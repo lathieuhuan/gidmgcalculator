@@ -6,7 +6,7 @@ import { $AppData } from "@Src/services";
 
 // Constant
 import { TALENT_TYPES } from "@Src/constants";
-import { NORMAL_ATTACK_ICONS } from "./constants";
+import NORMAL_ATTACK_ICONS from "./normalAttackIcons";
 
 // Util
 import { ascsFromLv } from "@Src/utils";

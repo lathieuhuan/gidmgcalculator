@@ -5,7 +5,7 @@ import type { ArtifactFilterState } from "./types";
 
 // Hook
 import { useScreenWatcher } from "@Src/features";
-import { useIconSelect } from "@Src/hooks";
+import { useArtifactTypeSelect } from "@Src/hooks";
 import { useTabs } from "@Src/pure-hooks";
 import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
 
@@ -35,10 +35,13 @@ const ArtifactFilter = ({
     configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
   });
 
-  const { selectedTypes, updateTypes, renderTypeSelect } = useIconSelect.Artifact(initialCondition.types, {
-    size: "large",
-    multiple: true,
-  });
+  const { artifactTypes, updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(
+    initialCondition.types,
+    {
+      size: "large",
+      multiple: true,
+    }
+  );
   const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(
     initialCondition.stats,
     artifactType
@@ -56,7 +59,7 @@ const ArtifactFilter = ({
     onConfirm({
       stats: statsFilter,
       codes: filteredCodes,
-      types: selectedTypes,
+      types: artifactTypes,
     });
     onClose();
   };
@@ -80,15 +83,15 @@ const ArtifactFilter = ({
               isSmallScreen ? "justify-between" : "mr-4 items-center shrink-0",
             ])}
           >
-            {renderTypeSelect(["mb-6 hide-scrollbar", isSmallScreen ? "justify-center py-4" : "py-2 flex-col"])}
+            {renderArtifactTypeSelect(["mb-6 hide-scrollbar", isSmallScreen ? "justify-center py-4" : "py-2 flex-col"])}
 
             <div className="flex">
               <Button
                 size={isSmallScreen ? "small" : "custom"}
                 className={!isSmallScreen && "p-1"}
                 icon={<FaEraser className="text-lg" />}
-                disabled={!selectedTypes.length}
-                onClick={() => updateTypes([])}
+                disabled={!artifactTypes.length}
+                onClick={() => updateArtifactTypes([])}
               >
                 {isSmallScreen ? "Clear all" : ""}
               </Button>

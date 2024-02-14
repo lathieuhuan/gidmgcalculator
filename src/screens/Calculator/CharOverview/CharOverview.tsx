@@ -26,7 +26,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
   const appReady = useSelector((state) => state.ui.ready);
 
   const [activeTab, setActiveTab] = useState("Attributes");
-  const [modalType, setModalType] = useState<"CHARACTER_PICKER" | "IMPORT_SETUP" | "">("");
+  const [modalType, setModalType] = useState<"CHARACTER_SELECT" | "IMPORT_SETUP" | "">("");
 
   const Content = contentByTab[activeTab];
 
@@ -49,7 +49,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
         <div className="mt-2 mb-1 pb-4 flex">
           <div
             className="mr-3 relative aspect-square shrink-0"
-            onClick={() => setModalType("CHARACTER_PICKER")}
+            onClick={() => setModalType("CHARACTER_SELECT")}
             style={{ width: 88, height: 88 }}
           >
             <Button className="absolute -top-2 -left-2 z-10" icon={<FaSyncAlt />} />
@@ -125,7 +125,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
   } else {
     body = (
       <div className="w-full flex flex-col items-center space-y-2">
-        <Button variant="positive" onClick={() => setModalType("CHARACTER_PICKER")}>
+        <Button variant="positive" onClick={() => setModalType("CHARACTER_SELECT")}>
           Select a character
         </Button>
         <p>or</p>
@@ -141,7 +141,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
       {body}
 
       <Tavern
-        active={modalType === "CHARACTER_PICKER"}
+        active={modalType === "CHARACTER_SELECT"}
         sourceType="mixed"
         onSelectCharacter={(character) => {
           dispatch(initNewSessionWithCharacter(character));

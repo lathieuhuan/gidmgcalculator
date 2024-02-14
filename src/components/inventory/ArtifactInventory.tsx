@@ -22,7 +22,7 @@ interface ArtifactInventoryProps {
   onClickButton: (chosen: UserArtifact) => void;
   onClose: () => void;
 }
-const ArtifactInventory = ({
+const ArtifactInventoryCore = ({
   artifactType,
   currentArtifacts,
   owner,
@@ -135,4 +135,4 @@ const ArtifactInventory = ({
   );
 };
 
-export const InventoryArtifact = Modal.coreWrap(ArtifactInventory, { preset: "large" });
+export const ArtifactInventory = Modal.coreWrap(ArtifactInventoryCore, { preset: "large" });

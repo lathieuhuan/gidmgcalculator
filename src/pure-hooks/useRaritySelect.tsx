@@ -5,24 +5,24 @@ import { Checkbox, RarityStars } from "@Src/pure-components";
 type Config = {
   multiple?: boolean;
   // required?: boolean;
-  onChange?: (selectedRarities: number[]) => void;
+  onChange?: (rarities: number[]) => void;
 };
 
 export const useRaritySelect = (options: number[], initialValues?: number[] | null, config?: Config) => {
-  const [selectedRarities, setSelectedRarities] = useState(initialValues ?? []);
+  const [rarities, setRarities] = useState(initialValues ?? []);
   const { multiple, onChange } = config || {};
   // const withRadios = multiple === "withRadios";
 
   const updateRarities = (newRarities: number[]) => {
-    setSelectedRarities(newRarities);
+    setRarities(newRarities);
     onChange?.(newRarities);
   };
 
   const onClickStarline = (value: number, currentSelected: boolean) => {
     const newRarities = multiple
       ? currentSelected
-        ? selectedRarities.filter((rarity) => rarity !== value)
-        : selectedRarities.concat(value)
+        ? rarities.filter((rarity) => rarity !== value)
+        : rarities.concat(value)
       : [value];
 
     updateRarities(newRarities);
@@ -36,7 +36,7 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
     return (
       <div className={clsx("flex flex-col space-y-3", className)} style={style}>
         {options.map((option) => {
-          const selected = selectedRarities.includes(option);
+          const selected = rarities.includes(option);
 
           return (
             <div key={option} className="rounded-sm border border-dark-500 flex">
@@ -51,7 +51,7 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
               {/* {withRadios ? (
                 <label className="px-2 flex-center shrink-0 cursor-pointer">
                   <Radio
-                    checked={selectedRarities.length === 1 && selectedRarities[0] === option}
+                    checked={rarities.length === 1 && rarities[0] === option}
                     onChange={() => onCheckRadio(option)}
                   />
                 </label>
@@ -64,8 +64,8 @@ export const useRaritySelect = (options: number[], initialValues?: number[] | nu
   };
 
   return {
-    selectedRarities,
-    // allRaritiesSelected: selectedRarities.length === options.length,
+    rarities,
+    // allRaritiesSelected: rarities.length === options.length,
     updateRarities,
     renderRaritySelect,
   };

@@ -8,7 +8,7 @@ import { useTranslation } from "@Src/pure-hooks";
 // Constant
 import { ATTACK_PATTERNS } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { NORMAL_ATTACK_ICONS } from "./constants";
+import NORMAL_ATTACK_ICONS from "./normalAttackIcons";
 
 // Component
 import { CloseButton, StatsTable } from "@Src/pure-components";
@@ -223,7 +223,5 @@ function processActiveTalents(
     value: EBcost,
   });
 
-  const results = [result.NAs, result.ES, result.EB];
-
-  return results;
+  return [result.NAs, result.ES, result.EB];
 }

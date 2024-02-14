@@ -1,66 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-
 import type { AppCharacter, Talent } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { useConsDescriptions } from "./useConsDescriptions";
 
 // Conponent
 import { CloseButton, Green, Dim, LoadingIcon } from "@Src/pure-components";
 import { SlideShow } from "../ability-list-components";
 
-const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
-  const { auto = true } = options || {};
-  const state = useRef({
-    mounted: true,
-    status: "idle" as "idle" | "loading" | "error" | "success",
-    descriptions: null as string[] | null,
-  });
-  const [boo, setBoo] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      state.current.mounted = false;
-    };
-  }, []);
-
-  const getConstellation = async () => {
-    const response = await $AppData.fetchConsDescriptions(name);
-
-    if (state.current.mounted) {
-      if (response.code === 200) {
-        state.current.status = "success";
-        state.current.descriptions = response.data || [];
-      } else {
-        state.current.status = "error";
-      }
-    }
-    setBoo(!boo);
-  };
-
-  if (auto && state.current.status === "idle") {
-    state.current.status = "loading";
-  }
-
-  if (state.current.status === "loading") {
-    getConstellation();
-  }
-
-  const { status, descriptions } = state.current;
-
-  return {
-    isLoading: status === "loading",
-    isError: status === "error",
-    isSuccess: status === "success",
-    descriptions,
-  };
-};
-
-interface ConsDetailProps {
+interface ConstellationDetailProps {
   appChar: AppCharacter;
   consLv: number;
   onChangeConsLv?: (newLv: number) => void;
   onClose?: () => void;
 }
-export const ConsDetail = ({ appChar, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
+export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }: ConstellationDetailProps) => {
   const { vision: elementType, constellation, talentLvBonus = {}, activeTalents } = appChar;
   const consInfo = constellation[consLv - 1] || {};
 

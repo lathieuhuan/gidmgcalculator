@@ -18,7 +18,7 @@ import { useTabs } from "@Src/pure-hooks";
 
 // Component
 import { SharedSpace } from "@Src/pure-components";
-import { AttributeTable, SetBonusesDisplay, WeaponCard, TalentList, ConsList } from "@Src/components";
+import { AttributeTable, SetBonusesDisplay, WeaponCard, TalentList, ConstellationList } from "@Src/components";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {
@@ -79,7 +79,10 @@ const contentByTab: Record<string, () => JSX.Element> = {
     const char = useSelector(selectChar);
     const dispatch = useDispatch();
     return (
-      <ConsList char={char} onClickIcon={(i) => dispatch(updateCharacter({ cons: char.cons === i + 1 ? i : i + 1 }))} />
+      <ConstellationList
+        char={char}
+        onClickIcon={(i) => dispatch(updateCharacter({ cons: char.cons === i + 1 ? i : i + 1 }))}
+      />
     );
   },
   Talents() {

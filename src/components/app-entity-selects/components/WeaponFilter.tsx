@@ -1,7 +1,10 @@
 import clsx, { ClassValue } from "clsx";
-import { useRaritySelect, useIconSelect } from "@Src/hooks";
-import { ButtonGroup } from "@Src/pure-components";
+import { useWeaponTypeSelect } from "@Src/hooks";
+import { useRaritySelect } from "@Src/pure-hooks";
 import { Rarity, WeaponType } from "@Src/types";
+
+// Component
+import { ButtonGroup } from "@Src/pure-components";
 import { ClearAllButton } from "./ClearAllButton";
 
 export type WeaponFilterState = {
@@ -25,21 +28,17 @@ export const WeaponFilter = ({
   onCancel,
   onDone,
 }: WeaponFilterProps) => {
-  const rarityOptions = [5, 4, 3, 2, 1];
-
-  const { selectedTypes, updateTypes, renderTypeSelect } = useIconSelect.Weapon(initialFilter?.types, {
+  const { weaponTypes, updateWeaponTypes, renderWeaponTypeSelect } = useWeaponTypeSelect(initialFilter?.types, {
     multiple: true,
   });
-  const { selectedRarities, updateRarities, renderRaritySelect } = useRaritySelect(
-    rarityOptions,
-    initialFilter?.rarities,
-    { multiple: true }
-  );
+  const { rarities, updateRarities, renderRaritySelect } = useRaritySelect([5, 4, 3, 2, 1], initialFilter?.rarities, {
+    multiple: true,
+  });
 
   const onConfirm = () => {
     onDone({
-      types: forcedType ? [forcedType] : selectedTypes,
-      rarities: selectedRarities,
+      types: forcedType ? [forcedType] : weaponTypes,
+      rarities,
     });
   };
 
@@ -51,9 +50,9 @@ export const WeaponFilter = ({
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <p className="whitespace-nowrap">Filter by Type</p>
-                <ClearAllButton disabled={!selectedTypes.length} onClick={() => updateTypes([])} />
+                <ClearAllButton disabled={!weaponTypes.length} onClick={() => updateWeaponTypes([])} />
               </div>
-              {renderTypeSelect("px-1")}
+              {renderWeaponTypeSelect("px-1")}
             </div>
 
             <div className="w-full h-px bg-dark-300" />
@@ -63,7 +62,7 @@ export const WeaponFilter = ({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <p className="whitespace-nowrap">Filter by Rarity</p>
-            <ClearAllButton disabled={!selectedRarities.length} onClick={() => updateRarities([])} />
+            <ClearAllButton disabled={!rarities.length} onClick={() => updateRarities([])} />
           </div>
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}
         </div>

@@ -18,7 +18,7 @@ interface WeaponInventoryProps {
   onClickButton: (chosen: UserWeapon) => void;
   onClose: () => void;
 }
-const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose }: WeaponInventoryProps) => {
+const WeaponInventoryCore = ({ weaponType, owner, buttonText, onClickButton, onClose }: WeaponInventoryProps) => {
   const items = useStoreSnapshot((state) => selectUserWps(state).filter((weapon) => weapon.type === weaponType));
 
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
@@ -66,4 +66,4 @@ const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose
   );
 };
 
-export const InventoryWeapon = Modal.coreWrap(WeaponInventory, { preset: "large" });
+export const WeaponInventory = Modal.coreWrap(WeaponInventoryCore, { preset: "large" });

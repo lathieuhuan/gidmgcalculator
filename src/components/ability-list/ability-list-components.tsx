@@ -15,11 +15,11 @@ interface AbilityImgProps {
   onClick?: () => void;
 }
 export const AbilityIcon = ({ className, img, elementType, active = true, onClick }: AbilityImgProps) => {
-  const commonClassNames = ["transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
+  const commonClassNames = ["min-w-13 h-13 transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
 
   return img ? (
     <img
-      className={clsx("min-w-13 h-13", commonClassNames, className)}
+      className={clsx(commonClassNames, className)}
       src={getImgSrc(img)}
       alt=""
       draggable={false}
@@ -27,15 +27,10 @@ export const AbilityIcon = ({ className, img, elementType, active = true, onClic
     />
   ) : (
     <div
-      className={clsx(
-        `min-w-13 h-13 rounded-full bg-${elementType} flex-center`,
-        styles[elementType],
-        commonClassNames,
-        className
-      )}
+      className={clsx(`rounded-circle bg-${elementType} flex-center`, styles[elementType], commonClassNames, className)}
       onClick={onClick}
     >
-      <FaQuestion size="1.25rem" />
+      <FaQuestion className="text-xl" />
     </div>
   );
 };
