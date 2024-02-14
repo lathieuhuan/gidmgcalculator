@@ -30,7 +30,7 @@ export default function MyCharacters() {
 
   return (
     <div className="h-full flex flex-col bg-dark-500">
-      {screenWatcher.isFromSize("md2") ? (
+      {screenWatcher.isFromSize("md") ? (
         <CharacterList
           characters={userChars}
           chosenChar={chosenChar}

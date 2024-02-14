@@ -4,6 +4,7 @@ import { FaCoffee, FaPaypal } from "react-icons/fa";
 
 export const DonateCore = () => {
   const [usd, setUsd] = useState(1);
+
   return (
     <div className="flex flex-col items-center space-y-6">
       <div className="flex items-center space-x-2">
@@ -24,7 +25,7 @@ export const DonateCore = () => {
       </div>
 
       <div className="w-1/2 h-0.5 bg-dark-500 relative">
-        <span className="px-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-700">Or</span>
+        <span className="px-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-700">or</span>
       </div>
 
       <div className="pb-2">

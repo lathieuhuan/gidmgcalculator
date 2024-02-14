@@ -58,8 +58,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   };
 
   return (
-    <div className="p-4 flex flex-col bg-dark-700">
-      <p className="mt-4 px-8 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
+    <div className="flex flex-col gap-4">
       <input
         ref={inputRef}
         hidden
@@ -68,16 +67,16 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
         accept="text/*,application/json"
         onChange={onUploadFile}
       />
-      <Button
-        className="mt-4 mb-4 mx-auto"
-        variant="positive"
-        icon={<FaUpload />}
-        onClick={() => inputRef.current?.click()}
-      >
+      <Button className="mx-auto" variant="positive" icon={<FaUpload />} onClick={() => inputRef.current?.click()}>
         Choose File
       </Button>
+      <p className="px-6 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
     </div>
   );
 };
 
-export const FileUpload = Modal.wrap(FileUploadCore, { preset: "small", withCloseButton: true });
+export const FileUpload = Modal.wrap(FileUploadCore, {
+  preset: "small",
+  title: "Upload",
+  className: "bg-dark-700",
+});
