@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { AppCharacter, UserCharacter } from "@Src/types";
 
 import { $AppData } from "@Src/services";
@@ -17,19 +17,17 @@ type SelectedCharacter = Pick<AppCharacter, SelectedCharacterKey> &
 
 export interface TavernProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
   sourceType: "app" | "user" | "mixed";
-  initialFilter?: CharacterFilterState;
   filter?: (character: SelectedCharacter) => boolean;
   onSelectCharacter: (character: SelectedCharacter) => void;
   onClose: () => void;
 }
-const TavernRooms = ({
-  sourceType,
-  filter: filterFn,
-  initialFilter,
-  onSelectCharacter,
-  onClose,
-  ...templateProps
-}: TavernProps) => {
+const TavernRooms = ({ sourceType, filter: filterFn, onSelectCharacter, onClose, ...templateProps }: TavernProps) => {
+  const filterRef = useRef<CharacterFilterState>({
+    elementTypes: [],
+    weaponTypes: [],
+    rarities: [],
+  });
+
   const userChars = useStoreSnapshot((state) => state.database.userChars);
 
   const allCharacters = useMemo(() => {
@@ -86,6 +84,7 @@ const TavernRooms = ({
       }
     });
     setHiddenCodes(newHiddenCodes);
+    filterRef.current = filter;
   };
 
   return (
@@ -101,7 +100,7 @@ const TavernRooms = ({
         return (
           <CharacterFilter
             className="h-full"
-            initialFilter={initialFilter}
+            initialFilter={filterRef.current}
             onCancel={() => setFilterOn(false)}
             onDone={(filter) => {
               onConfirmFilter(filter);

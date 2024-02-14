@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import type { AppWeapon, Weapon } from "@Src/types";
 import { $AppData } from "@Src/services";
@@ -28,6 +28,8 @@ interface WeaponForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" 
   onClose: () => void;
 }
 function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: WeaponForgeProps) {
+  const filterRef = useRef(INITIAL_FITLER);
+
   const allWeapons = useMemo(() => {
     const weapons = $AppData.getAllWeapons();
 
@@ -61,6 +63,7 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
       }
     });
     setHiddenCodes(newHiddenCodes);
+    filterRef.current = filter;
 
     if (!ready) setReady(true);
   };
@@ -80,7 +83,7 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
           <WeaponFilter
             className="h-full"
             forcedType={forcedType}
-            initialFilter={INITIAL_FITLER}
+            initialFilter={filterRef.current}
             disabledCancel={!ready}
             onCancel={() => setFilterOn(false)}
             onDone={(newFilter) => {
