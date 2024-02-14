@@ -11,7 +11,7 @@ import { useDispatch } from "@Store/hooks";
 import { chooseCharacter } from "@Store/userDatabaseSlice";
 
 // Component
-import { PickerCharacter } from "@Src/components";
+import { Tavern } from "@Src/components";
 import { Button } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";
@@ -126,13 +126,12 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
         </button>
       </div>
 
-      <PickerCharacter
+      <Tavern
         active={gridviewOn}
         sourceType="user"
-        onPickCharacter={(character) => {
+        onSelectCharacter={(character) => {
           dispatch(chooseCharacter(character.name));
           scrollList(character.name);
-          return true;
         }}
         onClose={() => setGridviewOn(false)}
       />

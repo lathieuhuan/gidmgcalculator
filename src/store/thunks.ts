@@ -35,7 +35,7 @@ import {
   createWeapon,
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import { parseUserCharacter, type PickedChar } from "./utils";
+import { parseUserCharacter, CharacterForInit } from "./utils";
 
 type Option = {
   onSuccess?: () => void;
@@ -70,14 +70,14 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
   };
 };
 
-export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
+export const initNewSessionWithCharacter = (character: CharacterForInit): AppThunk => {
   return (dispatch, getState) => {
     const { userWps, userArts } = getState().database;
 
     const ID = Date.now();
-    const appChar = $AppData.getCharacter(pickedChar.name);
+    const appChar = $AppData.getCharacter(character.name);
     const data = parseUserCharacter({
-      pickedChar,
+      character,
       userWps,
       userArts,
       weaponType: appChar.weaponType,

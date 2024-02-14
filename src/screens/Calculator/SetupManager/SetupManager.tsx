@@ -16,7 +16,7 @@ import { pickEquippedArtSet } from "@Store/thunks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { InventoryArtifact, InventoryWeapon, PickerCharacter, TypeSelect } from "@Src/components";
+import { InventoryArtifact, InventoryWeapon, Tavern, TypeSelect } from "@Src/components";
 import { Button, Modal } from "@Src/pure-components";
 import { SetupSelect } from "./SetupSelect";
 import { TargetConfig } from "./modal-content";
@@ -133,14 +133,13 @@ export default function SetupManager() {
         onClose={closeModal}
       />
 
-      <PickerCharacter
+      <Tavern
         active={modalType === "CHARACTERS_PICKER"}
         sourceType="user"
-        onPickCharacter={({ artifactIDs }) => {
-          if (artifactIDs) {
-            dispatch(pickEquippedArtSet(artifactIDs));
+        onSelectCharacter={(character) => {
+          if (character.artifactIDs) {
+            dispatch(pickEquippedArtSet(character.artifactIDs));
           }
-          return true;
         }}
         onClose={closeModal}
       />

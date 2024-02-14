@@ -16,7 +16,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, Modal, WarehouseLayout } from "@Src/pure-components";
-import { InventoryRack, PickerArtifact, ArtifactFilter, ArtifactFilterState } from "@Src/components";
+import { InventoryRack, ArtifactForge, ArtifactFilter, ArtifactFilterState } from "@Src/components";
 import { ChosenArtifactView } from "./ChosenArtifactView";
 
 type ModalType = "ADD_ARTIFACT" | "FITLER" | "";
@@ -159,22 +159,21 @@ export default function MyArtifacts() {
         />
       </Modal>
 
-      <PickerArtifact
+      <ArtifactForge
         active={modalType === "ADD_ARTIFACT"}
         hasMultipleMode
         hasConfigStep
-        onPickArtifact={(item) => {
-          if (isMaxArtifactsReached()) return false;
+        onForgeArtifact={(artifact) => {
+          if (isMaxArtifactsReached()) return;
 
-          const newArtifact: UserArtifact = {
-            ...item,
+          const newUserArtifact: UserArtifact = {
+            ...artifact,
             ID: Date.now(),
             owner: null,
           };
 
-          dispatch(addUserArtifact(newArtifact));
-          setChosenID(newArtifact.ID);
-          return true;
+          dispatch(addUserArtifact(newUserArtifact));
+          setChosenID(newUserArtifact.ID);
         }}
         onClose={closeModal}
       />

@@ -13,7 +13,7 @@ import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { PickerArtifact } from "@Src/components";
+import { ArtifactForge } from "@Src/components";
 import { CollapseSpace } from "@Src/pure-components";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
@@ -101,23 +101,22 @@ export default function SectionArtifacts() {
         )}
       </CollapseSpace>
 
-      <PickerArtifact
+      <ArtifactForge
         active={artifactPicker.active}
         hasConfigStep
         forcedType={ARTIFACT_TYPES[artifactPicker.slot]}
-        onPickArtifact={(item) => {
+        onForgeArtifact={(artifact) => {
           dispatch(
             changeArtifact({
               pieceIndex: artifactPicker.slot,
               newPiece: {
-                ...item,
+                ...artifact,
                 ID: Date.now(),
               },
               shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
             })
           );
           setActiveTabIndex(artifactPicker.slot);
-          return true;
         }}
         onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
       />

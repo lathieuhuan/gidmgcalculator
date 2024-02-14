@@ -4,7 +4,7 @@ import { Image, BetaMark } from "@Src/pure-components";
 import { ElementIcon } from "@Src/components";
 import { Rarity, ElementType, WeaponType } from "@Src/types";
 
-export type PickerItemModel = {
+export type AppEntityOptionModel = {
   code: number;
   beta?: boolean;
   name: string;
@@ -18,13 +18,13 @@ export type PickerItemModel = {
   artifactIDs?: (number | null)[];
 };
 
-interface PickerItemProps {
+interface AppEntityOptionProps {
   className?: string;
   visible: boolean;
-  item: PickerItemModel;
-  pickedAmount?: number;
+  item: AppEntityOptionModel;
+  selectedAmount?: number;
 }
-function PickerItemThumbnail({ className, visible, item, pickedAmount }: PickerItemProps) {
+const AppEntityOptionCore = ({ className, visible, item, selectedAmount }: AppEntityOptionProps) => {
   const itemType = item.vision ? "character" : "weapon"; // not worth checking artifact or weapon
 
   return (
@@ -42,7 +42,7 @@ function PickerItemThumbnail({ className, visible, item, pickedAmount }: PickerI
           {visible && <Image src={item.icon} imgType={itemType} />}
         </div>
 
-        {pickedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p> : null}
+        {selectedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{selectedAmount}</p> : null}
       </div>
       <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-light-400 text-black font-bold text-center">
         {item.name}
@@ -61,8 +61,8 @@ function PickerItemThumbnail({ className, visible, item, pickedAmount }: PickerI
       )}
     </div>
   );
-}
+};
 
-export const PickerItem = memo(PickerItemThumbnail, (prev, next) => {
-  return prev.visible === next.visible && prev.pickedAmount === next.pickedAmount;
+export const AppEntityOption = memo(AppEntityOptionCore, (prev, next) => {
+  return prev.visible === next.visible && prev.selectedAmount === next.selectedAmount;
 });

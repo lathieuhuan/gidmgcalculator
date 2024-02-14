@@ -7,7 +7,7 @@ import { MAX_USER_WEAPONS } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
 import { useIconSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
-import { WeaponType } from "@Src/types";
+import { UserWeapon, WeaponType } from "@Src/types";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -17,7 +17,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
-import { OwnerLabel, WeaponCard, InventoryRack, PickerCharacter, PickerWeapon } from "@Src/components";
+import { OwnerLabel, WeaponCard, InventoryRack, Tavern, WeaponForge } from "@Src/components";
 
 type ModalType = "ADD_WEAPON" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON" | "";
 
@@ -144,38 +144,36 @@ export default function MyWeapons() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <PickerWeapon
+      <WeaponForge
         active={modalType === "ADD_WEAPON"}
         hasMultipleMode
         hasConfigStep
-        onPickWeapon={(item) => {
-          if (checkIfMaxWeaponsReached()) return false;
+        onForgeWeapon={(weapon) => {
+          if (checkIfMaxWeaponsReached()) return;
 
-          const newWeapon = {
-            ...item,
+          const newUserWeapon: UserWeapon = {
+            ...weapon,
             ID: Date.now(),
             owner: null,
           };
 
-          dispatch(addUserWeapon(newWeapon));
-          setChosenID(newWeapon.ID);
-          return true;
+          dispatch(addUserWeapon(newUserWeapon));
+          setChosenID(newUserWeapon.ID);
         }}
         onClose={closeModal}
       />
 
       {chosenWeapon && (
-        <PickerCharacter
+        <Tavern
           active={modalType === "PICK_CHARACTER_FOR_EQUIP"}
           sourceType="user"
-          filter={({ name, weaponType }) => {
-            return weaponType === chosenWeapon.type && name !== chosenWeapon.owner;
+          filter={(character) => {
+            return character.weaponType === chosenWeapon.type && character.name !== chosenWeapon.owner;
           }}
-          onPickCharacter={(character) => {
+          onSelectCharacter={(character) => {
             if (chosenID) {
               dispatch(swapWeaponOwner({ weaponID: chosenID, newOwner: character.name }));
             }
-            return true;
           }}
           onClose={closeModal}
         />

@@ -5,41 +5,41 @@ import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
 import { ItemCase, DrawerProps } from "@Src/pure-components";
-import { EntitySelectRenderArgs, EntitySelectTemplate } from "@Src/components";
-import { PickerItem, PickerItemModel } from "./PickerItem";
+import { EntitySelectRenderArgs, EntitySelectTemplate } from "../../EntitySelectTemplate";
+import { AppEntityOption, AppEntityOptionModel } from "./AppEntityOption";
 
 /** this pick is valid or not */
 type Return = boolean;
 
-export type OnPickItemReturn = Return | Promise<Return>;
+export type OptionValidity = Return | Promise<Return>;
 
-interface PickerOptionsProps<T> {
+interface SelectOptionsProps<T> {
   data: T[];
   hiddenCodes?: Set<number>;
   /** Default to 'No data' */
   emptyText?: string;
   hasConfigStep?: boolean;
-  /** Only in multiple mode, implemented in afterPickItem */
-  shouldHidePickedItem?: boolean;
-  /** Remember to handle case shouldHidePickedItem */
-  renderItemConfig?: (afterPickItem: (code: number) => void) => ReactNode;
-  onPickItem?: (item: T, isConfigStep: boolean) => OnPickItemReturn;
+  /** Only in multiple mode, implemented in afterSelect */
+  shouldHideSelected?: boolean;
+  /** Remember to handle case shouldHideSelected */
+  renderOptionConfig?: (afterSelect: (code: number) => void) => ReactNode;
+  onSelect?: (entity: T, isConfigStep: boolean) => OptionValidity;
   onClose: () => void;
 }
-function PickerOptions<T extends PickerItemModel = PickerItemModel>({
+function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   data,
-  shouldHidePickedItem,
+  shouldHideSelected,
   emptyText = "No data",
   hasConfigStep,
   hiddenCodes,
-  renderItemConfig,
-  onPickItem,
+  renderOptionConfig,
+  onSelect,
   onClose,
   isMultiSelect,
   keyword,
   searchOn,
   inputRef,
-}: PickerOptionsProps<T> & EntitySelectRenderArgs) {
+}: SelectOptionsProps<T> & EntitySelectRenderArgs) {
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
@@ -68,7 +68,7 @@ function PickerOptions<T extends PickerItemModel = PickerItemModel>({
             const code = elmt.getAttribute("data-id");
             const foundItem = code ? data.find((item) => item.code === +code) : undefined;
 
-            if (foundItem) onClickPickerItem(foundItem);
+            if (foundItem) selectOption(foundItem);
             return;
           }
         }
@@ -105,13 +105,10 @@ function PickerOptions<T extends PickerItemModel = PickerItemModel>({
     }
   }, [hiddenCodes, pickedCodes, keyword]);
 
-  const afterPickItem = (itemCode: number) => {
+  const afterSelect = (itemCode: number) => {
     if (isMultiSelect) {
-      if (shouldHidePickedItem) {
-        const newPickedCodes = new Set(pickedCodes).add(itemCode);
-
-        setPickedCodes(newPickedCodes);
-        return;
+      if (shouldHideSelected) {
+        return setPickedCodes(new Set(pickedCodes).add(itemCode));
       }
       const newCounts = { ...itemCounts };
       newCounts[itemCode] = (newCounts[itemCode] || 0) + 1;
@@ -122,30 +119,30 @@ function PickerOptions<T extends PickerItemModel = PickerItemModel>({
     onClose();
   };
 
-  const onClickPickerItem = async (item: T) => {
-    if (!onPickItem) return;
+  const selectOption = async (item: T) => {
+    if (!onSelect) return;
 
     if (hasConfigStep) {
       if (item.code !== chosenCode) {
-        await onPickItem(item, true);
+        await onSelect(item, true);
         setChosenCode(item.code);
         if (bodyRef.current) bodyRef.current.scrollLeft = 999;
       }
       return;
     }
 
-    if (await onPickItem(item, false)) {
-      afterPickItem(item.code);
+    if (await onSelect(item, false)) {
+      afterSelect(item.code);
     }
   };
 
-  const onDoubleClickPickerItem = async (item: T) => {
-    if (!onPickItem || !hasConfigStep) return;
+  // const onDoubleClickPickerItem = async (item: T) => {
+  //   if (!onSelect || !hasConfigStep) return;
 
-    if (await onPickItem(item, false)) {
-      afterPickItem(item.code);
-    }
-  };
+  //   if (await onSelect(item, false)) {
+  //     afterSelect(item.code);
+  //   }
+  // };
 
   const itemWidthCls = [
     "max-w-1/3 basis-1/3 sm:w-1/4 sm:basis-1/4",
@@ -180,15 +177,15 @@ function PickerOptions<T extends PickerItemModel = PickerItemModel>({
               >
                 <ItemCase
                   chosen={item.code === chosenCode}
-                  onClick={() => onClickPickerItem(item)}
-                  onDoubleClick={() => onDoubleClickPickerItem(item)}
+                  onClick={() => selectOption(item)}
+                  // onDoubleClick={() => onDoubleClickPickerItem(item)}
                 >
                   {(className) => (
-                    <PickerItem
+                    <AppEntityOption
                       className={className}
                       visible={visibleItems[item.code]}
                       item={item}
-                      pickedAmount={itemCounts[item.code] || 0}
+                      selectedAmount={itemCounts[item.code] || 0}
                     />
                   )}
                 </ItemCase>
@@ -200,12 +197,13 @@ function PickerOptions<T extends PickerItemModel = PickerItemModel>({
         {empty ? <p className="py-4 text-light-800 text-lg text-center">{emptyText}</p> : null}
       </div>
 
-      {hasConfigStep ? <div className="overflow-auto shrink-0">{renderItemConfig?.(afterPickItem)}</div> : null}
+      {hasConfigStep ? <div className="overflow-auto shrink-0">{renderOptionConfig?.(afterSelect)}</div> : null}
     </div>
   );
 }
 
-export interface PickerTemplateProps<T extends PickerItemModel = PickerItemModel> extends PickerOptionsProps<T> {
+export interface AppEntitySelectProps<T extends AppEntityOptionModel = AppEntityOptionModel>
+  extends SelectOptionsProps<T> {
   title: string;
   hasMultipleMode?: boolean;
   hasSearch?: boolean;
@@ -218,25 +216,25 @@ export interface PickerTemplateProps<T extends PickerItemModel = PickerItemModel
   renderFilter?: (setFilterOn: (on: boolean) => void) => ReactNode;
   onClose: () => void;
 }
-export const PickerTemplate = <T extends PickerItemModel = PickerItemModel>({
+export const AppEntitySelect = <T extends AppEntityOptionModel = AppEntityOptionModel>({
   data,
   hiddenCodes,
   emptyText,
   hasConfigStep,
-  shouldHidePickedItem,
-  renderItemConfig,
-  onPickItem,
+  shouldHideSelected,
+  renderOptionConfig,
+  onSelect,
   onClose,
   ...restProps
-}: PickerTemplateProps<T>) => {
+}: AppEntitySelectProps<T>) => {
   return (
     <EntitySelectTemplate {...restProps} onClose={onClose}>
       {(arg) => {
         return (
-          <PickerOptions
+          <SelectOptions
             onClose={onClose}
             {...arg}
-            {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHidePickedItem, renderItemConfig, onPickItem }}
+            {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHideSelected, renderOptionConfig, onSelect }}
           />
         );
       }}

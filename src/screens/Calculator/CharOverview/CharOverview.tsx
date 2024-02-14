@@ -5,21 +5,16 @@ import { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { $AppData } from "@Src/services";
 
-// Util
-import { getAppDataError } from "@Src/utils";
-import { notification } from "@Src/utils/notification";
-
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar } from "@Store/calculatorSlice/selectors";
 // Action
 import { updateCharacter } from "@Store/calculatorSlice";
-import { updateUI } from "@Store/uiSlice";
-import { initNewSessionWithChar } from "@Store/thunks";
+import { initNewSessionWithCharacter } from "@Store/thunks";
 
 // Component
 import { Button, Image, BetaMark, ComplexSelect, RarityStars } from "@Src/pure-components";
-import { SetupImporter, PickerCharacter } from "@Src/components";
+import { SetupImporter, Tavern } from "@Src/components";
 import contentByTab from "./content";
 
 interface OverviewCharProps {
@@ -145,31 +140,11 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
     <>
       {body}
 
-      <PickerCharacter
+      <Tavern
         active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
-        onPickCharacter={async (pickedChar) => {
-          if ($AppData.getCharStatus(pickedChar.name) === "fetched") {
-            dispatch(initNewSessionWithChar(pickedChar));
-            return true;
-          }
-          dispatch(updateUI({ loading: true }));
-
-          const response = await $AppData.fetchCharacter(pickedChar.name);
-
-          if (response.code === 200) {
-            dispatch(initNewSessionWithChar(pickedChar));
-            dispatch(updateUI({ loading: false }));
-            return true;
-          }
-
-          notification.error({
-            content: getAppDataError("character", response.code),
-            duration: 0,
-          });
-          dispatch(updateUI({ loading: false }));
-
-          return false;
+        onSelectCharacter={(character) => {
+          dispatch(initNewSessionWithCharacter(character));
         }}
         onClose={closeModal}
       />

@@ -8,7 +8,7 @@ import { selectChosenChar, selectUserChars } from "@Store/userDatabaseSlice/sele
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { PickerCharacter } from "@Src/components";
+import { Tavern } from "@Src/components";
 import { Button } from "@Src/pure-components";
 import CharacterSort from "./CharacterSort";
 import CharacterList from "./CharacterList";
@@ -66,17 +66,16 @@ export default function MyCharacters() {
         <div className="w-full h-98/100 flex justify-center">{userChars.length ? <CharacterInfo /> : null}</div>
       </div>
 
-      <PickerCharacter
+      <Tavern
         active={modalType === "ADD_CHARACTER"}
         sourceType="app"
         hasMultipleMode
         filter={(character) => userChars.every((userChar) => userChar.name !== character.name)}
-        onPickCharacter={(character) => {
+        onSelectCharacter={(character) => {
           if (!userChars.length) {
             dispatch(chooseCharacter(character.name));
           }
           dispatch(addCharacter(character));
-          return true;
         }}
         onClose={closeModal}
       />

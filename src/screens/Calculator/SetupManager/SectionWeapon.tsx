@@ -13,7 +13,7 @@ import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { PickerWeapon } from "@Src/components";
+import { WeaponForge } from "@Src/components";
 import { BetaMark } from "@Src/pure-components";
 
 export default function SectionWeapon() {
@@ -73,17 +73,16 @@ export default function SectionWeapon() {
         )}
       </div>
 
-      <PickerWeapon
+      <WeaponForge
         active={pickerOn}
         forcedType={weapon.type}
-        onPickWeapon={(item) => {
+        onForgeWeapon={(weapon) => {
           dispatch(
             changeWeapon({
-              ...item,
+              ...weapon,
               ID: Date.now(),
             })
           );
-          return true;
         }}
         onClose={() => setPickerOn(false)}
       />

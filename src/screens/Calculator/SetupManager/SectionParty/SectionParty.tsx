@@ -18,7 +18,7 @@ import {
 
 // Component
 import { Image, CollapseSpace } from "@Src/pure-components";
-import { TeammateItems, PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/components";
+import { TeammateItems, Tavern, WeaponForge, ArtifactForge } from "@Src/components";
 import { CopySelect } from "./CopySelect";
 
 interface ModalState {
@@ -173,58 +173,60 @@ export default function SectionParty() {
         )}
       </CollapseSpace>
 
-      <PickerCharacter
+      <Tavern
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="app"
         filter={(character) => character.name !== appChar.name && party.every((tm) => tm?.name !== character.name)}
-        onPickCharacter={({ name, vision, weaponType }) => {
+        onSelectCharacter={(character) => {
           const { teammateIndex } = modal;
 
           if (teammateIndex !== null) {
-            dispatch(addTeammate({ name, elementType: vision, weaponType, teammateIndex }));
+            dispatch(
+              addTeammate({
+                name: character.name,
+                elementType: character.vision,
+                weaponType: character.weaponType,
+                teammateIndex,
+              })
+            );
             setDetailSlot(teammateIndex);
           }
-          return true;
         }}
         onClose={closeModal}
       />
 
       {detailSlot !== null && (
-        <PickerWeapon
+        <WeaponForge
           active={modal.type === "WEAPON" && modal.teammateIndex !== null}
           forcedType={partyData[detailSlot]?.weaponType}
-          onPickWeapon={({ code }) => {
-            if (detailSlot !== null) {
-              dispatch(
-                updateTeammateWeapon({
-                  teammateIndex: detailSlot,
-                  code,
-                })
-              );
-            }
-            return true;
+          onForgeWeapon={(weapon) => {
+            dispatch(
+              updateTeammateWeapon({
+                teammateIndex: detailSlot,
+                code: weapon.code,
+              })
+            );
           }}
           onClose={closeModal}
         />
       )}
 
-      <PickerArtifact
-        active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
-        forcedType="flower"
-        forFeature="TEAMMATE_MODIFIERS"
-        onPickArtifact={({ code }) => {
-          if (detailSlot !== null) {
+      {detailSlot !== null && (
+        <ArtifactForge
+          active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
+          forcedType="flower"
+          forFeature="TEAMMATE_MODIFIERS"
+          onForgeArtifact={(artifact) => {
             dispatch(
               updateTeammateArtifact({
                 teammateIndex: detailSlot,
-                code,
+                code: artifact.code,
               })
             );
-          }
-          return true;
-        }}
-        onClose={closeModal}
-      />
+          }}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }

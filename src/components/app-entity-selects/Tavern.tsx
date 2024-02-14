@@ -7,33 +7,34 @@ import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { Modal } from "@Src/pure-components";
-import { PickerTemplate, PickerTemplateProps, OnPickItemReturn } from "./components/PickerTemplate";
-import { CharacterFilter, CharacterFilterState } from "./components/CharacterFilter";
+import { AppEntitySelect, AppEntitySelectProps } from "./app-entity-selects-components/AppEntitySelect";
+import { CharacterFilter, CharacterFilterState } from "./app-entity-selects-components/CharacterFilter";
 
-type PickedCharacterKey = "code" | "beta" | "name" | "icon" | "rarity" | "vision" | "weaponType";
+type SelectedCharacterKey = "code" | "beta" | "name" | "icon" | "rarity" | "vision" | "weaponType";
 
-type PickedCharacter = Pick<AppCharacter, PickedCharacterKey> & Partial<Pick<UserCharacter, "cons" | "artifactIDs">>;
+type SelectedCharacter = Pick<AppCharacter, SelectedCharacterKey> &
+  Partial<Pick<UserCharacter, "cons" | "artifactIDs">>;
 
-export interface CharacterPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
+export interface TavernProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
   sourceType: "app" | "user" | "mixed";
   initialFilter?: CharacterFilterState;
-  filter?: (character: PickedCharacter) => boolean;
-  onPickCharacter: (character: PickedCharacter) => OnPickItemReturn;
+  filter?: (character: SelectedCharacter) => boolean;
+  onSelectCharacter: (character: SelectedCharacter) => void;
   onClose: () => void;
 }
-const CharacterPicker = ({
+const TavernRooms = ({
   sourceType,
   filter: filterFn,
   initialFilter,
-  onPickCharacter,
+  onSelectCharacter,
   onClose,
   ...templateProps
-}: CharacterPickerProps) => {
+}: TavernProps) => {
   const userChars = useStoreSnapshot((state) => state.database.userChars);
 
   const allCharacters = useMemo(() => {
-    const pickedKey: PickedCharacterKey[] = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
-    const processedCharacters: PickedCharacter[] = [];
+    const pickedKey: SelectedCharacterKey[] = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
+    const processedCharacters: SelectedCharacter[] = [];
 
     switch (sourceType) {
       case "app":
@@ -88,14 +89,14 @@ const CharacterPicker = ({
   };
 
   return (
-    <PickerTemplate
+    <AppEntitySelect
       title="Characters"
       data={allCharacters}
       hiddenCodes={hiddenCodes}
       emptyText="No characters found"
       hasSearch
       hasFilter
-      shouldHidePickedItem={templateProps.hasMultipleMode}
+      shouldHideSelected={templateProps.hasMultipleMode}
       renderFilter={(setFilterOn) => {
         return (
           <CharacterFilter
@@ -109,11 +110,14 @@ const CharacterPicker = ({
           />
         );
       }}
-      onPickItem={(character) => onPickCharacter(character as PickedCharacter)}
+      onSelect={(character) => {
+        onSelectCharacter(character);
+        return true;
+      }}
       onClose={onClose}
       {...templateProps}
     />
   );
 };
 
-export const PickerCharacter = Modal.coreWrap(CharacterPicker, { preset: "large" });
+export const Tavern = Modal.coreWrap(TavernRooms, { preset: "large" });

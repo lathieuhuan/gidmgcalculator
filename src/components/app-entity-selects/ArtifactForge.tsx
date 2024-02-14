@@ -9,16 +9,16 @@ import { createArtifact } from "@Src/utils/creators";
 
 // Component
 import { Modal } from "@Src/pure-components";
-import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
-import { ArtifactConfig } from "./components/ArtifactConfig";
+import { AppEntitySelect, AppEntitySelectProps } from "./app-entity-selects-components/AppEntitySelect";
+import { ArtifactConfig } from "./app-entity-selects-components/ArtifactConfig";
 
-interface ArtifactPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
+interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
   forFeature?: "TEAMMATE_MODIFIERS";
   forcedType?: ArtifactType;
-  onPickArtifact: (info: ReturnType<typeof createArtifact>) => OnPickItemReturn;
+  onForgeArtifact: (info: ReturnType<typeof createArtifact>) => void;
   onClose: () => void;
 }
-const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...templateProps }: ArtifactPickerProps) => {
+const ArtifactSmith = ({ forFeature, forcedType, onForgeArtifact, onClose, ...templateProps }: ArtifactForgeProps) => {
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
   const [maxRarity, setMaxRarity] = useState(5);
 
@@ -68,11 +68,11 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
   };
 
   return (
-    <PickerTemplate
+    <AppEntitySelect
       title="Artifacts"
       data={allArtifactSets}
       emptyText="No artifacts found"
-      renderItemConfig={(afterPickItem) => {
+      renderOptionConfig={(afterSelect) => {
         return (
           <ArtifactConfig
             config={artifactConfig}
@@ -83,13 +83,13 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
               updateConfig((prevConfig) => ({ ...prevConfig, ...properties }));
             }}
             onSelect={(config) => {
-              onPickArtifact(config);
-              afterPickItem(config.code);
+              onForgeArtifact(config);
+              afterSelect(config.code);
             }}
           />
         );
       }}
-      onPickItem={(mold, isConfigStep) => {
+      onSelect={(mold, isConfigStep) => {
         const artifact = createArtifact({
           ...mold,
           type: selectedTypes[0],
@@ -102,11 +102,11 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
             ...(forcedType ? { type: forcedType } : undefined),
           });
           setMaxRarity(mold.rarity);
-
-          return true;
+        } else {
+          onForgeArtifact(artifact);
         }
 
-        return onPickArtifact(artifact);
+        return true;
       }}
       onClose={onClose}
       {...templateProps}
@@ -114,4 +114,4 @@ const ArtifactPicker = ({ forFeature, forcedType, onPickArtifact, onClose, ...te
   );
 };
 
-export const PickerArtifact = Modal.coreWrap(ArtifactPicker, { preset: "large" });
+export const ArtifactForge = Modal.coreWrap(ArtifactSmith, { preset: "large" });

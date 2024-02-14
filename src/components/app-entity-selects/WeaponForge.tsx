@@ -10,8 +10,8 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { Button, Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
-import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./components/WeaponFilter";
-import { OnPickItemReturn, PickerTemplate, PickerTemplateProps } from "./components/PickerTemplate";
+import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./app-entity-selects-components/WeaponFilter";
+import { AppEntitySelect, AppEntitySelectProps } from "./app-entity-selects-components/AppEntitySelect";
 
 const INITIAL_FITLER: WeaponFilterState = {
   types: ["bow"],
@@ -22,12 +22,12 @@ const transformWeapon = (weapon: AppWeapon) => pickProps(weapon, ["code", "name"
 
 type WeaponData = Array<ReturnType<typeof transformWeapon>>;
 
-interface WeaponPickerProps extends Pick<PickerTemplateProps, "hasMultipleMode" | "hasConfigStep"> {
+interface WeaponForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
   forcedType?: WeaponFilterProps["forcedType"];
-  onPickWeapon: (info: ReturnType<typeof createWeapon>) => OnPickItemReturn;
+  onForgeWeapon: (info: ReturnType<typeof createWeapon>) => void;
   onClose: () => void;
 }
-function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: WeaponPickerProps) {
+function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: WeaponForgeProps) {
   const allWeapons = useMemo(() => {
     const weapons = $AppData.getAllWeapons();
 
@@ -66,7 +66,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
   };
 
   return (
-    <PickerTemplate
+    <AppEntitySelect
       title="Weapons"
       data={allWeapons}
       hiddenCodes={hiddenCodes}
@@ -90,7 +90,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
           />
         );
       }}
-      renderItemConfig={(afterPickItem) => {
+      renderOptionConfig={(afterSelect) => {
         return (
           <div className="h-full p-4 bg-dark-900 rounded-lg flex flex-col">
             <div className="w-70 grow hide-scrollbar">
@@ -112,8 +112,8 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
                   variant="positive"
                   onClick={() => {
                     if (weaponConfig) {
-                      onPickWeapon(weaponConfig);
-                      afterPickItem(weaponConfig.code);
+                      onForgeWeapon(weaponConfig);
+                      afterSelect(weaponConfig.code);
                     }
                   }}
                 >
@@ -124,7 +124,7 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
           </div>
         );
       }}
-      onPickItem={(mold, isConfigStep) => {
+      onSelect={(mold, isConfigStep) => {
         const weapon = createWeapon(mold);
 
         if (isConfigStep) {
@@ -132,10 +132,11 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
             ID: 0,
             ...weapon,
           });
-          return true;
+        } else {
+          onForgeWeapon(weapon);
         }
 
-        return onPickWeapon(weapon);
+        return true;
       }}
       onClose={onClose}
       {...templateProps}
@@ -143,4 +144,4 @@ function WeaponPicker({ forcedType, onPickWeapon, onClose, ...templateProps }: W
   );
 }
 
-export const PickerWeapon = Modal.coreWrap(WeaponPicker, { preset: "large" });
+export const WeaponForge = Modal.coreWrap(WeaponSmith, { preset: "large" });

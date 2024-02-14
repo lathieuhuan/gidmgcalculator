@@ -14,7 +14,7 @@ import {
 
 // Component
 import { ButtonGroup, ConfirmModal } from "@Src/pure-components";
-import { ArtifactCard, OwnerLabel, PickerCharacter } from "@Src/components";
+import { ArtifactCard, OwnerLabel, Tavern } from "@Src/components";
 
 interface ChosenArtifactViewProps {
   artifact?: UserArtifact;
@@ -81,13 +81,12 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
         <OwnerLabel key={artifact?.ID} className="mt-4" item={artifact} />
       </div>
 
-      <PickerCharacter
+      <Tavern
         active={modalType === "EQUIP_CHARACTER" && !!artifact}
         sourceType="user"
         filter={(character) => character.name !== artifact?.owner}
-        onPickCharacter={(character) => {
+        onSelectCharacter={(character) => {
           artifact?.owner ? setNewOwner(character.name) : swapOwner(character.name);
-          return true;
         }}
         onClose={closeModal}
       />
