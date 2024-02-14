@@ -16,8 +16,8 @@ import { pickEquippedArtSet } from "@Store/thunks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { ArtifactInventory, WeaponInventory, Tavern, TypeSelect } from "@Src/components";
-import { Button, Modal } from "@Src/pure-components";
+import { ArtifactInventory, WeaponInventory, Tavern } from "@Src/components";
+import { Button, Image, Modal } from "@Src/pure-components";
 import { SetupSelect } from "./SetupSelect";
 import { TargetConfig } from "./modal-content";
 import HighManager from "./HighManager";
@@ -26,13 +26,7 @@ import SectionParty from "./SectionParty";
 import SectionTarget from "./SectionTarget";
 import SectionWeapon from "./SectionWeapon";
 
-type ModalType =
-  | "CHARACTERS_SELECT"
-  | "WEAPONS_SELECT"
-  | "ARTIFACTS_SELECT"
-  | "SHARE_SETUP_SUPPORTER"
-  | "TARGET_CONFIG"
-  | "";
+type ModalType = "CHARACTERS_SELECT" | "WEAPONS_SELECT" | ArtifactType | "SHARE_SETUP_SUPPORTER" | "TARGET_CONFIG" | "";
 
 export default function SetupManager() {
   const dispatch = useDispatch();
@@ -83,10 +77,7 @@ export default function SetupManager() {
           >
             <img src={getImgSrc("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
-          <button
-            className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400"
-            onClick={() => setModalType("ARTIFACTS_SELECT")}
-          >
+          <button className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400" onClick={() => setPrePickerOn(true)}>
             <img src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           </button>
         </div>
@@ -94,32 +85,44 @@ export default function SetupManager() {
 
       <HighManager height={height} />
 
-      {/* <TypeSelect
+      <Modal
         active={prePickerOn}
-        options={ARTIFACT_TYPE_ICONS}
-        onSelect={(artifactType) => {
-          setModalType(artifactType as ArtifactType);
-          setPrePickerOn(false);
-        }}
+        className="bg-dark-700"
+        preset="small"
+        title="Choose a Type"
         onClose={() => setPrePickerOn(false)}
-        footer={
-          <div className="mt-4 flex justify-center">
-            <Button
+      >
+        <div className="flex space-x-2">
+          {ARTIFACT_TYPE_ICONS.map((option, i) => (
+            <button
+              key={i}
+              className="p-1 w-full rounded-full hover:bg-yellow-400"
               onClick={() => {
-                setModalType("CHARACTERS_SELECT");
+                setModalType(option.type);
                 setPrePickerOn(false);
               }}
             >
-              Pick equipped set
-            </Button>
-          </div>
-        }
-      /> */}
+              <Image src={option.icon} imgType="weapon" />
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-4 flex justify-center">
+          <Button
+            onClick={() => {
+              setModalType("CHARACTERS_SELECT");
+              setPrePickerOn(false);
+            }}
+          >
+            Pick equipped set
+          </Button>
+        </div>
+      </Modal>
 
       <WeaponInventory
         active={modalType === "WEAPONS_SELECT"}
         weaponType={appChar.weaponType}
-        buttonText="Select"
+        buttonText="Pick"
         onClickButton={(weapon) => {
           dispatch(changeWeapon(userItemToCalcItem(weapon)));
         }}
@@ -127,14 +130,14 @@ export default function SetupManager() {
       />
 
       <ArtifactInventory
-        active={modalType === "ARTIFACTS_SELECT"}
+        active={["flower", "plume", "sands", "goblet", "circlet"].includes(modalType)}
         artifactType={modalType as ArtifactType}
         currentArtifacts={artifacts}
-        buttonText="Select"
+        buttonText="Pick"
         onClickButton={(artifact) => {
           dispatch(
             changeArtifact({
-              pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
+              pieceIndex: ARTIFACT_TYPES.indexOf(modalType as ArtifactType),
               newPiece: userItemToCalcItem(artifact),
             })
           );

@@ -15,5 +15,4 @@ export * from "./ModifierTemplate";
 export * from "./OwnerLabel";
 export * from "./SetBonusesDisplay";
 export * from "./TeammateItems";
-export * from "./TypeSelect";
 export * from "./WeaponCard";
