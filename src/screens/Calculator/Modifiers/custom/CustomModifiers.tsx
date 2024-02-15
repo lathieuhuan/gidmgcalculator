@@ -13,7 +13,7 @@ import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Component
 import { CloseButton, Input, Modal, Button } from "@Src/pure-components";
-import { CopySection } from "../../components";
+import { CopySection } from "../../components/CopySection";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 

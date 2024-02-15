@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { FaArrowUp, FaChevronDown } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 
 import type { AttributeStat, CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
@@ -10,7 +10,7 @@ import { $AppData } from "@Src/services";
 import { percentSign } from "@Src/utils";
 
 // Component
-import { BetaMark, Button, Image } from "@Src/pure-components";
+import { BetaMark, Image } from "@Src/pure-components";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
 import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 
@@ -32,68 +32,41 @@ export const ArtifactCard = ({
   const appArtifact = $AppData.getArtifact(artifact);
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
-  const maxLevel = rarity === 5 ? 20 : 16;
-  const levelUpDisabled = artifact.level === maxLevel;
 
   return (
     <div className="w-full">
       <div className={`px-4 pt-1 bg-rarity-${rarity}`} onDoubleClick={() => console.log(artifact)}>
-        <p className="text-xl font-bold text-black truncate">{appArtifact?.name}</p>
+        <p className="text-xl font-semibold text-black truncate">{appArtifact?.name}</p>
       </div>
-      <div className="mt-4 mx-4 flex">
-        {mutable ? (
-          <div className="mr-6 grow flex space-x-6">
-            <div className="w-fit">
-              <ArtifactLevelSelect
-                mutable
-                rarity={rarity}
-                level={artifact.level}
-                maxLevel={maxLevel}
-                onChangeLevel={onEnhance}
-              />
-            </div>
 
-            <div className="flex flex-col items-start space-y-4">
-              <Button
-                className={levelUpDisabled ? "" : "hover:bg-orange-500"}
-                shape="square"
-                size="small"
-                icon={<FaArrowUp />}
-                disabled={levelUpDisabled}
-                onClick={() => onEnhance?.(Math.min(artifact.level + 4, maxLevel))}
-              />
-              <Button
-                className={levelUpDisabled ? "" : "hover:bg-orange-500"}
-                shape="square"
-                size="small"
-                style={{ fontWeight: 900 }}
-                disabled={levelUpDisabled}
-                onClick={() => onEnhance?.(maxLevel)}
-              >
-                MAX
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div style={{ width: "9.75rem" }}>
-            <ArtifactLevelSelect rarity={rarity} level={artifact.level} />
-          </div>
-        )}
+      <div className="mt-4 px-4 flex justify-between items-start">
+        <ArtifactLevelSelect
+          mutable={mutable}
+          rarity={rarity}
+          level={artifact.level}
+          maxLevel={rarity === 5 ? 20 : 16}
+          onChangeLevel={onEnhance}
+        />
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <Image src={appArtifact?.icon} alt={appArtifact?.name} imgType="artifact" style={{ width: 104, height: 104 }} />
-          {appArtifact?.beta && <BetaMark className="absolute bottom-0 right-0" />}
+          <Image
+            src={appArtifact?.icon}
+            alt={appArtifact?.name}
+            imgType="artifact"
+            style={{ width: 104, height: 104 }}
+          />
+          <BetaMark active={appArtifact?.beta} className="absolute bottom-0 right-0" />
         </div>
       </div>
 
       <div className="mt-2 ml-6">
         {["flower", "plume"].includes(artifact.type) || !mutable ? (
-          <p className={"py-1 text-lg " + (mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
+          <p className={"py-1 text-lg " + (mutable ? "pl-6" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
-            <FaChevronDown className="absolute left-1 top-2" size="1.25rem" />
+            <FaChevronDown className="absolute top-1/2 -translate-y-1/2 left-0" />
             <select
-              className="pl-8 text-lg text-light-400 appearance-none relative z-10"
+              className="pl-6 text-lg text-light-400 appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => onChangeMainStatType?.(e.target.value as AttributeStat)}
             >
@@ -107,21 +80,20 @@ export const ArtifactCard = ({
             </select>
           </div>
         )}
-        <p className={clsx(`text-rarity-${rarity} text-2xl leading-7 font-bold`, mutable ? "pl-8" : "pl-2")}>
-          {possibleMainStatTypes[mainStatType]?.[rarity][artifact.level]}
+        <p className={clsx(`text-rarity-${rarity} text-2xl leading-7 font-bold`, mutable ? "pl-6" : "pl-2")}>
+          {possibleMainStatTypes[mainStatType]?.[rarity]?.[artifact.level]}
           {percentSign(mainStatType)}
         </p>
       </div>
 
-      <div>
-        <ArtifactSubstatsControl
-          mutable={mutable}
-          rarity={rarity}
-          mainStatType={mainStatType}
-          subStats={artifact.subStats}
-          onChangeSubStat={onChangeSubStat}
-        />
-      </div>
+      <ArtifactSubstatsControl
+        className="mt-2"
+        mutable={mutable}
+        rarity={rarity}
+        mainStatType={mainStatType}
+        subStats={artifact.subStats}
+        onChangeSubStat={onChangeSubStat}
+      />
     </div>
   );
 };

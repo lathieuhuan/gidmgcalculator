@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
-import { getImgSrc } from "@Src/utils";
 import { $AppData } from "@Src/services";
 
 // Store
@@ -13,8 +12,8 @@ import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Component
+import { BetaMark, Image } from "@Src/pure-components";
 import { WeaponForge } from "@Src/components";
-import { BetaMark } from "@Src/pure-components";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();
@@ -30,13 +29,14 @@ export default function SectionWeapon() {
         className={`w-20 h-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}
       >
-        <img src={getImgSrc(icon)} alt={name} draggable={false} />
-        {beta && <BetaMark className="absolute -top-1 -left-1" />}
+        <Image src={icon} alt={name} imgType="weapon" />
+        <BetaMark active={beta} className="absolute -top-1 -left-1" />
       </div>
 
-      <div className="ml-2 overflow-hidden">
+      <div className="ml-2 overflow-hidden space-y-1">
         <p className={`text-xl text-rarity-${rarity} font-bold text-ellipsis`}>{name}</p>
-        <div className="mt-1 pl-1 flex flex-wrap">
+
+        <div className="pl-1 flex flex-wrap">
           <p className="mr-1">Level</p>
           <select
             className={`text-rarity-${rarity} text-right`}
@@ -54,9 +54,10 @@ export default function SectionWeapon() {
             })}
           </select>
         </div>
+
         {rarity >= 3 && (
-          <div className="mt-1 pl-1 flex flex-wrap">
-            <p className="mr-2">Refinement rank</p>
+          <div className="pl-1 flex flex-wrap">
+            <p className="mr-1">Refinement rank</p>
             <select
               className={`text-rarity-${rarity}`}
               value={weapon.refi}

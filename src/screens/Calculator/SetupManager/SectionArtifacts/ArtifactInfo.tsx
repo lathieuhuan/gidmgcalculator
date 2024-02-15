@@ -45,8 +45,8 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
   };
 
   return (
-    <div className="pt-4" onDoubleClick={() => console.log(artifact)}>
-      <div className="pl-6 flex items-start">
+    <div className="pt-4 px-2 space-y-2" onDoubleClick={() => console.log(artifact)}>
+      <div className="pl-2 flex items-start">
         <ArtifactLevelSelect
           mutable
           rarity={rarity}
@@ -59,12 +59,12 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
 
         <div className="ml-4">
           {type === "flower" || type === "plume" ? (
-            <p className="pl-8 py-1 text-lg">{t(mainStatType)}</p>
+            <p className="pl-6 py-1 text-lg">{t(mainStatType)}</p>
           ) : (
             <div className="py-1 relative">
-              <FaChevronDown className="absolute top-2 left-1 scale-110" />
+              <FaChevronDown className="absolute top-1/2 -translate-y-1/2 left-0" />
               <select
-                className="pl-8 text-lg text-light-400 appearance-none"
+                className="pl-6 text-lg text-light-400 appearance-none relative z-10"
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(
@@ -83,32 +83,30 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
               </select>
             </div>
           )}
-          <p className={`pl-8 text-2xl leading-7 text-rarity-${rarity} font-bold`}>
+          <p className={`pl-6 text-2xl leading-7 text-rarity-${rarity} font-bold`}>
             {mainStatValue + percentSign(mainStatType)}
           </p>
         </div>
       </div>
 
-      <div className="px-2 pb-1">
-        <ArtifactSubstatsControl
-          key={artifact.ID}
-          mutable
-          rarity={rarity}
-          mainStatType={mainStatType}
-          subStats={artifact.subStats}
-          onChangeSubStat={(subStatIndex, changeInfo) => {
-            dispatch(
-              updateArtifact({
-                pieceIndex,
-                subStat: {
-                  index: subStatIndex,
-                  newInfo: changeInfo,
-                },
-              })
-            );
-          }}
-        />
-      </div>
+      <ArtifactSubstatsControl
+        key={artifact.ID}
+        mutable
+        rarity={rarity}
+        mainStatType={mainStatType}
+        subStats={artifact.subStats}
+        onChangeSubStat={(subStatIndex, changeInfo) => {
+          dispatch(
+            updateArtifact({
+              pieceIndex,
+              subStat: {
+                index: subStatIndex,
+                newInfo: changeInfo,
+              },
+            })
+          );
+        }}
+      />
 
       <div className="pt-4 pb-1 flex justify-evenly items-center">
         <Button
@@ -120,14 +118,6 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
         />
 
         <Button icon={<FaSave />} onClick={() => setIsSaving(true)} />
-
-        <Button
-          className="w-8 h-8"
-          disabled={level === maxLevel}
-          onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
-        >
-          {maxLevel}
-        </Button>
 
         <Button icon={<FaSyncAlt />} onClick={onClickChangePiece} />
       </div>

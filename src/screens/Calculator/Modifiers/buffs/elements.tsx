@@ -305,7 +305,7 @@ export const ElementBuffs = () => {
       {renderedElmts.map((item, i) => {
         return (
           <Fragment key={i}>
-            {i ? <div className="mx-auto my-3 w-1/2 h-px bg-rarity-1" /> : null}
+            {i ? <div className="mx-auto my-3 w-1/2 h-px bg-dark-500" /> : null}
             {item}
           </Fragment>
         );

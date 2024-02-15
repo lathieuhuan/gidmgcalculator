@@ -29,7 +29,7 @@ const AppEntityOptionCore = ({ className, visible, item, selectedAmount }: AppEn
 
   return (
     <div className={clsx("rounded-lg cursor-pointer relative", className)}>
-      {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
+      <BetaMark active={item.beta} className="absolute top-0 left-0 z-10" />
 
       <div
         className={clsx(

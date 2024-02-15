@@ -12,6 +12,7 @@ import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 import { Input } from "@Src/pure-components";
 
 export interface ArtifactSubstatsControlProps {
+  className?: string;
   mutable?: boolean;
   rarity: Rarity;
   mainStatType: AttributeStat;
@@ -19,6 +20,7 @@ export interface ArtifactSubstatsControlProps {
   onChangeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;
 }
 export const ArtifactSubstatsControl = ({
+  className = "",
   mutable,
   mainStatType,
   subStats,
@@ -34,30 +36,32 @@ export const ArtifactSubstatsControl = ({
   }
 
   return (
-    <>
+    <div className={"space-y-2 " + className}>
       {subStats.map(({ type, value }, i) => {
         const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
 
         return mutable ? (
-          <div key={i} className="mt-2 h-9 flex items-center bg-dark-700 relative">
-            <FaChevronDown className="absolute left-3 top-2.5" />
+          <div key={i} className="h-9 flex-center bg-dark-700 relative">
+            <div className="relative">
+              <FaChevronDown className="absolute top-3 left-1 text-sm" />
 
-            <select
-              className={
-                "pt-2 pb-1 pr-2 pl-10 leading-base relative z-10 appearance-none " +
-                (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")
-              }
-              value={type}
-              onChange={(e) => {
-                onChangeSubStat?.(i, { type: e.target.value as AttributeStat });
-              }}
-            >
-              {ARTIFACT_SUBSTAT_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {t(type)}
-                </option>
-              ))}
-            </select>
+              <select
+                className={
+                  "pt-2 pb-1 pr-3 pl-6 leading-base relative z-10 appearance-none " +
+                  (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")
+                }
+                value={type}
+                onChange={(e) => {
+                  onChangeSubStat?.(i, { type: e.target.value as AttributeStat });
+                }}
+              >
+                {ARTIFACT_SUBSTAT_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {t(type)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <span>+</span>
 
@@ -72,7 +76,7 @@ export const ArtifactSubstatsControl = ({
               value={value}
               onChange={(value) => onChangeSubStat?.(i, { value })}
             />
-            <span className="pt-2 pb-1">{percentSign(type)}</span>
+            <span className="w-4 pt-2 pb-1">{percentSign(type)}</span>
           </div>
         ) : (
           <div key={i} className={`mt-2 pt-2 pb-1 flex items-center bg-dark-700`}>
@@ -89,6 +93,6 @@ export const ArtifactSubstatsControl = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };

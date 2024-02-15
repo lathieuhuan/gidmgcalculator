@@ -3,7 +3,7 @@ import { updateCalcSetup } from "@Store/calculatorSlice";
 import { selectCalcSetupsById, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { CopySection, type Option } from "../../components";
+import { CopySection, Option } from "../../components/CopySection";
 
 export function CopySelect() {
   const dispatch = useDispatch();

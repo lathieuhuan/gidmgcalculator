@@ -59,7 +59,11 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
 
           {subStat ? (
             <div className={"grow pt-1 flex flex-col justify-center " + groupStyles}>
-              <p className={"font-semibold leading-6 " + (["er_", "em"].includes(subStat.type) ? "text-sm" : "text-base")}>
+              <p
+                className={
+                  "font-semibold leading-6 " + (["er_", "em"].includes(subStat.type) ? "text-sm" : "text-base")
+                }
+              >
                 {t(subStat.type)}
               </p>
               <p className={`text-rarity-${rarity} text-2xl leading-7 font-bold`}>
@@ -81,7 +85,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         <div className="ml-2">
           <div className={`rounded-lg bg-gradient-${rarity} relative`}>
             <Image src={appWeapon.icon} imgType="weapon" style={{ width: 112, height: 112 }} />
-            {appWeapon.beta && <BetaMark className="absolute bottom-0 right-0" />}
+            <BetaMark active={appWeapon.beta} className="absolute bottom-0 right-0" />
           </div>
 
           {rarity >= 3 && (

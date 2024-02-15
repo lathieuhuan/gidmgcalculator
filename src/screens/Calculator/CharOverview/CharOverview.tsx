@@ -53,7 +53,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
             style={{ width: 88, height: 88 }}
           >
             <Button className="absolute -top-2 -left-2 z-10" icon={<FaSyncAlt />} />
-            {appChar.beta ? <BetaMark className="absolute -top-2 -right-2 z-10" /> : null}
+            <BetaMark active={appChar.beta} className="absolute -top-2 -right-2 z-10" />
             <Image className="cursor-pointer" src={appChar.icon} imgType="character" />
           </div>
 

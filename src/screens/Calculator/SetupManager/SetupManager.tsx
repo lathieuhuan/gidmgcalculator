@@ -19,7 +19,7 @@ import { updateUI } from "@Store/uiSlice";
 import { ArtifactInventory, WeaponInventory, Tavern } from "@Src/components";
 import { Button, Image, Modal } from "@Src/pure-components";
 import { SetupSelect } from "./SetupSelect";
-import { TargetConfig } from "./modal-content";
+import { TargetConfig } from "./TargetConfig";
 import HighManager from "./HighManager";
 import SectionArtifacts from "./SectionArtifacts";
 import SectionParty from "./SectionParty";
@@ -159,7 +159,7 @@ export default function SetupManager() {
       <Modal
         active={modalType === "TARGET_CONFIG"}
         className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
-        title="Target Configuration (direct)"
+        title="Target Configuration (live)"
         bodyCls="grow hide-scrollbar"
         withActions
         showCancel={false}

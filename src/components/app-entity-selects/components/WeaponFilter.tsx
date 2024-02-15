@@ -15,7 +15,7 @@ export type WeaponFilterState = {
 export interface WeaponFilterProps {
   className?: ClassValue;
   initialFilter?: WeaponFilterState;
-  forcedType?: WeaponType;
+  withTypeSelect?: boolean;
   disabledCancel?: boolean;
   onCancel: () => void;
   onDone: (filter: WeaponFilterState) => void;
@@ -23,7 +23,7 @@ export interface WeaponFilterProps {
 export const WeaponFilter = ({
   className,
   initialFilter,
-  forcedType,
+  withTypeSelect = true,
   disabledCancel,
   onCancel,
   onDone,
@@ -37,7 +37,7 @@ export const WeaponFilter = ({
 
   const onConfirm = () => {
     onDone({
-      types: forcedType ? [forcedType] : weaponTypes,
+      types: weaponTypes,
       rarities,
     });
   };
@@ -45,7 +45,7 @@ export const WeaponFilter = ({
   return (
     <div className={clsx("p-4 bg-dark-900 flex flex-col", className)}>
       <div className="grow space-y-4 hide-scrollbar">
-        {forcedType ? null : (
+        {withTypeSelect ? (
           <>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
@@ -57,7 +57,7 @@ export const WeaponFilter = ({
 
             <div className="w-full h-px bg-dark-300" />
           </>
-        )}
+        ) : null}
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">

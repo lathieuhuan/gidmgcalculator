@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
@@ -13,8 +13,8 @@ import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { ArtifactForge } from "@Src/components";
 import { CollapseSpace } from "@Src/pure-components";
+import { ArtifactForge } from "@Src/components";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
@@ -31,16 +31,16 @@ export default function SectionArtifacts() {
 
   const activeArtifact = artifacts[activeTabIndex];
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (activeTabIndex >= 0) {
       setTimeout(() => {
-        document.querySelector("#calculator-artifacts")?.scrollIntoView();
+        document.querySelector("#calculator-section-artifacts")?.scrollIntoView();
       }, 200);
     }
   }, [activeTabIndex]);
 
   const onClickTab = (tabIndex: number) => {
-    // there's already an artifact at tabIndex (or artifact !== null after this excution)
+    // there's already an artifact at tabIndex (or activeArtifact !== null after this excution)
     if (artifacts[tabIndex]) {
       // if click on the activeTab close it, otherwise change tab
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
@@ -53,7 +53,7 @@ export default function SectionArtifacts() {
   };
 
   return (
-    <div id="calculator-artifacts" className="py-3 border-2 border-lesser rounded-xl bg-dark-900">
+    <div id="calculator-section-artifacts" className="py-3 border-2 border-lesser rounded-xl bg-dark-900">
       {artifacts.length && artifacts.every((artifact) => artifact === null) ? <CopySelect /> : null}
 
       <div className="flex">

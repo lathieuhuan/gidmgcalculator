@@ -69,7 +69,6 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           {artifact ? (
             <ButtonGroup
               className="mt-4"
-              justify="end"
               buttons={[
                 { text: "Remove", onClick: () => setModalType("REMOVE_ARTIFACT") },
                 { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },

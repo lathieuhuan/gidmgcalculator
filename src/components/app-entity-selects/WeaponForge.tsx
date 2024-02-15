@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
-import type { AppWeapon, Weapon } from "@Src/types";
+import type { AppWeapon, Weapon, WeaponType } from "@Src/types";
 import { $AppData } from "@Src/services";
 
 // Util
@@ -10,25 +10,30 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { Button, Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
-import { WeaponFilter, WeaponFilterProps, WeaponFilterState } from "./components/WeaponFilter";
+import { WeaponFilter, WeaponFilterState } from "./components/WeaponFilter";
 import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
-
-const INITIAL_FITLER: WeaponFilterState = {
-  types: ["bow"],
-  rarities: [4, 5],
-};
 
 const transformWeapon = (weapon: AppWeapon) => pickProps(weapon, ["code", "name", "beta", "icon", "type", "rarity"]);
 
 type WeaponData = Array<ReturnType<typeof transformWeapon>>;
 
 interface WeaponForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
-  forcedType?: WeaponFilterProps["forcedType"];
+  forcedType?: WeaponType;
   onForgeWeapon: (info: ReturnType<typeof createWeapon>) => void;
   onClose: () => void;
 }
 function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: WeaponForgeProps) {
-  const filterRef = useRef(INITIAL_FITLER);
+  const filterRef = useRef<WeaponFilterState>(
+    forcedType
+      ? {
+          types: [forcedType],
+          rarities: [],
+        }
+      : {
+          types: ["bow"],
+          rarities: [4, 5],
+        }
+  );
 
   const allWeapons = useMemo(() => {
     const weapons = $AppData.getAllWeapons();
@@ -82,7 +87,7 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
         return (
           <WeaponFilter
             className="h-full"
-            forcedType={forcedType}
+            withTypeSelect={!forcedType}
             initialFilter={filterRef.current}
             disabledCancel={!ready}
             onCancel={() => setFilterOn(false)}

@@ -44,7 +44,9 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
     multiple: true,
   });
 
-  const { rarities, renderRaritySelect } = useRaritySelect([5, 4], initialFilter?.rarities, { multiple: true });
+  const { rarities, updateRarities, renderRaritySelect } = useRaritySelect([5, 4], initialFilter?.rarities, {
+    multiple: true,
+  });
 
   const onConfirm = () => {
     onDone({
@@ -80,6 +82,7 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <p className="whitespace-nowrap">Filter by Rarity</p>
+            <ClearAllButton disabled={!rarities.length} onClick={() => updateRarities([])} />
           </div>
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}
         </div>

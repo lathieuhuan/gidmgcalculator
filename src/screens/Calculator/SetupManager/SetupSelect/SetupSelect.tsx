@@ -24,7 +24,7 @@ import { cleanupCalcSetup } from "@Src/utils/setup";
 // Component
 import { ComplexSelect, Modal, ConfirmModal } from "@Src/pure-components";
 import { SetupExporter, SetupImporter } from "@Src/components";
-import { SaveSetup } from "../modal-content";
+import { SaveSetup } from "./SaveSetup";
 
 type ModalInfo = {
   type: "SAVE_SETUP" | "REMOVE_SETUP" | "SHARE_SETUP" | "IMPORT_SETUP" | "";

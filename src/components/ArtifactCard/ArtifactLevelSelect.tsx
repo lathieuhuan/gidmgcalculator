@@ -1,3 +1,5 @@
+import clsx from "clsx";
+import { CgPushChevronUp } from "react-icons/cg";
 import type { Rarity } from "@Src/types";
 
 interface ArtifactLevelSelectProps {
@@ -16,26 +18,32 @@ export const ArtifactLevelSelect = ({
   maxLevel = 0,
   onChangeLevel,
 }: ArtifactLevelSelectProps) => {
+  const cls = `px-2 pt-2 pb-1.5 text-lg text-rarity-${rarity} leading-none font-bold`;
+
   if (mutable) {
+    const disabled = level === maxLevel;
+
     return (
-      <div className={"rounded-circle bg-dark-500 " + className}>
-        <select
-          className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
-          value={level}
-          onChange={(e) => onChangeLevel?.(+e.target.value)}
-        >
+      <div className={"rounded bg-dark-500 overflow-hidden flex " + className}>
+        <select className={"appearance-none " + cls} value={level} onChange={(e) => onChangeLevel?.(+e.target.value)}>
           {[...Array(maxLevel / 4 + 1).keys()].map((_, lv) => (
             <option key={lv} className="text-base" value={lv * 4}>
               +{lv * 4}
             </option>
           ))}
         </select>
+        <button
+          className={clsx(
+            "px-1.5 text-xl bg-light-400 text-black flex-center",
+            disabled ? "opacity-50" : "glow-on-hover"
+          )}
+          disabled={disabled}
+          onClick={() => onChangeLevel?.(maxLevel)}
+        >
+          <CgPushChevronUp />
+        </button>
       </div>
     );
   }
-  return (
-    <div className={"px-2 pt-2 pb-1 w-12 bg-dark-500 rounded-circle cursor-default " + className}>
-      <p className={`text-lg text-rarity-${rarity} font-bold`}>{"+" + level}</p>
-    </div>
-  );
+  return <p className={clsx("rounded bg-dark-500", cls, className)}>+{level}</p>;
 };
