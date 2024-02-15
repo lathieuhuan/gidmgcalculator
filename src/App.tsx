@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 
-// Constant
 import { EScreen } from "@Src/constants";
-
-// Store
 import { useSelector } from "@Store/hooks";
 
 // Component

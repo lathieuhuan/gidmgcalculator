@@ -3,7 +3,7 @@ import { FaPuzzlePiece } from "react-icons/fa";
 
 import { UserItem, UserSetup } from "@Src/types";
 import { useClickOutside, ClickOutsideHandler } from "@Src/pure-hooks";
-import { useUserItemContainingSetups } from "@Src/hooks";
+import { useItemBoundSetups } from "@Src/hooks";
 
 // Component
 import { Popover } from "@Src/pure-components";
@@ -42,7 +42,7 @@ export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
     isMounted: false,
   });
 
-  const containingSetups = useUserItemContainingSetups(item);
+  const containingSetups = useItemBoundSetups(item);
 
   const onClickPuzzlePiece = () => {
     setList((prevList) => {

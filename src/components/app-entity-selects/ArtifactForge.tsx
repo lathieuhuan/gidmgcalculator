@@ -12,15 +12,26 @@ import { Modal } from "@Src/pure-components";
 import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
 import { ArtifactConfig } from "./components/ArtifactConfig";
 
-interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
+export interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
   forFeature?: "TEAMMATE_MODIFIERS";
   forcedType?: ArtifactType;
+  /** Default to 'flower' */
+  initialTypes?: ArtifactType | ArtifactType[];
   onForgeArtifact: (info: ReturnType<typeof createArtifact>) => void;
   onClose: () => void;
 }
-const ArtifactSmith = ({ forFeature, forcedType, onForgeArtifact, onClose, ...templateProps }: ArtifactForgeProps) => {
+const ArtifactSmith = ({
+  forFeature,
+  forcedType,
+  initialTypes = "flower",
+  onForgeArtifact,
+  onClose,
+  ...templateProps
+}: ArtifactForgeProps) => {
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
   const [maxRarity, setMaxRarity] = useState(5);
+
+  console.log("forcedType", forcedType);
 
   const updateConfig = (update: (prevConfig: Artifact) => Artifact) => {
     if (artifactConfig) {
@@ -28,7 +39,7 @@ const ArtifactSmith = ({ forFeature, forcedType, onForgeArtifact, onClose, ...te
     }
   };
 
-  const { artifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(forcedType || "flower", {
+  const { artifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(forcedType || initialTypes, {
     onChange: (types) => {
       updateConfig((prevConfig) => {
         const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });

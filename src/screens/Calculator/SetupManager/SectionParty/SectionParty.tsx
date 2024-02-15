@@ -21,6 +21,8 @@ import { Image, CollapseSpace } from "@Src/pure-components";
 import { TeammateItems, Tavern, WeaponForge, ArtifactForge } from "@Src/components";
 import { CopySelect } from "./CopySelect";
 
+import styles from "../styles.module.scss";
+
 interface ModalState {
   type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";
   teammateIndex: number | null;
@@ -85,7 +87,7 @@ export default function SectionParty() {
   };
 
   return (
-    <div className="pb-3 border-2 border-lesser rounded-xl bg-dark-700">
+    <div className={"pb-3 bg-dark-700 " + styles.section}>
       {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
       <div className="flex">

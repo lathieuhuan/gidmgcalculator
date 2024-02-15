@@ -21,6 +21,12 @@ export interface ArtifactFilterProps {
   onClose: () => void;
 }
 
+/**
+ * 2 case:
+ * type act as a filter category => multiple type select, useArtifactStatFilter & useArtifactSetFilter do not depend on type
+ * type act as filter config => single type select, when type change need to reset stats and recalculate sets
+ */
+
 const ArtifactFilter = ({
   artifactType,
   artifacts,

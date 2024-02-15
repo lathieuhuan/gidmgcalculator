@@ -14,8 +14,10 @@ import { ArtifactFilter, ArtifactFilterState } from "../ArtifactFilter";
 import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
 
-interface ArtifactInventoryProps {
-  artifactType: ArtifactType;
+export interface ArtifactInventoryProps {
+  forcedType?: ArtifactType;
+  /** Default to 'flower' */
+  initialTypes?: ArtifactType;
   currentArtifacts: (CalcArtifact | null)[];
   owner?: string | null;
   buttonText: string;
@@ -23,7 +25,8 @@ interface ArtifactInventoryProps {
   onClose: () => void;
 }
 const ArtifactInventoryCore = ({
-  artifactType,
+  forcedType,
+  initialTypes = "flower",
   currentArtifacts,
   owner,
   buttonText,
@@ -31,19 +34,23 @@ const ArtifactInventoryCore = ({
   onClose,
 }: ArtifactInventoryProps) => {
   const [ref, { height }] = useElementSize<HTMLDivElement>();
-  const fixedType = useRef(artifactType);
+
+  console.log("artifactType", forcedType);
 
   const [showingCurrent, setShowingCurrent] = useState(false);
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
-  const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_CONDITION);
+  const [filter, setFilter] = useState<ArtifactFilterState>({
+    ...ArtifactFilter.DEFAULT_CONDITION,
+    types: [forcedType || initialTypes],
+  });
 
   const artifacts = useStoreSnapshot((state) =>
-    selectUserArts(state).filter((artifact) => artifact.type === fixedType.current)
+    forcedType ? selectUserArts(state).filter((artifact) => artifact.type === forcedType) : selectUserArts(state)
   );
 
   const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(artifacts, filter), [artifacts, filter]);
 
-  const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(fixedType.current)];
+  const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(filter.types[0])];
 
   return (
     <EntitySelectTemplate
@@ -54,7 +61,7 @@ const ArtifactInventoryCore = ({
         return (
           <div className="h-full p-4 bg-dark-500">
             <ArtifactFilter
-              artifactType={fixedType.current}
+              artifactType={forcedType}
               artifacts={artifacts}
               initialCondition={filter}
               onConfirm={setFilter}

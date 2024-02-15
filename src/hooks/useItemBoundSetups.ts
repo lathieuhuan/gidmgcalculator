@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
-export const useUserItemContainingSetups = (item?: UserItem) => {
+export const useItemBoundSetups = (item?: UserItem): UserSetup[] => {
   const dispatch = useDispatch();
   const userSetups = useSelector(selectUserSetups);
 

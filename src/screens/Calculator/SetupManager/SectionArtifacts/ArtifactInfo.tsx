@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import isEqual from "react-fast-compare";
-import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
+import { FaSave, FaTrashAlt, FaChevronDown } from "react-icons/fa";
+import { MdInventory } from "react-icons/md";
+import { GiAnvil } from "react-icons/gi";
 
 import type { CalcArtifact, AttributeStat } from "@Src/types";
 import { calcItemToUserItem, findById, percentSign, userItemToCalcItem } from "@Src/utils";
@@ -23,11 +25,13 @@ import { useStoreSnapshot } from "@Src/features";
 import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
+export type ArtifactSourceType = "INVENTORY" | "FORGE";
+
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
   pieceIndex: number;
   onClickRemovePiece: () => void;
-  onClickChangePiece: () => void;
+  onClickChangePiece: (source: ArtifactSourceType) => void;
 }
 export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClickChangePiece }: ArtifactInfoProps) {
   const dispatch = useDispatch();
@@ -38,7 +42,6 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
   const { type, rarity = 5, level, mainStatType } = artifact;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
   const mainStatValue = availableMainStatTypes[mainStatType]?.[rarity]?.[level] ?? 0;
-  const maxLevel = rarity === 5 ? 20 : 16;
 
   const closeModal = () => {
     setIsSaving(false);
@@ -108,18 +111,18 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
         }}
       />
 
-      <div className="pt-4 pb-1 flex justify-evenly items-center">
+      <div className="px-2 pt-4 pb-1 flex justify-end items-center gap-4">
         <Button
+          title="Remove"
           icon={<FaTrashAlt />}
           onClick={() => {
             dispatch(changeArtifact({ pieceIndex, newPiece: null }));
             onClickRemovePiece();
           }}
         />
-
-        <Button icon={<FaSave />} onClick={() => setIsSaving(true)} />
-
-        <Button icon={<FaSyncAlt />} onClick={onClickChangePiece} />
+        <Button title="Save" icon={<FaSave />} onClick={() => setIsSaving(true)} />
+        <Button title="Inventory" icon={<MdInventory />} onClick={() => onClickChangePiece("INVENTORY")} />
+        <Button title="New" icon={<GiAnvil />} onClick={() => onClickChangePiece("FORGE")} />
       </div>
 
       <Modal.Core active={isSaving} preset="small" onClose={closeModal}>

@@ -15,19 +15,21 @@ import { useSelector } from "@Store/hooks";
 import { BetaMark, Image } from "@Src/pure-components";
 import { WeaponForge } from "@Src/components";
 
+import styles from "./styles.module.scss";
+
 export default function SectionWeapon() {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
-  const [pickerOn, setPickerOn] = useState(false);
+  const [forgeOn, setForgeOn] = useState(false);
 
   const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeapon(weapon.code) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (
-    <div className="px-2 py-3 border-2 border-lesser rounded-xl bg-dark-900 flex items-start">
+    <div className={"px-2 py-3 bg-dark-900 flex items-start " + styles.section}>
       <div
         className={`w-20 h-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
-        onClick={() => setPickerOn(true)}
+        onClick={() => setForgeOn(true)}
       >
         <Image src={icon} alt={name} imgType="weapon" />
         <BetaMark active={beta} className="absolute -top-1 -left-1" />
@@ -75,7 +77,7 @@ export default function SectionWeapon() {
       </div>
 
       <WeaponForge
-        active={pickerOn}
+        active={forgeOn}
         forcedType={weapon.type}
         onForgeWeapon={(weapon) => {
           dispatch(
@@ -85,8 +87,18 @@ export default function SectionWeapon() {
             })
           );
         }}
-        onClose={() => setPickerOn(false)}
+        onClose={() => setForgeOn(false)}
       />
+
+      {/* <WeaponInventory
+        active={modalType === "WEAPONS_SELECT"}
+        weaponType={appChar.weaponType}
+        buttonText="Pick"
+        onClickButton={(weapon) => {
+          dispatch(changeWeapon(userItemToCalcItem(weapon)));
+        }}
+        onClose={closeModal}
+      /> */}
     </div>
   );
 }

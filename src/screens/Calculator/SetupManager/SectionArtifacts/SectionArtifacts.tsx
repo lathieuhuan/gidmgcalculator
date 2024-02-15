@@ -1,35 +1,59 @@
 import clsx from "clsx";
 import { useState, useLayoutEffect } from "react";
+import { MdInventory } from "react-icons/md";
+import { GiAnvil } from "react-icons/gi";
 
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
+import { getImgSrc, userItemToCalcItem } from "@Src/utils";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeArtifact } from "@Store/calculatorSlice";
 import { selectArtifacts } from "@Store/calculatorSlice/selectors";
-
-// Util
-import { getImgSrc } from "@Src/utils";
+import { pickEquippedArtSet } from "@Store/thunks";
 
 // Component
-import { CollapseSpace } from "@Src/pure-components";
-import { ArtifactForge } from "@Src/components";
-import { ArtifactInfo } from "./ArtifactInfo";
+import { Button, CollapseSpace, Modal } from "@Src/pure-components";
+import { ArtifactForge, ArtifactForgeProps, ArtifactInventory, ArtifactInventoryProps, Tavern } from "@Src/components";
+import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
+
+import styles from "../styles.module.scss";
+
+type ModalType = "EQUIPPED_SET" | "TAVERN" | "";
+
+type InventoryState = Pick<ArtifactInventoryProps, "forcedType" | "initialTypes"> & {
+  active: boolean;
+};
+
+type ForgeState = Pick<ArtifactForgeProps, "forcedType" | "initialTypes"> & {
+  active: boolean;
+};
 
 export default function SectionArtifacts() {
   const dispatch = useDispatch();
 
   const artifacts = useSelector(selectArtifacts);
 
+  const [selectingSrcType, setSelectingSrcType] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>("");
   const [activeTabIndex, setActiveTabIndex] = useState(-1);
-  const [artifactPicker, setArtifactPicker] = useState({
+  const [targetIndex, setTargetIndex] = useState(-1);
+
+  const [inventory, setInventory] = useState<InventoryState>({
     active: false,
-    slot: 0,
+    // artifactType: "flower",
+  });
+  const [forge, setForge] = useState<ForgeState>({
+    active: false,
+    forcedType: undefined,
+    initialTypes: undefined,
   });
 
   const activeArtifact = artifacts[activeTabIndex];
+
+  const closeModal = () => setModalType("");
 
   useLayoutEffect(() => {
     if (activeTabIndex >= 0) {
@@ -45,15 +69,61 @@ export default function SectionArtifacts() {
       // if click on the activeTab close it, otherwise change tab
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
     } else {
-      setArtifactPicker({
-        active: true,
-        slot: tabIndex,
+      setSelectingSrcType(true);
+
+      /** reserve type for onClickSourceTye */
+
+      setForge({
+        active: false,
+        forcedType: ARTIFACT_TYPES[tabIndex],
+      });
+
+      setInventory({
+        active: false,
+        forcedType: ARTIFACT_TYPES[tabIndex],
       });
     }
   };
 
+  const onClickSourceTye = (source: ArtifactSourceType) => {
+    switch (source) {
+      case "INVENTORY":
+        setInventory({
+          active: true,
+          forcedType: inventory.forcedType,
+        });
+        break;
+      case "FORGE":
+        setForge({
+          active: true,
+          forcedType: forge.forcedType,
+        });
+        break;
+    }
+
+    setSelectingSrcType(false);
+  };
+
+  const onRequestChangePiece = (source: ArtifactSourceType, index?: number) => {
+    switch (source) {
+      case "FORGE":
+        const newForge: ForgeState = {
+          active: true,
+        };
+        const key: "forcedType" | "initialTypes" = typeof index === "number" ? "forcedType" : "initialTypes";
+
+        newForge[key] = ARTIFACT_TYPES[index ?? 0];
+        setForge(newForge);
+        break;
+    }
+  };
+
+  const onClickRemovePiece = () => {
+    setActiveTabIndex(-1);
+  };
+
   return (
-    <div id="calculator-section-artifacts" className="py-3 border-2 border-lesser rounded-xl bg-dark-900">
+    <div id="calculator-section-artifacts" className={"py-3 bg-dark-900 " + styles.section}>
       {artifacts.length && artifacts.every((artifact) => artifact === null) ? <CopySelect /> : null}
 
       <div className="flex">
@@ -90,25 +160,65 @@ export default function SectionArtifacts() {
           <ArtifactInfo
             artifact={activeArtifact}
             pieceIndex={activeTabIndex}
-            onClickRemovePiece={() => setActiveTabIndex(-1)}
-            onClickChangePiece={() => {
-              setArtifactPicker({
-                active: true,
-                slot: activeTabIndex,
-              });
+            onClickRemovePiece={onClickRemovePiece}
+            onClickChangePiece={(source) => {
+              if (source === "FORGE") {
+                setForge({
+                  active: true,
+                  forcedType: ARTIFACT_TYPES[activeTabIndex],
+                });
+              }
             }}
           />
         )}
       </CollapseSpace>
 
+      {activeTabIndex < 0 ? (
+        <div className="mt-4 px-4 flex justify-end gap-4">
+          <Button title="Inventory" icon={<MdInventory />} onClick={() => onRequestChangePiece("INVENTORY")} />
+          <Button title="New" icon={<GiAnvil />} onClick={() => onRequestChangePiece("FORGE")} />
+        </div>
+      ) : null}
+
+      <Modal
+        active={selectingSrcType}
+        preset="small"
+        title="Select a Source"
+        className="bg-dark-700"
+        onClose={() => setSelectingSrcType(false)}
+      >
+        <div className="flex justify-center gap-4">
+          <button
+            className="w-24 h-24 rounded bg-dark-900 flex-center flex-col"
+            onClick={() => onClickSourceTye("INVENTORY")}
+          >
+            <span className="mb-2 block h-8 flex-center">
+              <MdInventory className="text-2xl" />
+            </span>
+            <span>Inventory</span>
+          </button>
+
+          <button
+            className="w-24 h-24 rounded bg-dark-900 flex-center flex-col"
+            onClick={() => onClickSourceTye("FORGE")}
+          >
+            <span className="mb-2 block h-8 flex-center">
+              <GiAnvil className="text-3xl" />
+            </span>
+            <span>New</span>
+          </button>
+        </div>
+      </Modal>
+
       <ArtifactForge
-        active={artifactPicker.active}
+        {...forge}
         hasConfigStep
-        forcedType={ARTIFACT_TYPES[artifactPicker.slot]}
         onForgeArtifact={(artifact) => {
+          const pieceIndex = ARTIFACT_TYPES.indexOf(artifact.type);
+
           dispatch(
             changeArtifact({
-              pieceIndex: artifactPicker.slot,
+              pieceIndex,
               newPiece: {
                 ...artifact,
                 ID: Date.now(),
@@ -116,9 +226,35 @@ export default function SectionArtifacts() {
               shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
             })
           );
-          setActiveTabIndex(artifactPicker.slot);
+          setActiveTabIndex(pieceIndex);
         }}
-        onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
+        onClose={() => setForge({ active: false })}
+      />
+
+      <ArtifactInventory
+        {...inventory}
+        currentArtifacts={artifacts}
+        buttonText="Select"
+        onClickButton={(artifact) => {
+          dispatch(
+            changeArtifact({
+              pieceIndex: targetIndex,
+              newPiece: userItemToCalcItem(artifact),
+            })
+          );
+        }}
+        onClose={() => setInventory({ active: false })}
+      />
+
+      <Tavern
+        active={modalType === "TAVERN"}
+        sourceType="user"
+        onSelectCharacter={(character) => {
+          if (character.artifactIDs) {
+            dispatch(pickEquippedArtSet(character.artifactIDs));
+          }
+        }}
+        onClose={closeModal}
       />
     </div>
   );
