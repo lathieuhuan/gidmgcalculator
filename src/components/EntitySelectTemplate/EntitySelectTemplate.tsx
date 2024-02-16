@@ -12,7 +12,7 @@ export type EntitySelectRenderArgs = {
   inputRef: React.RefObject<HTMLInputElement>;
 };
 
-interface EntitySelectTemplateProps {
+export interface EntitySelectTemplateProps {
   title: string;
   hasMultipleMode?: boolean;
   hasSearch?: boolean;

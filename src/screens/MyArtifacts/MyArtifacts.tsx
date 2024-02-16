@@ -146,7 +146,6 @@ export default function MyArtifacts() {
         onClose={closeModal}
       >
         <ArtifactFilter
-          showTypeFilter
           artifacts={userArts}
           initialFilter={filter}
           onDone={(newFilter) => {

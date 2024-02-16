@@ -17,19 +17,11 @@ export interface ArtifactFilterProps {
   forcedType?: ArtifactType;
   artifacts: CalcArtifact[];
   initialFilter: ArtifactFilterState;
-  showTypeFilter?: boolean;
   onDone: (filterCondition: ArtifactFilterState) => void;
   onClose: () => void;
 }
 /** Only used on Modals */
-const ArtifactFilter = ({
-  forcedType,
-  artifacts,
-  initialFilter,
-  showTypeFilter = forcedType !== undefined,
-  onDone,
-  onClose,
-}: ArtifactFilterProps) => {
+const ArtifactFilter = ({ forcedType, artifacts, initialFilter, onDone, onClose }: ArtifactFilterProps) => {
   const screenWatcher = useScreenWatcher();
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -95,7 +87,7 @@ const ArtifactFilter = ({
   return (
     <div className="h-full flex flex-col">
       <div className={clsx("grow overflow-hidden", !isSmallScreen && "xm:px-2 flex space-x-4")}>
-        {showTypeFilter ? (
+        {!forcedType ? (
           isSmallScreen ? (
             <FilterTemplate
               className={wrapperCls(activeIndex !== 0)}

@@ -54,6 +54,10 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   useLayoutEffect(() => {
+    if (hasConfigStep && data.length && data[0]) {
+      selectOption(data[0]);
+    }
+
     const handleEnter = (e: KeyboardEvent) => {
       if (
         inputRef.current &&

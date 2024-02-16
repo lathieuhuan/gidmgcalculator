@@ -3,7 +3,7 @@ import { useState, useLayoutEffect } from "react";
 import { MdInventory } from "react-icons/md";
 import { GiAnvil } from "react-icons/gi";
 
-import { ArtifactType } from "@Src/types";
+import { Artifact, ArtifactType } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
@@ -16,7 +16,7 @@ import { pickEquippedArtSet } from "@Store/thunks";
 
 // Component
 import { Button, CollapseSpace, Modal } from "@Src/pure-components";
-import { ArtifactForge, ArtifactInventory, ArtifactInventoryProps, Tavern } from "@Src/components";
+import { ArtifactForge, ArtifactInventory, Tavern } from "@Src/components";
 import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
@@ -84,7 +84,7 @@ export default function SectionArtifacts() {
     }
   };
 
-  const onClickSourceTye = (source: ArtifactSourceType) => {
+  const onClickSourceType = (source: ArtifactSourceType) => {
     switch (source) {
       case "INVENTORY":
         setInventory({
@@ -103,25 +103,31 @@ export default function SectionArtifacts() {
     setSelectingSrcType(false);
   };
 
-  const onRequestChangePiece = (source: ArtifactSourceType, index?: number) => {
+  /** Defailt initialType is 'flower' */
+  const onRequestChangePiece = (source: ArtifactSourceType, index: number = 0) => {
+    const newState = {
+      active: true,
+      initialType: ARTIFACT_TYPES[index],
+    };
     switch (source) {
       case "INVENTORY":
-        setInventory({
-          active: true,
-          initialType: ARTIFACT_TYPES[index ?? 0],
-        });
+        setInventory(newState);
         break;
       case "FORGE":
-        setForge({
-          active: true,
-          initialType: ARTIFACT_TYPES[index ?? 0],
-        });
+        setForge(newState);
         break;
     }
   };
 
   const onClickRemovePiece = () => {
     setActiveTabIndex(-1);
+  };
+
+  const replaceArtifact = (type: ArtifactType, newPiece: Artifact, shouldKeepStats = false) => {
+    const pieceIndex = ARTIFACT_TYPES.indexOf(type);
+
+    dispatch(changeArtifact({ pieceIndex, newPiece, shouldKeepStats }));
+    setActiveTabIndex(pieceIndex);
   };
 
   return (
@@ -185,7 +191,7 @@ export default function SectionArtifacts() {
         onClose={() => setSelectingSrcType(false)}
       >
         <div className="flex justify-center gap-4">
-          <button className="group" onClick={() => onClickSourceTye("INVENTORY")}>
+          <button className="group" onClick={() => onClickSourceType("INVENTORY")}>
             <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
               <span className="mb-2 block h-8 flex-center">
                 <MdInventory className="text-2xl" />
@@ -194,7 +200,7 @@ export default function SectionArtifacts() {
             </p>
           </button>
 
-          <button className="group" onClick={() => onClickSourceTye("FORGE")}>
+          <button className="group" onClick={() => onClickSourceType("FORGE")}>
             <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
               <span className="mb-2 block h-8 flex-center">
                 <GiAnvil className="text-3xl" />
@@ -209,36 +215,24 @@ export default function SectionArtifacts() {
         active={forge.active}
         initialTypes={forge.initialType}
         hasConfigStep
+        hasMultipleMode
         onForgeArtifact={(artifact) => {
-          const pieceIndex = ARTIFACT_TYPES.indexOf(artifact.type);
-
-          dispatch(
-            changeArtifact({
-              pieceIndex,
-              newPiece: {
-                ...artifact,
-                ID: Date.now(),
-              },
-              shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
-            })
-          );
-          setActiveTabIndex(pieceIndex);
+          const newPiece = {
+            ...artifact,
+            ID: Date.now(),
+          };
+          replaceArtifact(artifact.type, newPiece, $AppSettings.get("doKeepArtStatsOnSwitch"));
         }}
         onClose={() => setForge({ active: false })}
       />
 
       <ArtifactInventory
         {...inventory}
-        showTypeFilter
+        hasMultipleMode
         currentArtifacts={artifacts}
         buttonText="Select"
         onClickButton={(artifact) => {
-          dispatch(
-            changeArtifact({
-              pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
-              newPiece: userItemToCalcItem(artifact),
-            })
-          );
+          replaceArtifact(artifact.type, userItemToCalcItem(artifact));
         }}
         onClose={() => setInventory({ active: false })}
       />

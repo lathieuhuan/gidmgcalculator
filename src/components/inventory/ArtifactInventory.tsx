@@ -11,10 +11,12 @@ import { ButtonGroup, Modal } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { ArtifactFilter, ArtifactFilterProps, ArtifactFilterState } from "../ArtifactFilter";
-import { EntitySelectTemplate } from "../EntitySelectTemplate";
+import { EntitySelectTemplate, EntitySelectTemplateProps } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
 
-export interface ArtifactInventoryProps extends Pick<ArtifactFilterProps, "forcedType" | "showTypeFilter"> {
+export interface ArtifactInventoryProps
+  extends Pick<ArtifactFilterProps, "forcedType">,
+    Pick<EntitySelectTemplateProps, "hasMultipleMode"> {
   /** Default to 'flower' */
   initialType?: ArtifactType;
   currentArtifacts: (CalcArtifact | null)[];
@@ -25,7 +27,7 @@ export interface ArtifactInventoryProps extends Pick<ArtifactFilterProps, "force
 }
 const ArtifactInventoryCore = ({
   forcedType,
-  showTypeFilter,
+  hasMultipleMode,
   initialType = "flower",
   currentArtifacts,
   owner,
@@ -54,13 +56,13 @@ const ArtifactInventoryCore = ({
     <EntitySelectTemplate
       title="Artifact Inventory"
       hasFilter
+      hasMultipleMode={hasMultipleMode}
       filterWrapWidth="100%"
       renderFilter={(setFilterOn) => {
         return (
           <div className="h-full p-4 bg-dark-900">
             <ArtifactFilter
               forcedType={forcedType}
-              showTypeFilter={showTypeFilter}
               artifacts={artifacts}
               initialFilter={filter}
               onDone={setFilter}
@@ -71,7 +73,7 @@ const ArtifactInventoryCore = ({
       }}
       onClose={onClose}
     >
-      {() => {
+      {({ isMultiSelect }) => {
         return (
           <div className="h-full flex custom-scrollbar gap-2 scroll-smooth">
             <InventoryRack
@@ -104,7 +106,7 @@ const ArtifactInventoryCore = ({
                           variant: "positive",
                           onClick: () => {
                             onClickButton(chosenArtifact);
-                            onClose();
+                            if (!isMultiSelect) onClose();
                           },
                         },
                       ]}
