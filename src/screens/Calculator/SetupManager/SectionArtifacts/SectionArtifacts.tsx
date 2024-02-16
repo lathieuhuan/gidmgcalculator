@@ -7,6 +7,7 @@ import { Artifact, ArtifactType } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
+import { notification } from "@Src/utils/notification";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -233,6 +234,14 @@ export default function SectionArtifacts() {
         buttonText="Select"
         onClickButton={(artifact) => {
           replaceArtifact(artifact.type, userItemToCalcItem(artifact));
+
+          const artifactSet = $AppData.getArtifactSet(artifact.code);
+
+          if (artifactSet) {
+            notification.success({
+              content: `Selected ${artifactSet.name} (${artifact.type})`,
+            });
+          }
         }}
         onClose={() => setInventory({ active: false })}
       />

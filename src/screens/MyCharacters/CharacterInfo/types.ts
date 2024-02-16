@@ -1,1 +1,1 @@
-export type DetailsType = "weapon" | "setBonus" | "statsBonus" | number;
+export type GearsDetailType = "weapon" | "setBonus" | "statsBonus" | number;

@@ -3,9 +3,10 @@ import { useState } from "react";
 
 // Type
 import type { ArtifactAttribute, UserArtifacts, UserWeapon } from "@Src/types";
-import type { DetailsType } from "./types";
+import type { GearsDetailType } from "./types";
 
 import { ARTIFACT_TYPES } from "@Src/constants";
+import { useScreenWatcher } from "@Src/features";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Store
@@ -16,7 +17,7 @@ import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDataba
 import { CloseButton, SharedSpace } from "@Src/pure-components";
 import { WeaponInventory, ArtifactInventory } from "@Src/components";
 import { GearsOverview } from "./GearsOverview";
-import { GearsDetails } from "./GearsDetails";
+import { GearsDetail } from "./GearsDetail";
 
 interface GearsProps {
   weapon: UserWeapon;
@@ -25,17 +26,18 @@ interface GearsProps {
 }
 export default function Gears(props: GearsProps) {
   const { weapon, artifacts } = props;
+  const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const setBonuses = getArtifactSetBonuses(artifacts);
 
-  const [activeDetails, setActiveDetails] = useState<DetailsType>(-1);
+  const [activeDetails, setActiveDetails] = useState<GearsDetailType>(-1);
   const [showingDetail, setShowingDetail] = useState(false);
   const [inventoryCode, setInventoryCode] = useState(-1);
 
-  const dispatch = useDispatch();
-  const oldOwner = weapon.owner;
-  const onSmallDevice = window.innerWidth < 686;
+  const isFromXmScreen = screenWatcher.isFromSize("xm");
+  const currentChar = weapon.owner;
 
-  const toggleDetails = (type: DetailsType) => {
+  const toggleDetails = (type: GearsDetailType) => {
     if (activeDetails === type) {
       setShowingDetail(false);
       setTimeout(() => setActiveDetails(-1), 200);
@@ -57,12 +59,9 @@ export default function Gears(props: GearsProps) {
   );
 
   const detailComponent = activeDetails !== -1 && (
-    <GearsDetails
-      className={clsx(
-        "h-full",
-        onSmallDevice ? "" : "px-3 py-4 border-l-2 border-dark-700 rounded-r-lg bg-dark-900"
-      )}
-      style={{ width: onSmallDevice ? undefined : "20.25rem" }}
+    <GearsDetail
+      className={clsx("h-full", isFromXmScreen && "px-3 py-4 border-l-2 border-dark-700 rounded-r-lg bg-dark-900")}
+      style={{ width: isFromXmScreen ? "20.25rem" : undefined }}
       activeDetails={activeDetails}
       {...props}
       setBonuses={setBonuses}
@@ -97,7 +96,17 @@ export default function Gears(props: GearsProps) {
 
   return (
     <>
-      {onSmallDevice ? (
+      {isFromXmScreen ? (
+        <div className="h-full flex">
+          <div className="w-75 px-4 rounded-lg bg-dark-900 box-content">{overviewComponent}</div>
+          <div
+            className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
+            style={{ width: showingDetail ? "20.25rem" : 0 }}
+          >
+            {detailComponent}
+          </div>
+        </div>
+      ) : (
         <div className="w-75 h-full px-4 shrink-0 rounded-lg bg-dark-900 box-content">
           <SharedSpace
             atLeft={!showingDetail}
@@ -112,26 +121,23 @@ export default function Gears(props: GearsProps) {
             }
           />
         </div>
-      ) : (
-        <div className="h-full flex">
-          <div className="w-75 px-4 rounded-lg bg-dark-900 box-content">{overviewComponent}</div>
-          <div
-            className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
-            style={{ width: showingDetail ? "20.25rem" : 0 }}
-          >
-            {detailComponent}
-          </div>
-        </div>
       )}
 
       <WeaponInventory
         active={inventoryCode === 5}
-        owner={oldOwner}
+        owner={currentChar}
         weaponType={weapon.type}
         buttonText="Switch"
-        onClickButton={({ owner, ID }) => {
-          if (oldOwner) {
-            dispatch(switchWeapon({ newOwner: owner, newID: ID, oldOwner, oldID: weapon.ID }));
+        onClickButton={(selectedWeapon) => {
+          if (currentChar) {
+            dispatch(
+              switchWeapon({
+                newOwner: selectedWeapon.owner,
+                newID: selectedWeapon.ID,
+                oldOwner: currentChar,
+                oldID: weapon.ID,
+              })
+            );
           }
         }}
         onClose={() => setInventoryCode(-1)}
@@ -140,16 +146,16 @@ export default function Gears(props: GearsProps) {
       <ArtifactInventory
         active={inventoryCode >= 0 && inventoryCode < 5}
         currentArtifacts={artifacts}
-        artifactType={ARTIFACT_TYPES[inventoryCode]}
-        owner={oldOwner}
+        forcedType={ARTIFACT_TYPES[inventoryCode]}
+        owner={currentChar}
         buttonText="Switch"
-        onClickButton={({ owner, ID }) => {
-          if (oldOwner) {
+        onClickButton={(selectedArtifact) => {
+          if (currentChar) {
             dispatch(
               switchArtifact({
-                newOwner: owner,
-                newID: ID,
-                oldOwner,
+                newOwner: selectedArtifact.owner,
+                newID: selectedArtifact.ID,
+                oldOwner: currentChar,
                 oldID: artifacts[inventoryCode]?.ID || 0,
                 artifactIndex: inventoryCode,
               })

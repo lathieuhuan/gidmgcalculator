@@ -3,7 +3,7 @@ import { FaInfo } from "react-icons/fa";
 
 // Type
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
-import type { DetailsType } from "./types";
+import type { GearsDetailType } from "./types";
 
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData } from "@Src/services";
@@ -21,8 +21,8 @@ interface GearsOverviewProps {
   weapon: UserWeapon;
   artifacts: UserArtifacts;
   setBonuses: ArtifactSetBonus[];
-  activeDetails: DetailsType;
-  toggleDetails: (newDetailsType: DetailsType) => void;
+  activeDetails: GearsDetailType;
+  toggleDetails: (newDetailsType: GearsDetailType) => void;
   onClickEmptyArtIcon: (artifactIndex: number) => void;
 }
 export function GearsOverview({

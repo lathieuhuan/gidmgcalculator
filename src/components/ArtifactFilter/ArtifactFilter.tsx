@@ -114,7 +114,7 @@ const ArtifactFilter = ({ forcedType, artifacts, initialFilter, onDone, onClose 
           )
         ) : null}
 
-        <div className="h-full w-px bg-dark-300 hidden md:block" />
+        {!forcedType && <div className="h-full w-px bg-dark-300 hidden md:block" />}
 
         <div className={clsx(wrapperCls(activeIndex !== 1), "shrink-0", !isSmallScreen && "w-56")}>
           {renderArtifactStatFilter()}

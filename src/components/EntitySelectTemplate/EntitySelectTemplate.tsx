@@ -123,7 +123,7 @@ export const EntitySelectTemplate = ({
         <div className="flex items-center justify-between relative">
           <div>{title}</div>
 
-          <div className="mr-4 pr-4 flex items-center">
+          <div className="mr-6 pr-4 flex items-center">
             {extra}
 
             <div className="flex items-center gap-3">

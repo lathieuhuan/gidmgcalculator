@@ -3,7 +3,7 @@ import { type CSSProperties, useEffect } from "react";
 
 // Type
 import type { ArtifactAttribute, AttributeStat, ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
-import type { DetailsType } from "./types";
+import type { GearsDetailType } from "./types";
 
 // Store
 import { useDispatch } from "@Store/hooks";
@@ -13,10 +13,10 @@ import { updateUserArtifactSubStat, updateUserArtifact, updateUserWeapon } from 
 import { Button, ButtonGroup } from "@Src/pure-components";
 import { AttributeTable, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Src/components";
 
-interface GearsDetailsProps {
+interface GearsDetailProps {
   className: string;
   style: CSSProperties;
-  activeDetails: DetailsType;
+  activeDetails: GearsDetailType;
   weapon: UserWeapon;
   artifacts: UserArtifacts;
   setBonuses: ArtifactSetBonus[];
@@ -26,7 +26,7 @@ interface GearsDetailsProps {
   onClickUnequipArtifact: () => void;
   onCloseDetails: () => void;
 }
-export function GearsDetails({
+export function GearsDetail({
   className,
   style,
   activeDetails,
@@ -38,7 +38,7 @@ export function GearsDetails({
   onClickSwitchArtifact,
   onClickUnequipArtifact,
   onCloseDetails,
-}: GearsDetailsProps) {
+}: GearsDetailProps) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -116,7 +116,7 @@ export function GearsDetails({
               className="mt-4"
               buttons={[
                 { text: "Unequip", onClick: onClickUnequipArtifact },
-                { text: "Switch", variant: 'positive', onClick: onClickSwitchArtifact },
+                { text: "Switch", variant: "positive", onClick: onClickSwitchArtifact },
               ]}
             />
           </div>
