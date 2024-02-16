@@ -7,8 +7,7 @@ import { ElementType, Rarity, WeaponType } from "@Src/types";
 
 // Component
 import { ElementIcon } from "@Src/components";
-import { ButtonGroup } from "@Src/pure-components";
-import { ClearAllButton } from "./ClearAllButton";
+import { ButtonGroup, FilterTemplate } from "@Src/pure-components";
 
 export type CharacterFilterState = {
   weaponTypes: WeaponType[];
@@ -59,33 +58,33 @@ export const CharacterFilter = ({ className, initialFilter, onCancel, onDone }: 
   return (
     <div className={clsx("px-3 py-4 bg-dark-900 flex flex-col", className)}>
       <div className="grow space-y-4 hide-scrollbar">
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="whitespace-nowrap">Filter by Element</p>
-            <ClearAllButton disabled={!elementTypes.length} onClick={() => updateElementTypes([])} />
-          </div>
+        <FilterTemplate
+          title="Filter by Element"
+          disabledClearAll={!elementTypes.length}
+          onClickClearAll={() => updateElementTypes([])}
+        >
           <div className="hide-scrollbar">{renderElementSelect("p-1")}</div>
-        </div>
+        </FilterTemplate>
 
         <div className="w-full h-px bg-dark-300" />
 
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="whitespace-nowrap">Filter by Weapon</p>
-            <ClearAllButton disabled={!weaponTypes.length} onClick={() => updateWeaponTypes([])} />
-          </div>
+        <FilterTemplate
+          title="Filter by Weapon"
+          disabledClearAll={!weaponTypes.length}
+          onClickClearAll={() => updateWeaponTypes([])}
+        >
           {renderWeaponTypeSelect("px-1")}
-        </div>
+        </FilterTemplate>
 
         <div className="w-full h-px bg-dark-300" />
 
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="whitespace-nowrap">Filter by Rarity</p>
-            <ClearAllButton disabled={!rarities.length} onClick={() => updateRarities([])} />
-          </div>
+        <FilterTemplate
+          title="Filter by Rarity"
+          disabledClearAll={!rarities.length}
+          onClickClearAll={() => updateRarities([])}
+        >
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}
-        </div>
+        </FilterTemplate>
       </div>
 
       <ButtonGroup.Confirm className="mt-4" justify="end" focusConfirm onCancel={onCancel} onConfirm={onConfirm} />

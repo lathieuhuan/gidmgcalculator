@@ -75,7 +75,7 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
 
   return (
     <AppEntitySelect
-      title="Weapons"
+      title="Weapon Forge"
       data={allWeapons}
       hiddenCodes={hiddenCodes}
       emptyText="No weapons found"
@@ -125,7 +125,7 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
                     }
                   }}
                 >
-                  Select
+                  Craft
                 </Button>
               </div>
             ) : null}

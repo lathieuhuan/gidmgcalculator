@@ -44,7 +44,7 @@ const Caret = ({ toRight, onClick }: CaretProps) => {
     <button
       className={
         "absolute top-2 text-[2.5rem] text-dark-500 hover:text-yellow-400 flex-center cursor-pointer " +
-        (toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 left right-full")
+        (toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 right-full")
       }
       onClick={onClick}
     >

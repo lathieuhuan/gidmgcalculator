@@ -89,7 +89,7 @@ const TavernRooms = ({ sourceType, filter: filterFn, onSelectCharacter, onClose,
 
   return (
     <AppEntitySelect
-      title="Characters"
+      title="Tavern"
       data={allCharacters}
       hiddenCodes={hiddenCodes}
       emptyText="No characters found"

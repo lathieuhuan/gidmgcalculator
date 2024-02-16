@@ -3,6 +3,7 @@ import { useState, useLayoutEffect } from "react";
 import { MdInventory } from "react-icons/md";
 import { GiAnvil } from "react-icons/gi";
 
+import { ArtifactType } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
@@ -15,7 +16,7 @@ import { pickEquippedArtSet } from "@Store/thunks";
 
 // Component
 import { Button, CollapseSpace, Modal } from "@Src/pure-components";
-import { ArtifactForge, ArtifactForgeProps, ArtifactInventory, ArtifactInventoryProps, Tavern } from "@Src/components";
+import { ArtifactForge, ArtifactInventory, ArtifactInventoryProps, Tavern } from "@Src/components";
 import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
@@ -23,12 +24,14 @@ import styles from "../styles.module.scss";
 
 type ModalType = "EQUIPPED_SET" | "TAVERN" | "";
 
-type InventoryState = Pick<ArtifactInventoryProps, "forcedType" | "initialTypes"> & {
+type InventoryState = {
   active: boolean;
+  initialType?: ArtifactType;
 };
 
-type ForgeState = Pick<ArtifactForgeProps, "forcedType" | "initialTypes"> & {
+type ForgeState = {
   active: boolean;
+  initialType?: ArtifactType;
 };
 
 export default function SectionArtifacts() {
@@ -39,16 +42,12 @@ export default function SectionArtifacts() {
   const [selectingSrcType, setSelectingSrcType] = useState(false);
   const [modalType, setModalType] = useState<ModalType>("");
   const [activeTabIndex, setActiveTabIndex] = useState(-1);
-  const [targetIndex, setTargetIndex] = useState(-1);
 
   const [inventory, setInventory] = useState<InventoryState>({
     active: false,
-    // artifactType: "flower",
   });
   const [forge, setForge] = useState<ForgeState>({
     active: false,
-    forcedType: undefined,
-    initialTypes: undefined,
   });
 
   const activeArtifact = artifacts[activeTabIndex];
@@ -75,12 +74,12 @@ export default function SectionArtifacts() {
 
       setForge({
         active: false,
-        forcedType: ARTIFACT_TYPES[tabIndex],
+        initialType: ARTIFACT_TYPES[tabIndex],
       });
 
       setInventory({
         active: false,
-        forcedType: ARTIFACT_TYPES[tabIndex],
+        initialType: ARTIFACT_TYPES[tabIndex],
       });
     }
   };
@@ -90,13 +89,13 @@ export default function SectionArtifacts() {
       case "INVENTORY":
         setInventory({
           active: true,
-          forcedType: inventory.forcedType,
+          initialType: inventory.initialType,
         });
         break;
       case "FORGE":
         setForge({
           active: true,
-          forcedType: forge.forcedType,
+          initialType: forge.initialType,
         });
         break;
     }
@@ -106,14 +105,17 @@ export default function SectionArtifacts() {
 
   const onRequestChangePiece = (source: ArtifactSourceType, index?: number) => {
     switch (source) {
-      case "FORGE":
-        const newForge: ForgeState = {
+      case "INVENTORY":
+        setInventory({
           active: true,
-        };
-        const key: "forcedType" | "initialTypes" = typeof index === "number" ? "forcedType" : "initialTypes";
-
-        newForge[key] = ARTIFACT_TYPES[index ?? 0];
-        setForge(newForge);
+          initialType: ARTIFACT_TYPES[index ?? 0],
+        });
+        break;
+      case "FORGE":
+        setForge({
+          active: true,
+          initialType: ARTIFACT_TYPES[index ?? 0],
+        });
         break;
     }
   };
@@ -162,12 +164,7 @@ export default function SectionArtifacts() {
             pieceIndex={activeTabIndex}
             onClickRemovePiece={onClickRemovePiece}
             onClickChangePiece={(source) => {
-              if (source === "FORGE") {
-                setForge({
-                  active: true,
-                  forcedType: ARTIFACT_TYPES[activeTabIndex],
-                });
-              }
+              onRequestChangePiece(source, activeTabIndex);
             }}
           />
         )}
@@ -183,35 +180,34 @@ export default function SectionArtifacts() {
       <Modal
         active={selectingSrcType}
         preset="small"
-        title="Select a Source"
+        title="Select a source"
         className="bg-dark-700"
         onClose={() => setSelectingSrcType(false)}
       >
         <div className="flex justify-center gap-4">
-          <button
-            className="w-24 h-24 rounded bg-dark-900 flex-center flex-col"
-            onClick={() => onClickSourceTye("INVENTORY")}
-          >
-            <span className="mb-2 block h-8 flex-center">
-              <MdInventory className="text-2xl" />
-            </span>
-            <span>Inventory</span>
+          <button className="group" onClick={() => onClickSourceTye("INVENTORY")}>
+            <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
+              <span className="mb-2 block h-8 flex-center">
+                <MdInventory className="text-2xl" />
+              </span>
+              <span>Inventory</span>
+            </p>
           </button>
 
-          <button
-            className="w-24 h-24 rounded bg-dark-900 flex-center flex-col"
-            onClick={() => onClickSourceTye("FORGE")}
-          >
-            <span className="mb-2 block h-8 flex-center">
-              <GiAnvil className="text-3xl" />
-            </span>
-            <span>New</span>
+          <button className="group" onClick={() => onClickSourceTye("FORGE")}>
+            <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
+              <span className="mb-2 block h-8 flex-center">
+                <GiAnvil className="text-3xl" />
+              </span>
+              <span>New</span>
+            </p>
           </button>
         </div>
       </Modal>
 
       <ArtifactForge
-        {...forge}
+        active={forge.active}
+        initialTypes={forge.initialType}
         hasConfigStep
         onForgeArtifact={(artifact) => {
           const pieceIndex = ARTIFACT_TYPES.indexOf(artifact.type);
@@ -233,12 +229,13 @@ export default function SectionArtifacts() {
 
       <ArtifactInventory
         {...inventory}
+        showTypeFilter
         currentArtifacts={artifacts}
         buttonText="Select"
         onClickButton={(artifact) => {
           dispatch(
             changeArtifact({
-              pieceIndex: targetIndex,
+              pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
               newPiece: userItemToCalcItem(artifact),
             })
           );

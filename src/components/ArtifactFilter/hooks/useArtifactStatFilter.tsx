@@ -1,13 +1,12 @@
 import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
-import { FaEraser } from "react-icons/fa";
 
 import type { ArtifactType } from "@Src/types";
-import type { ArtifactStatFilterCondition, ArtifactStatFilterOption } from "../types";
+import type { ArtifactStatFilterState, ArtifactStatFilterOption } from "../types";
 import { ARTIFACT_SUBSTAT_TYPES, ATTACK_ELEMENTS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
-import { Button } from "@Src/pure-components";
 import { useTranslation } from "@Src/pure-hooks";
+import { FilterTemplate } from "@Src/pure-components";
 
 type RenderSelectArgs = {
   no?: number;
@@ -17,15 +16,22 @@ type RenderSelectArgs = {
   onChange: (value: string, no: number) => void;
 };
 
-export const DEFAULT_STAT_FILTER_CONDITION: ArtifactStatFilterCondition = {
+export const DEFAULT_STAT_FILTER: ArtifactStatFilterState = {
   main: "All",
   subs: Array(4).fill("All"),
 };
 
-export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition, artifactType?: ArtifactType) {
+type Config = {
+  artifactType?: ArtifactType;
+  title?: React.ReactNode;
+};
+
+export const useArtifactStatFilter = (initialFilter: ArtifactStatFilterState, config?: Config) => {
   const { t } = useTranslation();
   const [filter, setFilter] = useState(initialFilter);
   const [hasDuplicates, setHasDuplicates] = useState(false);
+
+  const { artifactType, title = "Filter by Stat" } = config || {};
 
   const mainStatOptions = artifactType
     ? ["All", ...Object.keys(ARTIFACT_MAIN_STATS[artifactType])]
@@ -34,7 +40,7 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
 
   const resetable = filter.main !== "All" || filter.subs.some((s) => s !== "All");
 
-  const checkDuplicate = (filter: ArtifactStatFilterCondition) => {
+  const checkDuplicate = (filter: ArtifactStatFilterState) => {
     const record: Record<string, boolean> = {
       [filter.main]: true,
     };
@@ -48,7 +54,7 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
   };
 
   const changeMainStat = (newStat: string) => {
-    const newFilter: ArtifactStatFilterCondition = {
+    const newFilter: ArtifactStatFilterState = {
       main: newStat as ArtifactStatFilterOption,
       subs: filter.subs,
     };
@@ -69,7 +75,7 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
         newSubs[k] = "All";
       }
     }
-    const newFilter: ArtifactStatFilterCondition = {
+    const newFilter: ArtifactStatFilterState = {
       main: filter.main,
       subs: newSubs,
     };
@@ -82,14 +88,14 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
   };
 
   const clearFilter = () => {
-    setFilter(DEFAULT_STAT_FILTER_CONDITION);
+    setFilter(DEFAULT_STAT_FILTER);
     setHasDuplicates(false);
   };
 
   const renderSelect = ({ no = 0, value, options, showSelect = true, onChange }: RenderSelectArgs) => {
     return (
-      <div key={no} className="px-4 w-56 h-8 bg-dark-900 flex items-center">
-        <div className="mr-1 pt-0.5 w-2.5 text-base text-orange-500">{no ? <p>{no}</p> : null}</div>
+      <div key={no} className="px-4 w-56 h-8 bg-dark-500 flex items-center">
+        <div className="mr-1 pt-0.5 w-2.5 text-base text-light-400 shrink-0">{no ? <p>{no}.</p> : null}</div>
         {showSelect ? (
           <select
             className={clsx("w-full p-1", value === "All" ? "text-light-400" : "text-green-300")}
@@ -107,62 +113,51 @@ export function useArtifactStatFilter(initialFilter: ArtifactStatFilterCondition
     );
   };
 
-  const renderArtifactStatFilter = (className: ClassValue = "") => {
+  const renderArtifactStatFilter = (className?: ClassValue) => {
     return (
-      <div className={clsx("h-full w-full flex flex-col", className)}>
-        <div className="grow hide-scrollbar flex flex-col space-y-4">
+      <FilterTemplate
+        className={className}
+        title={title}
+        description={
           <p className="text-sm text-light-600">
-            Artifacts will not only be <b>filtered</b> by stats, but also <b>sorted</b> by stats. The priority is Main
-            Stat (if not "All"), then Sub Stat 1, Sub Stat 2...
+            Also sort by stats. The priority is Main Stat (if not "All"), then Sub Stat 1, Sub Stat 2, and so on.
           </p>
-
-          <div>
-            <div className="space-y-1">
-              <p className="text-lg text-orange-500 font-semibold">Main Stat</p>
-              <div className="mt-1 flex justify-center">
-                {renderSelect({ value: filter.main, options: mainStatOptions, onChange: changeMainStat })}
-              </div>
-            </div>
-
-            <div className="mt-3 space-y-1">
-              <p className="text-lg text-orange-500 font-semibold">Sub Stats</p>
-              <div className="flex flex-col items-center space-y-2">
-                {[1, 2, 3, 4].map((no, i) => {
-                  const prevValue = filter.subs[i - 1];
-
-                  return renderSelect({
-                    no,
-                    value: filter.subs[i],
-                    options: subStatOptions,
-                    showSelect: !prevValue || prevValue !== "All",
-                    onChange: changeSubStat,
-                  });
-                })}
-              </div>
-            </div>
-
-            {hasDuplicates && <p className="mt-4 text-red-100">Every stat must be unique!</p>}
+        }
+        disabledClearAll={!resetable}
+        onClickClearAll={clearFilter}
+      >
+        <div className="space-y-1">
+          <p className="text-lg text-blue-400 font-semibold">Main Stat</p>
+          <div className="mt-1 flex justify-center">
+            {renderSelect({ value: filter.main, options: mainStatOptions, onChange: changeMainStat })}
           </div>
         </div>
 
-        <div className="mt-4 flex space-x-2">
-          <Button size="small" icon={<FaEraser />} disabled={!resetable} onClick={clearFilter}>
-            Clear all
-          </Button>
+        <div className="mt-3 space-y-1">
+          <p className="text-lg text-blue-400 font-semibold">Sub Stats</p>
+          <div className="flex flex-col items-center space-y-2">
+            {[1, 2, 3, 4].map((no, i) => {
+              const prevValue = filter.subs[i - 1];
+
+              return renderSelect({
+                no,
+                value: filter.subs[i],
+                options: subStatOptions,
+                showSelect: !prevValue || prevValue !== "All",
+                onChange: changeSubStat,
+              });
+            })}
+          </div>
         </div>
-      </div>
+
+        {hasDuplicates && <p className="mt-4 text-red-100">Every stat must be unique!</p>}
+      </FilterTemplate>
     );
   };
 
   return {
     statsFilter: filter,
-    resetable,
     hasDuplicates,
-    operate: {
-      changeMainStat,
-      changeSubStat,
-      clearFilter,
-    },
     renderArtifactStatFilter,
   };
-}
+};

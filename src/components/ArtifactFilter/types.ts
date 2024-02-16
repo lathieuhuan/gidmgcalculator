@@ -8,13 +8,13 @@ export type ArtifactFilterSet = {
 
 export type ArtifactStatFilterOption = "All" | AttributeStat;
 
-export interface ArtifactStatFilterCondition {
+export interface ArtifactStatFilterState {
   main: ArtifactStatFilterOption;
   subs: ArtifactStatFilterOption[];
 }
 
 export type ArtifactFilterState = {
-  stats: ArtifactStatFilterCondition;
+  stats: ArtifactStatFilterState;
   codes: number[];
   types: ArtifactType[];
 };

@@ -1,68 +1,84 @@
 import clsx, { ClassValue } from "clsx";
-import { FaEraser } from "react-icons/fa";
+import { useState } from "react";
+import { FaEraser, FaSquare } from "react-icons/fa";
+import { FaCaretRight } from "react-icons/fa";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
 import type { ArtifactFilterState } from "./types";
 
 // Hook
 import { useScreenWatcher } from "@Src/features";
 import { useArtifactTypeSelect } from "@Src/hooks";
-import { useTabs } from "@Src/pure-hooks";
-import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER_CONDITION } from "./hooks";
+import { useArtifactSetFilter, useArtifactStatFilter, DEFAULT_STAT_FILTER } from "./hooks";
 
+import { Button, FilterTemplate, Modal } from "@Src/pure-components";
 import { filterArtifacts } from "./filterArtifacts";
-import { Button, Modal } from "@Src/pure-components";
 
 export interface ArtifactFilterProps {
-  artifactType?: ArtifactType;
+  forcedType?: ArtifactType;
   artifacts: CalcArtifact[];
-  initialCondition: ArtifactFilterState;
+  initialFilter: ArtifactFilterState;
   showTypeFilter?: boolean;
-  onConfirm: (filterCondition: ArtifactFilterState) => void;
+  onDone: (filterCondition: ArtifactFilterState) => void;
   onClose: () => void;
 }
-
-/**
- * 2 case:
- * type act as a filter category => multiple type select, useArtifactStatFilter & useArtifactSetFilter do not depend on type
- * type act as filter config => single type select, when type change need to reset stats and recalculate sets
- */
-
+/** Only used on Modals */
 const ArtifactFilter = ({
-  artifactType,
+  forcedType,
   artifacts,
-  initialCondition,
-  showTypeFilter,
-  onConfirm,
+  initialFilter,
+  showTypeFilter = forcedType !== undefined,
+  onDone,
   onClose,
 }: ArtifactFilterProps) => {
   const screenWatcher = useScreenWatcher();
-  const { activeIndex, tabsElmt } = useTabs({
-    level: 2,
-    configs: [{ text: "Stats" }, { text: "Sets" }].concat(showTypeFilter ? [{ text: "Types" }] : []),
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const renderTitle = (title: string, position: number) => {
+    return (
+      <div className="flex items-centers gap-2">
+        <button
+          type="button"
+          className="w-6 h-6 flex-center md:hidden"
+          disabled={position <= 0}
+          onClick={() => setActiveIndex((prev) => prev - 1)}
+        >
+          {position > 0 ? <FaCaretRight className="text-2xl rotate-180" /> : <FaSquare className="opacity-50" />}
+        </button>
+        <p style={{ width: 100 }}>{title}</p>
+        <button
+          type="button"
+          className="w-6 h-6 flex-center md:hidden"
+          disabled={position >= 2}
+          onClick={() => setActiveIndex((prev) => prev + 1)}
+        >
+          {position < 2 ? <FaCaretRight className="text-2xl" /> : <FaSquare className="opacity-50" />}
+        </button>
+      </div>
+    );
+  };
+
+  const { artifactTypes, updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(initialFilter.types, {
+    size: "large",
+    multiple: true,
+  });
+  const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(initialFilter.stats, {
+    title: renderTitle("Filter by Stat", 1),
+    artifactType: forcedType,
+  });
+  const { setOptions, renderArtifactSetFilter } = useArtifactSetFilter(artifacts, initialFilter.codes, {
+    title: renderTitle("Filter by Set", 2),
+    artifactType: forcedType,
   });
 
-  const { artifactTypes, updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(
-    initialCondition.types,
-    {
-      size: "large",
-      multiple: true,
-    }
-  );
-  const { statsFilter, hasDuplicates, renderArtifactStatFilter } = useArtifactStatFilter(
-    initialCondition.stats,
-    artifactType
-  );
-  const { filterSets, renderArtifactSetFilter } = useArtifactSetFilter(artifacts, initialCondition.codes, artifactType);
-
   const onConfirmFilter = () => {
-    const filteredCodes = filterSets.reduce((codes: number[], tempSet) => {
-      if (tempSet.chosen) {
-        codes.push(tempSet.code);
+    const filteredCodes = setOptions.reduce((codes: number[], setOption) => {
+      if (setOption.chosen) {
+        codes.push(setOption.code);
       }
       return codes;
     }, []);
 
-    onConfirm({
+    onDone({
       stats: statsFilter,
       codes: filteredCodes,
       types: artifactTypes,
@@ -78,38 +94,43 @@ const ArtifactFilter = ({
 
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-4 md:hidden">{tabsElmt}</div>
-
-      <div className={clsx("grow overflow-hidden", !isSmallScreen && "xm:px-4 flex space-x-4")}>
+      <div className={clsx("grow overflow-hidden", !isSmallScreen && "xm:px-2 flex space-x-4")}>
         {showTypeFilter ? (
-          <div
-            className={clsx([
-              wrapperCls(activeIndex !== 2),
-              "flex flex-col",
-              isSmallScreen ? "justify-between" : "mr-4 items-center shrink-0",
-            ])}
-          >
-            {renderArtifactTypeSelect(["mb-6 hide-scrollbar", isSmallScreen ? "justify-center py-4" : "py-2 flex-col"])}
+          isSmallScreen ? (
+            <FilterTemplate
+              className={wrapperCls(activeIndex !== 0)}
+              title={renderTitle("Filter by Type", 0)}
+              disabledClearAll={!artifactTypes.length}
+              onClickClearAll={() => updateArtifactTypes([])}
+            >
+              {renderArtifactTypeSelect("justify-center py-4 hide-scrollbar")}
+            </FilterTemplate>
+          ) : (
+            <div className="flex flex-col items-center shrink-0 space-y-4">
+              <p>Type</p>
 
-            <div className="flex">
               <Button
-                size={isSmallScreen ? "small" : "custom"}
-                className={!isSmallScreen && "p-1"}
+                size="custom"
+                className="p-1"
                 icon={<FaEraser className="text-lg" />}
                 disabled={!artifactTypes.length}
                 onClick={() => updateArtifactTypes([])}
-              >
-                {isSmallScreen ? "Clear all" : ""}
-              </Button>
+              />
+
+              {renderArtifactTypeSelect("py-2 flex-col hide-scrollbar")}
             </div>
-          </div>
+          )
         ) : null}
 
-        <div className={clsx(wrapperCls(activeIndex !== 0), "shrink-0", !isSmallScreen && "w-56")}>
+        <div className="h-full w-px bg-dark-300 hidden md:block" />
+
+        <div className={clsx(wrapperCls(activeIndex !== 1), "shrink-0", !isSmallScreen && "w-56")}>
           {renderArtifactStatFilter()}
         </div>
 
-        <div className={clsx([wrapperCls(activeIndex !== 1), "grow"])}>
+        <div className="h-full w-px bg-dark-300 hidden md:block" />
+
+        <div className={clsx([wrapperCls(activeIndex !== 2), "grow"])}>
           {renderArtifactSetFilter(
             null,
             "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-4 xm:grid-cols-6 lg:grid-cols-8"
@@ -122,11 +143,13 @@ const ArtifactFilter = ({
   );
 };
 
-ArtifactFilter.DEFAULT_CONDITION = {
-  stats: DEFAULT_STAT_FILTER_CONDITION,
+const DEFAULT_FILTER: ArtifactFilterState = {
+  stats: DEFAULT_STAT_FILTER,
   codes: [],
   types: [],
 };
+
+ArtifactFilter.DEFAULT_FILTER = DEFAULT_FILTER;
 ArtifactFilter.filterArtifacts = filterArtifacts;
 
 export { ArtifactFilter };

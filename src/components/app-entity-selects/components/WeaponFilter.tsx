@@ -4,8 +4,7 @@ import { useRaritySelect } from "@Src/pure-hooks";
 import { Rarity, WeaponType } from "@Src/types";
 
 // Component
-import { ButtonGroup } from "@Src/pure-components";
-import { ClearAllButton } from "./ClearAllButton";
+import { ButtonGroup, FilterTemplate } from "@Src/pure-components";
 
 export type WeaponFilterState = {
   types: WeaponType[];
@@ -47,25 +46,25 @@ export const WeaponFilter = ({
       <div className="grow space-y-4 hide-scrollbar">
         {withTypeSelect ? (
           <>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <p className="whitespace-nowrap">Filter by Type</p>
-                <ClearAllButton disabled={!weaponTypes.length} onClick={() => updateWeaponTypes([])} />
-              </div>
+            <FilterTemplate
+              title="Filter by Type"
+              disabledClearAll={!weaponTypes.length}
+              onClickClearAll={() => updateWeaponTypes([])}
+            >
               {renderWeaponTypeSelect("px-1")}
-            </div>
+            </FilterTemplate>
 
             <div className="w-full h-px bg-dark-300" />
           </>
         ) : null}
 
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="whitespace-nowrap">Filter by Rarity</p>
-            <ClearAllButton disabled={!rarities.length} onClick={() => updateRarities([])} />
-          </div>
+        <FilterTemplate
+          title="Filter by Rarity"
+          disabledClearAll={!rarities.length}
+          onClickClearAll={() => updateRarities([])}
+        >
           {renderRaritySelect(undefined, { maxWidth: "14rem" })}
-        </div>
+        </FilterTemplate>
       </div>
 
       <ButtonGroup.Confirm

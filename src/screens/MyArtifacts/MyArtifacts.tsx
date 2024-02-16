@@ -27,21 +27,19 @@ export default function MyArtifacts() {
 
   const [chosenID, setChosenID] = useState(0);
   const [modalType, setModalType] = useState<ModalType>("");
-  const [filterCondition, setFilterCondition] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_CONDITION);
+  const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_FILTER);
 
   const { updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(null, {
     onChange: (selectedTypes) => {
-      setFilterCondition((prev) => ({
+      setFilter((prev) => ({
         ...prev,
         types: selectedTypes,
       }));
     },
   });
 
-  const filteredArtifacts = useMemo(
-    () => ArtifactFilter.filterArtifacts(userArts, filterCondition),
-    [userArts, filterCondition]
-  );
+  const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(userArts, filter), [userArts, filter]);
+
   const chosenArtifact = findById(filteredArtifacts, chosenID);
 
   const closeModal = () => setModalType("");
@@ -83,10 +81,10 @@ export default function MyArtifacts() {
   };
 
   const isFiltered =
-    filterCondition.types.length ||
-    filterCondition.codes.length ||
-    filterCondition.stats.main !== "All" ||
-    filterCondition.stats.subs.some((s) => s !== "All");
+    filter.types.length ||
+    filter.codes.length ||
+    filter.stats.main !== "All" ||
+    filter.stats.subs.some((s) => s !== "All");
 
   return (
     <WarehouseLayout.Wrapper>
@@ -116,9 +114,9 @@ export default function MyArtifacts() {
               <div
                 className="pl-2 pr-3 rounded-r-2xl text-black bg-light-400 flex-center glow-on-hover"
                 onClick={() => {
-                  const { DEFAULT_CONDITION } = ArtifactFilter;
-                  setFilterCondition(DEFAULT_CONDITION);
-                  updateArtifactTypes(DEFAULT_CONDITION.types);
+                  const { DEFAULT_FILTER } = ArtifactFilter;
+                  setFilter(DEFAULT_FILTER);
+                  updateArtifactTypes(DEFAULT_FILTER.types);
                 }}
               >
                 <FaTimes />
@@ -150,10 +148,10 @@ export default function MyArtifacts() {
         <ArtifactFilter
           showTypeFilter
           artifacts={userArts}
-          initialCondition={filterCondition}
-          onConfirm={(contition) => {
-            setFilterCondition(contition);
-            updateArtifactTypes(contition.types);
+          initialFilter={filter}
+          onDone={(newFilter) => {
+            setFilter(newFilter);
+            updateArtifactTypes(newFilter.types);
           }}
           onClose={closeModal}
         />

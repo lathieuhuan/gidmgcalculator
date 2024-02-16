@@ -8,7 +8,7 @@ interface ArtifactConfigProps {
   typeSelect?: React.ReactNode;
   maxRarity?: number;
   onChangeRarity?: (rarity: Rarity) => void;
-  onUpdateConfig?: (props: Partial<Artifact>) => void;
+  onUpdateConfig?: (properties: Partial<Artifact>) => void;
   onSelect?: (config: Artifact) => void;
 }
 export const ArtifactConfig = ({
@@ -89,7 +89,7 @@ export const ArtifactConfig = ({
         {config ? (
           <div className="mt-4 flex justify-center">
             <Button variant="positive" onClick={() => onSelect?.(config)}>
-              Select
+              Craft
             </Button>
           </div>
         ) : null}

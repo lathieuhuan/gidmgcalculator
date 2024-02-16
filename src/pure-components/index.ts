@@ -18,3 +18,4 @@ export * from "./Switch";
 export * from "./Radio";
 export * from "./Checkbox";
 export * from "./ItemCase";
+export * from "./FilterTemplate";

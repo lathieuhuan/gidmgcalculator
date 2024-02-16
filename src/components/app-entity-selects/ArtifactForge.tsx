@@ -31,8 +31,6 @@ const ArtifactSmith = ({
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
   const [maxRarity, setMaxRarity] = useState(5);
 
-  console.log("forcedType", forcedType);
-
   const updateConfig = (update: (prevConfig: Artifact) => Artifact) => {
     if (artifactConfig) {
       setArtifactConfig(update(artifactConfig));
@@ -80,7 +78,7 @@ const ArtifactSmith = ({
 
   return (
     <AppEntitySelect
-      title="Artifacts"
+      title="Artifact Forge"
       data={allArtifactSets}
       emptyText="No artifacts found"
       renderOptionConfig={(afterSelect) => {

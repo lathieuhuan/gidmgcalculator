@@ -10,14 +10,13 @@ import { useElementSize } from "@Src/pure-hooks";
 import { ButtonGroup, Modal } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
-import { ArtifactFilter, ArtifactFilterState } from "../ArtifactFilter";
+import { ArtifactFilter, ArtifactFilterProps, ArtifactFilterState } from "../ArtifactFilter";
 import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
 
-export interface ArtifactInventoryProps {
-  forcedType?: ArtifactType;
+export interface ArtifactInventoryProps extends Pick<ArtifactFilterProps, "forcedType" | "showTypeFilter"> {
   /** Default to 'flower' */
-  initialTypes?: ArtifactType;
+  initialType?: ArtifactType;
   currentArtifacts: (CalcArtifact | null)[];
   owner?: string | null;
   buttonText: string;
@@ -26,7 +25,8 @@ export interface ArtifactInventoryProps {
 }
 const ArtifactInventoryCore = ({
   forcedType,
-  initialTypes = "flower",
+  showTypeFilter,
+  initialType = "flower",
   currentArtifacts,
   owner,
   buttonText,
@@ -35,13 +35,11 @@ const ArtifactInventoryCore = ({
 }: ArtifactInventoryProps) => {
   const [ref, { height }] = useElementSize<HTMLDivElement>();
 
-  console.log("artifactType", forcedType);
-
   const [showingCurrent, setShowingCurrent] = useState(false);
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
   const [filter, setFilter] = useState<ArtifactFilterState>({
-    ...ArtifactFilter.DEFAULT_CONDITION,
-    types: [forcedType || initialTypes],
+    ...ArtifactFilter.DEFAULT_FILTER,
+    types: [forcedType || initialType],
   });
 
   const artifacts = useStoreSnapshot((state) =>
@@ -54,17 +52,18 @@ const ArtifactInventoryCore = ({
 
   return (
     <EntitySelectTemplate
-      title="My Artifacts"
+      title="Artifact Inventory"
       hasFilter
       filterWrapWidth="100%"
       renderFilter={(setFilterOn) => {
         return (
-          <div className="h-full p-4 bg-dark-500">
+          <div className="h-full p-4 bg-dark-900">
             <ArtifactFilter
-              artifactType={forcedType}
+              forcedType={forcedType}
+              showTypeFilter={showTypeFilter}
               artifacts={artifacts}
-              initialCondition={filter}
-              onConfirm={setFilter}
+              initialFilter={filter}
+              onDone={setFilter}
               onClose={() => setFilterOn(false)}
             />
           </div>
