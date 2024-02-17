@@ -4,7 +4,7 @@ import { FaEllipsisH } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
-import { findById, indexById } from "@Src/utils";
+import { indexById } from "@Src/utils";
 import { useWeaponTypeSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
 import { UserWeapon, WeaponType } from "@Src/types";
@@ -33,13 +33,12 @@ const selectWeaponInventory = createSelector(
 export default function MyWeapons() {
   const dispatch = useDispatch();
 
-  const [chosenID, setChosenID] = useState(0);
+  const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
 
   const { weaponTypes, renderWeaponTypeSelect } = useWeaponTypeSelect();
   const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, weaponTypes));
-  const chosenWeapon = findById(filteredWeapons, chosenID);
 
   const checkIfMaxWeaponsReached = () => {
     if (totalCount + 1 > MAX_USER_WEAPONS) {
@@ -59,6 +58,22 @@ export default function MyWeapons() {
   const onClickAddWeapon = () => {
     if (!checkIfMaxWeaponsReached()) {
       setModalType("ADD_WEAPON");
+    }
+  };
+
+  const onConfirmRemoveWeapon = (weapon: UserWeapon) => {
+    dispatch(removeWeapon(weapon));
+
+    const removedIndex = indexById(filteredWeapons, weapon.ID);
+
+    if (removedIndex !== -1) {
+      if (filteredWeapons.length > 1) {
+        const move = removedIndex === filteredWeapons.length - 1 ? -1 : 1;
+
+        setChosenWeapon(filteredWeapons[removedIndex + move]);
+      } else {
+        setChosenWeapon(undefined);
+      }
     }
   };
 
@@ -98,8 +113,8 @@ export default function MyWeapons() {
             data={filteredWeapons}
             emptyText="No weapons found"
             itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
-            chosenID={chosenID}
-            onClickItem={(item) => setChosenID(item.ID)}
+            chosenID={chosenWeapon?.ID}
+            onChangeItem={setChosenWeapon}
           />
 
           <div className="flex flex-col">
@@ -109,8 +124,8 @@ export default function MyWeapons() {
                   <WeaponCard
                     mutable
                     weapon={chosenWeapon}
-                    upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenID, level }))}
-                    refine={(refi) => dispatch(updateUserWeapon({ ID: chosenID, refi }))}
+                    upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, level }))}
+                    refine={(refi) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, refi }))}
                   />
                 ) : null}
               </div>
@@ -139,7 +154,7 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel key={chosenID} item={chosenWeapon} />
+            <OwnerLabel key={chosenWeapon?.ID || 0} item={chosenWeapon} />
           </div>
         </WarehouseLayout.Body>
       </WarehouseLayout>
@@ -158,7 +173,7 @@ export default function MyWeapons() {
           };
 
           dispatch(addUserWeapon(newUserWeapon));
-          setChosenID(newUserWeapon.ID);
+          setChosenWeapon(newUserWeapon);
         }}
         onClose={closeModal}
       />
@@ -171,9 +186,7 @@ export default function MyWeapons() {
             return character.weaponType === chosenWeapon.type && character.name !== chosenWeapon.owner;
           }}
           onSelectCharacter={(character) => {
-            if (chosenID) {
-              dispatch(swapWeaponOwner({ weaponID: chosenID, newOwner: character.name }));
-            }
+            dispatch(swapWeaponOwner({ weaponID: chosenWeapon.ID, newOwner: character.name }));
           }}
           onClose={closeModal}
         />
@@ -193,21 +206,7 @@ export default function MyWeapons() {
             </>
           }
           focusConfirm
-          onConfirm={() => {
-            dispatch(removeWeapon(chosenWeapon));
-
-            const removedIndex = indexById(filteredWeapons, chosenID);
-
-            if (removedIndex !== -1) {
-              if (filteredWeapons.length > 1) {
-                const move = removedIndex === filteredWeapons.length - 1 ? -1 : 1;
-
-                setChosenID(filteredWeapons[removedIndex + move].ID);
-              } else {
-                setChosenID(0);
-              }
-            }
-          }}
+          onConfirm={() => onConfirmRemoveWeapon(chosenWeapon)}
           onClose={closeModal}
         />
       ) : null}

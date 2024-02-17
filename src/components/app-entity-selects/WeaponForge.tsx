@@ -125,7 +125,7 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
                     }
                   }}
                 >
-                  Craft
+                  Forge
                 </Button>
               </div>
             ) : null}

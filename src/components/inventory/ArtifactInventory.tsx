@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
@@ -22,7 +22,7 @@ export interface ArtifactInventoryProps
   currentArtifacts: (CalcArtifact | null)[];
   owner?: string | null;
   buttonText: string;
-  onClickButton: (chosen: UserArtifact) => void;
+  onClickButton: (chosen: UserArtifact, isMultiSelect: boolean) => void;
   onClose: () => void;
 }
 const ArtifactInventoryCore = ({
@@ -49,8 +49,9 @@ const ArtifactInventoryCore = ({
   );
 
   const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(artifacts, filter), [artifacts, filter]);
-
-  const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(filter.types[0])];
+  const currentArtifact = chosenArtifact?.type
+    ? currentArtifacts[ARTIFACT_TYPES.indexOf(chosenArtifact.type)]
+    : undefined;
 
   return (
     <EntitySelectTemplate
@@ -80,8 +81,8 @@ const ArtifactInventoryCore = ({
               data={filteredArtifacts}
               itemCls="max-w-1/3 basis-1/3 md:w-1/4 md:basis-1/4 lg:max-w-1/6 lg:basis-1/6"
               emptyText="No artifacts found"
-              chosenID={chosenArtifact?.ID || 0}
-              onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
+              chosenID={chosenArtifact?.ID}
+              onChangeItem={setChosenArtifact}
             />
 
             <div className="flex flex-col relative">
@@ -105,7 +106,7 @@ const ArtifactInventoryCore = ({
                           text: buttonText,
                           variant: "positive",
                           onClick: () => {
-                            onClickButton(chosenArtifact);
+                            onClickButton(chosenArtifact, isMultiSelect);
                             if (!isMultiSelect) onClose();
                           },
                         },

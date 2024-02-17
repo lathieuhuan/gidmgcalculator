@@ -1,8 +1,10 @@
 import clsx from "clsx";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { FaCaretRight, FaMinus } from "react-icons/fa";
 
-import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
+import type { BooleanRecord, UserArtifact, UserItem, UserWeapon } from "@Src/types";
+import type { ArtifactRackProps, InventoryRackProps, MixedRackProps, WeaponRackProps } from "./types";
+
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 import { $AppData } from "@Src/services";
 
@@ -23,26 +25,18 @@ export const getArtifactInfo = ({ code, type, owner, rarity, level, setupIDs }: 
   return { beta, name, icon, rarity, level, owner, setupIDs };
 };
 
-export const getDataId = (item: UserWeapon | UserArtifact) => `${item.type}-${item.code}`;
-
-interface InventoryRackProps {
-  data: UserWeapon[] | UserArtifact[];
-  itemCls?: string;
-  emptyText?: string;
-  chosenID?: number;
-  chosenIDs?: BooleanRecord;
-  onUnchooseItem?: (item: UserWeapon | UserArtifact) => void;
-  onClickItem?: (item: UserWeapon | UserArtifact) => void;
-}
-export const InventoryRack = ({
+export function InventoryRack(props: WeaponRackProps): JSX.Element;
+export function InventoryRack(props: ArtifactRackProps): JSX.Element;
+export function InventoryRack(props: MixedRackProps): JSX.Element;
+export function InventoryRack<T extends UserItem>({
   data,
   itemCls,
   emptyText = "No data",
   chosenID,
   chosenIDs,
-  onUnchooseItem,
-  onClickItem,
-}: InventoryRackProps) => {
+  onUnselectItem,
+  onChangeItem,
+}: InventoryRackProps<T>): JSX.Element {
   const observeArea = useRef<HTMLDivElement>(null);
   const pioneerRef = useRef<HTMLDivElement>(null);
   const heightRef = useRef(0);
@@ -52,14 +46,15 @@ export const InventoryRack = ({
   const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {
-    if (data.length && !chosenID) {
-      onClickItem?.(data[0] as any);
-    }
     if (pioneerRef.current) {
       heightRef.current = pioneerRef.current.clientHeight;
       setReady(true);
     }
   }, []);
+
+  useLayoutEffect(() => {
+    onChangeItem?.(data[0]);
+  }, [data]);
 
   useEffect(() => {
     if (ready) {
@@ -143,12 +138,12 @@ export const InventoryRack = ({
                       {chosenIDs?.[item.ID] && (
                         <button
                           className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-red-600 rounded-md"
-                          onClick={() => onUnchooseItem?.(item)}
+                          onClick={() => onUnselectItem?.(item)}
                         >
                           <FaMinus />
                         </button>
                       )}
-                      <ItemCase chosen={item.ID === chosenID} onClick={() => onClickItem?.(item)}>
+                      <ItemCase chosen={item.ID === chosenID} onClick={() => onChangeItem?.(item)}>
                         {(className) => (
                           <ItemThumbnail
                             className={className}
@@ -184,4 +179,4 @@ export const InventoryRack = ({
       ) : null}
     </div>
   );
-};
+}

@@ -1,11 +1,13 @@
 .item-case {
+  --active-color: #89fba9;
+
   .item-body img {
     transition: transform 150ms ease-in-out;
   }
 
   &:hover {
     .item-body {
-      box-shadow: 0 0 0 2.5px white;
+      box-shadow: 0 0 0 2.5px var(--active-color);
     }
 
     &:not(.clicked) .item-body {
@@ -31,9 +33,12 @@
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 0 1px #fff, 0 0 1px 1px #fff, 0 0 2px 1px #fff, 0 0 3px 1px #fff;
+    box-shadow: 0 0 0 1px var(--active-color), 0 0 1px 1px var(--active-color), 0 0 2px 1px var(--active-color);
   }
   to {
-    box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;
+    box-shadow: 0 0 2px 1px var(--active-color), 0 0 3px 2px var(--active-color), 0 0 4px 3px var(--active-color);
   }
 }
+
+// box-shadow: 0 0 0 1px #fff, 0 0 1px 1px #fff, 0 0 2px 1px #fff, 0 0 3px 1px #fff;
+// box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;

@@ -32,8 +32,8 @@ const WeaponInventoryCore = ({ weaponType, owner, buttonText, onClickButton, onC
               data={items}
               itemCls="max-w-1/3 basis-1/3 md:w-1/4 md:basis-1/4 lg:max-w-1/6 lg:basis-1/6"
               emptyText="No weapons found"
-              chosenID={chosenWeapon?.ID || 0}
-              onClickItem={(item) => setChosenWeapon(item as UserWeapon)}
+              chosenID={chosenWeapon?.ID}
+              onChangeItem={setChosenWeapon}
             />
 
             <div className="flex flex-col">

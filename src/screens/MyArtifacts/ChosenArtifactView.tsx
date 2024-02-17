@@ -18,7 +18,7 @@ import { ArtifactCard, OwnerLabel, Tavern } from "@Src/components";
 
 interface ChosenArtifactViewProps {
   artifact?: UserArtifact;
-  onRemoveArtifact?: () => void;
+  onRemoveArtifact?: (artifact: UserArtifact) => void;
 }
 export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifactViewProps) => {
   const dispatch = useDispatch();
@@ -122,7 +122,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
           focusConfirm
           onConfirm={() => {
             dispatch(removeArtifact(artifact));
-            onRemoveArtifact?.();
+            onRemoveArtifact?.(artifact);
           }}
           onClose={closeModal}
         />

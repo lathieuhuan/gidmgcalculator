@@ -26,10 +26,10 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
 
   const chosenCount = Object.values(chosenIDs).filter(Boolean).length;
 
-  const onClickItem = (item: UserWeapon | UserArtifact) => {
-    setChosenItem(item as UserWeapon);
+  const onChangeItem = (item?: UserWeapon | UserArtifact) => {
+    setChosenItem(item);
 
-    if (!chosenIDs[item.ID] && props.max && chosenCount < props.max) {
+    if (item?.ID && !chosenIDs[item.ID] && props.max && chosenCount < props.max) {
       setChosenIDs((prevChosenIDs) => {
         const newChosenIDs = { ...prevChosenIDs };
         newChosenIDs[item.ID] = true;
@@ -38,7 +38,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
     }
   };
 
-  const onUnchooseItem = (item: UserWeapon | UserArtifact) => {
+  const onUnselectItem = (item: UserWeapon | UserArtifact) => {
     setChosenIDs((prevChosenIDs) => {
       const newChosenIDs = { ...prevChosenIDs };
       newChosenIDs[item.ID] = false;
@@ -74,8 +74,8 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
               itemCls="max-w-1/3 basis-1/3 md:w-1/4 md:basis-1/4 lg:max-w-1/6 lg:basis-1/6"
               chosenID={chosenItem?.ID || 1}
               chosenIDs={chosenIDs}
-              onUnchooseItem={onUnchooseItem}
-              onClickItem={onClickItem}
+              onUnselectItem={onUnselectItem}
+              onChangeItem={onChangeItem}
             />
 
             <div className="flex flex-col justify-between">

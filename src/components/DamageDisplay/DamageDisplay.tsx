@@ -74,12 +74,12 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
               ) : null}
             </div> */}
             <button
-              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange-500 text-black font-bold"
+              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange-500 text-black"
               onClick={toggleTable(index)}
             >
-              <span className="text-lg leading-none">{t(key.main)}</span>
+              <span className="text-base leading-none font-semibold">{t(key.main)}</span>
               {talentLevel ? (
-                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-light-400 text-sm leading-none">
+                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-light-400 text-sm leading-none font-bold">
                   {talentLevel}
                 </span>
               ) : null}

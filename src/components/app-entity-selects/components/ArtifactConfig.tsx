@@ -89,7 +89,7 @@ export const ArtifactConfig = ({
         {config ? (
           <div className="mt-4 flex justify-center">
             <Button variant="positive" onClick={() => onSelect?.(config)}>
-              Craft
+              Forge
             </Button>
           </div>
         ) : null}

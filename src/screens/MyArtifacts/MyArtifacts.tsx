@@ -5,7 +5,7 @@ import { FaTimes } from "react-icons/fa";
 import type { UserArtifact } from "@Src/types";
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
 import { useArtifactTypeSelect } from "@Src/hooks";
-import { findById, indexById } from "@Src/utils";
+import { indexById } from "@Src/utils";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -25,7 +25,7 @@ export default function MyArtifacts() {
   const dispatch = useDispatch();
   const userArts = useSelector(selectUserArts);
 
-  const [chosenID, setChosenID] = useState(0);
+  const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
   const [modalType, setModalType] = useState<ModalType>("");
   const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_FILTER);
 
@@ -39,8 +39,6 @@ export default function MyArtifacts() {
   });
 
   const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(userArts, filter), [userArts, filter]);
-
-  const chosenArtifact = findById(filteredArtifacts, chosenID);
 
   const closeModal = () => setModalType("");
 
@@ -66,16 +64,16 @@ export default function MyArtifacts() {
     dispatch(sortArtifacts());
   };
 
-  const onRemoveArtifact = () => {
-    const removedIndex = indexById(filteredArtifacts, chosenID);
+  const onRemoveArtifact = (artifact: UserArtifact) => {
+    const removedIndex = indexById(filteredArtifacts, artifact.ID);
 
     if (removedIndex !== -1) {
       if (filteredArtifacts.length > 1) {
         const move = removedIndex === filteredArtifacts.length - 1 ? -1 : 1;
 
-        setChosenID(filteredArtifacts[removedIndex + move].ID);
+        setChosenArtifact(filteredArtifacts[removedIndex + move]);
       } else {
-        setChosenID(0);
+        setChosenArtifact(undefined);
       }
     }
   };
@@ -130,8 +128,8 @@ export default function MyArtifacts() {
             data={filteredArtifacts}
             emptyText="No artifacts found"
             itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
-            chosenID={chosenID || 0}
-            onClickItem={(item) => setChosenID(item.ID)}
+            chosenID={chosenArtifact?.ID}
+            onChangeItem={setChosenArtifact}
           />
 
           <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
@@ -170,7 +168,7 @@ export default function MyArtifacts() {
           };
 
           dispatch(addUserArtifact(newUserArtifact));
-          setChosenID(newUserArtifact.ID);
+          setChosenArtifact(newUserArtifact);
         }}
         onClose={closeModal}
       />
