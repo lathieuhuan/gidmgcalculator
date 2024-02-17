@@ -4,12 +4,12 @@ import { FaCaretDown } from "react-icons/fa";
 
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
+import { round } from "@Src/utils";
 import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { StatsTable, CollapseSpace, Green } from "@Src/pure-components";
-import { round } from "@Src/utils";
 
 interface EmSectionProps {
   em: number;
@@ -27,7 +27,7 @@ const EmSection = ({ em }: EmSectionProps) => {
         <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
           <FaCaretDown
-            className={clsx("duration-150 ease-linear", dropped ? "text-green-300" : "text-light-400 rotate-90")}
+            className={clsx("duration-150 ease-linear", dropped ? "text-green-200" : "text-light-400 rotate-90")}
           />
         </div>
         <p className="mr-2">{round(em, 1)}</p>

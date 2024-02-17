@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useState, useLayoutEffect } from "react";
 import { MdInventory } from "react-icons/md";
 import { GiAnvil } from "react-icons/gi";
+import { FaToolbox } from "react-icons/fa";
 
 import { Artifact, ArtifactType } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
@@ -23,7 +24,7 @@ import { CopySelect } from "./CopySelect";
 
 import styles from "../styles.module.scss";
 
-type ModalType = "EQUIPPED_SET" | "TAVERN" | "";
+type ModalType = "ARTIFACT_LOADOUT" | "";
 
 type InventoryState = {
   active: boolean;
@@ -131,6 +132,17 @@ export default function SectionArtifacts() {
     setActiveTabIndex(pieceIndex);
   };
 
+  const renderSourceOption = (label: string, value: ArtifactSourceType, icon: JSX.Element) => {
+    return (
+      <button className="group" onClick={() => onClickSourceType(value)}>
+        <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
+          <span className="mb-2 block h-8 flex-center">{icon}</span>
+          <span>{label}</span>
+        </p>
+      </button>
+    );
+  };
+
   return (
     <div id="calculator-section-artifacts" className={"py-3 bg-dark-900 " + styles.section}>
       {artifacts.length && artifacts.every((artifact) => artifact === null) ? <CopySelect /> : null}
@@ -179,6 +191,7 @@ export default function SectionArtifacts() {
 
       {activeTabIndex < 0 ? (
         <div className="mt-4 px-4 flex justify-end gap-4">
+          <Button title="Loadout" icon={<FaToolbox />} onClick={() => setModalType("ARTIFACT_LOADOUT")} />
           <Button title="Inventory" icon={<MdInventory />} onClick={() => onRequestChangePiece("INVENTORY")} />
           <Button title="New" icon={<GiAnvil />} onClick={() => onRequestChangePiece("FORGE")} />
         </div>
@@ -192,23 +205,8 @@ export default function SectionArtifacts() {
         onClose={() => setSelectingSrcType(false)}
       >
         <div className="flex justify-center gap-4">
-          <button className="group" onClick={() => onClickSourceType("INVENTORY")}>
-            <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
-              <span className="mb-2 block h-8 flex-center">
-                <MdInventory className="text-2xl" />
-              </span>
-              <span>Inventory</span>
-            </p>
-          </button>
-
-          <button className="group" onClick={() => onClickSourceType("FORGE")}>
-            <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
-              <span className="mb-2 block h-8 flex-center">
-                <GiAnvil className="text-3xl" />
-              </span>
-              <span>New</span>
-            </p>
-          </button>
+          {renderSourceOption("Inventory", "INVENTORY", <MdInventory className="text-2xl" />)}
+          {renderSourceOption("New", "FORGE", <GiAnvil className="text-3xl" />)}
         </div>
       </Modal>
 
@@ -247,7 +245,7 @@ export default function SectionArtifacts() {
       />
 
       <Tavern
-        active={modalType === "TAVERN"}
+        active={modalType === "ARTIFACT_LOADOUT"}
         sourceType="user"
         onSelectCharacter={(character) => {
           if (character.artifactIDs) {

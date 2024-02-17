@@ -29,7 +29,7 @@ const AppEntityOptionCore = ({ className, visible, item, selectedAmount }: AppEn
 
   return (
     <div className={clsx("rounded-lg cursor-pointer relative", className)}>
-      <BetaMark active={item.beta} className="absolute top-0 left-0 z-10" />
+      <BetaMark active={item.beta} className="absolute -top-1 -left-1 z-10" />
 
       <div
         className={clsx(
@@ -55,7 +55,7 @@ const AppEntityOptionCore = ({ className, visible, item, selectedAmount }: AppEn
             item.cons !== undefined && "flex rounded-2xl pl-1.5"
           )}
         >
-          {item.cons !== undefined && <p className="mr-0.5 text-green-300">C{item.cons}</p>}
+          {item.cons !== undefined && <p className="mt-0.5 mr-1 text-sm font-semibold leading-none">C{item.cons}</p>}
           <ElementIcon type={item.vision} />
         </div>
       )}

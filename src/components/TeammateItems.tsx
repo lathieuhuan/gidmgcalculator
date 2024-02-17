@@ -33,9 +33,9 @@ export const TeammateItems = ({
   return (
     <div className={className}>
       {appWeapon && (
-        <div className="flex">
+        <div className="flex space-x-2">
           <button
-            className={`w-14 h-14 mr-2 rounded bg-gradient-${appWeapon.rarity} shrink-0`}
+            className={`w-14 h-14 rounded bg-gradient-${appWeapon.rarity} shrink-0`}
             disabled={!mutable}
             onClick={onClickWeapon}
           >
@@ -83,7 +83,7 @@ export const TeammateItems = ({
 
         <p
           className={clsx(
-            "mt-1 grow font-medium text-base truncate",
+            "mt-1 grow font-semibold text-base truncate",
             artifactSetName ? "text-light-400" : "text-light-800"
           )}
         >

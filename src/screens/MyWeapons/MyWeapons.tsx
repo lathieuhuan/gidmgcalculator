@@ -19,7 +19,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
 import { OwnerLabel, WeaponCard, InventoryRack, Tavern, WeaponForge } from "@Src/components";
 
-type ModalType = "ADD_WEAPON" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON" | "";
+type ModalType = "ADD_WEAPON" | "SELECT_WEAPON_OWNER" | "REMOVE_WEAPON" | "";
 
 const selectWeaponInventory = createSelector(
   selectUserWps,
@@ -148,7 +148,7 @@ export default function MyWeapons() {
                         }
                       },
                     },
-                    { text: "Equip", onClick: () => setModalType("PICK_CHARACTER_FOR_EQUIP") },
+                    { text: "Equip", onClick: () => setModalType("SELECT_WEAPON_OWNER") },
                   ]}
                 />
               ) : null}
@@ -180,7 +180,7 @@ export default function MyWeapons() {
 
       {chosenWeapon && (
         <Tavern
-          active={modalType === "PICK_CHARACTER_FOR_EQUIP"}
+          active={modalType === "SELECT_WEAPON_OWNER"}
           sourceType="user"
           filter={(character) => {
             return character.weaponType === chosenWeapon.type && character.name !== chosenWeapon.owner;

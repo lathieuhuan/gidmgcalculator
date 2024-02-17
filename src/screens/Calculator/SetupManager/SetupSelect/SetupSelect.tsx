@@ -26,7 +26,7 @@ import { ComplexSelect, Modal, ConfirmModal } from "@Src/pure-components";
 import { SetupExporter, SetupImporter } from "@Src/components";
 import { SaveSetup } from "./SaveSetup";
 
-type ModalInfo = {
+type ModalState = {
   type: "SAVE_SETUP" | "REMOVE_SETUP" | "SHARE_SETUP" | "IMPORT_SETUP" | "";
   setupIndex: number;
 };
@@ -63,7 +63,7 @@ export function SetupSelect() {
   const standardId = useSelector(selectStandardId);
   const comparedIds = useSelector(selectComparedIds);
 
-  const [modal, setModal] = useState<ModalInfo>({
+  const [modal, setModal] = useState<ModalState>({
     type: "",
     setupIndex: 0,
   });

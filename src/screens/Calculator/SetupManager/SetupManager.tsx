@@ -18,7 +18,7 @@ import SectionParty from "./SectionParty";
 import SectionTarget from "./SectionTarget";
 import SectionWeapon from "./SectionWeapon";
 
-type ModalType = "SHARE_SETUP_SUPPORTER" | "TARGET_CONFIG" | "";
+type ModalType = "TARGET_CONFIG" | "";
 
 export default function SetupManager() {
   const dispatch = useDispatch();
