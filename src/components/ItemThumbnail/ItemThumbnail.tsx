@@ -5,6 +5,7 @@ import { Image } from "@Src/pure-components";
 
 interface ItemThumbProps {
   className?: string;
+  imgCls?: string;
   item: {
     beta?: boolean;
     icon: string;
@@ -15,7 +16,7 @@ interface ItemThumbProps {
     setupIDs?: number[];
   };
 }
-export const ItemThumbnail = ({ className, item }: ItemThumbProps) => {
+export const ItemThumbnail = ({ className, imgCls, item }: ItemThumbProps) => {
   //
   const renderSideIcon = (owner: string) => {
     const { icon = "", sideIcon } = $AppData.getCharacter(owner) || {};
@@ -27,7 +28,7 @@ export const ItemThumbnail = ({ className, item }: ItemThumbProps) => {
         )}
       >
         <Image
-          className={"max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "side-image" : " -translate-y-2")}
+          className={"max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "" : " -translate-y-2")}
           size="w-10 h-10"
           src={sideIcon || icon}
         />
@@ -51,7 +52,7 @@ export const ItemThumbnail = ({ className, item }: ItemThumbProps) => {
       ) : null}
 
       <div className={`aspect-square bg-gradient-${item.rarity || 5} ` + "rounded rounded-br-2xl overflow-hidden"}>
-        <Image src={item.icon} imgType={item.refi ? "weapon" : "artifact"} />
+        <Image className={imgCls} src={item.icon} imgType={item.refi ? "weapon" : "artifact"} />
       </div>
 
       <div className="flex-center bg-light-400 rounded-b">

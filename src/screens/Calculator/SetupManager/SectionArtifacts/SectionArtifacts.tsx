@@ -105,7 +105,7 @@ export default function SectionArtifacts() {
     setSelectingSrcType(false);
   };
 
-  /** Defailt initialType is 'flower' */
+  /** Default initialType is 'flower' */
   const onRequestChangePiece = (source: ArtifactSourceType, index: number = 0) => {
     const newState = {
       active: true,

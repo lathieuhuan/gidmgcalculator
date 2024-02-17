@@ -60,7 +60,7 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
         onClick={() => toggleDropdown(!isDropped)}
       >
         <span className="w-full text-lg font-bold text-center relative z-10">{label}</span>
-        <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
+        <FaCaretDown className="absolute top-1/2 right-4 text-2xl -translate-y-1/2" />
       </button>
 
       <div

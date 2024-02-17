@@ -74,19 +74,17 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
               ) : null}
             </div> */}
             <button
-              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange-500 text-black"
+              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center space-x-2 rounded-2xl bg-orange-500 text-black"
               onClick={toggleTable(index)}
             >
-              <span className="text-base leading-none font-semibold">{t(key.main)}</span>
+              <span className="text-base leading-none font-bold">{t(key.main)}</span>
               {talentLevel ? (
-                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-light-400 text-sm leading-none font-bold">
+                <span className="mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-light-400 text-sm leading-none font-bold">
                   {talentLevel}
                 </span>
               ) : null}
               <FaChevronDown
-                className={
-                  "ml-2 text-sm text-black duration-150 ease-linear" + (closedItems[index] ? " rotate-90" : "")
-                }
+                className={"text-xs text-black duration-150 ease-linear" + (closedItems[index] ? " rotate-90" : "")}
               />
             </button>
 

@@ -144,9 +144,10 @@ export function InventoryRack<T extends UserItem>({
                         </button>
                       )}
                       <ItemCase chosen={item.ID === chosenID} onClick={() => onChangeItem?.(item)}>
-                        {(className) => (
+                        {(className, imgCls) => (
                           <ItemThumbnail
                             className={className}
+                            imgCls={imgCls}
                             item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
                           />
                         )}

@@ -4,10 +4,10 @@
   max-width: 60%;
 
   .active-cell {
-    border-bottom-color: rgb(92, 188, 212);
+    @apply border-b-blue-400;
+
     .icon-wrapper {
-      border-color: rgb(92, 188, 212);
-      background-color: rgb(92, 188, 212);
+      @apply border-blue-400 bg-blue-400;
     }
   }
   .icon-wrapper img {

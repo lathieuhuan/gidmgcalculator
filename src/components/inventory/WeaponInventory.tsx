@@ -24,7 +24,7 @@ const WeaponInventoryCore = ({ weaponType, owner, buttonText, onClickButton, onC
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
 
   return (
-    <EntitySelectTemplate title="My Weapons" onClose={onClose}>
+    <EntitySelectTemplate title="Weapon Inventory" onClose={onClose}>
       {() => {
         return (
           <div className="h-full flex custom-scrollbar gap-2 scroll-smooth">

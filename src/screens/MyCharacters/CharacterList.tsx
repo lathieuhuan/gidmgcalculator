@@ -84,11 +84,11 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
                 >
                   <div
                     className={clsx(
-                      "rounded-circle border-3 border-lesser/30 bg-black/30",
+                      "rounded-circle border-3 border-light-600/30 bg-black/30",
                       styles["icon-wrapper"],
                       appChar.sideIcon
-                        ? "m-2 " + styles["side-icon-wrapper"]
-                        : "m-1 overflow-hidden " + styles["beta-icon-wrapper"]
+                        ? `m-2 ${styles["side-icon-wrapper"]}`
+                        : `m-1 overflow-hidden ${styles["beta-icon-wrapper"]}`
                     )}
                   >
                     <div

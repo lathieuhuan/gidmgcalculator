@@ -1,7 +1,7 @@
 .item-case {
   --active-color: #fff;
 
-  .item-body img {
+  .item-body .item-img {
     transition: transform 150ms ease-in-out;
   }
 
@@ -11,7 +11,7 @@
     }
 
     &:not(.clicked) .item-body {
-      img {
+      .item-img {
         transform: scale(1.1);
       }
     }

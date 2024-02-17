@@ -13,7 +13,7 @@ export type EntitySelectRenderArgs = {
 };
 
 export interface EntitySelectTemplateProps {
-  title: string;
+  title: ReactNode;
   hasMultipleMode?: boolean;
   hasSearch?: boolean;
   hasFilter?: boolean;

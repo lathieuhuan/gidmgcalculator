@@ -55,7 +55,7 @@ const ArtifactInventoryCore = ({
 
   return (
     <EntitySelectTemplate
-      title="Artifact Inventory"
+      title={<p className="text-base sm:text-xl leading-7">Artifact Inventory</p>}
       hasFilter
       hasMultipleMode={hasMultipleMode}
       filterWrapWidth="100%"
