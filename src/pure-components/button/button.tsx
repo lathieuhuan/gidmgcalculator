@@ -6,7 +6,7 @@ type ButtonVariant = "default" | "positive" | "negative" | "active" | "custom";
 
 type ButtonShape = "rounded" | "square";
 
-type ButtonSize = "small" | "medium" | "custom";
+type ButtonSize = "small" | "medium" | "large" | "custom";
 
 const colorCls: Partial<Record<ButtonVariant, string>> = {
   default: "bg-light-600 text-black",
@@ -30,11 +30,18 @@ const shapeCls: Record<ButtonShape, string> = {
 const sizeCls: Partial<Record<ButtonSize, string>> = {
   small: "px-2 py-0.5",
   medium: "px-3 py-1.5",
+  // large: "px-4 ",
 };
 
 const iconSizeCls: Partial<Record<ButtonSize, string>> = {
   small: "p-[5px]",
   medium: "p-2",
+  large: "p-2",
+};
+
+const svgSizeCls: Partial<Record<ButtonSize, string>> = {
+  medium: "text-base",
+  large: "text-xl",
 };
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
@@ -72,7 +79,7 @@ export const Button = ({
 
   return (
     <button type="button" className={clsx(classes)} {...rest}>
-      {icon ? <span className={clsx("shrink-0", !children && size === "medium" && "text-base")}>{icon}</span> : null}
+      {icon ? <span className={clsx("shrink-0", !children && svgSizeCls[size])}>{icon}</span> : null}
       {children ? <span>{children}</span> : null}
     </button>
   );

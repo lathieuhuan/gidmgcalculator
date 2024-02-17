@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { MdInventory } from "react-icons/md";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
@@ -12,24 +13,29 @@ import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { BetaMark, Image } from "@Src/pure-components";
-import { WeaponForge } from "@Src/components";
+import { BetaMark, Button, Image } from "@Src/pure-components";
+import { WeaponForge, WeaponInventory } from "@Src/components";
 
 import styles from "./styles.module.scss";
+import { userItemToCalcItem } from "@Src/utils";
+
+type ModalType = "MAKE_NEW_WEAPON" | "SELECT_USER_WEAPON" | "";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
-  const [forgeOn, setForgeOn] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>("");
 
   const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeapon(weapon.code) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
+  const closeModal = () => setModalType("");
+
   return (
-    <div className={"px-2 py-3 bg-dark-900 flex items-start " + styles.section}>
+    <div className={"px-2 py-3 bg-dark-900 flex items-start relative " + styles.section}>
       <div
         className={`w-20 h-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
-        onClick={() => setForgeOn(true)}
+        onClick={() => setModalType("MAKE_NEW_WEAPON")}
       >
         <Image src={icon} alt={name} imgType="weapon" />
         <BetaMark active={beta} className="absolute -top-1 -left-1" />
@@ -76,8 +82,17 @@ export default function SectionWeapon() {
         )}
       </div>
 
+      <Button
+        title="Inventory"
+        className="absolute bottom-1 right-1"
+        size="large"
+        boneOnly
+        icon={<MdInventory />}
+        onClick={() => setModalType("SELECT_USER_WEAPON")}
+      />
+
       <WeaponForge
-        active={forgeOn}
+        active={modalType === "MAKE_NEW_WEAPON"}
         forcedType={weapon.type}
         onForgeWeapon={(weapon) => {
           dispatch(
@@ -87,18 +102,18 @@ export default function SectionWeapon() {
             })
           );
         }}
-        onClose={() => setForgeOn(false)}
+        onClose={closeModal}
       />
 
-      {/* <WeaponInventory
-        active={modalType === "WEAPONS_SELECT"}
-        weaponType={appChar.weaponType}
-        buttonText="Pick"
+      <WeaponInventory
+        active={modalType === "SELECT_USER_WEAPON"}
+        weaponType={weapon.type}
+        buttonText="Select"
         onClickButton={(weapon) => {
           dispatch(changeWeapon(userItemToCalcItem(weapon)));
         }}
         onClose={closeModal}
-      /> */}
+      />
     </div>
   );
 }
