@@ -2,7 +2,7 @@ export const Notes = () => {
   return (
     <div>
       <p>
-        - This App is not displayed well on Mobile and Devices that are less than 1050px in width,
+        - This App is not displayed well on Mobile and Devices that are less than 1024px in width,
         and maybe in Dark Mode too.
       </p>
       <p>- The results are not 100% correct, but the differences should be small.</p>
