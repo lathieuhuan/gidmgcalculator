@@ -17,7 +17,7 @@ export const CollapseList = ({ list }: CollapseListProps) => {
           <div
             className={clsx(
               "mb-2 pt-1 px-6 cursor-pointer leading-relaxed transition duration-200",
-              expanded[i] ? "font-bold bg-yellow-300 text-black" : "font-semibold bg-dark-500"
+              expanded[i] ? "font-bold bg-yellow-300 text-black" : "font-semibold bg-dark-500 glow-on-hover"
             )}
             onClick={() =>
               setExpanded((prev) => {

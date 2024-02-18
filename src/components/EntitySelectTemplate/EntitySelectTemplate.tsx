@@ -169,6 +169,9 @@ export const EntitySelectTemplate = ({
           activeWidth={screenWatcher.isFromSize("sm") ? filterWrapWidth : "100%"}
           closeOnMaskClick={filterToggleable}
           destroyOnClose
+          style={{
+            boxShadow: "0 0 1px #b8b8b8",
+          }}
           onClose={() => toggleFilter(false)}
         >
           {renderFilter?.(setFilterOn)}

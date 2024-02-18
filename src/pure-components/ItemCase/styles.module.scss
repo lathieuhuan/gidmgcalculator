@@ -12,14 +12,14 @@
 
     &:not(.clicked) .item-body {
       .item-img {
-        transform: scale(1.1);
+        transform: scale(1.15);
       }
     }
   }
 
   &:hover:not(.clicked),
   &.chosen:not(.clicked) {
-    transform: scale(1.03);
+    transform: scale(1.02);
   }
 
   &.chosen {
