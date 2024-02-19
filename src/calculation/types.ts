@@ -65,7 +65,7 @@ export interface CalculateItemArgs
   record: TrackerCalcItemRecord;
 }
 
-export interface GetDamageArgs extends Omit<BuffInfoWrap, "infusedElement"> {
+export interface GetFinalResultArgs extends Omit<BuffInfoWrap, "infusedElement"> {
   selfDebuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];
   party: Party;

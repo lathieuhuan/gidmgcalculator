@@ -61,7 +61,7 @@ const initialState: CalculatorState = {
   comparedIds: [],
   setupManageInfos: [],
   setupsById: {},
-  statsById: {},
+  resultById: {},
   target: createTarget(),
   message: {
     active: false,
@@ -94,8 +94,8 @@ export const calculatorSlice = createSlice({
       state.setupsById = {
         [ID]: calcSetup,
       };
-      // calculate will repopulate statsById
-      state.statsById = {};
+      // calculate will repopulate resultById
+      state.resultById = {};
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
@@ -655,7 +655,7 @@ export const calculatorSlice = createSlice({
 
       for (const ID of removedIds) {
         delete setupsById[ID];
-        delete state.statsById[ID];
+        delete state.resultById[ID];
       }
 
       const activeSetup = findById(tempManageInfos, activeId);

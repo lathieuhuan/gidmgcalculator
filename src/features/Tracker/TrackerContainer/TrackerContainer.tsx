@@ -3,7 +3,7 @@ import { AttackPattern, Infusion, Tracker } from "@Src/types";
 
 // Store
 import { useSelector } from "@Store/hooks";
-import { selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
+import { selectCalcFinalResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { calculateAll } from "@Src/calculation";
@@ -28,7 +28,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
     return setupsById[activeId];
   });
   const target = useSelector(selectTarget);
-  const dmgResult = useSelector(selectDmgResult);
+  const finalResult = useSelector(selectCalcFinalResult);
 
   const [result, setResult] = useState<Tracker>();
   const [infusion, setInfusion] = useState<Infusion>({
@@ -43,14 +43,14 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   useEffect(() => {
     if (trackerState === "open") {
       const tracker = initTracker();
-      const calcResult = calculateAll(activeSetup, target, tracker);
+      const finalResult = calculateAll(activeSetup, target, tracker);
 
       setResult(tracker);
       setInfusion({
-        element: calcResult.infusedElement,
-        range: calcResult.infusedAttacks,
+        element: finalResult.infusedElement,
+        range: finalResult.infusedAttacks,
       });
-      setXtraInfo({ inHealB_: calcResult.totalAttr.inHealB_ });
+      setXtraInfo({ inHealB_: finalResult.totalAttr.inHealB_ });
     }
   }, [trackerState]);
 
@@ -115,7 +115,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
             body: (
               <CalcItemTracker
                 records={result?.NAs}
-                calcDmgResult={dmgResult.NAs}
+                result={finalResult.NAs}
                 defMultDisplay={renderDefMultiplier("NA")}
                 infusion={infusion}
                 {...xtraInfo}
@@ -127,7 +127,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
             body: (
               <CalcItemTracker
                 records={result?.ES}
-                calcDmgResult={dmgResult.ES}
+                result={finalResult.ES}
                 defMultDisplay={renderDefMultiplier("ES")}
                 {...xtraInfo}
               />
@@ -138,7 +138,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
             body: (
               <CalcItemTracker
                 records={result?.EB}
-                calcDmgResult={dmgResult.EB}
+                result={finalResult.EB}
                 defMultDisplay={renderDefMultiplier("EB")}
                 {...xtraInfo}
               />
@@ -146,7 +146,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
           },
           {
             heading: "Reactions",
-            body: <CalcItemTracker records={result?.RXN} calcDmgResult={dmgResult.RXN} />,
+            body: <CalcItemTracker records={result?.RXN} result={finalResult.RXN} />,
           },
         ]}
       />

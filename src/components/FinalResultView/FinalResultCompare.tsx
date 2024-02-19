@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { FaLongArrowAltUp } from "react-icons/fa";
 
-import { EStatDamageKey } from "@Src/constants";
+import type { CalculationAspect } from "@Src/types";
 import { selectComparedIds, selectStandardId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
@@ -14,13 +14,13 @@ import { Table } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 
-interface DamageCompareTableProps {
-  focus: EStatDamageKey;
+interface FinalResultCompareProps {
+  focusedAspect: CalculationAspect;
   tableKey: TableKey;
 }
-export const DamageCompareTable = ({ focus, tableKey }: DamageCompareTableProps) => {
+export const FinalResultCompare = ({ focusedAspect, tableKey }: FinalResultCompareProps) => {
   const setupManageInfos = useSelector(selectSetupManageInfos);
-  const statsById = useSelector((state) => state.calculator.statsById);
+  const resultById = useSelector((state) => state.calculator.resultById);
   const comparedIds = useSelector(selectComparedIds);
   const standardId = useSelector(selectStandardId);
 
@@ -39,7 +39,7 @@ export const DamageCompareTable = ({ focus, tableKey }: DamageCompareTableProps)
       </Tr>
 
       {tableKey.subs.map((name, i) => {
-        const standardValue = statsById[standardId].dmgResult[tableKey.main][name][focus];
+        const standardValue = resultById[standardId].finalResult[tableKey.main][name][focusedAspect];
         const standardIsArray = Array.isArray(standardValue);
 
         return (
@@ -48,7 +48,7 @@ export const DamageCompareTable = ({ focus, tableKey }: DamageCompareTableProps)
             <Td>{displayValue(standardValue)}</Td>
 
             {otherSetupIds.map((setupId, j) => {
-              const thisValue = statsById[setupId].dmgResult[tableKey.main][name][focus];
+              const thisValue = resultById[setupId].finalResult[tableKey.main][name][focusedAspect];
               const thisIsArray = Array.isArray(thisValue);
               let diff = 0;
 

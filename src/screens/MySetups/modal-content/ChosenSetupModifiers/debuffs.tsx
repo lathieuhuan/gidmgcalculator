@@ -18,11 +18,11 @@ import { $AppData } from "@Src/services";
 import { Green } from "@Src/pure-components";
 import { ModifierTemplate, resonanceRenderInfo, renderModifiers, getArtifactDescription } from "@Src/components";
 
-interface ElementDebuffsProps {
+interface ElementDebuffsDetailProps {
   superconduct: boolean;
   resonances: Resonance[];
 }
-export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps) {
+export function ElementDebuffsDetail({ superconduct, resonances }: ElementDebuffsDetailProps) {
   const content = [];
 
   if (superconduct) {
@@ -47,14 +47,14 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
   return renderModifiers(content, "debuffs", false);
 }
 
-interface SelfDebuffsProps {
+interface SelfDebuffsDetailProps {
   char: CharInfo;
   selfDebuffCtrls: ModifierCtrl[];
   appChar: AppCharacter;
   partyData: PartyData;
-  debuffs: Debuff_Character[];
 }
-export function SelfDebuffs({ char, selfDebuffCtrls, appChar, partyData, debuffs }: SelfDebuffsProps) {
+export function SelfDebuffsDetail({ char, selfDebuffCtrls, appChar, partyData }: SelfDebuffsDetailProps) {
+  const { debuffs = [] } = appChar;
   const content: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach((ctrl) => {
@@ -79,12 +79,12 @@ export function SelfDebuffs({ char, selfDebuffCtrls, appChar, partyData, debuffs
   return renderModifiers(content, "debuffs", false);
 }
 
-interface PartyDebuffsProps {
+interface PartyDebuffsDetailProps {
   char: CharInfo;
   party: Party;
   partyData: PartyData;
 }
-export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
+export function PartyDebuffsDetail({ char, party, partyData }: PartyDebuffsDetailProps) {
   const content: JSX.Element[] = [];
 
   party.forEach((teammate) => {
@@ -126,10 +126,10 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
   return renderModifiers(content, "debuffs", false);
 }
 
-interface ArtifactDebuffsProps {
+interface ArtifactDebuffsDetailProps {
   artDebuffCtrls: ArtifactDebuffCtrl[];
 }
-export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
+export function ArtifactDebuffsDetail({ artDebuffCtrls }: ArtifactDebuffsDetailProps) {
   const content: JSX.Element[] = [];
 
   artDebuffCtrls.forEach((ctrl) => {
@@ -155,10 +155,10 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   return renderModifiers(content, "debuffs", false);
 }
 
-interface CustomDebuffsProps {
+interface CustomDebuffsDetailProps {
   customDebuffCtrls: CustomDebuffCtrl[];
 }
-export function CustomDebuffs({ customDebuffCtrls }: CustomDebuffsProps) {
+export function CustomDebuffsDetail({ customDebuffCtrls }: CustomDebuffsDetailProps) {
   const { t } = useTranslation();
 
   const content = customDebuffCtrls.map(({ type, value }, i) => (

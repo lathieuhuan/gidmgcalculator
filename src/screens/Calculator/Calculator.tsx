@@ -6,7 +6,7 @@ import { useSelector } from "@Store/hooks";
 // Component
 import CharOverview from "./CharOverview";
 import Modifiers from "./Modifiers";
-import DamageResults from "./DamageResults";
+import ResultDetail from "./ResultDetail";
 import SetupManager from "./SetupManager";
 
 import styles from "./styles.module.scss";
@@ -39,7 +39,7 @@ const Calculator = () => {
         <div className={clsx("px-4 pt-2 pb-6 bg-dark-500 relative", styles.card)}>
           {touched ? (
             // ========== PANEL 4 ==========
-            <DamageResults />
+            <ResultDetail />
           ) : null}
         </div>
       </div>

@@ -1,12 +1,12 @@
 import type {
   CalcItemBonus,
-  DamageResult,
+  CalculationFinalResult,
   DebuffInfoWrap,
   NormalAttack,
   ResistanceReduction,
   TrackerCalcItemRecord,
 } from "@Src/types";
-import type { GetDamageArgs } from "../types";
+import type { GetFinalResultArgs } from "../types";
 import { $AppData } from "@Src/services";
 
 // Constant
@@ -28,7 +28,7 @@ import { getExclusiveBonus } from "./utils";
 import applyAbilityDebuff from "./applyAbilityDebuff";
 import calculateItem from "./calculateItem";
 
-export default function getDamage({
+export default function getFinalResult({
   char,
   appChar,
   selfDebuffCtrls,
@@ -46,7 +46,7 @@ export default function getDamage({
   elmtModCtrls: { reaction, infuse_reaction, resonances, superconduct, absorption },
   target,
   tracker,
-}: GetDamageArgs) {
+}: GetFinalResultArgs) {
   const resistReduct = { def: 0 } as ResistanceReduction;
 
   for (const key of ATTACK_ELEMENTS) {
@@ -129,7 +129,7 @@ export default function getDamage({
     resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
   }
 
-  const finalResult: DamageResult = {
+  const finalResult: CalculationFinalResult = {
     NAs: {},
     ES: {},
     EB: {},

@@ -36,14 +36,20 @@ import {
   renderWeaponModifiers,
 } from "@Src/components";
 
-interface ElementBuffsProps {
+interface ElementBuffsDetailProps {
   charLv: Level;
   elmtModCtrls: ElementModCtrl;
   infusedElement: AttackElement;
   rxnBonus: ReactionBonus;
   elementType: ElementType;
 }
-export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, elementType }: ElementBuffsProps) {
+export function ElementBuffsDetail({
+  charLv,
+  elmtModCtrls,
+  infusedElement,
+  rxnBonus,
+  elementType,
+}: ElementBuffsDetailProps) {
   const content = [];
   const { resonances, reaction, infuse_reaction } = elmtModCtrls;
 
@@ -100,15 +106,14 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, e
   return renderModifiers(content, "buffs", false);
 }
 
-interface SelfBuffsProps {
+interface SelfBuffsDetailProps {
   char: CharInfo;
   appChar: AppCharacter;
-  buffs: Buff_Character[];
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
-  innateBuffs: InnateBuff_Character[];
 }
-export function SelfBuffs({ char, appChar, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
+export function SelfBuffsDetail({ char, appChar, selfBuffCtrls, partyData }: SelfBuffsDetailProps) {
+  const { innateBuffs = [], buffs = [] } = appChar;
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
@@ -144,12 +149,12 @@ export function SelfBuffs({ char, appChar, buffs, selfBuffCtrls, partyData, inna
   return renderModifiers(content, "buffs", false);
 }
 
-interface PartyBuffsProps {
+interface PartyBuffsDetailProps {
   char: CharInfo;
   party: Party;
   partyData: PartyData;
 }
-export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
+export function PartyBuffsDetail({ char, party, partyData }: PartyBuffsDetailProps) {
   const content: JSX.Element[] = [];
 
   party.forEach((teammate) => {
@@ -191,12 +196,12 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
   return renderModifiers(content, "buffs", false);
 }
 
-interface WeaponBuffsProps {
+interface WeaponBuffsDetailProps {
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
   party: Party;
 }
-export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
+export function WeaponBuffsDetail({ weapon, wpBuffCtrls, party }: WeaponBuffsDetailProps) {
   const content = [];
 
   content.push(
@@ -225,12 +230,12 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
   return renderModifiers(content, "buffs", false);
 }
 
-interface ArtifactBuffsProps {
+interface ArtifactBuffsDetailProps {
   setBonuses: ArtifactSetBonus[];
   artBuffCtrls: ModifierCtrl[];
   party: Party;
 }
-export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffsProps) {
+export function ArtifactBuffsDetail({ setBonuses, artBuffCtrls, party }: ArtifactBuffsDetailProps) {
   const content = [];
   const mainCode = setBonuses[0]?.code;
 
@@ -262,10 +267,10 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
   return renderModifiers(content, "buffs", false);
 }
 
-interface CustomBuffsProps {
+interface CustomBuffsDetailProps {
   customBuffCtrls: CustomBuffCtrl[];
 }
-export function CustomBuffs({ customBuffCtrls }: CustomBuffsProps) {
+export function CustomBuffsDetail({ customBuffCtrls }: CustomBuffsDetailProps) {
   const { t } = useTranslation();
 
   const content = customBuffCtrls.map(({ category, type, subType, value }, i) => (

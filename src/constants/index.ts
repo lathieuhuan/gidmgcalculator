@@ -43,12 +43,6 @@ export enum EModAffect {
   ACTIVE_UNIT = "active unit",
 }
 
-export enum EStatDamageKey {
-  NON_CRIT = "nonCrit",
-  CRIT = "crit",
-  AVERAGE = "average",
-}
-
 /** Don't change the items order of any array below */
 
 export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] as const;

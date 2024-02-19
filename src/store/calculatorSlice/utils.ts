@@ -13,12 +13,13 @@ export function calculate(state: CalculatorState, all?: boolean) {
     const allIds = all ? setupManageInfos.map(({ ID }) => ID) : [activeId];
 
     for (const id of allIds) {
-      const results = calculateAll(setupsById[id], target);
-      state.statsById[id] = {
-        infusedElement: results.infusedElement,
-        totalAttrs: results.totalAttr,
-        rxnBonuses: results.rxnBonus,
-        dmgResult: results.dmgResult,
+      const result = calculateAll(setupsById[id], target);
+
+      state.resultById[id] = {
+        infusedElement: result.infusedElement,
+        totalAttrs: result.totalAttr,
+        rxnBonuses: result.rxnBonus,
+        finalResult: result.finalResult,
       };
     }
   } catch (err) {

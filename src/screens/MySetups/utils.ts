@@ -14,11 +14,8 @@ export const calculateChosenSetup = (chosenSetup: UserSetup, weapon: UserWeapon 
       totalAttr: result.totalAttr,
       artAttr: result.artAttr,
       rxnBonus: result.rxnBonus,
-      damage: result.dmgResult,
+      finalResult: result.finalResult,
       infusedElement: result.infusedElement,
-      innateBuffs: appChar.innateBuffs || [],
-      buffs: appChar.buffs || [],
-      debuffs: appChar.debuffs || [],
     };
   }
 };

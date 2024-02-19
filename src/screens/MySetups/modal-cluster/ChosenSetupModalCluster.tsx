@@ -28,9 +28,9 @@ interface ModalClusterProps {
   chosenSetup: UserSetup;
   weapon: UserWeapon | null;
   artifacts: UserArtifacts;
-  calcResult?: ReturnType<typeof calculateChosenSetup>;
+  result?: ReturnType<typeof calculateChosenSetup>;
 }
-export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcResult }: ModalClusterProps) => {
+export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, result }: ModalClusterProps) => {
   const dispatch = useDispatch();
   const modalType = useSelector(selectMySetupModalType);
 
@@ -98,14 +98,14 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
           <div className="w-75 flex flex-col shrink-0">
             <p className="text-lg text-center font-semibold">Final Attributes</p>
             <div className="mt-1 custom-scrollbar">
-              {calcResult?.totalAttr && <AttributeTable attributes={calcResult.totalAttr} />}
+              {result?.totalAttr && <AttributeTable attributes={result.totalAttr} />}
             </div>
           </div>
 
           <div className="w-75 flex flex-col shrink-0">
             <p className="text-lg text-center font-semibold">Artifact Stats</p>
             <div className="mt-1 custom-scrollbar">
-              {calcResult?.artAttr && <AttributeTable attributes={calcResult.artAttr} />}
+              {result?.artAttr && <AttributeTable attributes={result.artAttr} />}
             </div>
           </div>
 
@@ -118,7 +118,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
         </div>
       </Modal>
 
-      {calcResult && weapon && (
+      {result && weapon && (
         <Modal
           active={modalType === "MODIFIERS"}
           className={[Modal.LARGE_HEIGHT_CLS, "bg-dark-900"]}
@@ -126,12 +126,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
           bodyCls="grow hide-scrollbar"
           onClose={closeModal}
         >
-          <ChosenSetupModifiers
-            calcResult={calcResult}
-            chosenSetup={chosenSetup}
-            setBonuses={setBonuses}
-            weapon={weapon}
-          />
+          <ChosenSetupModifiers {...{ result, chosenSetup, setBonuses, weapon }} />
         </Modal>
       )}
     </>

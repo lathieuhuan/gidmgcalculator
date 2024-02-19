@@ -179,16 +179,15 @@ export type Infusion = {
 
 export type Talent = (typeof TALENT_TYPES)[number];
 
-type CalculatedDamage = {
-  nonCrit: number | number[];
-  crit: number | number[];
-  average: number | number[];
+export type CalculationAspect = "nonCrit" | "crit" | "average";
+
+type CalculationFinalResultItem = Record<CalculationAspect, number | number[]> & {
   attElmt?: ActualAttackElement;
 };
 
-export type CalculatedDamageCluster = Record<string, CalculatedDamage>;
+export type CalculationFinalResultGroup = Record<string, CalculationFinalResultItem>;
 
-export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
+export type CalculationFinalResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculationFinalResultGroup>;
 
 type TeammateData = Pick<AppCharacter, "code" | "name" | "icon" | "nation" | "vision" | "weaponType" | "EBcost">;
 

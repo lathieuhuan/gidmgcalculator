@@ -1,12 +1,8 @@
 import { Fragment, ReactNode } from "react";
 
-import type { CalculatedDamageCluster, Infusion, TrackerCalcItemRecord } from "@Src/types";
+import type { CalculationFinalResultGroup, Infusion, TrackerCalcItemRecord } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
-
-// Util
 import { percentSign, round } from "@Src/utils";
-
-// Component
 import { Green } from "@Src/pure-components";
 
 interface RenderPartArgs {
@@ -20,14 +16,14 @@ interface RenderPartArgs {
 interface CalcItemTrackerProps {
   inHealB_?: number;
   records?: Record<string, TrackerCalcItemRecord>;
-  calcDmgResult: CalculatedDamageCluster;
+  result: CalculationFinalResultGroup;
   defMultDisplay?: ReactNode;
   infusion?: Infusion;
 }
 export function CalcItemTracker({
   inHealB_,
   records = {},
-  calcDmgResult,
+  result,
   defMultDisplay,
   infusion,
 }: CalcItemTrackerProps) {
@@ -64,8 +60,8 @@ export function CalcItemTracker({
         </div>
       )}
 
-      {Object.entries(records).map(([attackName, record], i) => {
-        const { nonCrit = 0, crit = 0, average = 0 } = calcDmgResult[attackName] || {};
+      {Object.entries(records).map(([itemName, record], i) => {
+        const { nonCrit = 0, crit = 0, average = 0 } = result[itemName] || {};
         if (!nonCrit) return null;
 
         const nonCritDmg = renderValue(nonCrit);
@@ -73,7 +69,7 @@ export function CalcItemTracker({
 
         return (
           <div key={i}>
-            <p className="font-medium">{t(attackName)}</p>
+            <p className="font-medium">{t(itemName)}</p>
             <ul className="pl-4 text-light-800 text-sm leading-6 list-disc">
               {record.exclusives?.length ? (
                 <li>

@@ -22,7 +22,7 @@ import { useSetupItems } from "./hooks";
 
 // Component
 import { Button, WarehouseLayout, LoadingIcon } from "@Src/pure-components";
-import { DamageView } from "@Src/components";
+import { FinalResultView } from "@Src/components";
 import { ChosenSetupModalCluster, MySetupsModalCluster } from "./modal-cluster";
 import { SetupTemplate } from "./SetupTemplate";
 
@@ -117,7 +117,7 @@ export default function MySetups() {
 
       const { weapon, artifacts } = itemsBySetupID[chosenSetup.ID] || {};
 
-      const calcResult = calculateChosenSetup(chosenSetup, weapon, artifacts);
+      const result = calculateChosenSetup(chosenSetup, weapon, artifacts);
 
       return (
         <div className="h-full flex flex-col">
@@ -125,12 +125,12 @@ export default function MySetups() {
             <p className="text-sm text-center truncate">{chosenSetup.name}</p>
           </div>
           <div className="mt-2 grow hide-scrollbar">
-            {calcResult?.damage && (
-              <DamageView char={chosenSetup.char} party={chosenSetup.party} damageResult={calcResult.damage} />
+            {result?.finalResult && (
+              <FinalResultView char={chosenSetup.char} party={chosenSetup.party} finalResult={result.finalResult} />
             )}
           </div>
 
-          <ChosenSetupModalCluster {...{ chosenSetup, weapon, artifacts, calcResult }} />
+          <ChosenSetupModalCluster {...{ chosenSetup, weapon, artifacts, result }} />
         </div>
       );
     }

@@ -2,7 +2,7 @@ import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { $AppData } from "@Src/services";
 import getCalculationStats from "./getCalculationStats";
-import getDamage from "./getDamage";
+import getFinalResult from "./getFinalResult";
 
 const calculateAll = (
   {
@@ -77,7 +77,7 @@ const calculateAll = (
     infusedElement,
     tracker,
   });
-  const dmgResult = getDamage({
+  const finalResult = getFinalResult({
     char,
     appChar,
     selfDebuffCtrls,
@@ -103,7 +103,7 @@ const calculateAll = (
     totalAttr: rest.totalAttr,
     artAttr,
     rxnBonus: rest.rxnBonus,
-    dmgResult,
+    finalResult,
   };
 };
 

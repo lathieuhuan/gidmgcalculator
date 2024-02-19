@@ -4,8 +4,21 @@ import { $AppData } from "@Src/services";
 
 // Component
 import { Yellow, CollapseList } from "@Src/pure-components";
-import { ArtifactBuffs, CustomBuffs, ElementBuffs, PartyBuffs, SelfBuffs, WeaponBuffs } from "./buffs";
-import { ArtifactDebuffs, CustomDebuffs, ElementDebuffs, PartyDebuffs, SelfDebuffs } from "./debuffs";
+import {
+  ArtifactBuffsDetail,
+  CustomBuffsDetail,
+  ElementBuffsDetail,
+  PartyBuffsDetail,
+  SelfBuffsDetail,
+  WeaponBuffsDetail,
+} from "./buffs";
+import {
+  ArtifactDebuffsDetail,
+  CustomDebuffsDetail,
+  ElementDebuffsDetail,
+  PartyDebuffsDetail,
+  SelfDebuffsDetail,
+} from "./debuffs";
 import { calculateChosenSetup } from "../../utils";
 
 interface ModifierWrapperProps {
@@ -24,11 +37,11 @@ const ModifierWrapper = ({ className = "", title, children }: ModifierWrapperPro
 
 interface ChosenSetupModifiersProps {
   chosenSetup: UserSetup;
-  calcResult: NonNullable<ReturnType<typeof calculateChosenSetup>>;
+  result: NonNullable<ReturnType<typeof calculateChosenSetup>>;
   weapon: UserWeapon;
   setBonuses: ArtifactSetBonus[];
 }
-export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonuses }: ChosenSetupModifiersProps) => {
+export const ChosenSetupModifiers = ({ chosenSetup, result, weapon, setBonuses }: ChosenSetupModifiersProps) => {
   const { t } = useTranslation();
 
   const {
@@ -44,7 +57,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
     customDebuffCtrls,
     target,
   } = chosenSetup;
-  const { appChar, infusedElement, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
+  const { appChar, infusedElement, rxnBonus } = result;
 
   const partyData = $AppData.getPartyInfo(party);
   const { title, variant, statuses } = $AppData.getTargetInfo(target);
@@ -56,23 +69,25 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
           list={[
             {
               heading: "Resonance & Reactions",
-              body: <ElementDebuffs superconduct={elmtModCtrls.superconduct} resonances={elmtModCtrls.resonances} />,
+              body: (
+                <ElementDebuffsDetail superconduct={elmtModCtrls.superconduct} resonances={elmtModCtrls.resonances} />
+              ),
             },
             {
               heading: "Self",
-              body: <SelfDebuffs {...{ char, selfDebuffCtrls, appChar, partyData, debuffs }} />,
+              body: <SelfDebuffsDetail {...{ char, selfDebuffCtrls, appChar, partyData }} />,
             },
             {
               heading: "Party",
-              body: <PartyDebuffs {...{ char, party, partyData }} />,
+              body: <PartyDebuffsDetail {...{ char, party, partyData }} />,
             },
             {
               heading: "Artifacts",
-              body: <ArtifactDebuffs artDebuffCtrls={artDebuffCtrls} />,
+              body: <ArtifactDebuffsDetail artDebuffCtrls={artDebuffCtrls} />,
             },
             {
               heading: "Custom",
-              body: <CustomDebuffs customDebuffCtrls={customDebuffCtrls} />,
+              body: <CustomDebuffsDetail customDebuffCtrls={customDebuffCtrls} />,
             },
           ]}
         />
@@ -84,7 +99,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
             {
               heading: "Resonance & Reactions",
               body: (
-                <ElementBuffs
+                <ElementBuffsDetail
                   charLv={char.level}
                   elementType={appChar?.vision}
                   {...{ elmtModCtrls, rxnBonus, infusedElement }}
@@ -93,23 +108,23 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
             },
             {
               heading: "Self",
-              body: <SelfBuffs {...{ char, appChar, selfBuffCtrls, partyData, buffs, innateBuffs }} />,
+              body: <SelfBuffsDetail {...{ char, appChar, selfBuffCtrls, partyData }} />,
             },
             {
               heading: "Party",
-              body: <PartyBuffs {...{ char, party, partyData }} />,
+              body: <PartyBuffsDetail {...{ char, party, partyData }} />,
             },
             {
               heading: "Weapons",
-              body: weapon ? <WeaponBuffs {...{ weapon, wpBuffCtrls, party }} /> : null,
+              body: weapon ? <WeaponBuffsDetail {...{ weapon, wpBuffCtrls, party }} /> : null,
             },
             {
               heading: "Artifacts",
-              body: <ArtifactBuffs {...{ setBonuses, artBuffCtrls, party }} />,
+              body: <ArtifactBuffsDetail {...{ setBonuses, artBuffCtrls, party }} />,
             },
             {
               heading: "Custom",
-              body: <CustomBuffs customBuffCtrls={customBuffCtrls} />,
+              body: <CustomBuffsDetail customBuffCtrls={customBuffCtrls} />,
             },
           ]}
         />

@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-import type { CharInfo, DamageResult, Party } from "@Src/types";
-import { EStatDamageKey } from "@Src/constants";
+import type { CharInfo, CalculationFinalResult, Party, CalculationAspect } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
 import { $AppData } from "@Src/services";
 
@@ -12,17 +11,17 @@ import { displayValue, getTableKeys } from "./utils";
 
 // Component
 import { CollapseSpace, Table } from "@Src/pure-components";
-import { DamageCompareTable } from "./DamageCompareTable";
+import { FinalResultCompare } from "./FinalResultCompare";
 
 const { Tr, Th, Td } = Table;
 
-interface DamageViewProps {
+interface FinalResultViewProps {
   char: CharInfo;
   party: Party;
-  damageResult: DamageResult;
-  focus?: EStatDamageKey;
+  finalResult: CalculationFinalResult;
+  focusedAspect?: CalculationAspect;
 }
-export const DamageView = ({ char, party, damageResult, focus }: DamageViewProps) => {
+export const FinalResultView = ({ char, party, finalResult, focusedAspect }: FinalResultViewProps) => {
   const { t } = useTranslation();
   const appChar = $AppData.getCharacter(char.name);
 
@@ -42,7 +41,7 @@ export const DamageView = ({ char, party, damageResult, focus }: DamageViewProps
   return (
     <div className="flex flex-col space-y-2">
       {tableKeys.map((key, index) => {
-        const standardValues = damageResult[key.main];
+        const standardValues = finalResult[key.main];
         const isReactionDmg = key.main === "RXN";
         const talentLevel =
           !isReactionDmg && appChar
@@ -112,8 +111,8 @@ export const DamageView = ({ char, party, damageResult, focus }: DamageViewProps
                       null,
                     ]}
                   >
-                    {focus ? (
-                      <DamageCompareTable focus={focus} tableKey={key} />
+                    {focusedAspect ? (
+                      <FinalResultCompare focusedAspect={focusedAspect} tableKey={key} />
                     ) : (
                       <tbody>
                         <Tr>
