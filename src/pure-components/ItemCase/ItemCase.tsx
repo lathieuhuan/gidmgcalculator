@@ -3,7 +3,7 @@ import { ReactNode, HTMLAttributes } from "react";
 import styles from "./styles.module.scss";
 
 interface ItemCaseProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-  children: (className: string) => ReactNode;
+  children: (className: string, imgCls: string) => ReactNode;
   chosen?: boolean;
 }
 export const ItemCase = ({ className, chosen, children, onMouseDown, onMouseUp, ...rest }: ItemCaseProps) => {
@@ -20,7 +20,7 @@ export const ItemCase = ({ className, chosen, children, onMouseDown, onMouseUp, 
       }}
       {...rest}
     >
-      {children(styles["item-body"])}
+      {children(styles["item-body"], styles["item-img"])}
     </div>
   );
 };

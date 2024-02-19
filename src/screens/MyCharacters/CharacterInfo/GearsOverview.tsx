@@ -49,8 +49,12 @@ export function GearsOverview({
           chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
           onClick={() => toggleDetails("weapon")}
         >
-          {(className) => (
-            <ItemThumbnail className={className} item={{ beta, icon, rarity, ...rest, owner: undefined }} />
+          {(className, imgCls) => (
+            <ItemThumbnail
+              className={className}
+              imgCls={imgCls}
+              item={{ beta, icon, rarity, ...rest, owner: undefined }}
+            />
           )}
         </ItemCase>
       </div>

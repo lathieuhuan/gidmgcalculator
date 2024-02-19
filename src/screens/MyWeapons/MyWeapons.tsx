@@ -37,7 +37,9 @@ export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
 
-  const { weaponTypes, renderWeaponTypeSelect } = useWeaponTypeSelect();
+  const { weaponTypes, renderWeaponTypeSelect } = useWeaponTypeSelect(null, {
+    multiple: true,
+  });
   const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, weaponTypes));
 
   const checkIfMaxWeaponsReached = () => {

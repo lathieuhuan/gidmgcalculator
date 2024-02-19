@@ -4,8 +4,8 @@ import { MdInventory } from "react-icons/md";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-
 import { $AppData } from "@Src/services";
+import { userItemToCalcItem } from "@Src/utils";
 
 // Store
 import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
@@ -17,7 +17,6 @@ import { BetaMark, Button, Image } from "@Src/pure-components";
 import { WeaponForge, WeaponInventory } from "@Src/components";
 
 import styles from "./styles.module.scss";
-import { userItemToCalcItem } from "@Src/utils";
 
 type ModalType = "MAKE_NEW_WEAPON" | "SELECT_USER_WEAPON" | "";
 

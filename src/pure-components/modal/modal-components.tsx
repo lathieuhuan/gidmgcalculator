@@ -5,7 +5,7 @@ export const ModalCloseButton = (props: { disabled?: boolean; onClick?: () => vo
   return (
     <button
       type="button"
-      className="w-8 h-8 flex-center absolute top-1 right-1 z-50 text-light-900 text-1.5xl glow-on-hover"
+      className="w-8 h-8 flex-center absolute top-2 right-2 z-50 text-light-900 text-1.5xl glow-on-hover"
       {...props}
     >
       <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">

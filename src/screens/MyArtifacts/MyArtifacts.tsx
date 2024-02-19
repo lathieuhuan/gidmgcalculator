@@ -30,6 +30,7 @@ export default function MyArtifacts() {
   const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_FILTER);
 
   const { updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(null, {
+    multiple: true,
     onChange: (selectedTypes) => {
       setFilter((prev) => ({
         ...prev,

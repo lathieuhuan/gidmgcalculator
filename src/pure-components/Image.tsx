@@ -39,7 +39,7 @@ export const Image = ({
   return (
     <>
       {isError && PlaceholderIcon && (
-        <div className={clsx("p-3", className)} style={style}>
+        <div className={clsx("p-2", className)} style={style}>
           <PlaceholderIcon className={clsx(size, placeholderCls)} />
         </div>
       )}

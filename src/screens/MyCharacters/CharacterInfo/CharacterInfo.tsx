@@ -46,7 +46,7 @@ const CharacterInfo = () => {
   if (isLoading || error) {
     return (
       <div
-        className="py-4 flex h-98/100 space-x-2 overflow-auto"
+        className="py-4 flex h-98/100 space-x-2 custom-scrollbar"
         style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
       >
         {Array.from({ length: 4 }).map((_, i) => (
@@ -79,7 +79,7 @@ const CharacterInfo = () => {
 
   return (
     <div
-      className="py-4 flex h-98/100 space-x-2 overflow-auto"
+      className="py-4 flex h-98/100 space-x-2 custom-scrollbar"
       style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
     >
       <div className="p-4 rounded-lg bg-dark-900 flex flex-col relative">

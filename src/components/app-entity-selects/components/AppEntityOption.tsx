@@ -20,11 +20,12 @@ export type AppEntityOptionModel = {
 
 interface AppEntityOptionProps {
   className?: string;
+  imgCls?: string;
   visible: boolean;
   item: AppEntityOptionModel;
   selectedAmount?: number;
 }
-const AppEntityOptionCore = ({ className, visible, item, selectedAmount }: AppEntityOptionProps) => {
+const AppEntityOptionCore = ({ className, imgCls, visible, item, selectedAmount }: AppEntityOptionProps) => {
   const itemType = item.vision ? "character" : "weapon"; // not worth checking artifact or weapon
 
   return (
@@ -39,7 +40,7 @@ const AppEntityOptionCore = ({ className, visible, item, selectedAmount }: AppEn
         )}
       >
         <div className={"aspect-square transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")}>
-          {visible && <Image src={item.icon} imgType={itemType} />}
+          {visible && <Image className={imgCls} src={item.icon} imgType={itemType} />}
         </div>
 
         {selectedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{selectedAmount}</p> : null}

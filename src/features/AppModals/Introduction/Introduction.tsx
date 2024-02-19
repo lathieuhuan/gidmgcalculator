@@ -59,6 +59,7 @@ export const Introduction = (props: ModalControl) => {
     <Modal
       preset="large"
       withHeaderDivider={false}
+      bodyCls="pt-0"
       title={
         <>
           <div className="flex flex-col items-center">
@@ -136,22 +137,28 @@ export const Introduction = (props: ModalControl) => {
           ]}
         />
         <div className="px-2 space-y-1">
-          <p className="text-yellow-400 font-bold">CREDIT</p>
+          <p className="text-orange-500 font-semibold">Credit</p>
           <p>
-            - A special thank to{" "}
+            - Thank you{" "}
             <a href="https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki" rel="noreferrer" target="_blank">
               Genshin Impact Wiki
             </a>
-            , every image and formula is gathered from them.
+            . Every image and formula is gathered from them.
           </p>
           <p>
-            - Another special thank to{" "}
+            - A thank to{" "}
             <a href="https://genshin.honeyhunterworld.com/?lang=EN" rel="noreferrer" target="_blank">
               Honey Impact
             </a>
-            , all data is collected from their site.
+            , data of characters, weapons, and artifacts are collected from their site.
           </p>
-          <p>- Huge and special thanks to these supporters for the bug reports!</p>
+          <p>- Huge and special thanks to the donators!</p>
+          <ul className="ml-4 text-yellow-400 columns-1 md:columns-2 xm:columns-3 lg:columns-4">
+            {["Marc (marcdau)", "Akenouille", "Brandon Pride"].map((name, i) => (
+              <li key={i}>{name}</li>
+            ))}
+          </ul>
+          <p>- Special thanks to these supporters for the bug reports:</p>
           {isLoadingMetadata ? (
             <div className="ml-4 grid grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => (

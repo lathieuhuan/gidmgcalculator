@@ -20,7 +20,7 @@ import { UIState } from "@Store/uiSlice/types";
 
 // Component
 import { Button } from "@Src/pure-components";
-import { ActionButton, NavTabs } from "./components";
+import { ActionButton, NavTabs } from "./navbar-components";
 
 export function NavBar() {
   const dispatch = useDispatch();

@@ -60,10 +60,10 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
           <div className="min-w-0 grow">
             <div className="overflow-hidden">
               <p className={`text-2.5xl truncate ${elmtText} font-black`}>{char.name}</p>
-              <RarityStars className="mt-1" rarity={appChar.rarity} />
+              <RarityStars rarity={appChar.rarity} />
             </div>
 
-            <div className="mt-1 flex justify-between items-center">
+            <div className="mt-1 pl-1 flex justify-between items-center">
               <div className="flex items-center text-lg">
                 <p className="mr-1">Level</p>
                 <select

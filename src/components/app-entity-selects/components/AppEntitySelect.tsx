@@ -54,9 +54,9 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   useLayoutEffect(() => {
-    if (hasConfigStep && data.length && data[0]) {
-      selectOption(data[0]);
-    }
+    // if (hasConfigStep && data.length && data[0]) {
+    //   selectOption(data[0]);
+    // }
 
     const handleEnter = (e: KeyboardEvent) => {
       if (
@@ -89,12 +89,26 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   useLayoutEffect(() => {
     // check if no item visible
     const itemElmts = observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`) || [];
-    let visibleElmtCount = 0;
+    let visibleElmts: Element[] = [];
 
     for (const elmt of itemElmts) {
-      if (window.getComputedStyle(elmt).display !== "none") visibleElmtCount++;
+      if (window.getComputedStyle(elmt).display !== "none") {
+        visibleElmts.push(elmt);
+      }
     }
-    setEmpty(!visibleElmtCount);
+    setEmpty(!visibleElmts.length);
+
+    // select first visible item
+    const firstElmtCode = visibleElmts[0]?.getAttribute("data-id");
+
+    if (hasConfigStep && visibleElmts.length && firstElmtCode && +firstElmtCode !== chosenCode) {
+      const firstItem = data.find((item) => item.code === +firstElmtCode);
+
+      if (firstItem) {
+        onSelect?.(firstItem, true);
+        setChosenCode(firstItem.code);
+      }
+    }
 
     // check if container overflow to add padding right
     const itemContainer = bodyRef.current?.querySelector(".item-container");
@@ -162,7 +176,7 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
         className={clsx(
           "h-full w-full shrink-0 md:w-auto md:shrink md:min-w-[400px] xm:min-w-0 grow custom-scrollbar",
           overflow && "xm:pr-2",
-          searchOn && "pt-6"
+          searchOn && "pt-8"
         )}
       >
         <div className="item-container flex flex-wrap">
@@ -184,9 +198,10 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
                   onClick={() => selectOption(item)}
                   // onDoubleClick={() => onDoubleClickPickerItem(item)}
                 >
-                  {(className) => (
+                  {(className, imgCls) => (
                     <AppEntityOption
                       className={className}
+                      imgCls={imgCls}
                       visible={visibleItems[item.code]}
                       item={item}
                       selectedAmount={itemCounts[item.code] || 0}

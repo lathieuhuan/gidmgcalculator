@@ -34,7 +34,7 @@ Table.Tr = ({ className = "", ...rest }: HTMLAttributes<HTMLTableRowElement>) =>
 
 Table.Th = ({ className = "", ...rest }: ThHTMLAttributes<HTMLTableCellElement>) => (
   <th
-    className={"px-2 py-1 text-sm border-x border-dark-900 cursor-default " + className}
+    className={"px-2 py-1 text-sm border-x border-dark-900 cursor-default font-semibold " + className}
     {...rest}
   />
 );
