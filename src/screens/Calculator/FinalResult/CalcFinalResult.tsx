@@ -14,7 +14,7 @@ const ASPECT_LABEL: Record<CalculationAspect, string> = {
   average: "Average",
 };
 
-export function CalculatorFinalResult() {
+export function CalcFinalResult() {
   const activeSetupName = useSelector((state) => {
     const { activeId, setupManageInfos } = state.calculator;
     return findById(setupManageInfos, activeId)?.name || "";

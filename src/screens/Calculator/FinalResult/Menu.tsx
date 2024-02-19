@@ -8,7 +8,7 @@ import { useClickOutside } from "@Src/pure-hooks";
 
 // Component
 import { Modal } from "@Src/pure-components";
-import { CalculatorFinalResult } from "./CalculatorFinalResult";
+import { CalcFinalResult } from "./CalcFinalResult";
 
 export const Menu = () => {
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ export const Menu = () => {
         onClose={closeEnlargedView}
       >
         <Modal.CloseButton onClick={closeEnlargedView} />
-        <CalculatorFinalResult />
+        <CalcFinalResult />
       </Modal.Core>
     </div>
   );
