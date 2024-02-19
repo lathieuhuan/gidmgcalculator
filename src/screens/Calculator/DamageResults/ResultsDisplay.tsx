@@ -6,7 +6,7 @@ import { EStatDamageKey } from "@Src/constants";
 import { findById } from "@Src/utils";
 
 // Component
-import { DamageDisplay } from "@Src/components";
+import { DamageView } from "@Src/components";
 
 const FOCUS_LABELS = {
   [EStatDamageKey.AVERAGE]: "Average",
@@ -51,7 +51,7 @@ export function ResultsDisplay() {
         <p className="mx-4 my-2 font-bold text-center">{activeSetupName}</p>
       )}
       <div className="grow hide-scrollbar">
-        <DamageDisplay
+        <DamageView
           key={char.name}
           char={char}
           party={party}

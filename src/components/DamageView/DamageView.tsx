@@ -12,24 +12,27 @@ import { displayValue, getTableKeys } from "./utils";
 
 // Component
 import { CollapseSpace, Table } from "@Src/pure-components";
-import { CompareTable } from "./CompareTable";
+import { DamageCompareTable } from "./DamageCompareTable";
 
 const { Tr, Th, Td } = Table;
 
-export interface DamageDisplayProps {
+interface DamageViewProps {
   char: CharInfo;
   party: Party;
   damageResult: DamageResult;
   focus?: EStatDamageKey;
 }
-export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDisplayProps) => {
+export const DamageView = ({ char, party, damageResult, focus }: DamageViewProps) => {
   const { t } = useTranslation();
+  const appChar = $AppData.getCharacter(char.name);
 
-  const [closedItems, setClosedItems] = useState<boolean[]>([]);
-  const { tableKeys, appChar } = useMemo(() => getTableKeys(char.name), [char.name]);
+  const [closedSections, setClosedSections] = useState<boolean[]>([]);
+  const tableKeys = useMemo(() => (appChar ? getTableKeys(appChar) : []), [char.name]);
+
+  if (!appChar) return null;
 
   const toggleTable = (index: number) => () => {
-    setClosedItems((prev) => {
+    setClosedSections((prev) => {
       const newC = [...prev];
       newC[index] = !newC[index];
       return newC;
@@ -62,7 +65,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                 onClick={toggleTable(index)}
               >
                 <FaChevronRight
-                  className={"text-sm text-black duration-150 ease-linear" + (closedItems[index] ? "" : " rotate-90")}
+                  className={"text-sm text-black duration-150 ease-linear" + (closedSections[index] ? "" : " rotate-90")}
                 />
                 <span className="text-lg leading-none">{t(key.main)}</span>
               </button>
@@ -85,12 +88,12 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
               ) : null}
               <FaChevronDown
                 className={
-                  "ml-2 text-sm text-black duration-150 ease-linear" + (closedItems[index] ? " rotate-90" : "")
+                  "ml-2 text-sm text-black duration-150 ease-linear" + (closedSections[index] ? " rotate-90" : "")
                 }
               />
             </button>
 
-            <CollapseSpace active={!closedItems[index]}>
+            <CollapseSpace active={!closedSections[index]}>
               {key.subs.length === 0 ? (
                 <div className="pb-2">
                   <p className="pt-2 pb-1 bg-dark-700 text-center text-light-800">This talent does not deal damage.</p>
@@ -110,7 +113,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                     ]}
                   >
                     {focus ? (
-                      <CompareTable focus={focus} tableKey={key} />
+                      <DamageCompareTable focus={focus} tableKey={key} />
                     ) : (
                       <tbody>
                         <Tr>
@@ -125,7 +128,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
 
                           return nonCrit === undefined ? null : (
                             <Tr key={subKey}>
-                              <Td title={attElmt?.toUpperCase()}>{isReactionDmg ? t(subKey) : subKey}</Td>
+                              <Td title={attElmt}>{isReactionDmg ? t(subKey) : subKey}</Td>
                               <Td>{displayValue(nonCrit)}</Td>
                               <Td>{displayValue(crit)}</Td>
                               <Td className="text-yellow-400">{displayValue(average)}</Td>

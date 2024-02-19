@@ -22,7 +22,7 @@ import { useSetupItems } from "./hooks";
 
 // Component
 import { Button, WarehouseLayout, LoadingIcon } from "@Src/pure-components";
-import { DamageDisplay } from "@Src/components";
+import { DamageView } from "@Src/components";
 import { ChosenSetupModalCluster, MySetupsModalCluster } from "./modal-cluster";
 import { SetupTemplate } from "./SetupTemplate";
 
@@ -126,7 +126,7 @@ export default function MySetups() {
           </div>
           <div className="mt-2 grow hide-scrollbar">
             {calcResult?.damage && (
-              <DamageDisplay char={chosenSetup.char} party={chosenSetup.party} damageResult={calcResult.damage} />
+              <DamageView char={chosenSetup.char} party={chosenSetup.party} damageResult={calcResult.damage} />
             )}
           </div>
 

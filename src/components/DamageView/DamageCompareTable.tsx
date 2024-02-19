@@ -14,32 +14,32 @@ import { Table } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 
-interface CompareTableProps {
+interface DamageCompareTableProps {
   focus: EStatDamageKey;
   tableKey: TableKey;
 }
-export const CompareTable = ({ focus, tableKey: { main, subs } }: CompareTableProps) => {
+export const DamageCompareTable = ({ focus, tableKey }: DamageCompareTableProps) => {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const statsById = useSelector((state) => state.calculator.statsById);
   const comparedIds = useSelector(selectComparedIds);
   const standardId = useSelector(selectStandardId);
 
-  const title = findById(setupManageInfos, standardId)?.name;
+  const title = findById(setupManageInfos, standardId)?.name ?? "Setup's name missing";
   const otherSetupIds = comparedIds.filter((id) => id !== standardId);
 
   return (
     <tbody>
       <Tr>
         <Th />
-        <Th>{title || "Setup's name missing"}</Th>
+        <Th>{title}</Th>
 
         {otherSetupIds.map((id) => (
           <Th key={id}>{findById(setupManageInfos, id)?.name}</Th>
         ))}
       </Tr>
 
-      {subs.map((name, i) => {
-        const standardValue = statsById[standardId].dmgResult[main][name][focus];
+      {tableKey.subs.map((name, i) => {
+        const standardValue = statsById[standardId].dmgResult[tableKey.main][name][focus];
         const standardIsArray = Array.isArray(standardValue);
 
         return (
@@ -47,8 +47,8 @@ export const CompareTable = ({ focus, tableKey: { main, subs } }: CompareTablePr
             <Td>{name}</Td>
             <Td>{displayValue(standardValue)}</Td>
 
-            {otherSetupIds.map((id, j) => {
-              const thisValue = statsById[id].dmgResult[main][name][focus];
+            {otherSetupIds.map((setupId, j) => {
+              const thisValue = statsById[setupId].dmgResult[tableKey.main][name][focus];
               const thisIsArray = Array.isArray(thisValue);
               let diff = 0;
 

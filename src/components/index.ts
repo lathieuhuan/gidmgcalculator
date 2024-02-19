@@ -7,7 +7,7 @@ export * from "./ArtifactCard";
 export * from "./ArtifactFilter";
 export * from "./AttributeTable";
 export * from "./CharacterPortrait";
-export * from "./DamageDisplay";
+export * from "./DamageView";
 export * from "./EntitySelectTemplate";
 export * from "./ElementIcon";
 export * from "./ItemThumbnail";

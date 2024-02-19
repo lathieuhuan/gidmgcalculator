@@ -1,5 +1,6 @@
 import { $AppData } from "@Src/services";
 import { NORMAL_ATTACKS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
+import { AppCharacter } from "@Src/types";
 
 type AttackPatternKey = {
   main: "NAs" | "ES" | "EB";
@@ -13,13 +14,7 @@ type ReactionKey = {
 
 export type TableKey = AttackPatternKey | ReactionKey;
 
-export const getTableKeys = (charName: string) => {
-  const appChar = $AppData.getCharacter(charName);
-  if (!appChar) {
-    return {
-      tableKeys: [],
-    };
-  }
+export const getTableKeys = (appChar: AppCharacter): TableKey[] => {
   const NAs: AttackPatternKey = {
     main: "NAs",
     subs: [],
@@ -42,10 +37,7 @@ export const getTableKeys = (charName: string) => {
     subs: [...TRANSFORMATIVE_REACTIONS],
   });
 
-  return {
-    tableKeys: result,
-    appChar,
-  };
+  return result;
 };
 
 export const displayValue = (value: number | number[]) => {
