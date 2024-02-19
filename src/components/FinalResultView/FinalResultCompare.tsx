@@ -4,8 +4,6 @@ import { FaLongArrowAltUp } from "react-icons/fa";
 import type { CalculationAspect } from "@Src/types";
 import { selectComparedIds, selectStandardId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
-
-// Util
 import { findById } from "@Src/utils";
 import { displayValue, type TableKey } from "./utils";
 

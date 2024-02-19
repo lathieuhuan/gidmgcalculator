@@ -217,7 +217,7 @@ export class AppDataService {
     return control!.data;
   }
 
-  getPartyInfo(party: Party): PartyData {
+  getPartyData(party: Party): PartyData {
     return party.map((teammate) => {
       if (teammate) {
         const keys: Array<keyof AppCharacter> = ["code", "name", "icon", "nation", "vision", "weaponType", "EBcost"];

@@ -2,15 +2,13 @@ import { useEffect } from "react";
 
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { $AppData } from "@Src/services";
+import { findByIndex } from "@Src/utils";
+import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
 import { changeModCtrlInput, toggleModCtrl, updateResonance, updateCalcSetup } from "@Store/calculatorSlice";
-
-// Util
-import { findByIndex } from "@Src/utils";
-import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
 import { Green } from "@Src/pure-components";
@@ -44,7 +42,7 @@ export function ElementDebuffs() {
           </>
         }
       />
-      {geoResonance && (
+      {geoResonance ? (
         <ModifierTemplate
           checked={geoResonance.activated}
           onToggle={() => {
@@ -58,7 +56,7 @@ export function ElementDebuffs() {
             </>
           }
         />
-      )}
+      ) : null}
     </div>
   );
 }

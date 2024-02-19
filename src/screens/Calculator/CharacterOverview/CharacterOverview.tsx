@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FaSyncAlt } from "react-icons/fa";
 
 import { Level } from "@Src/types";
@@ -13,14 +13,22 @@ import { updateCharacter } from "@Store/calculatorSlice";
 import { initNewSessionWithCharacter } from "@Store/thunks";
 
 // Component
-import { Button, Image, BetaMark, ComplexSelect, RarityStars } from "@Src/pure-components";
+import { Button, Image, BetaMark, ComplexSelect, RarityStars, Switch, SwitchProps } from "@Src/pure-components";
 import { SetupImporter, Tavern } from "@Src/components";
-import contentByTab from "./content";
+import { ArtifactsTab, AttributesTab, ConstellationTab, TalentsTab, WeaponTab } from "./character-overview-tabs";
+
+const TABS: SwitchProps<string>["cases"] = [
+  { value: "Attributes", element: <AttributesTab /> },
+  { value: "Weapon", element: <WeaponTab /> },
+  { value: "Artifacts", element: <ArtifactsTab /> },
+  { value: "Constellation", element: <ConstellationTab /> },
+  { value: "Talents", element: <TalentsTab /> },
+];
 
 interface OverviewCharProps {
   touched: boolean;
 }
-export const CharOverview = ({ touched }: OverviewCharProps) => {
+export const CharacterOverview = ({ touched }: OverviewCharProps) => {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const appReady = useSelector((state) => state.ui.ready);
@@ -28,9 +36,11 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
   const [activeTab, setActiveTab] = useState("Attributes");
   const [modalType, setModalType] = useState<"CHARACTER_SELECT" | "IMPORT_SETUP" | "">("");
 
-  const Content = contentByTab[activeTab];
-
   const closeModal = () => setModalType("");
+
+  const onChangeLevel = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(updateCharacter({ level: e.target.value as Level }));
+  };
 
   const onClickConsLevel = (cons: number) => {
     if (cons !== char.cons) {
@@ -69,7 +79,7 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
                 <select
                   className={`font-bold ${elmtText} text-right text-last-right`}
                   value={char.level}
-                  onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
+                  onChange={onChangeLevel}
                 >
                   {LEVELS.map((_, index) => (
                     <option key={index} className="text-black">
@@ -109,17 +119,13 @@ export const CharOverview = ({ touched }: OverviewCharProps) => {
         <ComplexSelect
           selectId="character-overview-select"
           value={activeTab}
-          options={[
-            { label: "Attributes", value: "Attributes" },
-            { label: "Weapon", value: "Weapon" },
-            { label: "Artifacts", value: "Artifacts" },
-            { label: "Constellation", value: "Constellation" },
-            { label: "Talents", value: "Talents" },
-          ]}
+          options={TABS.map((tab) => ({ value: tab.value, label: tab.value }))}
           onChange={(newTab) => setActiveTab(newTab.toString())}
         />
 
-        <div className="mt-3 grow hide-scrollbar">{Content && <Content />}</div>
+        <div className="mt-3 grow hide-scrollbar">
+          <Switch value={activeTab} cases={TABS} />
+        </div>
       </div>
     );
   } else {

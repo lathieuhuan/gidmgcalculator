@@ -25,7 +25,7 @@ interface TalentOverviewProps {
 }
 export const TalentOverview = ({ char, appChar, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
   const { vision: elementType, weaponType, activeTalents, passiveTalents } = appChar;
-  const partyData = party ? $AppData.getPartyInfo(party) : undefined;
+  const partyData = party ? $AppData.getPartyData(party) : undefined;
   const elmtText = `text-${elementType}`;
 
   return (

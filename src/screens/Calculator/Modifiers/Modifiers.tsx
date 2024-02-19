@@ -17,7 +17,7 @@ import { CustomModifiers } from "./custom";
 
 export default function Modifiers() {
   const party = useSelector(selectParty);
-  const partyData = $AppData.getPartyInfo(party);
+  const partyData = $AppData.getPartyData(party);
 
   const { activeIndex, tabsElmt } = useTabs({
     className: "text-lg shrink-0",

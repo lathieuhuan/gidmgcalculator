@@ -25,7 +25,7 @@ const calculateAll = (
 ) => {
   // console.time();
   const appChar = $AppData.getCharacter(char.name);
-  const partyData = $AppData.getPartyInfo(party);
+  const partyData = $AppData.getPartyData(party);
   let infusedElement = customInfusion.element;
   let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];
   let isCustomInfusion = true;

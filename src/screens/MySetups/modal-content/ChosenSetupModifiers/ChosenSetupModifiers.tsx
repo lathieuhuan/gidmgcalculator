@@ -59,7 +59,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, result, weapon, setBonuses }
   } = chosenSetup;
   const { appChar, infusedElement, rxnBonus } = result;
 
-  const partyData = $AppData.getPartyInfo(party);
+  const partyData = $AppData.getPartyData(party);
   const { title, variant, statuses } = $AppData.getTargetInfo(target);
 
   return (

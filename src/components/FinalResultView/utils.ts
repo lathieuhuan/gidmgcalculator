@@ -40,9 +40,9 @@ export const getTableKeys = (appChar: AppCharacter): TableKey[] => {
   return result;
 };
 
-export const displayValue = (value: number | number[]) => {
-  if (value === 0) {
-    return "-";
+export const displayValue = (value?: number | number[]) => {
+  if (value) {
+    return Array.isArray(value) ? value.map((v) => Math.round(v)).join(" + ") : Math.round(value);
   }
-  return Array.isArray(value) ? value.map((v) => Math.round(v)).join(" + ") : Math.round(value);
+  return "-";
 };

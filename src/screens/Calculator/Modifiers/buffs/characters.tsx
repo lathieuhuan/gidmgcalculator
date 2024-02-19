@@ -20,11 +20,9 @@ import { ModifierTemplate, renderModifiers } from "@Src/components";
 export function SelfBuffs() {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const selfBuffCtrls = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
-  });
+  const selfBuffCtrls = useSelector((state) => state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls);
   const appChar = $AppData.getCharacter(char.name);
-  const partyData = $AppData.getPartyInfo(useSelector(selectParty));
+  const partyData = $AppData.getPartyData(useSelector(selectParty));
 
   const { innateBuffs = [], buffs = [] } = $AppData.getCharacter(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
@@ -83,7 +81,7 @@ export function SelfBuffs() {
 
 export function PartyBuffs() {
   const party = useSelector(selectParty);
-  const partyData = $AppData.getPartyInfo(useSelector(selectParty));
+  const partyData = $AppData.getPartyData(useSelector(selectParty));
   const modifierElmts: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {

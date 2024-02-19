@@ -85,7 +85,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           char,
           appChar,
           talentType,
-          partyData: $AppData.getPartyInfo(party),
+          partyData: $AppData.getPartyData(party),
         });
       });
 

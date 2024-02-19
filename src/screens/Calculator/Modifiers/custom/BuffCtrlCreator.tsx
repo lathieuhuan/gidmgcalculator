@@ -14,8 +14,6 @@ import {
 
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
-
-// Hook
 import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 

@@ -30,9 +30,7 @@ export const ElementBuffs = () => {
   const { vision: elementType, weaponType, calcList } = $AppData.getCharacter(char.name);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
-  const customInfusion = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].customInfusion;
-  });
+  const customInfusion = useSelector((state) => state.calculator.setupsById[state.calculator.activeId].customInfusion);
 
   const { element: infusedElement } = customInfusion;
   const isInfused = infusedElement !== "phys";

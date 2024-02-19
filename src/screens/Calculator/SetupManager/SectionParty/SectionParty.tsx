@@ -43,7 +43,7 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
-  const partyData = useMemo(() => $AppData.getPartyInfo(party), [party]);
+  const partyData = useMemo(() => $AppData.getPartyData(party), [party]);
 
   const isCombined = findById(setupManageInfos, activeId)?.type === "combined";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];

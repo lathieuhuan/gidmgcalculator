@@ -1,15 +1,15 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
+
 import type { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
+import { useTranslation } from "@Src/pure-hooks";
+import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@Store/calculatorSlice/selectors";
 import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";
-
-import { useTranslation } from "@Src/pure-hooks";
-import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Component
 import { CloseButton, Input, Modal, Button } from "@Src/pure-components";

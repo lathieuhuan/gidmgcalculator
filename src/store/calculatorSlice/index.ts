@@ -219,12 +219,12 @@ export const calculatorSlice = createSlice({
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldElmtCount = countElements($AppData.getPartyInfo(party), appChar);
+      const oldElmtCount = countElements($AppData.getPartyData(party), appChar);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newElmtCount = countElements($AppData.getPartyInfo(party), appChar);
+      const newElmtCount = countElements($AppData.getPartyData(party), appChar);
 
       if (oldTeammate) {
         const { vision: oldElement } = $AppData.getCharacter(oldTeammate.name) || {};
@@ -268,7 +268,7 @@ export const calculatorSlice = createSlice({
       if (teammate) {
         const { vision: elementType } = $AppData.getCharacter(teammate.name);
         party[teammateIndex] = null;
-        const newElmtCount = countElements($AppData.getPartyInfo(party), appChar);
+        const newElmtCount = countElements($AppData.getPartyData(party), appChar);
 
         if (newElmtCount[elementType] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {

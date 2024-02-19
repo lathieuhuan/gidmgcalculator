@@ -1,3 +1,4 @@
+import type { ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -10,14 +11,11 @@ import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
 import { renderArtifactModifiers, renderModifiers } from "@Src/components";
-import { ModifierInput } from "@Src/types";
 
 export const ArtifactBuffs = () => {
   const dispatch = useDispatch();
   const artifacts = useSelector(selectArtifacts);
-  const artBuffCtrls = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].artBuffCtrls;
-  });
+  const artBuffCtrls = useSelector((state) => state.calculator.setupsById[state.calculator.activeId].artBuffCtrls);
   const party = useSelector(selectParty);
 
   const modifierElmts: (JSX.Element | null)[] = [];
@@ -65,13 +63,13 @@ export const ArtifactBuffs = () => {
           getHanlders: (ctrl) => {
             const updateBuffCtrl = (value: ModifierInput | "toggle", inputIndex = 0) => {
               const newBuffCtrls = deepCopy(buffCtrls);
-              const targetCtrl = findByIndex(newBuffCtrls, ctrl.index);
-              if (!targetCtrl) return;
+              const buffCtrl = findByIndex(newBuffCtrls, ctrl.index);
+              if (!buffCtrl) return;
 
               if (value === "toggle") {
-                targetCtrl.activated = !ctrl.activated;
-              } else if (targetCtrl.inputs) {
-                targetCtrl.inputs[inputIndex] = value;
+                buffCtrl.activated = !ctrl.activated;
+              } else if (buffCtrl.inputs) {
+                buffCtrl.inputs[inputIndex] = value;
               } else {
                 return;
               }

@@ -4,7 +4,7 @@ type Case<T> = {
   value: T;
   element: ReactNode;
 };
-interface SwitchProps<T> {
+export interface SwitchProps<T> {
   value: T;
   cases: Case<T>[];
   default?: ReactNode;

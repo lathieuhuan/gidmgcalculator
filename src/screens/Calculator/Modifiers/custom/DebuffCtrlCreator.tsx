@@ -3,8 +3,6 @@ import { useState, useRef, FormEvent } from "react";
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
-
-// Hook
 import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
 

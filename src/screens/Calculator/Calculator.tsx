@@ -4,7 +4,7 @@ import { memo } from "react";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import CharOverview from "./CharOverview";
+import CharacterOverview from "./CharacterOverview";
 import Modifiers from "./Modifiers";
 import ResultDetail from "./ResultDetail";
 import SetupManager from "./SetupManager";
@@ -19,7 +19,7 @@ const Calculator = () => {
       <div className="h-98/100 flex space-x-2">
         <div className={clsx("px-6 py-4 bg-dark-900", styles.card)}>
           {/* // ========== PANEL 1 ========== */}
-          <CharOverview touched={touched} />
+          <CharacterOverview touched={touched} />
         </div>
 
         <div className={clsx("px-6 py-4 bg-dark-900", styles.card)}>
