@@ -33,7 +33,7 @@ export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }
   }
 
   return (
-    <div className="h-full flex-col hide-scrollbar">
+    <div className="h-full flex flex-col hide-scrollbar">
       <SlideShow
         forTalent={false}
         currentIndex={consLv - 1}
@@ -41,25 +41,26 @@ export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }
         elementType={elementType}
         onClickBack={() => onChangeConsLv?.(consLv - 1)}
         onClickNext={() => onChangeConsLv?.(consLv + 1)}
-        onClickClose={onClose}
       />
       <p className={`text-xl text-${elementType} font-bold`}>{consInfo.name}</p>
-      <p className="text-lg">
+      <p className="text-sm">
         Constellation Lv. <Green b>{consLv}</Green>
       </p>
-      {description ? (
-        <p className="mt-4 whitespace-pre-wrap">{description}</p>
-      ) : (
-        <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
-          <LoadingIcon active={isLoading} />
-          {isError && <Dim>Error. Rebooting...</Dim>}
-          {descriptions?.[consLv - 1]}
-        </p>
-      )}
+      <div className="mt-3 grow hide-scrollbar">
+        {description ? (
+          <p className="whitespace-pre-wrap">{description}</p>
+        ) : (
+          <p className={isLoading ? " py-4 flex justify-center" : ""}>
+            <LoadingIcon active={isLoading} />
+            {isError && <Dim>Error. Rebooting...</Dim>}
+            {descriptions?.[consLv - 1]}
+          </p>
+        )}
+      </div>
 
-      {/* <div className="mt-4">
+      <div className="mt-3">
         <CloseButton className="mx-auto" size="small" onClick={onClose} />
-      </div> */}
+      </div>
     </div>
   );
 };

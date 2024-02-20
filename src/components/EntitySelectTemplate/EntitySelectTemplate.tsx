@@ -83,7 +83,7 @@ export const EntitySelectTemplate = ({
 
         timeoutId.current = setTimeout(() => {
           setKeyword(value);
-        }, 150);
+        }, 100);
       }}
     />
   );

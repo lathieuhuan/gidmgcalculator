@@ -14,12 +14,6 @@ import NORMAL_ATTACK_ICONS from "./normalAttackIcons";
 import { CloseButton, StatsTable } from "@Src/pure-components";
 import { SlideShow } from "../ability-list-components";
 
-const styles = {
-  row: "pb-1 text-sm",
-  leftCol: "pr-6 text-yellow-300",
-  rightCol: "font-bold text-right",
-};
-
 interface TalentDetailProps {
   appChar: AppCharacter;
   detailIndex: number;
@@ -54,24 +48,32 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
   }, [talentLevel]);
 
   const talent = talents[detailIndex];
-  const isStatic = talent.type === "altSprint";
+  const levelable = talent?.type !== "altSprint";
 
   const onMouseDownLevelButton = (isLevelUp: boolean) => {
+    let level = talentLevel;
+
     const adjustLevel = () => {
-      setTalentLevel((prev) => (isLevelUp ? Math.min(prev + 1, 15) : Math.max(prev - 1, 1)));
+      if (isLevelUp ? level < 15 : level > 1) {
+        setTalentLevel((prev) => {
+          level = isLevelUp ? prev + 1 : prev - 1;
+          return level;
+        });
+      }
     };
 
     adjustLevel();
-    intervalRef.current = setInterval(adjustLevel, 200);
+    intervalRef.current = setInterval(adjustLevel, 150);
   };
 
-  const renderLevelButton = (isLevelUp: boolean) => {
+  const renderLevelButton = (isLevelUp: boolean, disabled: boolean) => {
     return (
       <button
         className={
-          "absolute top-2 flex px-2 rounded border-2 border-dark-500 text-dark-500 text-1.5xl hover:border-green-300 hover:text-green-300 " +
-          (isLevelUp ? "right-10" : "left-10")
+          "w-7 h-7 flex-center rounded border-2 border-dark-500 text-dark-500 text-1.5xl " +
+          (disabled ? "opacity-50" : "hover:border-blue-400 hover:text-blue-400")
         }
+        disabled={disabled}
         onMouseDown={() => onMouseDownLevelButton(isLevelUp)}
         onMouseUp={() => clearInterval(intervalRef.current)}
         onMouseLeave={() => clearInterval(intervalRef.current)}
@@ -98,42 +100,43 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
           topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talent.type)}</p>}
         />
 
-        <p className={`text-xl font-bold text-${elementType} text-center`}>{talent.name}</p>
+        <p className={`text-lg font-semibold text-${elementType} text-center`}>{talent.name}</p>
         {/* <div className="my-2 py-1 flex-center bg-light-400 rounded-2xl">
           <p className="font-bold text-black cursor-default">Skill Attributes</p>
         </div> */}
 
         <div>
-          <div className={"py-2 flex-center bg-dark-900 sticky -top-1 " + (isStatic ? "pr-4" : "pl-4")}>
-            {!isStatic && (
-              <>
-                {renderLevelButton(true)}
-                {renderLevelButton(false)}
-              </>
-            )}
-
-            <p className="text-lg">Lv.</p>
-            {isStatic ? (
-              <p className="px-1 text-lg font-bold">1</p>
+          <div className="py-2 flex-center bg-dark-900 sticky -top-1">
+            {levelable ? (
+              <div className="flex items-center space-x-4">
+                {renderLevelButton(false, talentLevel <= 1)}
+                <label className="flex items-center text-lg">
+                  <p>Lv.</p>
+                  <select
+                    className="font-bold text-right text-last-right"
+                    value={talentLevel}
+                    onChange={(e) => setTalentLevel(+e.target.value)}
+                  >
+                    {Array.from({ length: 15 }).map((_, i) => (
+                      <option key={i}>{i + 1}</option>
+                    ))}
+                  </select>
+                </label>
+                {renderLevelButton(true, talentLevel >= 15)}
+              </div>
             ) : (
-              <select
-                className="pr-2 text-lg font-bold text-right text-last-right"
-                value={talentLevel}
-                onChange={(e) => setTalentLevel(+e.target.value)}
-              >
-                {Array.from({ length: 15 }).map((_, i) => (
-                  <option key={i}>{i + 1}</option>
-                ))}
-              </select>
+              <p className="text-lg">
+                Lv. <span className="font-bold">1</span>
+              </p>
             )}
           </div>
 
           <StatsTable>
             {talent.stats.map((stat, i) => {
               return (
-                <StatsTable.Row key={i} className={styles.row}>
-                  <p className={styles.leftCol}>{stat.name}</p>
-                  <p className={styles.rightCol}>{stat.value}</p>
+                <StatsTable.Row key={i} className="pb-1 text-sm">
+                  <p className="pr-6 text-yellow-300">{stat.name}</p>
+                  <p className="font-semibold text-right">{stat.value}</p>
                 </StatsTable.Row>
               );
             })}
@@ -141,7 +144,7 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-3">
         <CloseButton className="mx-auto glow-on-hover" size="small" onClick={onClose} />
       </div>
     </div>
@@ -164,7 +167,7 @@ function processActiveTalents(
   label: Record<TalentAttributeType, string>
 ): ProcessedActiveTalent[] {
   const { vision: elementType, weaponType, EBcost, activeTalents, multFactorConf, calcList } = appChar;
-  const { NAs, ES, EB } = activeTalents;
+  const { NAs, ES, EB, altSprint } = activeTalents;
 
   const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
     NAs: { name: NAs.name, type: "NAs", stats: [] },
@@ -223,5 +226,15 @@ function processActiveTalents(
     value: EBcost,
   });
 
-  return [result.NAs, result.ES, result.EB];
+  const talents = [result.NAs, result.ES, result.EB];
+
+  if (altSprint) {
+    talents.push({
+      name: altSprint.name,
+      type: "altSprint",
+      stats: [],
+    });
+  }
+
+  return talents;
 }

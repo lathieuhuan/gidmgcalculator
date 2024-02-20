@@ -6,8 +6,8 @@ import type { ElementType } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 import styles from "./styles.module.scss";
-import { CloseButton } from "@Src/pure-components";
-import { ModalCloseButton } from "@Src/pure-components/modal/modal-components";
+
+const ABILITY_ICON_SIZE = "3.25rem";
 
 interface AbilityImgProps {
   className?: string;
@@ -17,19 +17,25 @@ interface AbilityImgProps {
   onClick?: () => void;
 }
 export const AbilityIcon = ({ className, img, elementType, active = true, onClick }: AbilityImgProps) => {
-  const commonClassNames = ["w-14 h-14 transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
+  const commonClassNames = ["transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
+  const style = {
+    width: ABILITY_ICON_SIZE,
+    height: ABILITY_ICON_SIZE,
+  };
 
   return img ? (
     <img
       className={clsx(commonClassNames, className)}
       src={getImgSrc(img)}
       alt=""
+      style={style}
       draggable={false}
       onClick={onClick}
     />
   ) : (
     <div
       className={clsx(`rounded-circle bg-${elementType} flex-center`, styles[elementType], commonClassNames, className)}
+      style={style}
       onClick={onClick}
     >
       <FaQuestion className="text-xl" />
@@ -45,7 +51,7 @@ const Caret = ({ toRight, onClick }: CaretProps) => {
   return (
     <button
       className={
-        "absolute top-2 text-[2.5rem] text-dark-500 hover:text-yellow-400 flex-center cursor-pointer " +
+        "absolute top-2 text-[2.5rem] text-dark-500 hover:text-blue-400 flex-center cursor-pointer " +
         (toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 right-full")
       }
       onClick={onClick}
@@ -63,7 +69,6 @@ interface SlideShowProps {
   topLeftNote?: ReactNode;
   onClickBack: () => void;
   onClickNext: () => void;
-  onClickClose?: () => void;
 }
 export const SlideShow = ({
   currentIndex,
@@ -73,17 +78,22 @@ export const SlideShow = ({
   topLeftNote,
   onClickBack,
   onClickNext,
-  onClickClose,
 }: SlideShowProps) => {
   return (
     <div className={"flex-center relative " + (forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
       {topLeftNote}
 
       <div className="relative">
-        <div className="w-14 h-14 overflow-hidden relative">
+        <div
+          className="overflow-hidden relative"
+          style={{
+            width: ABILITY_ICON_SIZE,
+            height: ABILITY_ICON_SIZE,
+          }}
+        >
           <div
             className="absolute top-0 flex transition-transform ease-linear"
-            style={{ transform: `translateX(-${currentIndex * 3.5}rem)` }}
+            style={{ transform: `translateX(calc(-${currentIndex} * ${ABILITY_ICON_SIZE}))` }}
           >
             {images.map((img, i) => (
               <AbilityIcon key={i} img={img} elementType={elementType} />
@@ -94,8 +104,6 @@ export const SlideShow = ({
         {currentIndex > 0 && <Caret onClick={onClickBack} />}
         {currentIndex < images.length - 1 && <Caret toRight onClick={onClickNext} />}
       </div>
-
-      <CloseButton className="absolute top-1/2 right-0 -translate-y-1/2" size="small" onClick={onClickClose} />
     </div>
   );
 };
