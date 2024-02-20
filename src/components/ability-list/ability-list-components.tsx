@@ -6,6 +6,8 @@ import type { ElementType } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 import styles from "./styles.module.scss";
+import { CloseButton } from "@Src/pure-components";
+import { ModalCloseButton } from "@Src/pure-components/modal/modal-components";
 
 interface AbilityImgProps {
   className?: string;
@@ -15,7 +17,7 @@ interface AbilityImgProps {
   onClick?: () => void;
 }
 export const AbilityIcon = ({ className, img, elementType, active = true, onClick }: AbilityImgProps) => {
-  const commonClassNames = ["min-w-13 h-13 transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
+  const commonClassNames = ["w-14 h-14 transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
 
   return img ? (
     <img
@@ -61,6 +63,7 @@ interface SlideShowProps {
   topLeftNote?: ReactNode;
   onClickBack: () => void;
   onClickNext: () => void;
+  onClickClose?: () => void;
 }
 export const SlideShow = ({
   currentIndex,
@@ -70,6 +73,7 @@ export const SlideShow = ({
   topLeftNote,
   onClickBack,
   onClickNext,
+  onClickClose,
 }: SlideShowProps) => {
   return (
     <div className={"flex-center relative " + (forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
@@ -82,7 +86,7 @@ export const SlideShow = ({
             style={{ transform: `translateX(-${currentIndex * 3.5}rem)` }}
           >
             {images.map((img, i) => (
-              <AbilityIcon key={i} className="!min-w-[3.5rem] !w-14 !h-14" img={img} elementType={elementType} />
+              <AbilityIcon key={i} img={img} elementType={elementType} />
             ))}
           </div>
         </div>
@@ -90,6 +94,8 @@ export const SlideShow = ({
         {currentIndex > 0 && <Caret onClick={onClickBack} />}
         {currentIndex < images.length - 1 && <Caret toRight onClick={onClickNext} />}
       </div>
+
+      <CloseButton className="absolute top-1/2 right-0 -translate-y-1/2" size="small" onClick={onClickClose} />
     </div>
   );
 };

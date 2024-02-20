@@ -41,6 +41,7 @@ export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }
         elementType={elementType}
         onClickBack={() => onChangeConsLv?.(consLv - 1)}
         onClickNext={() => onChangeConsLv?.(consLv + 1)}
+        onClickClose={onClose}
       />
       <p className={`text-xl text-${elementType} font-bold`}>{consInfo.name}</p>
       <p className="text-lg">
@@ -56,9 +57,9 @@ export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }
         </p>
       )}
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <CloseButton className="mx-auto" size="small" onClick={onClose} />
-      </div>
+      </div> */}
     </div>
   );
 };

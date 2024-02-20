@@ -44,9 +44,9 @@ export const ConstellationList = ({ char, onClickIcon }: ConstellationListProps)
           {appChar.constellation.map((cons, i) => {
             return (
               <div key={i} className="flex">
-                <div className="flex-center">
+                <div className="shrink-0 py-1 pr-2 flex-center">
                   <AbilityIcon
-                    className="my-1 mr-2 cursor-pointer"
+                    className="cursor-pointer"
                     img={cons.image}
                     active={char.cons >= i + 1}
                     elementType={appChar.vision}
