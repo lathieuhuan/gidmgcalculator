@@ -131,7 +131,7 @@ export const CharacterOverview = ({ touched }: OverviewCharProps) => {
   } else {
     body = (
       <div className="w-full flex flex-col items-center space-y-2">
-        <Button variant="positive" onClick={() => setModalType("CHARACTER_SELECT")}>
+        <Button variant="positive" disabled={!appReady} onClick={() => setModalType("CHARACTER_SELECT")}>
           Select a character
         </Button>
         <p>or</p>

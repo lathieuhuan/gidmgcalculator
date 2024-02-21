@@ -41,10 +41,10 @@ export class AppCharacterService extends BaseService {
       this.subscribers.set(name, new Set([subscriber]));
     }
 
-    return () => this.unsubscribeCharacter(name, subscriber);
+    return () => this.unsubscribe(name, subscriber);
   }
 
-  private unsubscribeCharacter(name: string, subscriber: CharacterSubscriber) {
+  private unsubscribe(name: string, subscriber: CharacterSubscriber) {
     this.subscribers.get(name)?.delete(subscriber);
   }
 
@@ -58,7 +58,6 @@ export class AppCharacterService extends BaseService {
         data: null,
       };
     }
-
     if (control.status === "fetched") {
       return {
         code: 200,
@@ -90,42 +89,47 @@ export class AppCharacterService extends BaseService {
     return response;
   }
 
-  private parseGenshinDevData(response: any, appCharacter: AppCharacter) {
-    const { constellation = [], activeTalents, passiveTalents = [] } = appCharacter;
-    const consDescriptions: string[] = [];
-    const talentDescriptions: string[] = [];
+  private parseGenshinDevResponse(response: any, appCharacter: AppCharacter) {
+    try {
+      const { constellation = [], activeTalents, passiveTalents = [] } = appCharacter;
+      const consDescriptions: string[] = [];
+      const talentDescriptions: string[] = [];
 
-    constellation.forEach((cons, i) => {
-      const description = response.constellations[i]?.description || this.NO_DESCRIPTION_MSG;
-      consDescriptions.push(description);
-      cons.description = description;
-    });
+      constellation.forEach((cons, i) => {
+        const description = response.constellations[i]?.description || this.NO_DESCRIPTION_MSG;
+        consDescriptions.push(description);
+        cons.description = description;
+      });
 
-    const processDescription = (talent: Talent, type: string | undefined) => {
-      const description =
-        response.skillTalents.find((item: any) => item.type === type)?.description || this.NO_DESCRIPTION_MSG;
-      talentDescriptions.push(description);
+      const processDescription = (talent: Talent, type: string | undefined) => {
+        const description =
+          response.skillTalents.find((item: any) => item.type === type)?.description || this.NO_DESCRIPTION_MSG;
+        talentDescriptions.push(description);
 
-      const activeTalent = activeTalents[talent];
-      if (activeTalent) activeTalent.description = description;
-    };
+        const activeTalent = activeTalents[talent];
+        if (activeTalent) activeTalent.description = description;
+      };
 
-    processDescription("NAs", "NORMAL_ATTACK");
-    processDescription("ES", "ELEMENTAL_SKILL");
-    processDescription("EB", "ELEMENTAL_BURST");
-    if (activeTalents.altSprint) processDescription("altSprint", undefined);
+      processDescription("NAs", "NORMAL_ATTACK");
+      processDescription("ES", "ELEMENTAL_SKILL");
+      processDescription("EB", "ELEMENTAL_BURST");
+      if (activeTalents.altSprint) processDescription("altSprint", undefined);
 
-    response.passiveTalents.forEach((item: any, i: number) => {
-      const description = item?.description || this.NO_DESCRIPTION_MSG;
-      talentDescriptions.push(description);
+      response.passiveTalents.forEach((item: any, i: number) => {
+        const description = item?.description || this.NO_DESCRIPTION_MSG;
+        talentDescriptions.push(description);
 
-      if (passiveTalents[i]) passiveTalents[i].description = description;
-    });
+        if (passiveTalents[i]) passiveTalents[i].description = description;
+      });
 
-    return {
-      consDescriptions,
-      talentDescriptions,
-    };
+      return {
+        consDescriptions,
+        talentDescriptions,
+      };
+    } catch (e) {
+      console.error(e);
+      throw new Error("Internal Error");
+    }
   }
 
   async fetchConsDescriptions(name: string): StandardResponse<string[]> {
@@ -141,10 +145,7 @@ export class AppCharacterService extends BaseService {
 
     if (!constellation.length || !constellation[0]) {
       // Aloy
-      return {
-        code: 200,
-        data: [],
-      };
+      return { code: 200, data: [] };
     }
 
     if (constellation[0].description) {
@@ -155,7 +156,7 @@ export class AppCharacterService extends BaseService {
     }
 
     return await this.fetchData(GENSHIN_DEV_URL.character(name), {
-      processData: (res) => this.parseGenshinDevData(res, appChar).consDescriptions,
+      processData: (res) => this.parseGenshinDevResponse(res, appChar).consDescriptions,
       processError: (res) => res.error,
     });
   }
@@ -188,7 +189,7 @@ export class AppCharacterService extends BaseService {
     }
 
     return await this.fetchData(GENSHIN_DEV_URL.character(name), {
-      processData: (res) => this.parseGenshinDevData(res, appChar).talentDescriptions,
+      processData: (res) => this.parseGenshinDevResponse(res, appChar).talentDescriptions,
       processError: (res) => res.error,
     });
   }

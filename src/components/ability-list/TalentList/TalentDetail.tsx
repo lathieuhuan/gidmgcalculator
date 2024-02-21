@@ -106,7 +106,7 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
 
   return (
     <div className="h-full flex flex-col relative">
-      <div className={"flex-grow hide-scrollbar" + (talent.name ? "" : " hidden")}>
+      <div className="hide-scrollbar">
         <AbilityCarousel
           className="pt-1 pb-2"
           label={t(talent.type)}
@@ -159,7 +159,7 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
             </StatsTable>
           </div>
         ) : (
-          <p className={isLoading ? " py-4 flex justify-center" : ""}>
+          <p className={isLoading ? "py-4 flex justify-center" : "mt-4 whitespace-pre-wrap"}>
             <LoadingIcon active={isLoading} />
             {isError && <Dim>Error. Rebooting...</Dim>}
             {descriptions?.[detailIndex]}

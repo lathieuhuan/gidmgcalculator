@@ -2,6 +2,7 @@ import { createContext, useState, useCallback, useContext, useRef } from "react"
 
 import { setupStore, AppStore, RootState } from "@Src/store";
 import { $AppSettings } from "@Src/services";
+import { updateUI } from "@Store/uiSlice";
 
 type ChangeConfigFn = (args: Partial<{ persistingUserData: boolean }>) => void;
 
@@ -42,7 +43,10 @@ export const DynamicStoreProvider = (props: DynamicStoreProviderProps) => {
   const [config, setConfig] = useState(setupStore({ persistingUserData: $AppSettings.get("persistingUserData") }));
 
   const changeConfig: ChangeConfigFn = useCallback(({ persistingUserData }) => {
-    setConfig(setupStore({ persistingUserData }));
+    const newConfig = setupStore({ persistingUserData });
+
+    setConfig(newConfig);
+    newConfig.store.dispatch(updateUI({ ready: true }));
   }, []);
 
   return (

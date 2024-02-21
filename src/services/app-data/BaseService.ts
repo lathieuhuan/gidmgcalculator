@@ -1,4 +1,4 @@
-import { StandardResponse } from "../types";
+import type { StandardResponse } from "../types";
 
 export class BaseService {
   async fetchData<T>(

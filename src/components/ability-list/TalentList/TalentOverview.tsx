@@ -97,12 +97,12 @@ export const TalentOverview = ({ char, appChar, party, onChangeLevel, onClickInf
                   <p className={`${elmtText} font-bold`}>1</p>
                 </div>
               </div>
-              {/* <Button
+              <Button
                 className="ml-auto hover:bg-yellow-400"
                 size="small"
                 icon={<FaInfo />}
                 onClick={() => onClickInfoSign(Object.keys(activeTalents).length + i)}
-              /> */}
+              />
             </div>
           </div>
         );
