@@ -12,7 +12,7 @@ import NORMAL_ATTACK_ICONS from "./normalAttackIcons";
 
 // Component
 import { CloseButton, StatsTable } from "@Src/pure-components";
-import { SlideShow } from "../ability-list-components";
+import { AbilityCarousel } from "../ability-list-components";
 
 interface TalentDetailProps {
   appChar: AppCharacter;
@@ -86,8 +86,9 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
   return (
     <div className="h-full flex flex-col relative">
       <div className={"flex-grow hide-scrollbar" + (talent.name ? "" : " hidden")}>
-        <SlideShow
-          forTalent
+        <AbilityCarousel
+          className="pt-1 pb-2"
+          label={t(talent.type)}
           currentIndex={detailIndex}
           images={images}
           elementType={elementType}
@@ -97,7 +98,6 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
           onClickNext={() => {
             if (detailIndex < Object.keys(activeTalents).length - 1) onChangeDetailIndex(detailIndex + 1);
           }}
-          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talent.type)}</p>}
         />
 
         <p className={`text-lg font-semibold text-${elementType} text-center`}>{talent.name}</p>

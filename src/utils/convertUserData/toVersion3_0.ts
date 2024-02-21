@@ -14,7 +14,7 @@ import type {
 } from "@Src/types";
 
 import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, ELEMENT_TYPES } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { $AppData, $AppCharacter } from "@Src/services";
 import { mapVerson3_0 } from "./constants";
 
 import { getArtifactSetBonuses } from "../calculation";
@@ -129,7 +129,7 @@ const convertCharacter = (
 
   if (!weaponID || !findById(weapons, weaponID)) {
     finalWeaponID = seedID++;
-    const { weaponType = "sword" } = $AppData.getCharacter(char.name) || {};
+    const { weaponType = "sword" } = $AppCharacter.get(char.name) || {};
 
     xtraWeapon = {
       ID: finalWeaponID,
@@ -216,7 +216,7 @@ const convertSetup = (
   seedID: number
 ): ConvertSetupResult => {
   const { weapon, art } = setup;
-  const { buffs = [], debuffs = [] } = $AppData.getCharacter(setup.char.name) || {};
+  const { buffs = [], debuffs = [] } = $AppCharacter.get(setup.char.name) || {};
   let weaponID: number;
   let xtraWeapon: UserWeapon | undefined;
   const artifactIDs: (number | null)[] = [];
@@ -301,7 +301,7 @@ const convertSetup = (
     if (!teammate) {
       party.push(null);
     } else {
-      const dataTeammate = $AppData.getCharacter(teammate);
+      const dataTeammate = $AppCharacter.get(teammate);
 
       if (!dataTeammate) {
         party.push(null);

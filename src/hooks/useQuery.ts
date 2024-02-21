@@ -1,20 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { $AppData } from "@Src/services";
+import { StandardResponse } from "@Src/services";
 
-type State = {
-  fetchingFor: string;
+type QueryKey = string | number;
+
+type State<T> = {
+  queryKey: QueryKey;
   mounted: boolean;
   status: "loading" | "error" | "success" | "";
-  data: string[];
+  data: T | null;
 };
 
-export const useConsDescriptions = (characterName: string, options?: { auto: boolean }) => {
+export function useQuery<T>(queryKey: QueryKey, fetchData: () => StandardResponse<T>, options?: { auto: boolean }) {
   const { auto = true } = options || {};
 
-  const state = useRef<State>({
-    fetchingFor: "",
+  const state = useRef<State<T>>({
+    queryKey: "",
     status: "",
-    data: [],
+    data: null,
     mounted: true,
   });
   const [, setCount] = useState(0);
@@ -29,13 +31,13 @@ export const useConsDescriptions = (characterName: string, options?: { auto: boo
     setCount((n) => n + 1);
   };
 
-  const getData = async (characterName: string) => {
-    const response = await $AppData.fetchConsDescriptions(characterName);
+  const getData = async (queryKey: QueryKey) => {
+    const response = await fetchData();
 
-    if (state.current.mounted && characterName === state.current.fetchingFor) {
+    if (state.current.mounted && queryKey === state.current.queryKey) {
       if (response.code === 200) {
         state.current.status = "success";
-        state.current.data = response.data || [];
+        state.current.data = response.data;
       } else {
         state.current.status = "error";
       }
@@ -43,11 +45,11 @@ export const useConsDescriptions = (characterName: string, options?: { auto: boo
     }
   };
 
-  if (auto && characterName && characterName !== state.current.fetchingFor) {
-    state.current.fetchingFor = characterName;
+  if (auto && queryKey && queryKey !== state.current.queryKey) {
+    state.current.queryKey = queryKey;
     state.current.status = "loading";
 
-    getData(characterName);
+    getData(queryKey);
     render();
   }
 
@@ -57,6 +59,6 @@ export const useConsDescriptions = (characterName: string, options?: { auto: boo
     isLoading: status === "loading",
     isError: status === "error",
     isSuccess: status === "success",
-    descriptions: data,
+    data,
   };
-};
+}

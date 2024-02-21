@@ -3,7 +3,7 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -51,7 +51,7 @@ export const CharacterOverview = ({ touched }: OverviewCharProps) => {
   let body;
 
   if (touched) {
-    const appChar = $AppData.getCharacter(char.name);
+    const appChar = $AppCharacter.get(char.name);
     const elmtText = `text-${appChar.vision}`;
 
     body = (

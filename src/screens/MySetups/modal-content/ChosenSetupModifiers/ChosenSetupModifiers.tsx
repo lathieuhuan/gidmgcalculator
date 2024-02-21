@@ -1,6 +1,6 @@
 import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 
 // Component
 import { Yellow, CollapseList } from "@Src/pure-components";
@@ -59,7 +59,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, result, weapon, setBonuses }
   } = chosenSetup;
   const { appChar, infusedElement, rxnBonus } = result;
 
-  const partyData = $AppData.getPartyData(party);
+  const partyData = $AppCharacter.getPartyData(party);
   const { title, variant, statuses } = $AppData.getTargetInfo(target);
 
   return (

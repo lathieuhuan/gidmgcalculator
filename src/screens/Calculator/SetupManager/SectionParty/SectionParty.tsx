@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaSyncAlt, FaUserSlash } from "react-icons/fa";
 
 import { findById } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -35,7 +35,7 @@ export default function SectionParty() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
 
-  const appChar = $AppData.getCharacter(char.name);
+  const appChar = $AppCharacter.get(char.name);
 
   const [modal, setModal] = useState<ModalState>({
     type: "",
@@ -43,7 +43,7 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
-  const partyData = useMemo(() => $AppData.getPartyData(party), [party]);
+  const partyData = useMemo(() => $AppCharacter.getPartyData(party), [party]);
 
   const isCombined = findById(setupManageInfos, activeId)?.type === "combined";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];

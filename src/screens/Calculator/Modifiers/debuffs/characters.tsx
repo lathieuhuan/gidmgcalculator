@@ -2,7 +2,7 @@ import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -24,7 +24,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
     (state) => state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls
   );
 
-  const appChar = $AppData.getCharacter(char.name) || {};
+  const appChar = $AppCharacter.get(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach((ctrl) => {
@@ -85,7 +85,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
   const char = useSelector(selectChar);
   const dispatch = useDispatch();
 
-  const teammateData = $AppData.getCharacter(teammate.name);
+  const teammateData = $AppCharacter.get(teammate.name);
   if (!teammateData) return null;
 
   const modifierElmts: JSX.Element[] = [];

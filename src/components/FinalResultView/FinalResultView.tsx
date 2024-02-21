@@ -3,7 +3,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 import type { CharInfo, CalculationFinalResult, Party, CalculationAspect } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 
@@ -30,7 +30,7 @@ export const FinalResultView = ({
   onChangeTalentLevel,
 }: FinalResultViewProps) => {
   const { t } = useTranslation();
-  const appChar = $AppData.getCharacter(char.name);
+  const appChar = $AppCharacter.get(char.name);
 
   const [closedSections, setClosedSections] = useState<boolean[]>([]);
   // const [lvlingSectionIndex, setLvlingSectionIndex] = useState(-1);
@@ -52,7 +52,7 @@ export const FinalResultView = ({
               char,
               appChar,
               talentType: key.main,
-              partyData: $AppData.getPartyData(party),
+              partyData: $AppCharacter.getPartyData(party),
             })
           : 0;
         // const isLvling = index === lvlingSectionIndex;

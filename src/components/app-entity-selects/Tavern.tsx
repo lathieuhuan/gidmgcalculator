@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import type { AppCharacter, UserCharacter } from "@Src/types";
 
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { useStoreSnapshot } from "@Src/features";
 import { findByName, pickProps } from "@Src/utils";
 
@@ -36,13 +36,13 @@ const TavernRooms = ({ sourceType, filter: filterFn, onSelectCharacter, onClose,
 
     switch (sourceType) {
       case "app":
-        for (const characterData of $AppData.getAllCharacters()) {
+        for (const characterData of $AppCharacter.getAll()) {
           processedCharacters.push(pickProps(characterData, pickedKey));
         }
         break;
       case "user":
         for (const userChar of userChars) {
-          const characterData = $AppData.getCharacter(userChar.name);
+          const characterData = $AppCharacter.get(userChar.name);
 
           if (characterData) {
             const character = Object.assign(pickProps(characterData, pickedKey), {
@@ -54,7 +54,7 @@ const TavernRooms = ({ sourceType, filter: filterFn, onSelectCharacter, onClose,
         }
         break;
       case "mixed":
-        for (const characterData of $AppData.getAllCharacters()) {
+        for (const characterData of $AppCharacter.getAll()) {
           const character = pickProps(characterData, pickedKey);
           const userCharacter = findByName(userChars, character.name);
 

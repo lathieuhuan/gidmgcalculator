@@ -1,7 +1,7 @@
 import { FaCalculator, FaSyncAlt } from "react-icons/fa";
 
 import type { Teammate } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Component
 import { Button } from "@Src/pure-components";
@@ -19,7 +19,7 @@ export const TeammateDetail = ({
   onSwitchSetup,
   onCalculateTeammateSetup,
 }: TeammateDetailProps) => {
-  const data = $AppData.getCharacter(teammate.name);
+  const data = $AppCharacter.get(teammate.name);
   if (!data) return null;
 
   return (

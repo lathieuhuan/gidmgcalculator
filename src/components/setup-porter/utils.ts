@@ -31,7 +31,7 @@ import {
   REACTIONS,
   ELEMENT_TYPES,
 } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Util
 import { findByCode } from "@Src/utils";
@@ -60,7 +60,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   } = calcSetup;
 
   try {
-    const appChar = $AppData.getCharacter(char.name);
+    const appChar = $AppCharacter.get(char.name);
     if (!appChar) {
       throw new Error("Character not found");
     }
@@ -100,7 +100,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 
     const _teammateCodes = party.map((tm, i) => {
       if (tm) {
-        const { code: tmCode } = $AppData.getCharacter(tm.name) || {};
+        const { code: tmCode } = $AppCharacter.get(tm.name) || {};
         const { weapon, artifact } = tm;
 
         return [
@@ -192,7 +192,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 };
 
 export const decodeSetup = (code: string): SetupImportInfo => {
-  const characters = $AppData.getAllCharacters();
+  const characters = $AppCharacter.getAll();
   const [
     _charCode,
     _selfBCsCode,

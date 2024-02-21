@@ -1,5 +1,4 @@
 import type {
-  Buff_Character,
   ArtifactSetBonus,
   CalcWeapon,
   CharInfo,
@@ -10,14 +9,13 @@ import type {
   PartyData,
   ReactionBonus,
   ElementType,
-  InnateBuff_Character,
   Level,
   AttackElement,
   AppCharacter,
 } from "@Src/types";
 
 import { useTranslation } from "@Src/pure-hooks";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Util
 import { findByIndex, parseAbilityDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
@@ -160,7 +158,7 @@ export function PartyBuffsDetail({ char, party, partyData }: PartyBuffsDetailPro
   party.forEach((teammate) => {
     if (!teammate || !teammate.buffCtrls.length) return;
 
-    const teammateData = $AppData.getCharacter(teammate.name);
+    const teammateData = $AppCharacter.get(teammate.name);
     if (!teammateData) return;
 
     const { name, buffs = [] } = teammateData;

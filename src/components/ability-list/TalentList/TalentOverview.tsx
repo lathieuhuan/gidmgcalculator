@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { FaInfo } from "react-icons/fa";
 
 import type { CharInfo, AppCharacter, Party } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Constant
 import { TALENT_TYPES } from "@Src/constants";
@@ -25,7 +25,7 @@ interface TalentOverviewProps {
 }
 export const TalentOverview = ({ char, appChar, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
   const { vision: elementType, weaponType, activeTalents, passiveTalents } = appChar;
-  const partyData = party ? $AppData.getPartyData(party) : undefined;
+  const partyData = party ? $AppCharacter.getPartyData(party) : undefined;
   const elmtText = `text-${elementType}`;
 
   return (

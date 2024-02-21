@@ -10,7 +10,7 @@ import type {
 } from "@Src/types";
 import type { GetCalculationStatsArgs } from "../types";
 
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
@@ -213,7 +213,7 @@ export const getCalculationStats = ({
 
   const APPLY_TEAMMATE_BUFFS = (party: Teammate[]) => {
     for (const teammate of party) {
-      const { name, buffs = [] } = $AppData.getCharacter(teammate.name);
+      const { name, buffs = [] } = $AppCharacter.get(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
         const buff = findByIndex(buffs, index);

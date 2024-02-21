@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
-import { FaCaretRight, FaQuestion } from "react-icons/fa";
+import { FaCaretRight, FaQuestion, FaSquare } from "react-icons/fa";
 
 import type { ElementType } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
@@ -43,45 +43,43 @@ export const AbilityIcon = ({ className, img, elementType, active = true, onClic
   );
 };
 
-interface CaretProps {
-  toRight?: boolean;
-  onClick: () => void;
-}
-const Caret = ({ toRight, onClick }: CaretProps) => {
-  return (
-    <button
-      className={
-        "absolute top-2 text-[2.5rem] text-dark-500 hover:text-blue-400 flex-center cursor-pointer " +
-        (toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 right-full")
-      }
-      onClick={onClick}
-    >
-      <FaCaretRight className={toRight ? "" : "rotate-180"} />
-    </button>
-  );
-};
-
-interface SlideShowProps {
+interface AbilityCarouselProps {
+  className?: string;
   currentIndex: number;
   images: (string | undefined)[];
   elementType: ElementType;
-  forTalent: boolean;
-  topLeftNote?: ReactNode;
+  label?: ReactNode;
   onClickBack: () => void;
   onClickNext: () => void;
 }
-export const SlideShow = ({
+export const AbilityCarousel = ({
+  className = "",
   currentIndex,
   images,
   elementType,
-  forTalent,
-  topLeftNote,
+  label,
   onClickBack,
   onClickNext,
-}: SlideShowProps) => {
+}: AbilityCarouselProps) => {
+  const renderCaret = (direction: "right" | "left", disabled: boolean) => {
+    const caretCls = `absolute top-2 w-10 h-10 flex-center text-dark-500 flex-center ${
+      disabled ? "cursor-pointer opacity-50" : "hover:text-blue-400"
+    }`;
+
+    return direction === "right" ? (
+      <button className={`${caretCls} left-full ml-4`} disabled={disabled} onClick={onClickNext}>
+        {disabled ? <FaSquare className="text-2xl" /> : <FaCaretRight className="text-4xl" />}
+      </button>
+    ) : (
+      <button className={`${caretCls} right-full mr-4`} disabled={disabled} onClick={onClickBack}>
+        {disabled ? <FaSquare className="text-2xl" /> : <FaCaretRight className="text-4xl rotate-180" />}
+      </button>
+    );
+  };
+
   return (
-    <div className={"flex-center relative " + (forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
-      {topLeftNote}
+    <div className={"flex-center relative " + className}>
+      {label ? <p className="absolute top-0 left-0 w-1/4 text-sm">{label}</p> : null}
 
       <div className="relative">
         <div
@@ -101,8 +99,8 @@ export const SlideShow = ({
           </div>
         </div>
 
-        {currentIndex > 0 && <Caret onClick={onClickBack} />}
-        {currentIndex < images.length - 1 && <Caret toRight onClick={onClickNext} />}
+        {renderCaret("left", currentIndex <= 0)}
+        {renderCaret("right", currentIndex >= images.length - 1)}
       </div>
     </div>
   );

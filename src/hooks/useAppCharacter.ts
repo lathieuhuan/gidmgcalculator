@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { AppCharacter } from "@Src/types";
 import { getAppDataError } from "@Src/utils";
 
@@ -50,7 +50,7 @@ export const useAppCharacter = (name?: string) => {
   };
 
   const fetchData = async (charName: string) => {
-    const response = await $AppData.fetchCharacter(charName);
+    const response = await $AppCharacter.fetch(charName);
 
     if (name !== state.current.fetchingFor) {
       // response is stale (name is old)
@@ -70,14 +70,14 @@ export const useAppCharacter = (name?: string) => {
     state.current.dataOf = name;
     state.current.unsubscriber?.();
 
-    switch ($AppData.getCharStatus(name)) {
+    switch ($AppCharacter.getStatus(name)) {
       case "fetched":
-        onSuccess($AppData.getCharacter(name));
+        onSuccess($AppCharacter.get(name));
         break;
       case "fetching":
         onFetching();
 
-        state.current.unsubscriber = $AppData.subscribeCharacter(name, (data) => {
+        state.current.unsubscriber = $AppCharacter.subscribe(name, (data) => {
           if (data.name === state.current.fetchingFor) {
             onSuccess(data);
           }

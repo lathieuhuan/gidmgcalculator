@@ -1,5 +1,4 @@
 import type {
-  Debuff_Character,
   AppCharacter,
   ArtifactDebuffCtrl,
   CharInfo,
@@ -12,7 +11,7 @@ import type {
 
 import { useTranslation } from "@Src/pure-hooks";
 import { findByIndex, parseAbilityDescription } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppData, $AppCharacter } from "@Src/services";
 
 // Component
 import { Green } from "@Src/pure-components";
@@ -90,7 +89,7 @@ export function PartyDebuffsDetail({ char, party, partyData }: PartyDebuffsDetai
   party.forEach((teammate) => {
     if (!teammate || !teammate.debuffCtrls.length) return;
 
-    const teammateData = $AppData.getCharacter(teammate.name);
+    const teammateData = $AppCharacter.get(teammate.name);
     if (!teammateData) return;
 
     const { name, debuffs = [] } = teammateData;

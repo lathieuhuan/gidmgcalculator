@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useState } from "react";
 
 import type { UserSetup } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { CharacterPortrait } from "@Src/components";
 
 export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;
@@ -42,7 +42,7 @@ export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => 
       {options.map((setup) => {
         const { ID } = setup;
         const picked = pickedIDs.includes(ID);
-        const { code = 0, icon = "" } = $AppData.getCharacter(setup.char.name) || {};
+        const { code = 0, icon = "" } = $AppCharacter.get(setup.char.name) || {};
 
         return (
           <div
@@ -64,7 +64,7 @@ export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => 
               </div>
               {setup.party.map((teammate, j) => {
                 if (teammate) {
-                  const { code = 0, icon = "" } = $AppData.getCharacter(teammate.name) || {};
+                  const { code = 0, icon = "" } = $AppCharacter.get(teammate.name) || {};
 
                   return (
                     <div key={j} className="w-16">

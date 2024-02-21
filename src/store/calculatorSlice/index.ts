@@ -33,7 +33,7 @@ import type {
 } from "./reducer-types";
 
 import { ATTACK_ELEMENTS, RESONANCE_ELEMENT_TYPES } from "@Src/constants";
-import { $AppData, $AppSettings } from "@Src/services";
+import { $AppData, $AppCharacter, $AppSettings } from "@Src/services";
 
 import { bareLv, deepCopy, findById, toArray, countElements, getCopyName } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
@@ -219,15 +219,15 @@ export const calculatorSlice = createSlice({
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldElmtCount = countElements($AppData.getPartyData(party), appChar);
+      const oldElmtCount = countElements($AppCharacter.getPartyData(party), appChar);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newElmtCount = countElements($AppData.getPartyData(party), appChar);
+      const newElmtCount = countElements($AppCharacter.getPartyData(party), appChar);
 
       if (oldTeammate) {
-        const { vision: oldElement } = $AppData.getCharacter(oldTeammate.name) || {};
+        const { vision: oldElement } = $AppCharacter.get(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldElement &&
@@ -266,9 +266,9 @@ export const calculatorSlice = createSlice({
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision: elementType } = $AppData.getCharacter(teammate.name);
+        const { vision: elementType } = $AppCharacter.get(teammate.name);
         party[teammateIndex] = null;
-        const newElmtCount = countElements($AppData.getPartyData(party), appChar);
+        const newElmtCount = countElements($AppCharacter.getPartyData(party), appChar);
 
         if (newElmtCount[elementType] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {

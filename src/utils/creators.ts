@@ -13,7 +13,7 @@ import type {
   WeaponType,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
-import { $AppData, $AppSettings } from "@Src/services";
+import { $AppData, $AppCharacter, $AppSettings } from "@Src/services";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
 
@@ -88,7 +88,7 @@ const createModCrtl = (mod: Modifier, forSelf: boolean) => {
 export const createCharModCtrls = (forSelf: boolean, name: string) => {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = $AppData.getCharacter(name) || {};
+  const { buffs = [], debuffs = [] } = $AppCharacter.get(name) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {

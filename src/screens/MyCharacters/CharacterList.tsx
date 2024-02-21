@@ -4,7 +4,7 @@ import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { useIntersectionObserver } from "@Src/pure-hooks";
 import { getImgSrc } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Store
 import { useDispatch } from "@Store/hooks";
@@ -66,7 +66,7 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
         <div ref={observedAreaRef} className="mt-2 w-full hide-scrollbar">
           <div className="flex">
             {characters.map(({ name }) => {
-              const appChar = $AppData.getCharacter(name);
+              const appChar = $AppCharacter.get(name);
               if (!appChar) return null;
               const visible = visibleItems[name];
 

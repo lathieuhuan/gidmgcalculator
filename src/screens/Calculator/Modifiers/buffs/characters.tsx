@@ -1,7 +1,7 @@
 import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
 
 // Store
@@ -21,10 +21,10 @@ export function SelfBuffs() {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const selfBuffCtrls = useSelector((state) => state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls);
-  const appChar = $AppData.getCharacter(char.name);
-  const partyData = $AppData.getPartyData(useSelector(selectParty));
+  const appChar = $AppCharacter.get(char.name);
+  const partyData = $AppCharacter.getPartyData(useSelector(selectParty));
 
-  const { innateBuffs = [], buffs = [] } = $AppData.getCharacter(char.name) || {};
+  const { innateBuffs = [], buffs = [] } = $AppCharacter.get(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
@@ -81,7 +81,7 @@ export function SelfBuffs() {
 
 export function PartyBuffs() {
   const party = useSelector(selectParty);
-  const partyData = $AppData.getPartyData(useSelector(selectParty));
+  const partyData = $AppCharacter.getPartyData(useSelector(selectParty));
   const modifierElmts: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {
@@ -102,7 +102,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const char = useSelector(selectChar);
 
   const modifierElmts: JSX.Element[] = [];
-  const teammateData = $AppData.getCharacter(teammate.name);
+  const teammateData = $AppCharacter.get(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { inputs = [] } = ctrl;

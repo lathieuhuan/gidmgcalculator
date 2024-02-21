@@ -7,7 +7,7 @@ import type { InitNewSessionPayload } from "./calculatorSlice/reducer-types";
 import type { AppThunk } from "./index";
 
 import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_WEAPONS } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 
 // Action
 import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
@@ -45,13 +45,13 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
     const { char } = payload.calcSetup;
     const { onSuccess } = options || {};
 
-    if ($AppData.getCharStatus(char.name) === "fetched") {
+    if ($AppCharacter.getStatus(char.name) === "fetched") {
       dispatch(initNewSession(payload));
       onSuccess?.();
     } else {
       dispatch(updateUI({ loading: true }));
 
-      const response = await $AppData.fetchCharacter(char.name);
+      const response = await $AppCharacter.fetch(char.name);
 
       if (response.code === 200) {
         dispatch(initNewSession(payload));
@@ -75,7 +75,7 @@ export const initNewSessionWithCharacter = (character: CharacterForInit): AppThu
     const { userWps, userArts } = getState().database;
 
     const ID = Date.now();
-    const appChar = $AppData.getCharacter(character.name);
+    const appChar = $AppCharacter.get(character.name);
     const data = parseUserCharacter({
       character,
       userWps,

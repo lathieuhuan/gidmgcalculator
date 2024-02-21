@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 
 import type { CalcSetupManageInfo } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { findById } from "@Src/utils";
 import { useStoreSnapshot } from "@Src/features";
 
@@ -22,7 +22,7 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
 
-  const appChar = $AppData.getCharacter(char.name);
+  const appChar = $AppCharacter.get(char.name);
   const existedSetup = findById(useStoreSnapshot(selectUserSetups), manageInfo.ID);
 
   const [input, setInput] = useState(existedSetup ? existedSetup.name : `${appChar.name} setup`);

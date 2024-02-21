@@ -7,7 +7,7 @@ import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { OpenModalFn } from "../types";
 
 import { ARTIFACT_TYPE_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 
 // Store
 import { useDispatch } from "@Store/hooks";
@@ -45,7 +45,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const teammateInfo = party[teammateDetail.index];
   const isOriginal = type === "original";
-  const isFetched = $AppData.getCharStatus(char.name) === "fetched";
+  const isFetched = $AppCharacter.getStatus(char.name) === "fetched";
 
   const closeTeammateDetail = () => {
     setTeammateDetail({
@@ -76,7 +76,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const appChar = $AppData.getCharacter(char.name);
+    const appChar = $AppCharacter.get(char.name);
     const appWeapon = weapon ? $AppData.getWeapon(weapon.code) : undefined;
 
     if (appChar) {
@@ -85,7 +85,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           char,
           appChar,
           talentType,
-          partyData: $AppData.getPartyData(party),
+          partyData: $AppCharacter.getPartyData(party),
         });
       });
 
@@ -111,7 +111,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const teammate = party.filter(Boolean).length ? (
       <div className="flex space-x-4">
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && $AppData.getCharacter(teammate.name);
+          const dataTeammate = teammate && $AppCharacter.get(teammate.name);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];

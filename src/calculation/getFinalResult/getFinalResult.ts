@@ -7,7 +7,7 @@ import type {
   TrackerCalcItemRecord,
 } from "@Src/types";
 import type { GetFinalResultArgs } from "../types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 
 // Constant
 import {
@@ -83,7 +83,7 @@ export default function getFinalResult({
 
   // APPLY PARTY DEBUFFS
   for (const teammate of realParty(party)) {
-    const { debuffs = [] } = $AppData.getCharacter(teammate.name);
+    const { debuffs = [] } = $AppCharacter.get(teammate.name);
 
     for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);

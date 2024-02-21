@@ -4,7 +4,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
 
 import { findByIndex, splitLv } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { useStoreSnapshot } from "@Src/features";
 
 // Store
@@ -17,7 +17,7 @@ import { Popover, SharedSpace, Modal } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
-    const { name, rarity } = $AppData.getCharacter(char.name);
+    const { name, rarity } = $AppCharacter.get(char.name);
     return { name, level: char.level, rarity, index };
   })
 );

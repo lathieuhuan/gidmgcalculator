@@ -1,9 +1,14 @@
 import type { AppCharacter, Talent } from "@Src/types";
-import { useConsDescriptions } from "./useConsDescriptions";
+import { $AppCharacter } from "@Src/services";
+import { useQuery } from "@Src/hooks/useQuery";
 
 // Conponent
 import { CloseButton, Green, Dim, LoadingIcon } from "@Src/pure-components";
-import { SlideShow } from "../ability-list-components";
+import { AbilityCarousel } from "../ability-list-components";
+
+const useConsDescriptions = (characterName: string, auto: boolean) => {
+  return useQuery(characterName, () => $AppCharacter.fetchConsDescriptions(characterName), { auto });
+};
 
 interface ConstellationDetailProps {
   appChar: AppCharacter;
@@ -15,9 +20,7 @@ export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }
   const { vision: elementType, constellation, talentLvBonus = {}, activeTalents } = appChar;
   const consInfo = constellation[consLv - 1] || {};
 
-  const { isLoading, isError, descriptions } = useConsDescriptions(appChar.name, {
-    auto: !constellation[0].description,
-  });
+  const { isLoading, isError, data: descriptions } = useConsDescriptions(appChar.name, !constellation[0].description);
 
   let description;
 
@@ -34,8 +37,8 @@ export const ConstellationDetail = ({ appChar, consLv, onChangeConsLv, onClose }
 
   return (
     <div className="h-full flex flex-col hide-scrollbar">
-      <SlideShow
-        forTalent={false}
+      <AbilityCarousel
+        className="pt-2 pb-4"
         currentIndex={consLv - 1}
         images={constellation.map((cons) => cons.image)}
         elementType={elementType}

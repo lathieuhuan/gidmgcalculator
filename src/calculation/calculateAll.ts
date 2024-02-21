@@ -1,6 +1,6 @@
 import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import getCalculationStats from "./getCalculationStats";
 import getFinalResult from "./getFinalResult";
 
@@ -24,8 +24,8 @@ const calculateAll = (
   tracker?: Tracker
 ) => {
   // console.time();
-  const appChar = $AppData.getCharacter(char.name);
-  const partyData = $AppData.getPartyData(party);
+  const appChar = $AppCharacter.get(char.name);
+  const partyData = $AppCharacter.getPartyData(party);
   let infusedElement = customInfusion.element;
   let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];
   let isCustomInfusion = true;

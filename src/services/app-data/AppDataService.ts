@@ -1,23 +1,12 @@
-import type {
-  AppArtifact,
-  AppCharacter,
-  AppMonster,
-  AppWeapon,
-  ArtifactType,
-  Party,
-  PartyData,
-  Target,
-  WeaponType,
-} from "@Src/types";
-import { BACKEND_URL, GENSHIN_DEV_URL } from "@Src/constants";
-import { findByCode, pickProps, toArray } from "@Src/utils";
-import { CharacterSubscriber, DataControl, Metadata, Response, Update } from "./types";
+import type { AppArtifact, AppMonster, AppWeapon, ArtifactType, Target, WeaponType } from "@Src/types";
+import type { DataControl, Metadata, Update } from "./types";
 
-export class AppDataService {
+import { BACKEND_URL } from "@Src/constants";
+import { findByCode, toArray } from "@Src/utils";
+import { BaseService } from "./BaseService";
+
+export class AppDataService extends BaseService {
   private isFetchedMetadata = false;
-
-  private characters: Array<DataControl<AppCharacter>> = [];
-  private characterSubscribers: Map<string, Set<CharacterSubscriber>> = new Map();
 
   private weapons: Array<DataControl<AppWeapon>> = [];
   private artifacts: Array<DataControl<AppArtifact>> = [];
@@ -26,14 +15,11 @@ export class AppDataService {
   public supporters: string[] = [];
 
   constructor() {
+    super();
     // this.characters = characters.map((character) => ({
     //   status: "fetched",
     //   data: character,
     // }));
-  }
-
-  private getCharacterControl(name: string) {
-    return this.characters.find((character) => character.data.name === name);
   }
 
   private getItemControl(type: "weapons", code: number): DataControl<AppWeapon> | undefined;
@@ -44,17 +30,7 @@ export class AppDataService {
       : this.artifacts.find((artifact) => artifact.data.code === code);
   }
 
-  private async fetchData<T>(url: string): Response<T> {
-    return await fetch(url)
-      .then((res) => res.json())
-      .catch((err) => ({
-        code: 500,
-        message: err.message,
-        data: null,
-      }));
-  }
-
-  public async fetchMetadata() {
+  public async fetchMetadata(onSuccess: (metaData: Metadata) => void) {
     if (this.isFetchedMetadata) {
       return true;
     }
@@ -71,10 +47,7 @@ export class AppDataService {
       //   }
       // });
 
-      this.characters = response.data.characters.map((dataCharacter) => ({
-        status: "fetched",
-        data: dataCharacter,
-      }));
+      onSuccess(response.data);
 
       this.weapons = response.data.weapons.map((dataWeapon) => ({
         status: "fetched",
@@ -94,137 +67,6 @@ export class AppDataService {
     }
 
     return false;
-  }
-
-  // ========== CHARACTERS ==========
-
-  public subscribeCharacter(name: string, subscriber: CharacterSubscriber) {
-    const existSubscribers = this.characterSubscribers.get(name);
-
-    if (existSubscribers) {
-      existSubscribers.add(subscriber);
-    } else {
-      this.characterSubscribers.set(name, new Set([subscriber]));
-    }
-
-    return () => this.unsubscribeCharacter(name, subscriber);
-  }
-
-  public unsubscribeCharacter(name: string, subscriber: CharacterSubscriber) {
-    this.characterSubscribers.get(name)?.delete(subscriber);
-  }
-
-  async fetchCharacter(name: string): Response<AppCharacter> {
-    const control = this.getCharacterControl(name);
-
-    if (!control) {
-      return {
-        code: 404,
-        message: "Character not found",
-        data: null,
-      };
-    }
-
-    if (control.status === "fetched") {
-      return {
-        code: 200,
-        data: control.data,
-      };
-    }
-
-    control.status = "fetching";
-    const response = await this.fetchData<AppCharacter>(BACKEND_URL.character.byName(name));
-
-    if (response.data) {
-      control.status = "fetched";
-      Object.assign(control.data, response.data);
-
-      const characterSubscribers = this.characterSubscribers.get(name);
-
-      if (characterSubscribers) {
-        characterSubscribers.forEach((subscriber) => {
-          subscriber(control.data);
-        });
-      }
-
-      return {
-        ...response,
-        data: control.data,
-      };
-    }
-
-    return response;
-  }
-
-  async fetchConsDescriptions(name: string): Response<string[]> {
-    const { constellation = [] } = this.getCharacterControl(name)?.data || {};
-
-    if (constellation[0]) {
-      if (constellation[0].description) {
-        return {
-          code: 200,
-          data: constellation.map((cons) => cons.description || "[Description missing]"),
-        };
-      }
-
-      const response = await fetch(GENSHIN_DEV_URL.character(name))
-        .then((res) => res.json())
-        .catch((err) => ({
-          code: 500,
-          message: err.message,
-          data: null,
-        }));
-
-      if (response?.constellations?.length) {
-        const descriptions: string[] = [];
-
-        constellation.forEach((cons, i) => {
-          const description = response.constellations[i]?.description || "[Description missing]";
-
-          descriptions.push(description);
-          cons.description = description;
-        });
-
-        return {
-          code: 200,
-          data: descriptions,
-        };
-      }
-
-      return {
-        ...response,
-        data: [],
-      };
-    }
-
-    return {
-      code: 200,
-      data: [],
-    };
-  }
-
-  getAllCharacters(): AppCharacter[] {
-    return this.characters.map((control) => control.data);
-  }
-
-  getCharStatus(name: string) {
-    const control = this.getCharacterControl(name);
-    return control?.status || "unfetched";
-  }
-
-  getCharacter(name: string) {
-    const control = this.getCharacterControl(name);
-    return control!.data;
-  }
-
-  getPartyData(party: Party): PartyData {
-    return party.map((teammate) => {
-      if (teammate) {
-        const keys: Array<keyof AppCharacter> = ["code", "name", "icon", "nation", "vision", "weaponType", "EBcost"];
-        return pickProps(this.getCharacterControl(teammate.name)!.data, keys);
-      }
-      return null;
-    });
   }
 
   // ========== WEAPONS ==========

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaInfo } from "react-icons/fa";
 
 import type { CharInfo } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Conponent
 import { Button, SharedSpace } from "@Src/pure-components";
@@ -17,7 +17,7 @@ export const ConstellationList = ({ char, onClickIcon }: ConstellationListProps)
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
-  const appChar = $AppData.getCharacter(char.name);
+  const appChar = $AppCharacter.get(char.name);
 
   useEffect(() => {
     setAtDetails(false);

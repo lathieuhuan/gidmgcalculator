@@ -11,7 +11,7 @@ import type {
 } from "@Src/types";
 import type { CalculatorState } from "@Store/calculatorSlice/types";
 
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import { getArtifactSetBonuses } from "./calculation";
 import { createArtifactDebuffCtrls, createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
 import { deepCopy, findByIndex } from "./pure-utils";
@@ -60,7 +60,7 @@ export function cleanupCalcSetup(
   options?: CleanupCalcSetupOptions
 ): UserSetupCalcInfo {
   const { char, weapon, artifacts, ...data } = calculator.setupsById[setupID];
-  const { buffs = [], debuffs = [] } = $AppData.getCharacter(char.name) || {};
+  const { buffs = [], debuffs = [] } = $AppCharacter.get(char.name) || {};
   const party: Party = [];
 
   for (const teammate of data.party) {
