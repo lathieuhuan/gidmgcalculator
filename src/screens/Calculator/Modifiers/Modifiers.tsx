@@ -19,15 +19,14 @@ export default function Modifiers() {
   const party = useSelector(selectParty);
   const partyData = $AppCharacter.getPartyData(party);
 
-  const { activeIndex, tabsElmt } = useTabs({
-    className: "text-lg shrink-0",
+  const { activeIndex, renderTabs } = useTabs({
     defaultIndex: 1,
     configs: [{ text: "Debuffs" }, { text: "Buffs" }],
   });
 
   return (
     <div className="h-full flex flex-col">
-      {tabsElmt}
+      {renderTabs("text-lg shrink-0")}
 
       <div className="mt-4 grow custom-scrollbar">
         {activeIndex ? (

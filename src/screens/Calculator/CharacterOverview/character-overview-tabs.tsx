@@ -48,29 +48,29 @@ export const ArtifactsTab = () => {
 
   const artAttr = addArtifactAttributes(artifacts, { ...totalAttr });
 
-  const { activeIndex, tabsElmt } = useTabs({
+  const { activeIndex, renderTabs } = useTabs({
     level: 2,
     configs: [{ text: "Details" }, { text: "Set Bonus" }],
   });
 
   return (
     <div className="h-full flex flex-col">
-      <div className="mb-3">{tabsElmt}</div>
-      <div className="grow">
-        <SharedSpace
-          atLeft={activeIndex === 0}
-          leftPart={
-            <div className="h-full custom-scrollbar">
-              <AttributeTable attributes={artAttr} />
-            </div>
-          }
-          rightPart={
-            <div className="h-full hide-scrollbar">
-              <SetBonusesDisplay setBonuses={getArtifactSetBonuses(artifacts)} noTitle />
-            </div>
-          }
-        />
-      </div>
+      {renderTabs()}
+
+      <SharedSpace
+        className="mt-3 grow"
+        atLeft={activeIndex === 0}
+        leftPart={
+          <div className="h-full custom-scrollbar">
+            <AttributeTable attributes={artAttr} />
+          </div>
+        }
+        rightPart={
+          <div className="h-full hide-scrollbar">
+            <SetBonusesDisplay setBonuses={getArtifactSetBonuses(artifacts)} noTitle />
+          </div>
+        }
+      />
     </div>
   );
 };

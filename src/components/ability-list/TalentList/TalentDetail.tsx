@@ -1,9 +1,11 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
-import type { TalentAttributeType, AppCharacter, Talent } from "@Src/types";
+import type { AppCharacter, Talent } from "@Src/types";
 import { getTalentDefaultInfo, round, toArray } from "@Src/utils";
-import { useTranslation } from "@Src/pure-hooks";
+import { useQuery } from "@Src/hooks";
+import { useTabs, useTranslation } from "@Src/pure-hooks";
+import { $AppCharacter } from "@Src/services";
 
 // Constant
 import { ATTACK_PATTERNS } from "@Src/constants";
@@ -11,8 +13,12 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import NORMAL_ATTACK_ICONS from "./normalAttackIcons";
 
 // Component
-import { CloseButton, StatsTable } from "@Src/pure-components";
+import { CloseButton, Dim, LoadingIcon, StatsTable } from "@Src/pure-components";
 import { AbilityCarousel } from "../ability-list-components";
+
+const useTalentDescriptions = (characterName: string, auto: boolean) => {
+  return useQuery(characterName, () => $AppCharacter.fetchTalentDescriptions(characterName), { auto });
+};
 
 interface TalentDetailProps {
   appChar: AppCharacter;
@@ -22,33 +28,48 @@ interface TalentDetailProps {
 }
 export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClose }: TalentDetailProps) => {
   const { t } = useTranslation();
-  const { weaponType, vision: elementType, activeTalents } = appChar;
+  const { weaponType, vision: elementType, activeTalents, passiveTalents } = appChar;
+  const { ES, EB, altSprint } = activeTalents;
+  const isPassiveTalent = detailIndex > Object.keys(activeTalents).length - 1;
+  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${elementType}`] || "", ES.image, EB.image];
 
   const [talentLevel, setTalentLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
 
-  const { ES, EB, altSprint } = activeTalents;
-  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${elementType}`] || "", ES.image, EB.image];
+  const { activeIndex, setActiveIndex, renderTabs } = useTabs({
+    level: 2,
+    defaultIndex: 1,
+    configs: [{ text: "Talent Info" }, { text: "Skill Attributes" }],
+  });
+
+  const { isLoading, isError, data: descriptions } = useTalentDescriptions(appChar.name, !activeIndex);
 
   if (altSprint) {
     images.push(altSprint.image);
   }
-  // for (const talent of passiveTalents) {
-  //   images.push(talent.image);
-  // }
+  for (const talent of passiveTalents) {
+    images.push(talent.image);
+  }
 
-  const talents = useMemo(() => {
-    return processActiveTalents(appChar, talentLevel, {
-      atk: t("atk"),
-      base_atk: t("base_atk"),
-      def: t("def"),
-      em: t("em"),
-      hp: t("hp"),
-    });
-  }, [talentLevel]);
+  useEffect(() => {
+    // Passive talents have no Skill Attributes
+    if (isPassiveTalent && activeIndex === 1) {
+      setActiveIndex(0);
+    }
+  }, [isPassiveTalent]);
+
+  const talents = useMemo(() => processTalents(appChar, talentLevel, t), [talentLevel]);
 
   const talent = talents[detailIndex];
   const levelable = talent?.type !== "altSprint";
+
+  const onClickBack = () => {
+    onChangeDetailIndex(detailIndex - 1);
+  };
+
+  const onClickNext = () => {
+    onChangeDetailIndex(detailIndex + 1);
+  };
 
   const onMouseDownLevelButton = (isLevelUp: boolean) => {
     let level = talentLevel;
@@ -92,56 +113,58 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
           currentIndex={detailIndex}
           images={images}
           elementType={elementType}
-          onClickBack={() => {
-            if (detailIndex >= 1) onChangeDetailIndex(detailIndex - 1);
-          }}
-          onClickNext={() => {
-            if (detailIndex < Object.keys(activeTalents).length - 1) onChangeDetailIndex(detailIndex + 1);
-          }}
+          onClickBack={onClickBack}
+          onClickNext={onClickNext}
         />
 
         <p className={`text-lg font-semibold text-${elementType} text-center`}>{talent.name}</p>
-        {/* <div className="my-2 py-1 flex-center bg-light-400 rounded-2xl">
-          <p className="font-bold text-black cursor-default">Skill Attributes</p>
-        </div> */}
+        {renderTabs("my-2", [false, isPassiveTalent])}
 
-        <div>
-          <div className="py-2 flex-center bg-dark-900 sticky -top-1">
-            {levelable ? (
-              <div className="flex items-center space-x-4">
-                {renderLevelButton(false, talentLevel <= 1)}
-                <label className="flex items-center text-lg">
-                  <p>Lv.</p>
-                  <select
-                    className="font-bold text-right text-last-right"
-                    value={talentLevel}
-                    onChange={(e) => setTalentLevel(+e.target.value)}
-                  >
-                    {Array.from({ length: 15 }).map((_, i) => (
-                      <option key={i}>{i + 1}</option>
-                    ))}
-                  </select>
-                </label>
-                {renderLevelButton(true, talentLevel >= 15)}
-              </div>
-            ) : (
-              <p className="text-lg">
-                Lv. <span className="font-bold">1</span>
-              </p>
-            )}
+        {activeIndex ? (
+          <div>
+            <div className="py-2 flex-center bg-dark-900 sticky -top-1">
+              {levelable ? (
+                <div className="flex items-center space-x-4">
+                  {renderLevelButton(false, talentLevel <= 1)}
+                  <label className="flex items-center text-lg">
+                    <p>Lv.</p>
+                    <select
+                      className="font-bold text-right text-last-right"
+                      value={talentLevel}
+                      onChange={(e) => setTalentLevel(+e.target.value)}
+                    >
+                      {Array.from({ length: 15 }).map((_, i) => (
+                        <option key={i}>{i + 1}</option>
+                      ))}
+                    </select>
+                  </label>
+                  {renderLevelButton(true, talentLevel >= 15)}
+                </div>
+              ) : (
+                <p className="text-lg">
+                  Lv. <span className="font-bold">1</span>
+                </p>
+              )}
+            </div>
+
+            <StatsTable>
+              {talent.stats.map((stat, i) => {
+                return (
+                  <StatsTable.Row key={i} className="pb-1 text-sm">
+                    <p className="pr-6 text-yellow-300">{stat.name}</p>
+                    <p className="font-semibold text-right">{stat.value}</p>
+                  </StatsTable.Row>
+                );
+              })}
+            </StatsTable>
           </div>
-
-          <StatsTable>
-            {talent.stats.map((stat, i) => {
-              return (
-                <StatsTable.Row key={i} className="pb-1 text-sm">
-                  <p className="pr-6 text-yellow-300">{stat.name}</p>
-                  <p className="font-semibold text-right">{stat.value}</p>
-                </StatsTable.Row>
-              );
-            })}
-          </StatsTable>
-        </div>
+        ) : (
+          <p className={isLoading ? " py-4 flex justify-center" : ""}>
+            <LoadingIcon active={isLoading} />
+            {isError && <Dim>Error. Rebooting...</Dim>}
+            {descriptions?.[detailIndex]}
+          </p>
+        )}
       </div>
 
       <div className="mt-3">
@@ -156,31 +179,39 @@ type ProcessedStat = {
   value: string | number;
 };
 
-interface ProcessedActiveTalent {
+type ProcessedTalentType = Talent | "A1" | "A4" | "utility";
+
+interface ProcessedTalent {
   name: string;
-  type: Talent;
+  label: string;
+  type: ProcessedTalentType;
   stats: ProcessedStat[];
 }
-function processActiveTalents(
-  appChar: AppCharacter,
-  level: number,
-  label: Record<TalentAttributeType, string>
-): ProcessedActiveTalent[] {
-  const { vision: elementType, weaponType, EBcost, activeTalents, multFactorConf, calcList } = appChar;
-  const { NAs, ES, EB, altSprint } = activeTalents;
+function processTalents(appChar: AppCharacter, level: number, translate: (word: string) => string): ProcessedTalent[] {
+  const { NAs, ES, EB, altSprint } = appChar.activeTalents;
 
-  const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
-    NAs: { name: NAs.name, type: "NAs", stats: [] },
-    ES: { name: ES.name, type: "ES", stats: [] },
-    EB: { name: EB.name, type: "EB", stats: [] },
-  };
+  const result: ProcessedTalent[] = [
+    { name: NAs.name, type: "NAs", label: translate("NAs"), stats: [] },
+    { name: ES.name, type: "ES", label: translate("ES"), stats: [] },
+    { name: EB.name, type: "EB", label: translate("EB"), stats: [] },
+  ];
 
   for (const attPatt of ATTACK_PATTERNS) {
     const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
-    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, elementType, attPatt, multFactorConf);
+    const talent = result.find((item) => item.type === resultKey);
+    if (!talent) continue;
 
-    for (const stat of calcList[attPatt]) {
+    const defaultInfo = getTalentDefaultInfo(
+      resultKey,
+      appChar.weaponType,
+      appChar.vision,
+      attPatt,
+      appChar.multFactorConf
+    );
+
+    for (const stat of appChar.calcList[attPatt]) {
       const multFactors = toArray(stat.multFactors);
+      const { flatFactor } = stat;
       const factorStrings = [];
 
       if (stat.notOfficial || multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)) {
@@ -198,14 +229,12 @@ function processActiveTalents(
           let string = round(root * TALENT_LV_MULTIPLIERS[scale][level], 2) + "%";
 
           if (basedOn) {
-            string += ` ${label[basedOn]}`;
+            string += ` ${translate(basedOn)}`;
           }
 
           factorStrings.push(string);
         }
       }
-
-      const { flatFactor } = stat;
 
       if (flatFactor) {
         const { root, scale = defaultInfo.flatFactorScale } =
@@ -214,27 +243,40 @@ function processActiveTalents(
         factorStrings.push(Math.round(root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1)));
       }
 
-      result[resultKey].stats.push({
+      talent.stats.push({
         name: stat.name,
         value: factorStrings.join(" + "),
       });
     }
   }
 
-  result.EB.stats.push({
+  result[2].stats.push({
     name: "Energy cost",
-    value: EBcost,
+    value: appChar.EBcost,
   });
 
-  const talents = [result.NAs, result.ES, result.EB];
-
   if (altSprint) {
-    talents.push({
+    result.push({
       name: altSprint.name,
       type: "altSprint",
+      label: translate("altSprint"),
       stats: [],
     });
   }
 
-  return talents;
+  const passiveTypes = ["A1", "A4", "utility"] as const;
+  const passiveLabels = ["Ascension 1", "Ascension 4", "Utility"];
+
+  result.push(
+    ...appChar.passiveTalents.map<ProcessedTalent>((talent, i) => {
+      return {
+        name: talent.name,
+        type: passiveTypes[i],
+        label: passiveLabels[i],
+        stats: [],
+      };
+    })
+  );
+
+  return result;
 }
