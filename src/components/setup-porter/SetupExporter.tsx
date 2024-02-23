@@ -38,20 +38,20 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
       }
       moreButtons={[
         {
-          text: "Copy",
-          variant: "positive",
-          autoFocus: true,
+          text: "Copy URL",
           onClick: () => {
-            navigator.clipboard.writeText(encodedData).then(
+            navigator.clipboard.writeText(`${window.location.origin}?importCode=${encodedData}`).then(
               () => setStatus("SUCCESS"),
               () => setStatus("NOT_SUPPORT")
             );
           },
         },
         {
-          text: "Copy URL",
+          text: "Copy",
+          variant: "positive",
+          autoFocus: true,
           onClick: () => {
-            navigator.clipboard.writeText(`${window.location.origin}?importCode=${encodedData}`).then(
+            navigator.clipboard.writeText(encodedData).then(
               () => setStatus("SUCCESS"),
               () => setStatus("NOT_SUPPORT")
             );

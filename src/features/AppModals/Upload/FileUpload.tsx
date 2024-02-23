@@ -68,7 +68,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
         onChange={onUploadFile}
       />
       <Button className="mx-auto" variant="positive" icon={<FaUpload />} onClick={() => inputRef.current?.click()}>
-        Choose File
+        Select File
       </Button>
       <p className="px-6 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
     </div>

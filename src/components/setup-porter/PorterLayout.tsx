@@ -16,7 +16,7 @@ export const PorterLayout = ({ heading, message, textareaAttrs, moreButtons, onC
     <div className="bg-dark-900 relative">
       <Modal.Header>{heading}</Modal.Header>
 
-      <div className="p-4 flex flex-col">
+      <div className="px-4 flex flex-col">
         <textarea className="w-full p-2 text-black rounded resize-none" rows={15} {...textareaAttrs} />
 
         {message ? (

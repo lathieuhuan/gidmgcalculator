@@ -216,6 +216,7 @@ export function SetupSelect() {
 
       <ConfirmModal
         active={modal.type === "REMOVE_SETUP"}
+        danger
         message={
           <>
             Remove <b>{setupManageInfos[modal.setupIndex]?.name}</b>?

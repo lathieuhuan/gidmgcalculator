@@ -8,14 +8,14 @@ import type {
   ReactionBonusInfoKey,
   Teammate,
 } from "@Src/types";
-import type { GetCalculationStatsArgs, UsedEffect } from "../types";
+import type { GetCalculationStatsArgs } from "../types";
 
 import { $AppCharacter, $AppData } from "@Src/services";
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
 // Util
-import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
+import { applyPercent, findByIndex, isGranted, realParty, weaponSubStatValue } from "@Src/utils";
 import { getArtifactSetBonuses, getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { applyModifier } from "../utils";
 import { addArtifactAttributes, addTrackerRecord, initiateBonuses, initiateTotalAttr } from "./utils";
@@ -45,24 +45,6 @@ export const getCalculationStats = ({
   const appWeapon = $AppData.getWeapon(weapon.code)!;
   const totalAttr = initiateTotalAttr({ char, appChar, weapon, appWeapon, tracker });
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
-
-  // const usedWeaponMods: UsedMod[] = [];
-  const usedArtifactEffects: UsedEffect[] = [];
-
-  const isNewArtifactEffect = (itemCode: number, modIndex: number, effectTarget: string | string[]) => {
-    const effectTargets = toArray(effectTarget);
-    for (const effect of usedArtifactEffects) {
-      if (
-        effect.itemCode !== itemCode ||
-        effect.modIndex !== modIndex ||
-        effectTargets.every((item) => !effect.effectTargets.includes(item))
-      ) {
-        return true;
-      }
-    }
-    usedArtifactEffects.push({ itemCode, modIndex, effectTargets });
-    return false;
-  };
 
   const infoWrap: BuffInfoWrap = {
     char,
@@ -138,6 +120,7 @@ export const getCalculationStats = ({
           inputs: ctrl.inputs ?? [],
           refi,
           isFinal,
+          // isStackable
         });
       }
     }
@@ -246,6 +229,7 @@ export const getCalculationStats = ({
               infoWrap,
               inputs: ctrl.inputs ?? [],
               refi,
+              // isStackable
             });
           }
         }
@@ -264,6 +248,7 @@ export const getCalculationStats = ({
               buff,
               infoWrap,
               inputs: ctrl.inputs ?? [],
+              // isStackable
             });
           }
         }
@@ -285,6 +270,7 @@ export const getCalculationStats = ({
           infoWrap,
           inputs: ctrl.inputs ?? [],
           isFinal,
+          // isStackable
         });
       }
     }

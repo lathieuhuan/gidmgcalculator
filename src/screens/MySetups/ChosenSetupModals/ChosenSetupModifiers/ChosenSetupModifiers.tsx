@@ -1,6 +1,7 @@
 import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
 import { $AppCharacter, $AppData } from "@Src/services";
+import { calculateChosenSetup } from "../../utils";
 
 // Component
 import { Yellow, CollapseList } from "@Src/pure-components";
@@ -19,7 +20,6 @@ import {
   PartyDebuffsDetail,
   SelfDebuffsDetail,
 } from "./debuffs";
-import { calculateChosenSetup } from "../../utils";
 
 interface ModifierWrapperProps {
   className?: string;

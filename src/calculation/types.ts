@@ -23,12 +23,6 @@ import type {
   ElementType,
 } from "@Src/types";
 
-export type UsedEffect = {
-  itemCode: number;
-  modIndex: number;
-  effectTargets: string[];
-};
-
 export type CalcUltilInfo = {
   char: CharInfo;
   appChar: AppCharacter;

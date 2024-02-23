@@ -11,7 +11,7 @@ type ButtonSize = "small" | "medium" | "large" | "custom";
 const colorCls: Partial<Record<ButtonVariant, string>> = {
   default: "bg-light-600 text-black",
   positive: "bg-yellow-400 text-black",
-  negative: "bg-red-600 text-light-400",
+  negative: "bg-red-600 text-light-100",
   active: "bg-green-200 text-black",
 };
 

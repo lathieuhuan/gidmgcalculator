@@ -6,7 +6,7 @@ import { selectUserArts, selectUserChars, selectUserSetups, selectUserWps } from
 // Component
 import { Button, Modal } from "@Src/pure-components";
 
-const DownloadOptions = () => {
+const DownloadCore = () => {
   const userChars = useSelector(selectUserChars);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
@@ -41,17 +41,15 @@ const DownloadOptions = () => {
   return (
     <div className="flex flex-col space-y-4">
       <Button className="mx-auto" variant="positive" icon={<FaDownload />} onClick={onClickDownload}>
-        Download
+        Get File
       </Button>
 
-      <p className="text-center text-red-100">
-        Please DO NOT modify this file if you don't understand how it works.
-      </p>
+      <p className="text-center text-red-100">Please DO NOT modify this file if you don't understand how it works.</p>
     </div>
   );
 };
 
-export const Download = Modal.wrap(DownloadOptions, {
+export const Download = Modal.wrap(DownloadCore, {
   preset: "small",
   title: "Download",
   className: "bg-dark-700",

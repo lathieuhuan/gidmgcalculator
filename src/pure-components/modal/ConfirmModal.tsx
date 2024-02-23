@@ -5,6 +5,7 @@ import { ModalControl } from "./ModalCore";
 import { ModalActionsProps } from "./modal-components";
 
 export interface ConfirmModalBodyProps extends Omit<ModalActionsProps, "className" | "justify" | "formId"> {
+  danger?: boolean;
   message: string | JSX.Element;
   /** Default to 'bg-dark-500' */
   bgColorCls?: string;
@@ -21,6 +22,8 @@ export const ConfirmModalBody = ({ message, bgColorCls = "bg-dark-500", ...actio
 
 export const ConfirmModal = ({
   active,
+  danger,
+  confirmButtonProps,
   onClose,
   onCancel,
   onConfirm,
@@ -30,6 +33,10 @@ export const ConfirmModal = ({
     <Modal.Core active={active} preset="small" onClose={onClose}>
       <ConfirmModalBody
         {...bodyProps}
+        confirmButtonProps={{
+          variant: danger ? "negative" : "positive",
+          ...confirmButtonProps,
+        }}
         onCancel={() => {
           onCancel?.();
           onClose();

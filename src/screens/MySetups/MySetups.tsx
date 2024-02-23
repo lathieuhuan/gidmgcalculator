@@ -23,8 +23,9 @@ import { useSetupItems } from "./hooks";
 // Component
 import { Button, WarehouseLayout, LoadingIcon } from "@Src/pure-components";
 import { FinalResultView } from "@Src/components";
-import { ChosenSetupModalCluster, MySetupsModalCluster } from "./modal-cluster";
 import { SetupTemplate } from "./SetupTemplate";
+import { ChosenSetupModals } from "./ChosenSetupModals";
+import { MySetupsModals } from "./MySetupsModals";
 
 export default function MySetups() {
   const dispatch = useDispatch();
@@ -130,7 +131,7 @@ export default function MySetups() {
             )}
           </div>
 
-          <ChosenSetupModalCluster {...{ chosenSetup, weapon, artifacts, result }} />
+          <ChosenSetupModals {...{ chosenSetup, weapon, artifacts, result }} />
         </div>
       );
     }
@@ -164,7 +165,7 @@ export default function MySetups() {
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
-      <MySetupsModalCluster combineMoreId={chosenSetupID} />
+      <MySetupsModals combineMoreId={chosenSetupID} />
     </WarehouseLayout.Wrapper>
   );
 }

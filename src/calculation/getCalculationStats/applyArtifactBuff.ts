@@ -70,7 +70,7 @@ interface ApplyArtifactBuffArgs {
   infoWrap: BuffInfoWrap;
   inputs: number[];
   isFinal?: boolean;
-  checkIfNewEffect?: (effectTargets: string | string[]) => boolean;
+  isStackable?: (effectTargets: string | string[]) => boolean;
 }
 const applyArtifactBuff = ({
   description,
@@ -78,7 +78,7 @@ const applyArtifactBuff = ({
   infoWrap: info,
   inputs,
   isFinal,
-  checkIfNewEffect = () => true,
+  isStackable,
 }: ApplyArtifactBuffArgs) => {
   const noIsFinal = isFinal === undefined;
 
@@ -88,8 +88,8 @@ const applyArtifactBuff = ({
 
       if (bonusValue) {
         for (const [key, value] of Object.entries(bonus.targets)) {
+          // isStackable
           const mixed = value as any;
-          const isNewEffect = typeof value === "number" || checkIfNewEffect(value);
 
           switch (key) {
             case "ATTR":

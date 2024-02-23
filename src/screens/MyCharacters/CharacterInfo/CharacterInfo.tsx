@@ -84,7 +84,7 @@ const CharacterInfo = () => {
     >
       <div className="p-4 rounded-lg bg-dark-900 flex flex-col relative">
         <Button
-          className="absolute top-4 right-4 hover:text-red-600"
+          className="absolute top-4 right-4"
           boneOnly
           icon={<FaUserSlash />}
           onClick={() => setRemoving(true)}
@@ -148,6 +148,7 @@ const CharacterInfo = () => {
 
       <ConfirmModal
         active={removing}
+        danger
         message={
           <>
             Remove <b>{name}</b>?

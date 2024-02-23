@@ -78,6 +78,8 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
           {TALENT_TYPES.map((talentType, index) => {
             const isAltSprint = talentType === "altSprint";
             const talent = activeTalents[talentType];
+            if (!talent) return null;
+
             const xtraLevel = totalXtraTalentLv({
               appChar,
               talentType,
@@ -101,8 +103,8 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
 
             return renderTalent(
               {
-                name: talent?.name,
-                image: talentType === "NAs" ? NORMAL_ATTACK_ICONS[`${weaponType}_${elementType}`] : talent?.image,
+                name: talent.name,
+                image: talentType === "NAs" ? NORMAL_ATTACK_ICONS[`${weaponType}_${elementType}`] : talent.image,
                 xtraLevel,
               },
               index,

@@ -22,7 +22,7 @@ import { userSetupToCalcSetup } from "@Src/utils/setup";
 // Component
 import { Button, ButtonGroup, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
-import { TeammateDetail } from "../modal-content";
+import { TeammateDetail } from "./TeammateDetail";
 import { GearIcon } from "./GearIcon";
 
 interface SetupLayoutProps {
@@ -35,8 +35,8 @@ interface SetupLayoutProps {
   openModal: OpenModalFn;
 }
 export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], allIDs, openModal }: SetupLayoutProps) {
-  const { type, char, party } = setup;
   const dispatch = useDispatch();
+  const { type, char, party } = setup;
 
   const [teammateDetail, setTeammateDetail] = useState({
     index: -1,

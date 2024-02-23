@@ -5,7 +5,7 @@ import { UserDataGuide } from "./UserDataGuide";
 
 export const Guides = (props: ModalControl) => {
   return (
-    <Modal title="Guides" preset="large" withHeaderDivider={false} {...props}>
+    <Modal title="Guides" preset="large" withHeaderDivider={false} bodyCls="pt-0" {...props}>
       <div className="h-full custom-scrollbar">
         <CollapseList
           list={[

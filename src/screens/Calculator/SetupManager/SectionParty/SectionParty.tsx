@@ -122,13 +122,13 @@ export default function SectionParty() {
                 )}
               >
                 <button
-                  className={"w-10 h-10 text-red-400 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
+                  className={"w-10 h-10 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickRemoveTeammate}
                 >
                   <FaUserSlash />
                 </button>
                 <button
-                  className={"w-10 h-10 text-yellow-400 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
+                  className={"w-10 h-10 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickChangeTeammate(teammateIndex)}
                 >
                   <FaSyncAlt />

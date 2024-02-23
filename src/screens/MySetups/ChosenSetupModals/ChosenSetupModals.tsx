@@ -22,15 +22,15 @@ import {
   SetupExporter,
   WeaponCard,
 } from "@Src/components";
-import { ChosenSetupModifiers } from "../modal-content";
+import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
 
-interface ModalClusterProps {
+interface ChosenSetupModalsProps {
   chosenSetup: UserSetup;
   weapon: UserWeapon | null;
   artifacts: UserArtifacts;
   result?: ReturnType<typeof calculateChosenSetup>;
 }
-export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, result }: ModalClusterProps) => {
+export const ChosenSetupModals = ({ chosenSetup, weapon, artifacts, result }: ChosenSetupModalsProps) => {
   const dispatch = useDispatch();
   const modalType = useSelector(selectMySetupModalType);
 
@@ -44,6 +44,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, result
     <>
       <ConfirmModal
         active={modalType === "REMOVE_SETUP"}
+        danger
         message={
           <>
             Remove "<b>{chosenSetup.name}</b>"?

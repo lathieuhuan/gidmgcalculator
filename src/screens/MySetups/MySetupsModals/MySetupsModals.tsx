@@ -6,12 +6,13 @@ import { selectMySetupModalType } from "@Store/uiSlice/selectors";
 
 // Component
 import { Yellow, Modal, Red } from "@Src/pure-components";
-import { CombineMore, FirstCombine } from "../modal-content";
+import { FirstCombine } from "./FirstCombine";
+import { CombineMore } from "./CombineMore";
 
-interface MySetupsModalClusterProps {
+interface MySetupsModalsProps {
   combineMoreId?: number;
 }
-export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
+export const MySetupsModals = (props: MySetupsModalsProps) => {
   const dispatch = useDispatch();
   const modalType = useSelector(selectMySetupModalType);
 

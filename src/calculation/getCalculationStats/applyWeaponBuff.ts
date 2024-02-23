@@ -143,8 +143,17 @@ interface ApplyWeaponBuffArgs {
   inputs: number[];
   refi: number;
   isFinal?: boolean;
+  isStackable?: (effectTargets: string | string[]) => boolean;
 }
-const applyWeaponBuff = ({ description, buff, infoWrap: info, inputs, refi, isFinal }: ApplyWeaponBuffArgs) => {
+const applyWeaponBuff = ({
+  description,
+  buff,
+  infoWrap: info,
+  inputs,
+  refi,
+  isFinal,
+  isStackable,
+}: ApplyWeaponBuffArgs) => {
   const cmnStacks = buff.cmnStacks ? toArray(buff.cmnStacks) : [];
   const commonStacks = cmnStacks.map((cmnStack) => getStackValue(cmnStack, info, inputs));
   const noIsFinal = isFinal === undefined;
@@ -157,9 +166,11 @@ const applyWeaponBuff = ({ description, buff, infoWrap: info, inputs, refi, isFi
         const { ATTR, PATT } = bonus.targets;
         if (ATTR) {
           const attributeKey = ATTR === "own_elmt" ? info.appChar.vision : ATTR;
+          // isStackable
           applyModifier(description, info.totalAttr, attributeKey, bonusValue, info.tracker);
         }
         if (PATT) {
+          // isStackable
           applyModifier(description, info.attPattBonus, PATT, bonusValue, info.tracker);
         }
       }

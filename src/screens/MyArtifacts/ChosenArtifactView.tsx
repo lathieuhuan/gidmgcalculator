@@ -109,6 +109,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
       {artifact ? (
         <ConfirmModal
           active={modalType === "REMOVE_ARTIFACT"}
+          danger
           message={
             <>
               Remove "<b>{$AppData.getArtifactSet(artifact.code)?.name}</b>" ({artifact.type})?{" "}

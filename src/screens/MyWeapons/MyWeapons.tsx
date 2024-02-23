@@ -197,6 +197,7 @@ export default function MyWeapons() {
       {chosenWeapon ? (
         <ConfirmModal
           active={modalType === "REMOVE_WEAPON"}
+          danger
           message={
             <>
               Remove "<b>{$AppData.getWeapon(chosenWeapon.code).name}</b>"?{" "}
