@@ -70,8 +70,16 @@ interface ApplyArtifactBuffArgs {
   infoWrap: BuffInfoWrap;
   inputs: number[];
   isFinal?: boolean;
+  checkIfNewEffect?: (effectTargets: string | string[]) => boolean;
 }
-const applyArtifactBuff = ({ description, buff, infoWrap: info, inputs, isFinal }: ApplyArtifactBuffArgs) => {
+const applyArtifactBuff = ({
+  description,
+  buff,
+  infoWrap: info,
+  inputs,
+  isFinal,
+  checkIfNewEffect = () => true,
+}: ApplyArtifactBuffArgs) => {
   const noIsFinal = isFinal === undefined;
 
   for (const bonus of toArray(buff.effects)) {
@@ -81,6 +89,7 @@ const applyArtifactBuff = ({ description, buff, infoWrap: info, inputs, isFinal 
       if (bonusValue) {
         for (const [key, value] of Object.entries(bonus.targets)) {
           const mixed = value as any;
+          const isNewEffect = typeof value === "number" || checkIfNewEffect(value);
 
           switch (key) {
             case "ATTR":

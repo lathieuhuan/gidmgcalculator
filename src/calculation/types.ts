@@ -23,9 +23,10 @@ import type {
   ElementType,
 } from "@Src/types";
 
-export type UsedMod = {
+export type UsedEffect = {
   itemCode: number;
   modIndex: number;
+  effectTargets: string[];
 };
 
 export type CalcUltilInfo = {
@@ -51,8 +52,7 @@ export type GetCalculationStatsArgs = {
   tracker?: Tracker;
 };
 
-export interface CalculateItemArgs
-  extends Pick<BuffInfoWrap, "char" | "totalAttr" | "attElmtBonus" | "attPattBonus"> {
+export interface CalculateItemArgs extends Pick<BuffInfoWrap, "char" | "totalAttr" | "attElmtBonus" | "attPattBonus"> {
   stat: CalcItem;
   attPatt: ActualAttackPattern;
   attElmt: AttackElement;

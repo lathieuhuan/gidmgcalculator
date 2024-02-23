@@ -8,14 +8,14 @@ import type {
   ReactionBonusInfoKey,
   Teammate,
 } from "@Src/types";
-import type { GetCalculationStatsArgs } from "../types";
+import type { GetCalculationStatsArgs, UsedEffect } from "../types";
 
 import { $AppCharacter, $AppData } from "@Src/services";
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
 // Util
-import { applyPercent, findByIndex, isGranted, realParty, weaponSubStatValue } from "@Src/utils";
+import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
 import { getArtifactSetBonuses, getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { applyModifier } from "../utils";
 import { addArtifactAttributes, addTrackerRecord, initiateBonuses, initiateTotalAttr } from "./utils";
@@ -47,19 +47,22 @@ export const getCalculationStats = ({
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
 
   // const usedWeaponMods: UsedMod[] = [];
-  // const usedArtifactMods: UsedMod[] = [];
+  const usedArtifactEffects: UsedEffect[] = [];
 
-  // const isNewMod = (isWeapon: boolean, itemCode: number, modIndex: number, target: string | string[]) => {
-  //   const usedMods = isWeapon ? usedWeaponMods : usedArtifactMods;
-
-  //   for (const mod of usedMods) {
-  //     if (mod.itemCode !== itemCode || mod.modIndex !== modIndex) {
-  //       return true;
-  //     }
-  //   }
-  //   usedMods.push({ itemCode, modIndex, target });
-  //   return false;
-  // };
+  const isNewArtifactEffect = (itemCode: number, modIndex: number, effectTarget: string | string[]) => {
+    const effectTargets = toArray(effectTarget);
+    for (const effect of usedArtifactEffects) {
+      if (
+        effect.itemCode !== itemCode ||
+        effect.modIndex !== modIndex ||
+        effectTargets.every((item) => !effect.effectTargets.includes(item))
+      ) {
+        return true;
+      }
+    }
+    usedArtifactEffects.push({ itemCode, modIndex, effectTargets });
+    return false;
+  };
 
   const infoWrap: BuffInfoWrap = {
     char,
