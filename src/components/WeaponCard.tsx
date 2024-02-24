@@ -35,7 +35,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
-      <p className={`text-2xl text-rarity-${rarity} font-bold`}>{appWeapon.name}</p>
+      <p className={`text-1.5xl text-rarity-${rarity} font-semibold`}>{appWeapon.name}</p>
 
       <div className="mt-2 flex">
         {/* left */}
@@ -108,7 +108,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
           )}
         </div>
       </div>
-      <div className="mt-2">
+      <div className="mt-3">
         <p className="text-sm font-semibold text-orange-500">{appWeapon.passiveName}</p>
         <p className="indent-4 text-base" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>

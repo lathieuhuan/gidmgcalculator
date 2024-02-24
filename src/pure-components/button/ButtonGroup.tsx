@@ -14,7 +14,7 @@ const spaceCls: Partial<Record<Space, string>> = {
 };
 
 export type ButtonGroupItem = Omit<ButtonProps, "children"> & {
-  text: string;
+  text?: string;
 };
 export interface ButtonGroupProps {
   className?: ClassValue;

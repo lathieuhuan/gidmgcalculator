@@ -27,7 +27,7 @@ interface SelectOptionsProps<T> {
   onSelect?: (entity: T, isConfigStep: boolean) => OptionValidity;
   onClose: () => void;
 }
-export function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
+function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   className = "",
   data,
   shouldHideSelected,

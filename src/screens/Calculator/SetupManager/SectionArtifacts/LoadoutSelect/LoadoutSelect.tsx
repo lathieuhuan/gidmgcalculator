@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { Button, Modal, Switch } from "@Src/pure-components";
-import { DefaultSetOptions } from "./DefaultSetOptions";
 import { CalcArtifact } from "@Src/types";
 
-type LoadoutType = "DEFAULT_5" | "DEFAULT_4" | "EQUIPPED" | "CUSTOM";
+type LoadoutType = "EQUIPPED" | "CUSTOM";
 
 const LOADOUT_TYPE_OPTIONS: Array<{ label: string; value: LoadoutType }> = [
-  { label: "Default 5-star Set", value: "DEFAULT_5" },
-  { label: "Default 4-star Set", value: "DEFAULT_4" },
   { label: "Equipped Set", value: "EQUIPPED" },
 ];
 
@@ -16,7 +13,7 @@ interface LoadoutSelectProps {
   onClose: () => void;
 }
 export const LoadoutSelectCore = ({ onSelect, onClose }: LoadoutSelectProps) => {
-  const [chosenType, setChosenType] = useState<LoadoutType>("DEFAULT_5");
+  const [chosenType, setChosenType] = useState<LoadoutType>("EQUIPPED");
 
   const onSelectType = (type: LoadoutType) => {
     if (type !== chosenType) setChosenType(type);
@@ -40,20 +37,11 @@ export const LoadoutSelectCore = ({ onSelect, onClose }: LoadoutSelectProps) => 
 
       <Switch
         value={chosenType}
-        cases={[
-          {
-            value: "DEFAULT_5",
-            element: (
-              <DefaultSetOptions
-                rarity={5}
-                onSelect={(setOption) => {
-                  // onSelect()
-                }}
-                onClose={onClose}
-              />
-            ),
-          },
-        ]}
+        cases={
+          [
+            //
+          ]
+        }
       />
       {/* <div className="mt-4 grow custom-scrollbar"></div> */}
     </div>

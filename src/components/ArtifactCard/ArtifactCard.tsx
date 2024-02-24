@@ -36,7 +36,7 @@ export const ArtifactCard = ({
   return (
     <div className="w-full">
       <div className={`px-4 pt-1 bg-rarity-${rarity}`} onDoubleClick={() => console.log(artifact)}>
-        <p className="text-xl font-semibold text-black truncate">{appArtifact?.name}</p>
+        <p className="text-lg font-semibold text-black truncate">{appArtifact?.name}</p>
       </div>
 
       <div className="mt-4 px-4 flex justify-between items-start">

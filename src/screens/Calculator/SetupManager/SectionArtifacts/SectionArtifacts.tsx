@@ -35,7 +35,7 @@ type InventoryState = {
 type ForgeState = {
   active: boolean;
   initialType?: ArtifactType;
-  allowSetSelect?: boolean;
+  allowBatchForging?: boolean;
 };
 
 export default function SectionArtifacts() {
@@ -133,7 +133,7 @@ export default function SectionArtifacts() {
     setForge({
       active: true,
       initialType: "flower",
-      allowSetSelect: true,
+      allowBatchForging: true,
     });
   };
 
