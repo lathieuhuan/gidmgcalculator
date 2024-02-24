@@ -2,7 +2,7 @@ import clsx, { ClassValue } from "clsx";
 import { useState } from "react";
 
 import { toArray } from "@Src/utils";
-import { Image } from "@Src/pure-components";
+import { Image, Radio } from "@Src/pure-components";
 
 type IconOption<T> = {
   type: T;
@@ -17,8 +17,8 @@ export type IconSelectConfig<T> = {
   size?: SelectSize;
   iconCls?: ClassValue;
   selectedCls?: ClassValue;
-  multiple?: boolean;
-  // required?: boolean;
+  multiple?: boolean | "withRadios";
+  required?: boolean;
   onChange?: (selectedIcons: T[]) => void;
 };
 
@@ -33,12 +33,14 @@ export function useIconSelect<T>(
   config?: IconSelectConfig<T>
 ) {
   const [selectedIcons, setSelectedIcons] = useState<T[]>(initialValues ? toArray(initialValues) : []);
-  const { size = "medium", iconCls, selectedCls, multiple, onChange } = config || {};
-  // const withRadios = multiple === "withRadios";
+  const { size = "medium", iconCls, selectedCls, multiple, required, onChange } = config || {};
+  const withRadios = multiple === "withRadios";
 
   const updateSelectedIcons = (newTypes: T[]) => {
-    setSelectedIcons(newTypes);
-    onChange?.(newTypes);
+    if (!required || newTypes.length) {
+      setSelectedIcons(newTypes);
+      onChange?.(newTypes);
+    }
   };
 
   const onClickIcon = (value: T, currentSelected: boolean) => {
@@ -51,9 +53,9 @@ export function useIconSelect<T>(
     updateSelectedIcons(newTypes);
   };
 
-  // const onCheckRadio = (value: T) => {
-  //   updateSelectedIcons([value]);
-  // };
+  const onCheckRadio = (value: T) => {
+    updateSelectedIcons([value]);
+  };
 
   const renderIconSelect = (className?: ClassValue) => (
     <div className={clsx("flex items-center gap-4", className)}>
@@ -76,7 +78,7 @@ export function useIconSelect<T>(
               {typeof option.icon === "string" ? <Image src={option.icon} /> : option.icon}
             </button>
 
-            {/* {withRadios && (
+            {withRadios && (
               <label className="w-8 h-8 flex-center cursor-pointer">
                 <Radio
                   size="large"
@@ -84,7 +86,7 @@ export function useIconSelect<T>(
                   onChange={() => onCheckRadio(option.type)}
                 />
               </label>
-            )} */}
+            )}
           </div>
         );
       })}

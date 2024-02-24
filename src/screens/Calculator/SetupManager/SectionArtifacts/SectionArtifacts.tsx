@@ -21,6 +21,7 @@ import { Button, CollapseSpace, Modal } from "@Src/pure-components";
 import { ArtifactForge, ArtifactInventory, Tavern } from "@Src/components";
 import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
+import { LoadoutSelect } from "./LoadoutSelect";
 
 import styles from "../styles.module.scss";
 
@@ -34,6 +35,7 @@ type InventoryState = {
 type ForgeState = {
   active: boolean;
   initialType?: ArtifactType;
+  allowSetSelect?: boolean;
 };
 
 export default function SectionArtifacts() {
@@ -105,11 +107,10 @@ export default function SectionArtifacts() {
     setSelectingSrcType(false);
   };
 
-  /** Default initialType is 'flower' */
-  const onRequestChangePiece = (source: ArtifactSourceType, index: number = 0) => {
+  const onRequestChangeActivePiece = (source: ArtifactSourceType) => {
     const newState = {
       active: true,
-      initialType: ARTIFACT_TYPES[index],
+      initialType: ARTIFACT_TYPES[activeTabIndex],
     };
     switch (source) {
       case "INVENTORY":
@@ -119,6 +120,21 @@ export default function SectionArtifacts() {
         setForge(newState);
         break;
     }
+  };
+
+  const onRequestSelectInventoryArtifact = () => {
+    setInventory({
+      active: true,
+      initialType: "flower",
+    });
+  };
+
+  const onRequestForgeArtifact = () => {
+    setForge({
+      active: true,
+      initialType: "flower",
+      allowSetSelect: true,
+    });
   };
 
   const onClickRemovePiece = () => {
@@ -182,9 +198,7 @@ export default function SectionArtifacts() {
             artifact={activeArtifact}
             pieceIndex={activeTabIndex}
             onClickRemovePiece={onClickRemovePiece}
-            onClickChangePiece={(source) => {
-              onRequestChangePiece(source, activeTabIndex);
-            }}
+            onClickChangePiece={onRequestChangeActivePiece}
           />
         )}
       </CollapseSpace>
@@ -192,8 +206,8 @@ export default function SectionArtifacts() {
       {activeTabIndex < 0 ? (
         <div className="mt-4 px-4 flex justify-end gap-4">
           <Button title="Loadout" icon={<FaToolbox />} onClick={() => setModalType("ARTIFACT_LOADOUT")} />
-          <Button title="Inventory" icon={<MdInventory />} onClick={() => onRequestChangePiece("INVENTORY")} />
-          <Button title="New" icon={<GiAnvil />} onClick={() => onRequestChangePiece("FORGE")} />
+          <Button title="Inventory" icon={<MdInventory />} onClick={onRequestSelectInventoryArtifact} />
+          <Button title="New" icon={<GiAnvil />} onClick={onRequestForgeArtifact} />
         </div>
       ) : null}
 
@@ -211,8 +225,9 @@ export default function SectionArtifacts() {
       </Modal>
 
       <ArtifactForge
-        active={forge.active}
-        initialTypes={forge.initialType}
+        // active={forge.active}
+        // initialTypes={forge.initialType}
+        {...forge}
         hasConfigStep
         hasMultipleMode
         onForgeArtifact={(artifact) => {
@@ -244,16 +259,7 @@ export default function SectionArtifacts() {
         onClose={() => setInventory({ active: false })}
       />
 
-      <Tavern
-        active={modalType === "ARTIFACT_LOADOUT"}
-        sourceType="user"
-        onSelectCharacter={(character) => {
-          if (character.artifactIDs) {
-            dispatch(pickEquippedArtSet(character.artifactIDs));
-          }
-        }}
-        onClose={closeModal}
-      />
+      <LoadoutSelect active={modalType === "ARTIFACT_LOADOUT"} onClose={closeModal} />
     </div>
   );
 }

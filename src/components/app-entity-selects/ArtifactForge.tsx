@@ -13,6 +13,7 @@ import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySel
 import { ArtifactConfig } from "./components/ArtifactConfig";
 
 export interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
+  allowSetSelect?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
   forcedType?: ArtifactType;
   /** Default to 'flower' */
@@ -21,6 +22,7 @@ export interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMulti
   onClose: () => void;
 }
 const ArtifactSmith = ({
+  allowSetSelect,
   forFeature,
   forcedType,
   initialTypes = "flower",
@@ -30,6 +32,7 @@ const ArtifactSmith = ({
 }: ArtifactForgeProps) => {
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
   const [maxRarity, setMaxRarity] = useState(5);
+  const [selectingSet, setSelectingSet] = useState(false);
 
   const updateConfig = (update: (prevConfig: Artifact) => Artifact) => {
     if (artifactConfig) {
@@ -38,11 +41,19 @@ const ArtifactSmith = ({
   };
 
   const { artifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(forcedType || initialTypes, {
+    multiple: allowSetSelect ? (selectingSet ? "withRadios" : true) : false,
+    required: allowSetSelect,
     onChange: (types) => {
-      updateConfig((prevConfig) => {
-        const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
-        return Object.assign(newConfig, pickProps(prevConfig, ["ID", "level", "subStats"]));
-      });
+      if (types.length > 1) {
+        setSelectingSet(true);
+      } else {
+        updateConfig((prevConfig) => {
+          const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
+          return Object.assign(newConfig, pickProps(prevConfig, ["ID", "level", "subStats"]));
+        });
+
+        if (selectingSet) setSelectingSet(false);
+      }
     },
   });
 
@@ -86,6 +97,7 @@ const ArtifactSmith = ({
           <ArtifactConfig
             config={artifactConfig}
             maxRarity={maxRarity}
+            forSet={selectingSet}
             typeSelect={forcedType ? null : renderArtifactTypeSelect()}
             onChangeRarity={onChangeRarity}
             onUpdateConfig={(properties) => {
@@ -114,7 +126,6 @@ const ArtifactSmith = ({
         } else {
           onForgeArtifact(artifact);
         }
-
         return true;
       }}
       onClose={onClose}

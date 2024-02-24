@@ -14,6 +14,7 @@ type Return = boolean;
 export type OptionValidity = Return | Promise<Return>;
 
 interface SelectOptionsProps<T> {
+  className?: string;
   data: T[];
   hiddenCodes?: Set<number>;
   /** Default to 'No data' */
@@ -26,7 +27,8 @@ interface SelectOptionsProps<T> {
   onSelect?: (entity: T, isConfigStep: boolean) => OptionValidity;
   onClose: () => void;
 }
-function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
+export function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
+  className = "",
   data,
   shouldHideSelected,
   emptyText = "No data",
@@ -39,7 +41,7 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   keyword,
   searchOn,
   inputRef,
-}: SelectOptionsProps<T> & EntitySelectRenderArgs) {
+}: SelectOptionsProps<T> & Partial<EntitySelectRenderArgs>) {
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const [itemCounts, setItemCounts] = useState<Record<number, number>>({});
@@ -48,19 +50,15 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   const [empty, setEmpty] = useState(false);
   const [overflow, setOverflow] = useState(true);
 
-  const shouldCheckKeyword = keyword.length >= 1;
-  const lowerKeyword = keyword.toLowerCase();
+  const shouldCheckKeyword = keyword && keyword.length >= 1;
+  const lowerKeyword = keyword?.toLowerCase() ?? "";
 
   const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   useLayoutEffect(() => {
-    // if (hasConfigStep && data.length && data[0]) {
-    //   selectOption(data[0]);
-    // }
-
     const handleEnter = (e: KeyboardEvent) => {
       if (
-        inputRef.current &&
+        inputRef?.current &&
         e.key === "Enter" &&
         document.activeElement === inputRef.current &&
         inputRef.current.value.length
@@ -170,7 +168,7 @@ function SelectOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
   ];
 
   return (
-    <div ref={bodyRef} className="h-full flex custom-scrollbar gap-4 scroll-smooth">
+    <div ref={bodyRef} className={"h-full flex custom-scrollbar gap-4 scroll-smooth " + className}>
       <div
         ref={observedAreaRef}
         className={clsx(
@@ -250,7 +248,7 @@ export const AppEntitySelect = <T extends AppEntityOptionModel = AppEntityOption
     <EntitySelectTemplate {...restProps} onClose={onClose}>
       {(arg) => {
         return (
-          <SelectOptions
+          <AppEntityOptions
             onClose={onClose}
             {...arg}
             {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHideSelected, renderOptionConfig, onSelect }}

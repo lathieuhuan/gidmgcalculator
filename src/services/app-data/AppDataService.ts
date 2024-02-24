@@ -95,9 +95,12 @@ export class AppDataService extends BaseService {
   }
 
   // ========== ARTIFACTS ==========
-
-  getAllArtifacts() {
-    return this.artifacts.map((artifact) => artifact.data);
+  getAllArtifacts<T>(transform: (data: AppArtifact) => T): T[];
+  getAllArtifacts(): AppArtifact[];
+  getAllArtifacts<T>(transform?: (data: AppArtifact) => T): T[] | AppArtifact[] {
+    return transform
+      ? this.artifacts.map((artifact) => transform(artifact.data))
+      : this.artifacts.map((artifact) => artifact.data);
   }
 
   getArtifactSet(code: number) {

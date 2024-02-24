@@ -34,9 +34,9 @@ const sizeCls: Partial<Record<ButtonSize, string>> = {
 };
 
 const iconSizeCls: Partial<Record<ButtonSize, string>> = {
-  small: "p-[5px]",
-  medium: "p-2",
-  large: "p-2",
+  small: "w-6 h-6",
+  medium: "w-8 h-8",
+  large: "w-9 h-9",
 };
 
 const svgSizeCls: Partial<Record<ButtonSize, string>> = {
@@ -69,16 +69,33 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "text-sm flex-center font-bold not whitespace-nowrap",
-    iconPosition === "end" && "flex-row-reverse",
+    "flex-center font-bold whitespace-nowrap",
     boneOnly ? boneColorCls[variant] : [colorCls[variant], "shadow-common"],
     shapeCls[shape],
     rest.disabled ? "opacity-50" : "glow-on-hover",
     className,
-  ].concat(children ? [size === "small" ? "space-x-1" : "space-x-1.5", sizeCls[size]] : iconSizeCls[size]);
+  ];
+
+  if (icon && !children) {
+    return (
+      <button type="button" className={clsx("shrink-0", classes, iconSizeCls[size])} {...rest}>
+        {icon}
+      </button>
+    );
+  }
 
   return (
-    <button type="button" className={clsx(classes)} {...rest}>
+    <button
+      type="button"
+      className={clsx(
+        "text-sm",
+        classes,
+        iconPosition === "end" && "flex-row-reverse",
+        size === "small" ? "space-x-1" : "space-x-1.5",
+        sizeCls[size]
+      )}
+      {...rest}
+    >
       {icon ? <span className={clsx("shrink-0", !children && svgSizeCls[size])}>{icon}</span> : null}
       {children ? <span>{children}</span> : null}
     </button>
