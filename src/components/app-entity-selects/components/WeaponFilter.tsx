@@ -1,14 +1,14 @@
 import clsx, { ClassValue } from "clsx";
 import { useWeaponTypeSelect } from "@Src/hooks";
 import { useRaritySelect } from "@Src/pure-hooks";
-import { Rarity, WeaponType } from "@Src/types";
+import { WeaponType } from "@Src/types";
 
 // Component
 import { ButtonGroup, FilterTemplate } from "@Src/pure-components";
 
 export type WeaponFilterState = {
   types: WeaponType[];
-  rarities: Rarity[];
+  rarities: number[];
 };
 
 export interface WeaponFilterProps {

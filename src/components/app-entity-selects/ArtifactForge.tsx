@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
 
-import { Artifact, ArtifactType, Rarity } from "@Src/types";
+import type { AppArtifact, Artifact, ArtifactType } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { pickProps } from "@Src/utils";
@@ -21,6 +21,7 @@ export interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMulti
   /** Default to 'flower' */
   initialTypes?: ArtifactType | ArtifactType[];
   onForgeArtifact: (info: ReturnType<typeof createArtifact>) => void;
+  onForgeArtifactBatch?: (code: AppArtifact["code"], types: ArtifactType[], rarity: number) => void;
   onClose: () => void;
 }
 const ArtifactSmith = ({
@@ -29,6 +30,7 @@ const ArtifactSmith = ({
   forcedType,
   initialTypes = "flower",
   onForgeArtifact,
+  onForgeArtifactBatch,
   onClose,
   ...templateProps
 }: ArtifactForgeProps) => {
@@ -76,7 +78,7 @@ const ArtifactSmith = ({
     });
   }, []);
 
-  const onChangeRarity = (rarity: Rarity) => {
+  const onChangeRarity = (rarity: number) => {
     updateConfig((prevConfig) => {
       return {
         ...prevConfig,
@@ -86,17 +88,21 @@ const ArtifactSmith = ({
     });
   };
 
-  let batchConfig: React.ReactNode = null;
-
-  const onClickCloseBatchForging = () => {
-    setBatchForging(false);
-    updateArtifactTypes(["flower"]);
-  };
+  let batchConfigView: React.ReactNode = null;
 
   if (batchForging && artifactConfig) {
     const { name } = $AppData.getArtifactSet(artifactConfig.code) || {};
 
-    batchConfig = (
+    const onStopBatchForging = () => {
+      setBatchForging(false);
+      updateArtifactTypes(["flower"]);
+    };
+
+    const onBatchForge = () => {
+      onForgeArtifactBatch?.(artifactConfig.code, artifactTypes, artifactConfig.rarity);
+    };
+
+    batchConfigView = (
       <div className="pt-4 px-2 border-t border-light-900">
         <div className="flex items-start">
           <FaInfoCircle className="mr-1.5 text-blue-400 text-lg" />
@@ -117,12 +123,12 @@ const ArtifactSmith = ({
           buttons={[
             {
               icon: <RiArrowGoBackLine className="text-lg" />,
-              onClick: onClickCloseBatchForging,
+              onClick: onStopBatchForging,
             },
             {
               text: "Forge",
               variant: "positive",
-              onClick: () => null,
+              onClick: onBatchForge,
             },
           ]}
         />
@@ -141,7 +147,7 @@ const ArtifactSmith = ({
             config={artifactConfig}
             maxRarity={maxRarity}
             typeSelect={forcedType ? null : renderArtifactTypeSelect()}
-            batchConfig={batchConfig}
+            batchConfigView={batchConfigView}
             moreButtons={
               allowBatchForging
                 ? [

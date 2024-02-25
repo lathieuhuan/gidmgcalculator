@@ -1,11 +1,10 @@
 import clsx from "clsx";
 import { CgPushChevronUp } from "react-icons/cg";
-import type { Rarity } from "@Src/types";
 
 interface ArtifactLevelSelectProps {
   className?: string;
   mutable?: boolean;
-  rarity: Rarity;
+  rarity: number;
   level: number;
   maxLevel?: number;
   onChangeLevel?: (newLevel: number) => void;

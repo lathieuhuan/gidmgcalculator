@@ -7,7 +7,6 @@ import type {
   AttributeStat,
   ModInputConfig,
   Nation,
-  Rarity,
   ElementType,
   WeaponType,
 } from "./global";
@@ -33,7 +32,7 @@ export type AppCharacter = {
   GOOD?: string;
   icon: string;
   sideIcon: string;
-  rarity: Rarity;
+  rarity: number;
   nation: Nation;
   vision: ElementType;
   weaponType: WeaponType;

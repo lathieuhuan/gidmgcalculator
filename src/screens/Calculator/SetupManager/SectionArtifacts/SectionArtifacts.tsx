@@ -4,7 +4,7 @@ import { MdInventory } from "react-icons/md";
 import { GiAnvil } from "react-icons/gi";
 import { FaToolbox } from "react-icons/fa";
 
-import { Artifact, ArtifactType } from "@Src/types";
+import type { Artifact, ArtifactType } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
@@ -18,12 +18,13 @@ import { pickEquippedArtSet } from "@Store/thunks";
 
 // Component
 import { Button, CollapseSpace, Modal } from "@Src/pure-components";
-import { ArtifactForge, ArtifactInventory, Tavern } from "@Src/components";
+import { ArtifactForge, ArtifactForgeProps, ArtifactInventory, ArtifactInventoryProps, Tavern } from "@Src/components";
 import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 import { LoadoutSelect } from "./LoadoutSelect";
 
 import styles from "../styles.module.scss";
+import { createArtifact } from "@Src/utils/creators";
 
 type ModalType = "ARTIFACT_LOADOUT" | "";
 
@@ -74,7 +75,7 @@ export default function SectionArtifacts() {
     } else {
       setSelectingSrcType(true);
 
-      /** reserve type for onClickSourceTye */
+      /** reserve type for onSelectArtifactSourceType */
 
       setForge({
         active: false,
@@ -88,7 +89,8 @@ export default function SectionArtifacts() {
     }
   };
 
-  const onClickSourceType = (source: ArtifactSourceType) => {
+  // Precedent event: click tab without artifact => ask select source type
+  const onSelectArtifactSourceType = (source: ArtifactSourceType) => {
     switch (source) {
       case "INVENTORY":
         setInventory({
@@ -107,7 +109,71 @@ export default function SectionArtifacts() {
     setSelectingSrcType(false);
   };
 
-  const onRequestChangeActivePiece = (source: ArtifactSourceType) => {
+  const replaceArtifact = (type: ArtifactType, newPiece: Artifact, shouldKeepStats = false) => {
+    const pieceIndex = ARTIFACT_TYPES.indexOf(type);
+
+    dispatch(changeArtifact({ pieceIndex, newPiece, shouldKeepStats }));
+    setActiveTabIndex(pieceIndex);
+  };
+
+  // ===== CHANGE ARTIFACT(S) WITH FORGE =====
+
+  const onRequestForgeArtifact = () => {
+    setForge({
+      active: true,
+      initialType: "flower",
+      allowBatchForging: true,
+    });
+  };
+
+  const onForgeArtifact: ArtifactForgeProps["onForgeArtifact"] = (artifact) => {
+    const newPiece = {
+      ...artifact,
+      ID: Date.now(),
+    };
+    replaceArtifact(artifact.type, newPiece, $AppSettings.get("doKeepArtStatsOnSwitch"));
+  };
+
+  const onForgeArtifactBatch: ArtifactForgeProps["onForgeArtifactBatch"] = (code, types, rarity) => {
+    let rootID = Date.now();
+
+    for (const type of types) {
+      const newPiece = createArtifact({ code, type, rarity });
+
+      dispatch(
+        changeArtifact({
+          pieceIndex: ARTIFACT_TYPES.indexOf(type),
+          newPiece: { ...newPiece, ID: rootID++ },
+          shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
+        })
+      );
+    }
+  };
+
+  // ===== CHANGE ARTIFACT(S) WITH INVENTORY =====
+
+  const onRequestSelectInventoryArtifact = () => {
+    setInventory({
+      active: true,
+      initialType: "flower",
+    });
+  };
+
+  const onSelectInventoryArtifact: ArtifactInventoryProps["onClickButton"] = (artifact) => {
+    replaceArtifact(artifact.type, userItemToCalcItem(artifact));
+
+    const artifactSet = $AppData.getArtifactSet(artifact.code);
+
+    if (artifactSet) {
+      notification.success({
+        content: `Selected ${artifactSet.name} (${artifact.type})`,
+      });
+    }
+  };
+
+  // ===== ACTIONS WITH ACTIVE ARTIFACT =====
+
+  const onRequestChangeActiveArtifact = (source: ArtifactSourceType) => {
     const newState = {
       active: true,
       initialType: ARTIFACT_TYPES[activeTabIndex],
@@ -122,35 +188,13 @@ export default function SectionArtifacts() {
     }
   };
 
-  const onRequestSelectInventoryArtifact = () => {
-    setInventory({
-      active: true,
-      initialType: "flower",
-    });
-  };
-
-  const onRequestForgeArtifact = () => {
-    setForge({
-      active: true,
-      initialType: "flower",
-      allowBatchForging: true,
-    });
-  };
-
-  const onClickRemovePiece = () => {
+  const onRemoveArtifact = () => {
     setActiveTabIndex(-1);
-  };
-
-  const replaceArtifact = (type: ArtifactType, newPiece: Artifact, shouldKeepStats = false) => {
-    const pieceIndex = ARTIFACT_TYPES.indexOf(type);
-
-    dispatch(changeArtifact({ pieceIndex, newPiece, shouldKeepStats }));
-    setActiveTabIndex(pieceIndex);
   };
 
   const renderSourceOption = (label: string, value: ArtifactSourceType, icon: JSX.Element) => {
     return (
-      <button className="group" onClick={() => onClickSourceType(value)}>
+      <button className="group" onClick={() => onSelectArtifactSourceType(value)}>
         <p className="w-24 h-24 rounded bg-dark-900 font-bold flex-center flex-col opacity-90 group-hover:opacity-100">
           <span className="mb-2 block h-8 flex-center">{icon}</span>
           <span>{label}</span>
@@ -197,8 +241,8 @@ export default function SectionArtifacts() {
           <ArtifactInfo
             artifact={activeArtifact}
             pieceIndex={activeTabIndex}
-            onClickRemovePiece={onClickRemovePiece}
-            onClickChangePiece={onRequestChangeActivePiece}
+            onRequestChange={onRequestChangeActiveArtifact}
+            onRemove={onRemoveArtifact}
           />
         )}
       </CollapseSpace>
@@ -210,6 +254,24 @@ export default function SectionArtifacts() {
           <Button title="New" icon={<GiAnvil />} onClick={onRequestForgeArtifact} />
         </div>
       ) : null}
+
+      <ArtifactForge
+        {...forge}
+        hasConfigStep
+        hasMultipleMode
+        onForgeArtifact={onForgeArtifact}
+        onForgeArtifactBatch={onForgeArtifactBatch}
+        onClose={() => setForge({ active: false })}
+      />
+
+      <ArtifactInventory
+        {...inventory}
+        hasMultipleMode
+        currentArtifacts={artifacts}
+        buttonText="Select"
+        onClickButton={onSelectInventoryArtifact}
+        onClose={() => setInventory({ active: false })}
+      />
 
       <Modal
         active={selectingSrcType}
@@ -223,41 +285,6 @@ export default function SectionArtifacts() {
           {renderSourceOption("New", "FORGE", <GiAnvil className="text-3xl" />)}
         </div>
       </Modal>
-
-      <ArtifactForge
-        // active={forge.active}
-        // initialTypes={forge.initialType}
-        {...forge}
-        hasConfigStep
-        hasMultipleMode
-        onForgeArtifact={(artifact) => {
-          const newPiece = {
-            ...artifact,
-            ID: Date.now(),
-          };
-          replaceArtifact(artifact.type, newPiece, $AppSettings.get("doKeepArtStatsOnSwitch"));
-        }}
-        onClose={() => setForge({ active: false })}
-      />
-
-      <ArtifactInventory
-        {...inventory}
-        hasMultipleMode
-        currentArtifacts={artifacts}
-        buttonText="Select"
-        onClickButton={(artifact) => {
-          replaceArtifact(artifact.type, userItemToCalcItem(artifact));
-
-          const artifactSet = $AppData.getArtifactSet(artifact.code);
-
-          if (artifactSet) {
-            notification.success({
-              content: `Selected ${artifactSet.name} (${artifact.type})`,
-            });
-          }
-        }}
-        onClose={() => setInventory({ active: false })}
-      />
 
       <LoadoutSelect active={modalType === "ARTIFACT_LOADOUT"} onClose={closeModal} />
     </div>

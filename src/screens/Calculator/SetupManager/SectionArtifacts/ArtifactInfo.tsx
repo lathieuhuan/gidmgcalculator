@@ -30,10 +30,10 @@ export type ArtifactSourceType = "INVENTORY" | "FORGE";
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
   pieceIndex: number;
-  onClickRemovePiece: () => void;
-  onClickChangePiece: (source: ArtifactSourceType) => void;
+  onRemove: () => void;
+  onRequestChange: (source: ArtifactSourceType) => void;
 }
-export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClickChangePiece }: ArtifactInfoProps) {
+export function ArtifactInfo({ artifact, pieceIndex, onRemove, onRequestChange }: ArtifactInfoProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -117,12 +117,12 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
           icon={<FaTrashAlt />}
           onClick={() => {
             dispatch(changeArtifact({ pieceIndex, newPiece: null }));
-            onClickRemovePiece();
+            onRemove();
           }}
         />
         <Button title="Save" icon={<FaSave />} onClick={() => setIsSaving(true)} />
-        <Button title="Inventory" icon={<MdInventory />} onClick={() => onClickChangePiece("INVENTORY")} />
-        <Button title="New" icon={<GiAnvil />} onClick={() => onClickChangePiece("FORGE")} />
+        <Button title="Inventory" icon={<MdInventory />} onClick={() => onRequestChange("INVENTORY")} />
+        <Button title="New" icon={<GiAnvil />} onClick={() => onRequestChange("FORGE")} />
       </div>
 
       <Modal.Core active={isSaving} preset="small" onClose={closeModal}>

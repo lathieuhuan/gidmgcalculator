@@ -2,16 +2,16 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 
 import { ButtonGroup, ButtonGroupItem, Star } from "@Src/pure-components";
-import { Artifact, Rarity } from "@Src/types";
+import { Artifact } from "@Src/types";
 import { ArtifactCard } from "../../ArtifactCard";
 
 interface ArtifactConfigProps {
   config?: Artifact;
   typeSelect?: ReactNode;
   maxRarity?: number;
-  batchConfig?: ReactNode;
+  batchConfigView?: ReactNode;
   moreButtons?: ButtonGroupItem[];
-  onChangeRarity?: (rarity: Rarity) => void;
+  onChangeRarity?: (rarity: number) => void;
   onUpdateConfig?: (properties: Partial<Artifact>) => void;
   onSelect?: (config: Artifact) => void;
 }
@@ -19,7 +19,7 @@ export const ArtifactConfig = ({
   config,
   typeSelect,
   maxRarity = 5,
-  batchConfig,
+  batchConfigView,
   moreButtons = [],
   onChangeRarity,
   onUpdateConfig,
@@ -72,7 +72,7 @@ export const ArtifactConfig = ({
       ) : null}
 
       <div className="grow hide-scrollbar" style={{ width: "19.5rem" }}>
-        {batchConfig ?? (
+        {batchConfigView ?? (
           <div className="h-full p-4 bg-dark-900 rounded-lg flex flex-col">
             <div className="grow hide-scrollbar">
               <ArtifactCard

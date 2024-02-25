@@ -15,8 +15,6 @@ import {
 
 export type Nation = "outland" | "mondstadt" | "liyue" | "inazuma" | "sumeru" | "natlan" | "fontaine" | "snezhnaya";
 
-export type Rarity = number;
-
 export type Level = (typeof LEVELS)[number];
 
 export type WeaponType = (typeof WEAPON_TYPES)[number];
@@ -91,7 +89,7 @@ export type Artifact = {
   ID: number;
   code: number;
   type: ArtifactType;
-  rarity: Rarity;
+  rarity: number;
   level: number;
   mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];

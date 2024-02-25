@@ -7,7 +7,6 @@ import type {
   CalcArtifact,
   CalcSetup,
   ModifierCtrl,
-  Rarity,
   Resonance,
   SetupImportInfo,
   Target,
@@ -250,7 +249,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
       ID: seedID++,
       code: +artCode,
       type: artType,
-      rarity: +rarity as Rarity,
+      rarity: +rarity,
       level: +artLevel,
       mainStatType: ATTRIBUTE_STAT_TYPES[+mainStatTypeIndex],
       subStats: subStats.map((str) => {

@@ -1,8 +1,7 @@
-import type { Rarity } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 interface GearIconProps {
-  item: { beta?: boolean; icon: string; rarity?: Rarity };
+  item: { beta?: boolean; icon: string; rarity?: number };
   disabled?: boolean;
   onClick?: () => void;
 }

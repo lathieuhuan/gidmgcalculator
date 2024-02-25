@@ -1,6 +1,6 @@
 import { FaChevronDown } from "react-icons/fa";
 
-import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
+import type { AttributeStat, ArtifactSubStat } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
 import { percentSign } from "@Src/utils";
 
@@ -14,7 +14,7 @@ import { Input } from "@Src/pure-components";
 export interface ArtifactSubstatsControlProps {
   className?: string;
   mutable?: boolean;
-  rarity: Rarity;
+  rarity: number;
   mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];
   onChangeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;

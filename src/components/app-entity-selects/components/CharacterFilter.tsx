@@ -3,7 +3,7 @@ import clsx, { ClassValue } from "clsx";
 import { ELEMENT_TYPES } from "@Src/constants";
 import { useWeaponTypeSelect } from "@Src/hooks";
 import { useIconSelect, useRaritySelect } from "@Src/pure-hooks";
-import { ElementType, Rarity, WeaponType } from "@Src/types";
+import { ElementType, WeaponType } from "@Src/types";
 
 // Component
 import { ElementIcon } from "@Src/components";
@@ -12,7 +12,7 @@ import { ButtonGroup, FilterTemplate } from "@Src/pure-components";
 export type CharacterFilterState = {
   weaponTypes: WeaponType[];
   elementTypes: ElementType[];
-  rarities: Rarity[];
+  rarities: number[];
 };
 
 interface CharacterFilterProps {

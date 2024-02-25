@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { Level, Rarity } from "@Src/types";
+import type { Level } from "@Src/types";
 import { $AppCharacter } from "@Src/services";
 import { Image } from "@Src/pure-components";
 
@@ -9,7 +9,7 @@ interface ItemThumbProps {
   item: {
     beta?: boolean;
     icon: string;
-    rarity: Rarity;
+    rarity: number;
     level: Level | number;
     refi?: number;
     owner?: string | null;

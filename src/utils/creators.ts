@@ -7,7 +7,6 @@ import type {
   ElementModCtrl,
   ModifierCtrl,
   ModInputConfig,
-  Rarity,
   Target,
   Teammate,
   WeaponType,
@@ -46,7 +45,7 @@ export const createWeapon = ({ type, code }: CreateWeaponArgs): Omit<CalcWeapon,
 interface CreateArtifactArgs {
   type: ArtifactType;
   code: number;
-  rarity: Rarity;
+  rarity: number;
 }
 export const createArtifact = ({ type, code, rarity }: CreateArtifactArgs): Omit<CalcArtifact, "ID"> => {
   const { artLevel } = $AppSettings.get();

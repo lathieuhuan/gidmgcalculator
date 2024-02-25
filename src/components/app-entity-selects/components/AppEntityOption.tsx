@@ -2,14 +2,14 @@ import clsx from "clsx";
 import { memo } from "react";
 import { Image, BetaMark } from "@Src/pure-components";
 import { ElementIcon } from "@Src/components";
-import { Rarity, ElementType, WeaponType } from "@Src/types";
+import { ElementType, WeaponType } from "@Src/types";
 
 export type AppEntityOptionModel = {
   code: number;
   beta?: boolean;
   name: string;
   icon: string;
-  rarity?: Rarity;
+  rarity?: number;
   vision?: ElementType;
   /** Weapon type or Artifact type */
   type?: string;
