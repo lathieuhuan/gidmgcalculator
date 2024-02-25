@@ -11,7 +11,7 @@ import { createArtifact } from "@Src/utils/creators";
 
 // Component
 import { ButtonGroup, Modal } from "@Src/pure-components";
-import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
+import { AppEntitySelect, AppEntitySelectProps, AfterSelectAppEntity } from "./components/AppEntitySelect";
 import { ArtifactConfig } from "./components/ArtifactConfig";
 
 export interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
@@ -88,9 +88,8 @@ const ArtifactSmith = ({
     });
   };
 
-  let batchConfigView: React.ReactNode = null;
-
-  if (batchForging && artifactConfig) {
+  const renderBatchConfigNode = (afterSelect: AfterSelectAppEntity) => {
+    if (!batchForging || !artifactConfig) return;
     const { name } = $AppData.getArtifactSet(artifactConfig.code) || {};
 
     const onStopBatchForging = () => {
@@ -100,9 +99,10 @@ const ArtifactSmith = ({
 
     const onBatchForge = () => {
       onForgeArtifactBatch?.(artifactConfig.code, artifactTypes, artifactConfig.rarity);
+      afterSelect(artifactConfig.code, artifactTypes.length);
     };
 
-    batchConfigView = (
+    return (
       <div className="pt-4 px-2 border-t border-light-900">
         <div className="flex items-start">
           <FaInfoCircle className="mr-1.5 text-blue-400 text-lg" />
@@ -134,7 +134,7 @@ const ArtifactSmith = ({
         />
       </div>
     );
-  }
+  };
 
   return (
     <AppEntitySelect
@@ -147,7 +147,7 @@ const ArtifactSmith = ({
             config={artifactConfig}
             maxRarity={maxRarity}
             typeSelect={forcedType ? null : renderArtifactTypeSelect()}
-            batchConfigView={batchConfigView}
+            batchConfigNode={renderBatchConfigNode(afterSelect)}
             moreButtons={
               allowBatchForging
                 ? [

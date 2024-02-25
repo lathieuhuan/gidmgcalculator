@@ -34,14 +34,9 @@ const sizeCls: Partial<Record<ButtonSize, string>> = {
 };
 
 const iconSizeCls: Partial<Record<ButtonSize, string>> = {
-  small: "w-6 h-6",
-  medium: "w-8 h-8",
-  large: "w-9 h-9",
-};
-
-const svgSizeCls: Partial<Record<ButtonSize, string>> = {
-  medium: "text-base",
-  large: "text-xl",
+  small: "w-6 h-6 text-sm",
+  medium: "w-8 h-8 text-base",
+  large: "w-9 h-9 text-xl",
 };
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
@@ -96,7 +91,7 @@ export const Button = ({
       )}
       {...rest}
     >
-      {icon ? <span className={clsx("shrink-0", !children && svgSizeCls[size])}>{icon}</span> : null}
+      {icon ? <span className="shrink-0">{icon}</span> : null}
       {children ? <span>{children}</span> : null}
     </button>
   );

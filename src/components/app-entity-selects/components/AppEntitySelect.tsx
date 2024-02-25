@@ -13,6 +13,8 @@ type Return = boolean;
 
 export type OptionValidity = Return | Promise<Return>;
 
+export type AfterSelectAppEntity = (itemCode: number, quantity?: number) => void;
+
 interface SelectOptionsProps<T> {
   className?: string;
   data: T[];
@@ -23,7 +25,7 @@ interface SelectOptionsProps<T> {
   /** Only in multiple mode, implemented in afterSelect */
   shouldHideSelected?: boolean;
   /** Remember to handle case shouldHideSelected */
-  renderOptionConfig?: (afterSelect: (code: number) => void) => ReactNode;
+  renderOptionConfig?: (afterSelect: AfterSelectAppEntity) => ReactNode;
   onSelect?: (entity: T, isConfigStep: boolean) => OptionValidity;
   onClose: () => void;
 }
@@ -121,13 +123,13 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
     }
   }, [hiddenCodes, pickedCodes, keyword]);
 
-  const afterSelect = (itemCode: number) => {
+  const afterSelect: AfterSelectAppEntity = (itemCode, quantity = 1) => {
     if (isMultiSelect) {
       if (shouldHideSelected) {
         return setPickedCodes(new Set(pickedCodes).add(itemCode));
       }
       const newCounts = { ...itemCounts };
-      newCounts[itemCode] = (newCounts[itemCode] || 0) + 1;
+      newCounts[itemCode] = (newCounts[itemCode] || 0) + quantity;
 
       return setItemCounts(newCounts);
     }

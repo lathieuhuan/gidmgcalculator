@@ -4,7 +4,7 @@ import { MdInventory } from "react-icons/md";
 import { GiAnvil } from "react-icons/gi";
 import { FaToolbox } from "react-icons/fa";
 
-import type { Artifact, ArtifactType } from "@Src/types";
+import type { Artifact, ArtifactType, CalcArtifact } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
@@ -36,7 +36,6 @@ type InventoryState = {
 type ForgeState = {
   active: boolean;
   initialType?: ArtifactType;
-  allowBatchForging?: boolean;
 };
 
 export default function SectionArtifacts() {
@@ -122,7 +121,6 @@ export default function SectionArtifacts() {
     setForge({
       active: true,
       initialType: "flower",
-      allowBatchForging: true,
     });
   };
 
@@ -148,6 +146,18 @@ export default function SectionArtifacts() {
         })
       );
     }
+
+    const artifactSet = $AppData.getArtifactSet(code);
+
+    if (artifactSet) {
+      notification.success({
+        content: (
+          <>
+            Forged {artifactSet.name}: <span className="capitalize">{types.join(", ")}</span>
+          </>
+        ),
+      });
+    }
   };
 
   // ===== CHANGE ARTIFACT(S) WITH INVENTORY =====
@@ -171,7 +181,7 @@ export default function SectionArtifacts() {
     }
   };
 
-  // ===== ACTIONS WITH ACTIVE ARTIFACT =====
+  // ===== ACTIONS TOWARDS ACTIVE ARTIFACT =====
 
   const onRequestChangeActiveArtifact = (source: ArtifactSourceType) => {
     const newState = {
@@ -190,6 +200,17 @@ export default function SectionArtifacts() {
 
   const onRemoveArtifact = () => {
     setActiveTabIndex(-1);
+  };
+
+  const onSelectLoadout = (artifacts: CalcArtifact[]) => {
+    for (const artifact of artifacts) {
+      dispatch(
+        changeArtifact({
+          pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
+          newPiece: artifact,
+        })
+      );
+    }
   };
 
   const renderSourceOption = (label: string, value: ArtifactSourceType, icon: JSX.Element) => {
@@ -256,9 +277,11 @@ export default function SectionArtifacts() {
       ) : null}
 
       <ArtifactForge
-        {...forge}
+        active={forge.active}
+        initialTypes={forge.initialType}
         hasConfigStep
         hasMultipleMode
+        allowBatchForging
         onForgeArtifact={onForgeArtifact}
         onForgeArtifactBatch={onForgeArtifactBatch}
         onClose={() => setForge({ active: false })}
@@ -286,7 +309,7 @@ export default function SectionArtifacts() {
         </div>
       </Modal>
 
-      <LoadoutSelect active={modalType === "ARTIFACT_LOADOUT"} onClose={closeModal} />
+      <LoadoutSelect active={modalType === "ARTIFACT_LOADOUT"} onSelect={onSelectLoadout} onClose={closeModal} />
     </div>
   );
 }
