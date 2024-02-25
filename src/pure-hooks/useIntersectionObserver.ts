@@ -13,6 +13,7 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
         const dataId = entry.target.getAttribute("data-id");
 
         if (entry.isIntersecting && dataId) {
+          // @to-do: this trigger render every time intersection happens
           setVisibleItems((prevItemsVisible) => {
             const newItemsVisible = { ...prevItemsVisible };
             newItemsVisible[dataId] = true;

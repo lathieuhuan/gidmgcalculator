@@ -45,7 +45,7 @@ export function NavTabs({ ready, className = "", activeClassName, idleClassName,
           <button
             key={i}
             className={clsx(
-              "flex items-center font-semibold ",
+              "flex items-center",
               tab === atScreen ? activeClassName : ready ? idleClassName : "text-light-800",
               className
             )}

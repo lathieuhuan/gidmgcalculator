@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import { CSSProperties, useState } from "react";
 import { FaUser, FaQuestion } from "react-icons/fa";
 import { RiSwordFill } from "react-icons/ri";
@@ -14,7 +14,7 @@ interface ImageProps {
   src?: string;
   size?: string;
   alt?: string;
-  className?: string;
+  className?: ClassValue;
   style?: CSSProperties;
   placeholderCls?: string;
   imgCls?: string;

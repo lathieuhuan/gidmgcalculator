@@ -52,5 +52,5 @@ const DownloadCore = () => {
 export const Download = Modal.wrap(DownloadCore, {
   preset: "small",
   title: "Download",
-  className: "bg-dark-700",
+  className: "bg-dark-900",
 });

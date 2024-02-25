@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   AppMessage,
   AttackElement,
-  CalcArtifact,
   CalcSetupManageInfo,
   CalcWeapon,
   CharInfo,
@@ -411,15 +410,6 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
-    updateAllArtifact: (state, action: PayloadAction<(CalcArtifact | null)[]>) => {
-      const pieces = action.payload;
-      const setBonuses = getArtifactSetBonuses(pieces);
-      const setup = state.setupsById[state.activeId];
-      setup.artifacts = pieces;
-      setup.artBuffCtrls = setBonuses[0]?.bonusLv ? createArtifactBuffCtrls(true, setBonuses[0]) : [];
-
-      calculate(state);
-    },
     // MOD CTRLS
     updateResonance: (state, action: PayloadAction<PartiallyOptional<Resonance, "activated">>) => {
       const { vision, ...newInfo } = action.payload;
@@ -708,7 +698,6 @@ export const {
   updateWeapon,
   updateArtifact,
   changeArtifact,
-  updateAllArtifact,
   updateResonance,
   toggleModCtrl,
   changeModCtrlInput,

@@ -10,7 +10,7 @@ import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_
 import { $AppCharacter, $AppData } from "@Src/services";
 
 // Action
-import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
+import { initNewSession, updateMessage } from "./calculatorSlice";
 import { updateSetupImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
@@ -105,18 +105,6 @@ export const initNewSessionWithCharacter = (character: CharacterForInit): AppThu
         },
       })
     );
-  };
-};
-
-export const pickEquippedArtSet = (artifactIDs: (number | null)[]): AppThunk => {
-  return (dispatch, getState) => {
-    const { userArts } = getState().database;
-    const artifacts = artifactIDs.map((id) => {
-      const artifact = id ? findById(userArts, id) : undefined;
-      return artifact ? userItemToCalcItem(artifact) : null;
-    });
-
-    dispatch(updateAllArtifact(artifacts));
   };
 };
 

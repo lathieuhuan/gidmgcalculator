@@ -1,32 +1,43 @@
-import { useMemo, useState } from "react";
+import clsx from "clsx";
+import { useMemo, useState, useEffect } from "react";
 
-import { UserArtifact } from "@Src/types";
+import type { ElementType, UserArtifact } from "@Src/types";
 import { useSelector } from "@Store/hooks";
 import { selectUserArts, selectUserChars } from "@Store/userDatabaseSlice/selectors";
 import { $AppCharacter, $AppData } from "@Src/services";
 import { findById } from "@Src/utils";
+import { useIntersectionObserver } from "@Src/pure-hooks";
 
-import { Button, Image } from "@Src/pure-components";
+import { Button, Image, ItemCase } from "@Src/pure-components";
 
 type EquippedSetOption = {
   character: {
     code: number;
     name: string;
     icon: string;
-    rarity: number;
+    elementType: ElementType;
   };
   artifacts: UserArtifact[];
 };
 
 interface EquippedSetSelectProps {
-  onClickArtifact: (artifact: UserArtifact) => void;
+  keyword?: string;
+  onChangeArtifact: (artifact?: UserArtifact) => void;
   onSelectSet: (artifacts: UserArtifact[]) => void;
 }
-export const EquippedSetSelect = ({ onClickArtifact, onSelectSet }: EquippedSetSelectProps) => {
-  const [chosenCode, setChosenCode] = useState(0);
+export const EquippedSetSelect = ({ keyword, onChangeArtifact, onSelectSet }: EquippedSetSelectProps) => {
+  const [chosen, setChosen] = useState({
+    characterCode: 0,
+    artifactId: 0,
+  });
 
   const characters = useSelector(selectUserChars);
   const artifacts = useSelector(selectUserArts);
+
+  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
+
+  const shouldCheckKeyword = keyword && keyword.length >= 1;
+  const lowerKeyword = keyword?.toLowerCase() ?? "";
 
   const { options, imgMap } = useMemo(() => {
     const options: EquippedSetOption[] = [];
@@ -41,7 +52,7 @@ export const EquippedSetSelect = ({ onClickArtifact, onSelectSet }: EquippedSetS
             code: appChar.code,
             name: character.name,
             icon: appChar.icon,
-            rarity: appChar.rarity,
+            elementType: appChar.vision,
           },
           artifacts: [],
         };
@@ -64,50 +75,84 @@ export const EquippedSetSelect = ({ onClickArtifact, onSelectSet }: EquippedSetS
     };
   }, []);
 
+  useEffect(() => {
+    const chosenElmt = observedAreaRef.current?.querySelector(`.${observedItemCls}[data-id="${chosen.characterCode}"]`);
+
+    if (chosenElmt && window.getComputedStyle(chosenElmt).display === "none") {
+      setChosen({
+        characterCode: 0,
+        artifactId: 0,
+      });
+      onChangeArtifact(undefined);
+    }
+  }, [keyword]);
+
   return (
-    <div className="columns-1 lg:columns-2 gap-2">
-      {options.map(({ character, artifacts }, i) => {
-        return (
-          <div key={i} className="py-1 break-inside-avoid">
-            <div className="p-2 rounded-lg bg-dark-900">
-              <div className="flex justify-between items-start">
-                <div className="flex space-x-4">
-                  <div className="w-14 h-14">
-                    <Image src={character.icon} imgType="character" />
+    <div ref={observedAreaRef} className="pr-2 h-full custom-scrollbar">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        {options.map(({ character, artifacts }, i) => {
+          const visible = visibleItems[character.code];
+          const hidden = shouldCheckKeyword && !character.name.toLowerCase().includes(lowerKeyword);
+          const opacityCls = `transition-opacity duration-400 ${visible ? "opacity-100" : "opacity-0"}`;
+
+          return (
+            <div
+              key={i}
+              className={clsx("break-inside-avoid relative", observedItemCls, hidden && "hidden")}
+              style={{ height: "8.75rem" }}
+              data-id={character.code}
+            >
+              <Button
+                className="absolute top-3 right-3"
+                variant={character.code === chosen.characterCode ? "positive" : "default"}
+                size="small"
+                onClick={() => onSelectSet(artifacts)}
+              >
+                Select
+              </Button>
+
+              <div className="px-2 py-3 rounded-lg bg-dark-900">
+                <div className="flex items-start space-x-2">
+                  <div className={`w-14 h-14 ${opacityCls}`}>
+                    {visible && <Image src={character.icon} imgType="character" />}
                   </div>
-                  <p className={`mt-1 text-lg text-rarity-${character.rarity} font-semibold`}>{character.name}</p>
+                  <p className={`text-lg text-${character.elementType} font-bold`}>{character.name}</p>
                 </div>
 
-                <Button
-                  className="m-1"
-                  variant={character.code === chosenCode ? "positive" : "default"}
-                  size="small"
-                  onClick={() => onSelectSet(artifacts)}
-                >
-                  Select
-                </Button>
-              </div>
-
-              <div className="mt-2 flex space-x-2">
-                {artifacts.map((artifact, j) => {
-                  return (
-                    <div
-                      key={j}
-                      className="w-12 h-12"
-                      onClick={() => {
-                        setChosenCode(character.code);
-                        onClickArtifact(artifact);
-                      }}
-                    >
-                      <Image src={imgMap[`${artifact.code}-${artifact.type}`]} imgType="artifact" />
-                    </div>
-                  );
-                })}
+                <div className={`mt-3 flex space-x-2`}>
+                  {artifacts.map((artifact, j) => {
+                    return (
+                      <ItemCase
+                        key={j}
+                        className={`w-12 h-12 cursor-pointer ${opacityCls}`}
+                        chosen={artifact.ID === chosen.artifactId}
+                        onClick={() => {
+                          setChosen({
+                            characterCode: character.code,
+                            artifactId: artifact.ID,
+                          });
+                          onChangeArtifact(artifact);
+                        }}
+                      >
+                        {(className, imgCls) => {
+                          return visible ? (
+                            <Image
+                              className={["p-1 rounded-circle", className]}
+                              imgCls={imgCls}
+                              src={imgMap[`${artifact.code}-${artifact.type}`]}
+                              imgType="artifact"
+                            />
+                          ) : null;
+                        }}
+                      </ItemCase>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };

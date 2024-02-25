@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import isEqual from "react-fast-compare";
-import { FaSave, FaTrashAlt, FaChevronDown } from "react-icons/fa";
+import { FaSave, FaTrashAlt, FaChevronDown, FaToolbox } from "react-icons/fa";
 import { MdInventory } from "react-icons/md";
 import { GiAnvil } from "react-icons/gi";
 
@@ -25,7 +25,7 @@ import { useStoreSnapshot } from "@Src/features";
 import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
-export type ArtifactSourceType = "INVENTORY" | "FORGE";
+export type ArtifactSourceType = "LOADOUT" | "INVENTORY" | "FORGE";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
@@ -121,8 +121,9 @@ export function ArtifactInfo({ artifact, pieceIndex, onRemove, onRequestChange }
           }}
         />
         <Button title="Save" icon={<FaSave />} onClick={() => setIsSaving(true)} />
+        <Button title="Loadout" icon={<FaToolbox />} onClick={() => onRequestChange("LOADOUT")} />
         <Button title="Inventory" icon={<MdInventory />} onClick={() => onRequestChange("INVENTORY")} />
-        <Button title="New" icon={<GiAnvil />} onClick={() => onRequestChange("FORGE")} />
+        <Button title="New" icon={<GiAnvil className="text-lg" />} onClick={() => onRequestChange("FORGE")} />
       </div>
 
       <Modal.Core active={isSaving} preset="small" onClose={closeModal}>

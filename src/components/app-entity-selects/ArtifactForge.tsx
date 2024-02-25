@@ -93,8 +93,9 @@ const ArtifactSmith = ({
     const { name } = $AppData.getArtifactSet(artifactConfig.code) || {};
 
     const onStopBatchForging = () => {
+      const newArtifactType = artifactTypes[0] ?? "flower";
       setBatchForging(false);
-      updateArtifactTypes(["flower"]);
+      updateArtifactTypes([newArtifactType]);
     };
 
     const onBatchForge = () => {

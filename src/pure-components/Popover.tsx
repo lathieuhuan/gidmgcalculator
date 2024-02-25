@@ -1,11 +1,11 @@
 import clsx from "clsx";
 
-interface PopoverPros {
+export interface PopoverProps {
   className?: string;
   as?: keyof JSX.IntrinsicElements;
   active?: boolean;
   withTooltipStyle?: boolean;
-  origin?: "bottom-center" | "bottom-right" | "top-left";
+  origin?: "bottom-center" | "bottom-right" | "top-left" | "top-right";
   children: React.ReactNode;
 }
 export const Popover = ({
@@ -15,12 +15,13 @@ export const Popover = ({
   withTooltipStyle,
   origin = "bottom-center",
   children,
-}: PopoverPros) => {
+}: PopoverProps) => {
   const Tag = as as keyof JSX.IntrinsicElements;
   const originClasses = {
     "bottom-center": "origin-bottom-center",
     "bottom-right": "origin-bottom-right",
     "top-left": "origin-top-left",
+    "top-right": "origin-top-right",
   } as const;
 
   return (

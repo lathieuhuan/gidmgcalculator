@@ -78,5 +78,5 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
 export const FileUpload = Modal.wrap(FileUploadCore, {
   preset: "small",
   title: "Upload",
-  className: "bg-dark-700",
+  className: "bg-dark-900",
 });

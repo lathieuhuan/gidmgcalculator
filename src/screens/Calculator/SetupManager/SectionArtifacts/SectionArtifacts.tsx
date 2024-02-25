@@ -7,24 +7,25 @@ import { FaToolbox } from "react-icons/fa";
 import type { Artifact, ArtifactType, CalcArtifact } from "@Src/types";
 import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
+
+// Util
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
 import { notification } from "@Src/utils/notification";
+import { createArtifact } from "@Src/utils/creators";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeArtifact } from "@Store/calculatorSlice";
 import { selectArtifacts } from "@Store/calculatorSlice/selectors";
-import { pickEquippedArtSet } from "@Store/thunks";
 
 // Component
 import { Button, CollapseSpace, Modal } from "@Src/pure-components";
-import { ArtifactForge, ArtifactForgeProps, ArtifactInventory, ArtifactInventoryProps, Tavern } from "@Src/components";
+import { ArtifactForge, ArtifactForgeProps, ArtifactInventory, ArtifactInventoryProps } from "@Src/components";
 import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 import { LoadoutSelect } from "./LoadoutSelect";
 
 import styles from "../styles.module.scss";
-import { createArtifact } from "@Src/utils/creators";
 
 type ModalType = "ARTIFACT_LOADOUT" | "";
 
@@ -91,6 +92,9 @@ export default function SectionArtifacts() {
   // Precedent event: click tab without artifact => ask select source type
   const onSelectArtifactSourceType = (source: ArtifactSourceType) => {
     switch (source) {
+      case "LOADOUT":
+        onRequestSelectArtifactLoadout();
+        break;
       case "INVENTORY":
         setInventory({
           active: true,
@@ -113,6 +117,45 @@ export default function SectionArtifacts() {
 
     dispatch(changeArtifact({ pieceIndex, newPiece, shouldKeepStats }));
     setActiveTabIndex(pieceIndex);
+  };
+
+  // ===== CHANGE ARTIFACTS WITH LOADOUTS =====
+
+  const onRequestSelectArtifactLoadout = () => {
+    setModalType("ARTIFACT_LOADOUT");
+  };
+
+  const onSelectLoadout = (artifacts: CalcArtifact[]) => {
+    for (const artifact of artifacts) {
+      dispatch(
+        changeArtifact({
+          pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
+          newPiece: artifact,
+        })
+      );
+    }
+    closeModal();
+  };
+
+  // ===== CHANGE ARTIFACT(S) WITH INVENTORY =====
+
+  const onRequestSelectInventoryArtifact = () => {
+    setInventory({
+      active: true,
+      initialType: "flower",
+    });
+  };
+
+  const onSelectInventoryArtifact: ArtifactInventoryProps["onClickButton"] = (artifact) => {
+    replaceArtifact(artifact.type, userItemToCalcItem(artifact));
+
+    const artifactSet = $AppData.getArtifactSet(artifact.code);
+
+    if (artifactSet) {
+      notification.success({
+        content: `Selected ${artifactSet.name} (${artifact.type})`,
+      });
+    }
   };
 
   // ===== CHANGE ARTIFACT(S) WITH FORGE =====
@@ -160,27 +203,6 @@ export default function SectionArtifacts() {
     }
   };
 
-  // ===== CHANGE ARTIFACT(S) WITH INVENTORY =====
-
-  const onRequestSelectInventoryArtifact = () => {
-    setInventory({
-      active: true,
-      initialType: "flower",
-    });
-  };
-
-  const onSelectInventoryArtifact: ArtifactInventoryProps["onClickButton"] = (artifact) => {
-    replaceArtifact(artifact.type, userItemToCalcItem(artifact));
-
-    const artifactSet = $AppData.getArtifactSet(artifact.code);
-
-    if (artifactSet) {
-      notification.success({
-        content: `Selected ${artifactSet.name} (${artifact.type})`,
-      });
-    }
-  };
-
   // ===== ACTIONS TOWARDS ACTIVE ARTIFACT =====
 
   const onRequestChangeActiveArtifact = (source: ArtifactSourceType) => {
@@ -189,6 +211,9 @@ export default function SectionArtifacts() {
       initialType: ARTIFACT_TYPES[activeTabIndex],
     };
     switch (source) {
+      case "LOADOUT":
+        onRequestSelectArtifactLoadout();
+        break;
       case "INVENTORY":
         setInventory(newState);
         break;
@@ -200,17 +225,6 @@ export default function SectionArtifacts() {
 
   const onRemoveArtifact = () => {
     setActiveTabIndex(-1);
-  };
-
-  const onSelectLoadout = (artifacts: CalcArtifact[]) => {
-    for (const artifact of artifacts) {
-      dispatch(
-        changeArtifact({
-          pieceIndex: ARTIFACT_TYPES.indexOf(artifact.type),
-          newPiece: artifact,
-        })
-      );
-    }
   };
 
   const renderSourceOption = (label: string, value: ArtifactSourceType, icon: JSX.Element) => {
@@ -270,9 +284,9 @@ export default function SectionArtifacts() {
 
       {activeTabIndex < 0 ? (
         <div className="mt-4 px-4 flex justify-end gap-4">
-          <Button title="Loadout" icon={<FaToolbox />} onClick={() => setModalType("ARTIFACT_LOADOUT")} />
+          <Button title="Loadout" icon={<FaToolbox />} onClick={onRequestSelectArtifactLoadout} />
           <Button title="Inventory" icon={<MdInventory />} onClick={onRequestSelectInventoryArtifact} />
-          <Button title="New" icon={<GiAnvil />} onClick={onRequestForgeArtifact} />
+          <Button title="New" icon={<GiAnvil className="text-lg" />} onClick={onRequestForgeArtifact} />
         </div>
       ) : null}
 
@@ -304,6 +318,7 @@ export default function SectionArtifacts() {
         onClose={() => setSelectingSrcType(false)}
       >
         <div className="flex justify-center gap-4">
+          {renderSourceOption("Loadout", "LOADOUT", <FaToolbox className="text-2xl" />)}
           {renderSourceOption("Inventory", "INVENTORY", <MdInventory className="text-2xl" />)}
           {renderSourceOption("New", "FORGE", <GiAnvil className="text-3xl" />)}
         </div>

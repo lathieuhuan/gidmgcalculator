@@ -106,7 +106,7 @@ export function InventoryRack<T extends UserItem>({
 
   return (
     <div className="w-full flex flex-col" style={{ minWidth: "21rem" }}>
-      <div ref={observeArea} className="grow custom-scrollbar xm:pr-2">
+      <div ref={observeArea} className="grow custom-scrollbar xm:pr-2" style={{ overflowX: "hidden" }}>
         {!ready && (
           <div ref={pioneerRef} className={clsx("opacity-0", itemCls)}>
             <ItemThumbnail item={{ icon: "", level: "1/20", rarity: 5 }} />
