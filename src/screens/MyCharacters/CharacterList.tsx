@@ -26,10 +26,12 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
   const dispatch = useDispatch();
 
   const [gridviewOn, setGridviewOn] = useState(false);
-  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>([characters]);
+  const { observedAreaRef, visibleItems, getObservedItemProps, queryObservedItem } = useIntersectionObserver([
+    characters,
+  ]);
 
   const scrollList = (name: string) => {
-    document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
+    queryObservedItem(name)?.scrollIntoView();
   };
 
   useEffect(() => {
@@ -73,13 +75,10 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
               return (
                 <div
                   key={name}
-                  id={`side-icon-${name}`}
-                  data-id={name}
-                  className={clsx(
-                    observedItemCls,
+                  {...getObservedItemProps(name, [
                     "mx-1 border-b-3 border-transparent cursor-pointer",
-                    name === chosenChar && styles["active-cell"]
-                  )}
+                    name === chosenChar && styles["active-cell"],
+                  ])}
                   onClick={() => dispatch(chooseCharacter(name))}
                 >
                   <div

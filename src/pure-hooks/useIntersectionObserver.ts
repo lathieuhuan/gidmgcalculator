@@ -1,35 +1,56 @@
+import clsx, { ClassValue } from "clsx";
 import { useState, useEffect, useRef, type DependencyList } from "react";
 import { BooleanRecord } from "@Src/types";
 
-export const useIntersectionObserver = <T extends HTMLElement>(dependecies: DependencyList = []) => {
+const observedItemCls = "observed-item";
+const observedIdKey = "data-id";
+
+export const useIntersectionObserver = <T extends HTMLElement = HTMLDivElement>(dependecies: DependencyList = []) => {
   const observedAreaRef = useRef<T>(null);
   const [visibleItems, setVisibleItems] = useState<BooleanRecord>({});
 
-  const observedItemCls = "observed-item";
+  const getObservedItemProps = (id: string | number, className?: ClassValue) => {
+    return {
+      className: clsx(observedItemCls, className),
+      [observedIdKey]: id,
+    };
+  };
+
+  const queryAllObservedItems = () => {
+    return observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`);
+  };
+
+  const queryObservedItem = (id: string | number) => {
+    return observedAreaRef.current?.querySelector(`.${observedItemCls}[${observedIdKey}="${id}"]`);
+  };
 
   useEffect(() => {
-    const handleIntersection: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        const dataId = entry.target.getAttribute("data-id");
+    let visibleItemsRef = { ...visibleItems };
 
-        if (entry.isIntersecting && dataId) {
-          // @to-do: this trigger render every time intersection happens
-          setVisibleItems((prevItemsVisible) => {
-            const newItemsVisible = { ...prevItemsVisible };
-            newItemsVisible[dataId] = true;
-            return newItemsVisible;
-          });
+    const handleIntersection: IntersectionObserverCallback = (entries) => {
+      let hasChanged = false;
+      const newItemsVisible = { ...visibleItemsRef };
+
+      entries.forEach((entry) => {
+        const itemId = entry.target.getAttribute(observedIdKey);
+
+        if (entry.isIntersecting && itemId && !newItemsVisible[itemId]) {
+          newItemsVisible[itemId] = true;
+          hasChanged = true;
         }
       });
+
+      if (hasChanged) {
+        setVisibleItems(newItemsVisible);
+        visibleItemsRef = newItemsVisible;
+      }
     };
 
     const observer = new IntersectionObserver(handleIntersection, {
       root: observedAreaRef.current,
     });
 
-    observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`).forEach((item) => {
-      observer.observe(item);
-    });
+    queryAllObservedItems()?.forEach((item) => observer.observe(item));
 
     return () => observer.disconnect();
   }, dependecies);
@@ -38,5 +59,8 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
     observedAreaRef,
     observedItemCls,
     visibleItems,
+    getObservedItemProps,
+    queryAllObservedItems,
+    queryObservedItem,
   };
 };

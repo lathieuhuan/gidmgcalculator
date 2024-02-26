@@ -55,7 +55,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   const shouldCheckKeyword = keyword && keyword.length >= 1;
   const lowerKeyword = keyword?.toLowerCase() ?? "";
 
-  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
+  const { observedAreaRef, visibleItems, getObservedItemProps, queryAllObservedItems } = useIntersectionObserver();
 
   useLayoutEffect(() => {
     const handleEnter = (e: KeyboardEvent) => {
@@ -65,7 +65,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
         document.activeElement === inputRef.current &&
         inputRef.current.value.length
       ) {
-        const itemElmts = observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`) || [];
+        const itemElmts = queryAllObservedItems() || [];
 
         for (const elmt of itemElmts) {
           if (window.getComputedStyle(elmt).display !== "none") {
@@ -88,7 +88,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
 
   useLayoutEffect(() => {
     // check if no item visible
-    const itemElmts = observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`) || [];
+    const itemElmts = queryAllObservedItems() || [];
     let visibleElmts: Element[] = [];
 
     for (const elmt of itemElmts) {
@@ -189,9 +189,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
             return (
               <div
                 key={item.code}
-                data-id={item.code}
-                data-name={item.name}
-                className={clsx("grow-0 p-2 relative", observedItemCls, itemWidthCls, hidden && "hidden")}
+                {...getObservedItemProps(item.code, ["grow-0 p-2 relative", itemWidthCls, hidden && "hidden"])}
               >
                 <ItemCase
                   chosen={item.code === chosenCode}

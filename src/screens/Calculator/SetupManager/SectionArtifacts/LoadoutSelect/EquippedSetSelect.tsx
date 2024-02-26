@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useMemo, useState, useEffect } from "react";
 
 import type { ElementType, UserArtifact } from "@Src/types";
@@ -34,7 +33,7 @@ export const EquippedSetSelect = ({ keyword, onChangeArtifact, onSelectSet }: Eq
   const characters = useSelector(selectUserChars);
   const artifacts = useSelector(selectUserArts);
 
-  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
+  const { observedAreaRef, visibleItems, getObservedItemProps, queryObservedItem } = useIntersectionObserver();
 
   const shouldCheckKeyword = keyword && keyword.length >= 1;
   const lowerKeyword = keyword?.toLowerCase() ?? "";
@@ -76,7 +75,7 @@ export const EquippedSetSelect = ({ keyword, onChangeArtifact, onSelectSet }: Eq
   }, []);
 
   useEffect(() => {
-    const chosenElmt = observedAreaRef.current?.querySelector(`.${observedItemCls}[data-id="${chosen.characterCode}"]`);
+    const chosenElmt = queryObservedItem(chosen.characterCode);
 
     if (chosenElmt && window.getComputedStyle(chosenElmt).display === "none") {
       setChosen({
@@ -98,9 +97,8 @@ export const EquippedSetSelect = ({ keyword, onChangeArtifact, onSelectSet }: Eq
           return (
             <div
               key={i}
-              className={clsx("break-inside-avoid relative", observedItemCls, hidden && "hidden")}
               style={{ height: "8.75rem" }}
-              data-id={character.code}
+              {...getObservedItemProps(character.code, ["break-inside-avoid relative", hidden && "hidden"])}
             >
               <Button
                 className="absolute top-3 right-3"
