@@ -35,6 +35,7 @@ export default function Gears(props: GearsProps) {
   const [inventoryCode, setInventoryCode] = useState(-1);
 
   const isFromXmScreen = screenWatcher.isFromSize("xm");
+  const hiddenSpaceWidth = "19rem";
   const currentChar = weapon.owner;
 
   const toggleDetails = (type: GearsDetailType) => {
@@ -60,8 +61,8 @@ export default function Gears(props: GearsProps) {
 
   const detailComponent = activeDetails !== -1 && (
     <GearsDetail
-      className={clsx("h-full", isFromXmScreen && "px-3 py-4 border-l-2 border-dark-700 rounded-r-lg bg-dark-900")}
-      style={{ width: isFromXmScreen ? "20.25rem" : undefined }}
+      className={clsx("h-full", isFromXmScreen && "border-l-2 border-dark-700 rounded-l-none bg-dark-900")}
+      style={{ width: isFromXmScreen ? hiddenSpaceWidth : undefined }}
       activeDetails={activeDetails}
       {...props}
       setBonuses={setBonuses}
@@ -101,7 +102,7 @@ export default function Gears(props: GearsProps) {
           <div className="w-75 px-4 rounded-lg bg-dark-900 box-content">{overviewComponent}</div>
           <div
             className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
-            style={{ width: showingDetail ? "20.25rem" : 0 }}
+            style={{ width: showingDetail ? hiddenSpaceWidth : 0 }}
           >
             {detailComponent}
           </div>

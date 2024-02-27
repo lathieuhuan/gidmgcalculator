@@ -7,7 +7,7 @@ import { useStoreSnapshot } from "@Src/features";
 import { useElementSize } from "@Src/pure-hooks";
 
 // Conponent
-import { ButtonGroup, Modal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { ArtifactFilter, ArtifactFilterProps, ArtifactFilterState } from "../ArtifactFilter";
@@ -85,49 +85,45 @@ const ArtifactInventoryCore = ({
               onChangeItem={setChosenArtifact}
             />
 
-            <div className="flex flex-col relative">
-              <div ref={ref} className="grow rounded-lg bg-dark-900 overflow-auto">
-                <div className="h-full p-4 flex flex-col hide-scrollbar">
-                  <div className="w-64 grow hide-scrollbar">
-                    <ArtifactCard mutable={false} artifact={chosenArtifact} />
-                  </div>
-
-                  {chosenArtifact && chosenArtifact.owner !== owner ? (
-                    <ButtonGroup
-                      className="mt-4"
-                      buttons={[
-                        {
-                          text: "Compare",
-                          variant: showingCurrent ? "active" : "default",
-                          disabled: !currentArtifact,
-                          onClick: () => setShowingCurrent(!showingCurrent),
-                        },
-                        {
-                          text: buttonText,
-                          variant: "positive",
-                          onClick: () => {
-                            onClickButton(chosenArtifact, isMultiSelect);
-                            if (!isMultiSelect) onClose();
-                          },
-                        },
-                      ]}
-                    />
-                  ) : null}
-                </div>
+            <div className="h-full flex flex-col relative">
+              <div ref={ref} className="grow">
+                <ArtifactCard
+                  wrapperCls="h-full"
+                  className="w-72"
+                  mutable={false}
+                  withActions={chosenArtifact && chosenArtifact.owner !== owner}
+                  artifact={chosenArtifact}
+                  actions={[
+                    {
+                      text: "Compare",
+                      variant: showingCurrent ? "active" : "default",
+                      disabled: !currentArtifact,
+                      onClick: () => setShowingCurrent(!showingCurrent),
+                    },
+                    {
+                      text: buttonText,
+                      variant: "positive",
+                      onClick: (_, artifact) => {
+                        onClickButton(artifact, isMultiSelect);
+                        if (!isMultiSelect) onClose();
+                      },
+                    },
+                  ]}
+                />
               </div>
 
               {currentArtifact ? (
                 <div
                   className={
                     "absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200 " +
-                    (showingCurrent ? "w-64" : "w-0")
+                    (showingCurrent ? "w-60" : "w-0")
                   }
                   style={{
                     height,
                     right: "calc(100% - 1rem)",
                   }}
                 >
-                  <div className="w-64 p-4 pr-2 pb-2 h-full flex flex-col bg-dark-900 rounded-l-lg">
+                  <div className="w-64 pr-2 pb-2 h-full flex flex-col bg-dark-900 rounded-l-lg">
                     <ArtifactCard mutable={false} artifact={currentArtifact} />
 
                     <p className="mt-4 text-center text-orange-500">Current equipment</p>
@@ -135,7 +131,7 @@ const ArtifactInventoryCore = ({
                 </div>
               ) : null}
 
-              {chosenArtifact ? <OwnerLabel item={chosenArtifact} /> : null}
+              <OwnerLabel className="mt-4" item={chosenArtifact} />
             </div>
           </div>
         );

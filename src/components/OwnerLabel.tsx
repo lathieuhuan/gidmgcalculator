@@ -1,9 +1,9 @@
 import { CSSProperties, useRef, useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
-import { UserItem, UserSetup } from "@Src/types";
+import { UserItem, UserSetup, UserWeapon } from "@Src/types";
 import { useClickOutside, ClickOutsideHandler } from "@Src/pure-hooks";
-import { useItemBoundSetups } from "@Src/hooks";
+import { BoundingItem, useItemBoundSetups } from "@Src/hooks";
 
 // Component
 import { Popover } from "@Src/pure-components";
@@ -33,16 +33,19 @@ const SetupList = ({ setups, onClickOutside }: SetupListProps) => {
 interface OwnerLabelProps {
   className?: string;
   style?: CSSProperties;
-  item?: UserItem;
+  item?: BoundingItem & {
+    owner?: UserItem["owner"];
+    refi?: UserWeapon["refi"];
+  };
 }
-export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
+export const OwnerLabel = ({ className = "", style, item }: OwnerLabelProps) => {
   const puzzleBtnRef = useRef<HTMLButtonElement>(null);
   const [list, setList] = useState({
     isVisible: false,
     isMounted: false,
   });
 
-  const containingSetups = useItemBoundSetups(item);
+  const containingSetups = useItemBoundSetups(item, item && "refi" in item);
 
   const onClickPuzzlePiece = () => {
     setList((prevList) => {
@@ -70,12 +73,15 @@ export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
     }
   };
 
+  const cls = `pl-4 rounded-sm font-bold bg-yellow-200 text-black flex justify-between relative ${className}`;
+
+  if (!item) {
+    return <div className={`h-8 ${cls}`} style={style} />;
+  }
+
   return (
-    <div
-      className={"mt-4 pl-4 font-bold bg-yellow-200 text-black flex justify-between relative " + (className || "")}
-      style={style}
-    >
-      <p className="py-1">Equipped: {item?.owner || "None"}</p>
+    <div className={cls} style={style}>
+      <p className="py-1">Equipped: {item.owner || "None"}</p>
 
       {containingSetups.length ? (
         <>

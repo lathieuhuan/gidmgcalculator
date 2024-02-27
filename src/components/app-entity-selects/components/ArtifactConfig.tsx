@@ -1,16 +1,17 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
-import { ButtonGroup, ButtonGroupItem, Star } from "@Src/pure-components";
-import { Artifact } from "@Src/types";
-import { ArtifactCard } from "../../ArtifactCard";
+import type { Artifact } from "@Src/types";
+import { deepCopy } from "@Src/utils";
+import { Star } from "@Src/pure-components";
+import { ArtifactCard, ArtifactCardAction } from "../../ArtifactCard";
 
 interface ArtifactConfigProps {
   config?: Artifact;
   typeSelect?: ReactNode;
   maxRarity?: number;
   batchConfigNode?: ReactNode;
-  moreButtons?: ButtonGroupItem[];
+  moreButtons?: ArtifactCardAction[];
   onChangeRarity?: (rarity: number) => void;
   onUpdateConfig?: (properties: Partial<Artifact>) => void;
   onSelect?: (config: Artifact) => void;
@@ -73,41 +74,30 @@ export const ArtifactConfig = ({
 
       <div className="grow hide-scrollbar" style={{ width: "19.5rem" }}>
         {batchConfigNode ?? (
-          <div className="h-full p-4 bg-dark-900 rounded-lg flex flex-col">
-            <div className="grow hide-scrollbar">
-              <ArtifactCard
-                mutable
-                artifact={config}
-                onEnhance={(level) => {
-                  onUpdateConfig?.({ level });
-                }}
-                onChangeMainStatType={(mainStatType) => {
-                  onUpdateConfig?.({ mainStatType });
-                }}
-                onChangeSubStat={(index, changes) => {
-                  if (config) {
-                    const subStats = [...config.subStats];
-                    subStats[index] = Object.assign(subStats[index], changes);
-                    onUpdateConfig?.({ subStats });
-                  }
-                }}
-              />
-            </div>
-
-            {config ? (
-              <ButtonGroup
-                className="mt-4"
-                buttons={[
-                  ...moreButtons,
-                  {
-                    text: "Forge",
-                    variant: "positive",
-                    onClick: () => onSelect?.(config),
-                  },
-                ]}
-              />
-            ) : null}
-          </div>
+          <ArtifactCard
+            wrapperCls="h-full"
+            mutable
+            artifact={config}
+            onEnhance={(level) => {
+              onUpdateConfig?.({ level });
+            }}
+            onChangeMainStatType={(mainStatType) => {
+              onUpdateConfig?.({ mainStatType });
+            }}
+            onChangeSubStat={(index, changes, artifact) => {
+              const subStats = deepCopy(artifact.subStats);
+              subStats[index] = Object.assign(subStats[index], changes);
+              onUpdateConfig?.({ subStats });
+            }}
+            actions={[
+              ...moreButtons,
+              {
+                text: "Forge",
+                variant: "positive",
+                onClick: (_, config) => onSelect?.(config),
+              },
+            ]}
+          />
         )}
       </div>
     </div>

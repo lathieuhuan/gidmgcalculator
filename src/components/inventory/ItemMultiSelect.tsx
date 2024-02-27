@@ -6,7 +6,7 @@ import { isUserWeapon } from "@Src/utils";
 
 // Component
 import { Button, Modal } from "@Src/pure-components";
-import { ArtifactCard } from "../ArtifactCard";
+import { ArtifactView } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
 import { EntitySelectTemplate } from "../EntitySelectTemplate";
@@ -85,7 +85,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
                     isUserWeapon(chosenItem) ? (
                       <WeaponCard weapon={chosenItem} />
                     ) : (
-                      <ArtifactCard artifact={chosenItem} />
+                      <ArtifactView artifact={chosenItem} />
                     )
                   ) : null}
                 </div>

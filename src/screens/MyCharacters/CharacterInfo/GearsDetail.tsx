@@ -10,8 +10,8 @@ import { useDispatch } from "@Store/hooks";
 import { updateUserArtifactSubStat, updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
 // Component
-import { Button, ButtonGroup } from "@Src/pure-components";
-import { AttributeTable, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Src/components";
+import { Button } from "@Src/pure-components";
+import { AttributeTable, SetBonusesDisplay, WeaponCard, ArtifactCard } from "@Src/components";
 
 interface GearsDetailProps {
   className: string;
@@ -91,35 +91,31 @@ export function GearsDetail({
 
       if (activeDetails !== -1 && activeArtifact) {
         return (
-          <div className={className} style={style}>
-            <div className="pb-2 hide-scrollbar">
-              <ArtifactCard
-                artifact={activeArtifact}
-                mutable
-                onEnhance={(level) => {
-                  dispatch(updateUserArtifact({ ID: activeArtifact.ID, level }));
-                }}
-                onChangeMainStatType={(type) => {
-                  dispatch(
-                    updateUserArtifact({
-                      ID: activeArtifact.ID,
-                      mainStatType: type as AttributeStat,
-                    })
-                  );
-                }}
-                onChangeSubStat={(subStatIndex, changes) => {
-                  dispatch(updateUserArtifactSubStat({ ID: activeArtifact.ID, subStatIndex, ...changes }));
-                }}
-              />
-            </div>
-            <ButtonGroup
-              className="mt-4"
-              buttons={[
-                { text: "Unequip", onClick: onClickUnequipArtifact },
-                { text: "Switch", variant: "positive", onClick: onClickSwitchArtifact },
-              ]}
-            />
-          </div>
+          <ArtifactCard
+            wrapperCls="h-full"
+            className={className}
+            style={style}
+            artifact={activeArtifact}
+            mutable
+            onEnhance={(level) => {
+              dispatch(updateUserArtifact({ ID: activeArtifact.ID, level }));
+            }}
+            onChangeMainStatType={(type) => {
+              dispatch(
+                updateUserArtifact({
+                  ID: activeArtifact.ID,
+                  mainStatType: type as AttributeStat,
+                })
+              );
+            }}
+            onChangeSubStat={(subStatIndex, changes) => {
+              dispatch(updateUserArtifactSubStat({ ID: activeArtifact.ID, subStatIndex, ...changes }));
+            }}
+            actions={[
+              { text: "Unequip", onClick: onClickUnequipArtifact },
+              { text: "Switch", variant: "positive", onClick: onClickSwitchArtifact },
+            ]}
+          />
         );
       }
       return null;

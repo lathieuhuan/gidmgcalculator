@@ -11,7 +11,7 @@ import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 // Component
 import { Input } from "@Src/pure-components";
 
-export interface ArtifactSubstatsControlProps {
+interface ArtifactSubstatsControlProps {
   className?: string;
   mutable?: boolean;
   rarity: number;

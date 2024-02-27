@@ -71,9 +71,7 @@ export const LoadoutSelectCore = ({ keyword, onSelect }: LoadoutSelectCoreProps)
           />
         </div>
 
-        <div className="w-68 p-4 bg-dark-900 rounded-lg shrink-0">
-          <ArtifactCard artifact={chosenArtifact} />
-        </div>
+        <ArtifactCard className="w-72 shrink-0" artifact={chosenArtifact} />
       </div>
     </div>
   );

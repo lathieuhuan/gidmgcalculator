@@ -13,8 +13,8 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Component
-import { ButtonGroup, ConfirmModal } from "@Src/pure-components";
-import { ArtifactCard, OwnerLabel, Tavern } from "@Src/components";
+import { ConfirmModal } from "@Src/pure-components";
+import { ArtifactCard, Tavern } from "@Src/components";
 
 interface ChosenArtifactViewProps {
   artifact?: UserArtifact;
@@ -35,50 +35,36 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
 
   return (
     <Fragment>
-      <div className="flex flex-col">
-        <div className="p-4 rounded-lg bg-dark-900 grow flex flex-col">
-          <div className="w-68 grow hide-scrollbar" style={{ height: "26rem" }}>
-            {artifact ? (
-              <ArtifactCard
-                artifact={artifact}
-                mutable
-                onEnhance={(level) => {
-                  dispatch(updateUserArtifact({ ID: artifact.ID, level }));
-                }}
-                onChangeMainStatType={(type) => {
-                  dispatch(
-                    updateUserArtifact({
-                      ID: artifact.ID,
-                      mainStatType: type as AttributeStat,
-                    })
-                  );
-                }}
-                onChangeSubStat={(subStatIndex, changes) => {
-                  dispatch(
-                    updateUserArtifactSubStat({
-                      ID: artifact.ID,
-                      subStatIndex,
-                      ...changes,
-                    })
-                  );
-                }}
-              />
-            ) : null}
-          </div>
-
-          {artifact ? (
-            <ButtonGroup
-              className="mt-4"
-              buttons={[
-                { text: "Remove", onClick: () => setModalType("REMOVE_ARTIFACT") },
-                { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },
-              ]}
-            />
-          ) : null}
-        </div>
-
-        <OwnerLabel key={artifact?.ID} className="mt-4" item={artifact} />
-      </div>
+      <ArtifactCard
+        style={{ width: "19rem" }}
+        artifact={artifact}
+        mutable
+        withOwnerLabel
+        onEnhance={(level, artifact) => {
+          dispatch(updateUserArtifact({ ID: artifact.ID, level }));
+        }}
+        onChangeMainStatType={(type, artifact) => {
+          dispatch(
+            updateUserArtifact({
+              ID: artifact.ID,
+              mainStatType: type as AttributeStat,
+            })
+          );
+        }}
+        onChangeSubStat={(subStatIndex, changes, artifact) => {
+          dispatch(
+            updateUserArtifactSubStat({
+              ID: artifact.ID,
+              subStatIndex,
+              ...changes,
+            })
+          );
+        }}
+        actions={[
+          { text: "Remove", onClick: () => setModalType("REMOVE_ARTIFACT") },
+          { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },
+        ]}
+      />
 
       <Tavern
         active={modalType === "EQUIP_CHARACTER" && !!artifact}

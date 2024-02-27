@@ -23,7 +23,7 @@ export const ArtifactLevelSelect = ({
     const disabled = level === maxLevel;
 
     return (
-      <div className={"rounded bg-dark-500 overflow-hidden flex " + className}>
+      <div className={"rounded bg-dark-700 overflow-hidden flex " + className}>
         <select className={"appearance-none " + cls} value={level} onChange={(e) => onChangeLevel?.(+e.target.value)}>
           {[...Array(maxLevel / 4 + 1).keys()].map((_, lv) => (
             <option key={lv} className="text-base" value={lv * 4}>

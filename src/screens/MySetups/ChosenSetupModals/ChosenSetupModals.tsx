@@ -73,14 +73,17 @@ export const ChosenSetupModals = ({ chosenSetup, weapon, artifacts, result }: Ch
       </Modal>
 
       <Modal active={modalType === "ARTIFACTS"} className="bg-dark-900" title="Artifacts" onClose={closeModal}>
-        <div className="flex hide-scrollbar">
+        <div className="flex space-x-1 hide-scrollbar">
           {artifacts?.map((artifact, i) => {
             if (artifact) {
               return (
-                <div key={i} className="px-1 shrink-0" style={{ width: "14.5rem" }}>
-                  <ArtifactCard artifact={artifact} />
-                  <OwnerLabel item={artifact} />
-                </div>
+                <ArtifactCard
+                  key={i}
+                  wrapperCls="shrink-0"
+                  className="p-0 w-60 rounded-none"
+                  withOwnerLabel
+                  artifact={artifact}
+                />
               );
             }
             return null;

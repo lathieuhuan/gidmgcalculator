@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 
-import { UserItem, UserSetup } from "@Src/types";
-import { findById, isUserWeapon } from "@Src/utils";
+import type { UserItem, UserSetup } from "@Src/types";
+import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 
 // Store
@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
-export const useItemBoundSetups = (item?: UserItem): UserSetup[] => {
+export type BoundingItem = Pick<UserItem, "ID" | "setupIDs">;
+
+export const useItemBoundSetups = (item?: BoundingItem, isWeapon?: boolean): UserSetup[] => {
   const dispatch = useDispatch();
   const userSetups = useSelector(selectUserSetups);
 
@@ -22,7 +24,6 @@ export const useItemBoundSetups = (item?: UserItem): UserSetup[] => {
       };
     }
 
-    const isWeapon = isUserWeapon(item);
     const validSetups: UserSetup[] = [];
     const validSetupIDs: number[] = [];
     const invalidSetupIDs: number[] = [];
