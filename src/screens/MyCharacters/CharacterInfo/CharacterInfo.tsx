@@ -5,6 +5,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { useAppCharacter } from "@Src/hooks";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -38,17 +39,22 @@ const selectChosenInfo = createSelector(
 
 const CharacterInfo = () => {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const { isLoading, error, appChar } = useAppCharacter(char.name);
 
   const [removing, setRemoving] = useState(false);
 
+  const wrapperProps = {
+    className: "py-4 flex h-98/100 space-x-2 custom-scrollbar",
+    style: {
+      width: screenWatcher.isFromSize("sm") ? "88%" : "calc(100% - 2rem)",
+    },
+  };
+
   if (isLoading || error) {
     return (
-      <div
-        className="py-4 flex h-98/100 space-x-2 custom-scrollbar"
-        style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
-      >
+      <div {...wrapperProps}>
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="p-4 rounded-lg bg-dark-900 shrink-0" style={{ width: 332 }}>
             {error ? (
@@ -64,9 +70,7 @@ const CharacterInfo = () => {
     );
   }
 
-  if (!appChar || !weapon) {
-    return null;
-  }
+  if (!appChar || !weapon) return null;
   const { name, icon, rarity, vision: elementType } = appChar;
 
   const { totalAttr, artAttr } = getCalculationStats({
@@ -75,25 +79,18 @@ const CharacterInfo = () => {
     weapon,
     artifacts,
   });
-  const isMobile = window.innerWidth <= 700;
+  const isFromXmSize = screenWatcher.isFromSize("md");
 
   return (
-    <div
-      className="py-4 flex h-98/100 space-x-2 custom-scrollbar"
-      style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
-    >
+    <div {...wrapperProps}>
       <div className="p-4 rounded-lg bg-dark-900 flex flex-col relative">
-        <Button
-          className="absolute top-4 right-4"
-          boneOnly
-          icon={<FaUserSlash />}
-          onClick={() => setRemoving(true)}
-        />
+        <Button className="absolute top-4 right-4" boneOnly icon={<FaUserSlash />} onClick={() => setRemoving(true)} />
 
         <div className="flex" onDoubleClick={() => console.log(char, weapon, artifacts)}>
-          {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
+          {!isFromXmSize && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
+
           <div>
-            {!isMobile && <p className={`text-2.5xl text-${elementType} font-black`}>{name}</p>}
+            {isFromXmSize && <p className={`text-2.5xl text-${elementType} font-black`}>{name}</p>}
             <RarityStars className="mt-1" rarity={rarity} />
 
             <div className="mt-1 flex text-lg">

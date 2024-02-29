@@ -45,10 +45,7 @@ export function GearsOverview({
 
     return (
       <div className="p-1 w-1/3">
-        <ItemCase
-          chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
-          onClick={() => toggleDetails("weapon")}
-        >
+        <ItemCase chosen={activeDetails === "weapon"} onClick={() => toggleDetails("weapon")}>
           {(className, imgCls) => (
             <ItemThumbnail
               className={className}
@@ -69,7 +66,7 @@ export function GearsOverview({
         {artifacts.map((artifact, i) =>
           artifact ? (
             <div key={i} className="p-1 w-1/3">
-              <ItemCase chosen={window.innerWidth < 686 ? false : activeDetails === i} onClick={() => toggleDetails(i)}>
+              <ItemCase chosen={activeDetails === i} onClick={() => toggleDetails(i)}>
                 {(className) => (
                   <ItemThumbnail
                     className={className}

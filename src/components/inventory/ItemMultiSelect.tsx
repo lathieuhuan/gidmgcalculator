@@ -6,9 +6,8 @@ import { isUserWeapon } from "@Src/utils";
 
 // Component
 import { Button, Modal } from "@Src/pure-components";
-import { ArtifactView } from "../ArtifactCard";
-import { OwnerLabel } from "../OwnerLabel";
-import { WeaponView } from "../WeaponCard";
+import { ArtifactCard } from "../ArtifactCard";
+import { WeaponCard } from "../WeaponCard";
 import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
 
@@ -78,21 +77,15 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
               onChangeItem={onChangeItem}
             />
 
-            <div className="flex flex-col justify-between">
-              <div className="p-4 rounded-lg bg-dark-900 grow" style={{ minHeight: "28rem" }}>
-                <div className="w-68 h-full hide-scrollbar">
-                  {chosenItem ? (
-                    isUserWeapon(chosenItem) ? (
-                      <WeaponView weapon={chosenItem} />
-                    ) : (
-                      <ArtifactView artifact={chosenItem} />
-                    )
-                  ) : null}
-                </div>
-              </div>
-
-              {chosenItem ? <OwnerLabel item={chosenItem} /> : null}
-            </div>
+            {chosenItem ? (
+              isUserWeapon(chosenItem) ? (
+                <WeaponCard wrapperCls="w-76 shrink-0" withOwnerLabel weapon={chosenItem} />
+              ) : (
+                <ArtifactCard wrapperCls="w-76 shrink-0" withOwnerLabel artifact={chosenItem} />
+              )
+            ) : (
+              <div className="w-76 rounded-lg bg-dark-900 shrink-0" />
+            )}
           </div>
         );
       }}

@@ -6,6 +6,7 @@ import type { UserArtifact } from "@Src/types";
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
 import { useArtifactTypeSelect } from "@Src/hooks";
 import { indexById } from "@Src/utils";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -23,6 +24,7 @@ type ModalType = "ADD_ARTIFACT" | "FITLER" | "";
 
 export default function MyArtifacts() {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const userArts = useSelector(selectUserArts);
 
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
@@ -96,7 +98,7 @@ export default function MyArtifacts() {
             ]}
           />
 
-          {window.innerWidth >= 600 && renderArtifactTypeSelect()}
+          {screenWatcher.isFromSize("md") ? renderArtifactTypeSelect() : null}
 
           <div className="flex cursor-pointer">
             <button

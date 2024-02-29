@@ -1,6 +1,5 @@
 import clsx, { ClassValue } from "clsx";
-import { ButtonHTMLAttributes, ReactNode } from "react";
-import { FaTimes } from "react-icons/fa";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 type ButtonVariant = "default" | "positive" | "negative" | "active" | "custom";
 
@@ -97,9 +96,35 @@ export const Button = ({
   );
 };
 
+interface CloseIconProps {
+  className?: string;
+}
+const CloseIcon = (props: CloseIconProps) => {
+  return (
+    <svg {...props} viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
+      <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+    </svg>
+  );
+};
+
+const closeIconSizeCls: Partial<Record<ButtonSize, string>> = {
+  small: "text-base",
+  medium: "text-1.5xl",
+  large: "text-2xl",
+};
+
 export const CloseButton = ({
   boneOnly,
+  size = "medium",
   ...rest
 }: Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled">) => {
-  return <Button variant={boneOnly ? "default" : "negative"} icon={<FaTimes />} boneOnly={boneOnly} {...rest} />;
+  return (
+    <Button
+      variant={boneOnly ? "default" : "negative"}
+      icon={<CloseIcon className={closeIconSizeCls[size]} />}
+      boneOnly={boneOnly}
+      size={size}
+      {...rest}
+    />
+  );
 };

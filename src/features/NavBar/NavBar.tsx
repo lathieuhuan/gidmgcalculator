@@ -70,7 +70,7 @@ export function NavBar() {
           </Button>
 
           {trackerState !== "close" ? (
-            <button className="w-8 h-8 flex-center text-xl text-black bg-green-300" onClick={onClickTrackerIcon}>
+            <button className="w-8 h-8 flex-center text-xl text-black bg-green-200" onClick={onClickTrackerIcon}>
               <FaSearch />
             </button>
           ) : null}

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FaCaretRight, FaMinus } from "react-icons/fa";
 
 import type { BooleanRecord, UserArtifact, UserItem, UserWeapon } from "@Src/types";
@@ -7,8 +7,6 @@ import type { ArtifactRackProps, InventoryRackProps, MixedRackProps, WeaponRackP
 
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 import { $AppData } from "@Src/services";
-
-// Util
 import { isUserWeapon } from "@Src/utils";
 
 // Component
@@ -51,10 +49,6 @@ export function InventoryRack<T extends UserItem>({
       setReady(true);
     }
   }, []);
-
-  useLayoutEffect(() => {
-    onChangeItem?.(data[0]);
-  }, [data]);
 
   useEffect(() => {
     if (ready) {

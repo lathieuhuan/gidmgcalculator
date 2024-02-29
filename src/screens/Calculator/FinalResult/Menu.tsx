@@ -43,7 +43,7 @@ export const Menu = () => {
   return (
     <div ref={wrapperRef} className="absolute top-2 right-2 w-8">
       <button
-        className={"w-8 h-8 flex-center rounded-md text-2xl" + (menuDropped ? " bg-green-300 text-black" : "")}
+        className={"w-8 h-8 flex-center rounded-md text-2xl" + (menuDropped ? " bg-green-200 text-black" : "")}
         onClick={() => setMenuDropped(!menuDropped)}
       >
         <MdMoreVert />

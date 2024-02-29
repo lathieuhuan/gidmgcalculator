@@ -97,9 +97,6 @@ module.exports = {
       },
     },
     extend: {
-      spacing: {
-        13: "3.25rem",
-      },
       borderWidth: {
         3: "3px",
       },
@@ -130,7 +127,6 @@ module.exports = {
       width: {
         18: "4.5rem",
         68: "17rem",
-        70: "17.5rem",
         75: "18.75rem",
         76: "19rem",
       },
@@ -147,9 +143,6 @@ module.exports = {
       },
       transformOrigin: {
         "bottom-center": "bottom center",
-      },
-      scale: {
-        180: "1.8",
       },
       transitionProperty: {
         size: "height, width",

@@ -36,7 +36,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
   return (
     <Fragment>
       <ArtifactCard
-        style={{ width: "19rem" }}
+        wrapperCls="w-76 shrink-0"
         artifact={artifact}
         mutable
         withOwnerLabel

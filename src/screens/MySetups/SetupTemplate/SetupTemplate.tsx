@@ -8,6 +8,7 @@ import type { OpenModalFn } from "../types";
 
 import { ARTIFACT_TYPE_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { $AppCharacter, $AppData } from "@Src/services";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch } from "@Store/hooks";
@@ -36,6 +37,7 @@ interface SetupLayoutProps {
 }
 export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], allIDs, openModal }: SetupLayoutProps) {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const { type, char, party } = setup;
 
   const [teammateDetail, setTeammateDetail] = useState({
@@ -183,7 +185,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     <>
       <div className="pr-1 flex justify-between flex-col lg:flex-row" onDoubleClick={() => console.log(setup)}>
         <div className="flex items-center">
-          {isOriginal ? null : window.innerWidth > 1025 ? (
+          {isOriginal ? null : screenWatcher.isFromSize("lg") ? (
             <Button
               className="hover:text-red-400 group"
               variant="custom"

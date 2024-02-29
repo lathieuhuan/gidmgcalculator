@@ -1,18 +1,8 @@
 import clsx, { ClassValue } from "clsx";
-import { ButtonGroup, ButtonGroupItem, ButtonGroupProps } from "../button";
+import { ButtonGroup, ButtonGroupItem, ButtonGroupProps, CloseButton } from "../button";
 
 export const ModalCloseButton = (props: { disabled?: boolean; onClick?: () => void }) => {
-  return (
-    <button
-      type="button"
-      className="w-8 h-8 flex-center absolute top-2 right-2 z-50 text-light-900 text-1.5xl glow-on-hover"
-      {...props}
-    >
-      <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
-        <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-      </svg>
-    </button>
-  );
+  return <CloseButton className="absolute top-2 right-2 z-50" size="medium" boneOnly {...props} />;
 };
 
 export interface ModalHeaderProps {

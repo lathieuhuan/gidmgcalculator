@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { BiImport } from "react-icons/bi";
 
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";

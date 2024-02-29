@@ -146,7 +146,7 @@ export default function SectionParty() {
           <div className="bg-dark-700 pt-2">
             <TeammateItems
               mutable
-              className="bg-dark-900 pt-10 px-2 pb-2"
+              className="bg-dark-900 pt-12 px-2 pb-2"
               teammate={detailTeammate}
               onClickWeapon={() => setModal({ type: "WEAPON", teammateIndex: detailSlot })}
               onChangeWeaponRefinement={(refi: number) => {

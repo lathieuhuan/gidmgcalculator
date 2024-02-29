@@ -8,6 +8,7 @@ import { indexById } from "@Src/utils";
 import { useWeaponTypeSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
 import { UserWeapon, WeaponType } from "@Src/types";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -17,7 +18,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
-import { OwnerLabel, WeaponView, InventoryRack, Tavern, WeaponForge } from "@Src/components";
+import { InventoryRack, Tavern, WeaponForge, WeaponCard } from "@Src/components";
 
 type ModalType = "ADD_WEAPON" | "SELECT_WEAPON_OWNER" | "REMOVE_WEAPON" | "";
 
@@ -32,6 +33,7 @@ const selectWeaponInventory = createSelector(
 
 export default function MyWeapons() {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
 
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
   const [modalType, setModalType] = useState<ModalType>("");
@@ -60,6 +62,19 @@ export default function MyWeapons() {
   const onClickAddWeapon = () => {
     if (!checkIfMaxWeaponsReached()) {
       setModalType("ADD_WEAPON");
+    }
+  };
+
+  const onClickRemoveWeapon = (weapon: UserWeapon) => {
+    if (weapon.setupIDs?.length) {
+      dispatch(
+        updateMessage({
+          type: "info",
+          content: "This weapon cannot be deleted. It is used by some Setups.",
+        })
+      );
+    } else {
+      setModalType("REMOVE_WEAPON");
     }
   };
 
@@ -93,12 +108,12 @@ export default function MyWeapons() {
               },
             ]}
           />
-          {window.innerWidth >= 500 ? (
+          {screenWatcher.isFromSize("sm") ? (
             renderWeaponTypeSelect()
           ) : (
             <>
               <Button
-                className={clsx("ml-1", filterIsActive ? "bg-green-300" : "bg-light-400")}
+                variant={filterIsActive ? "active" : "default"}
                 icon={<FaEllipsisH />}
                 onClick={() => setFilterIsActive(!filterIsActive)}
               />
@@ -119,45 +134,24 @@ export default function MyWeapons() {
             onChangeItem={setChosenWeapon}
           />
 
-          <div className="flex flex-col">
-            <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
-              <div className="w-68 grow hide-scrollbar">
-                {chosenWeapon ? (
-                  <WeaponView
-                    mutable
-                    weapon={chosenWeapon}
-                    upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, level }))}
-                    refine={(refi) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, refi }))}
-                  />
-                ) : null}
-              </div>
-              {chosenWeapon ? (
-                <ButtonGroup
-                  className="mt-4"
-                  buttons={[
-                    {
-                      text: "Remove",
-                      onClick: () => {
-                        if (chosenWeapon.setupIDs?.length) {
-                          dispatch(
-                            updateMessage({
-                              type: "info",
-                              content: "This weapon cannot be deleted. It is used by some Setups.",
-                            })
-                          );
-                        } else {
-                          setModalType("REMOVE_WEAPON");
-                        }
-                      },
-                    },
-                    { text: "Equip", onClick: () => setModalType("SELECT_WEAPON_OWNER") },
-                  ]}
-                />
-              ) : null}
-            </div>
-
-            <OwnerLabel key={chosenWeapon?.ID || 0} item={chosenWeapon} />
-          </div>
+          <WeaponCard
+            wrapperCls="w-76 shrink-0"
+            mutable
+            weapon={chosenWeapon}
+            withOwnerLabel
+            upgrade={(level, weapon) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
+            refine={(refi, weapon) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
+            actions={[
+              {
+                text: "Remove",
+                onClick: (_, weapon) => onClickRemoveWeapon(weapon),
+              },
+              {
+                text: "Equip",
+                onClick: () => setModalType("SELECT_WEAPON_OWNER"),
+              },
+            ]}
+          />
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
