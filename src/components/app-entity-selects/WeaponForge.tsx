@@ -8,7 +8,7 @@ import { pickProps } from "@Src/utils";
 import { createWeapon } from "@Src/utils/creators";
 
 // Component
-import { Button, Modal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
 import { WeaponFilter, WeaponFilterState } from "./components/WeaponFilter";
 import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
@@ -100,36 +100,27 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
       }}
       renderOptionConfig={(afterSelect) => {
         return (
-          <div className="h-full p-4 bg-dark-900 rounded-lg flex flex-col">
-            <div className="w-70 grow hide-scrollbar">
-              <WeaponCard
-                mutable
-                weapon={weaponConfig}
-                refine={(refi) => {
-                  if (weaponConfig) setWeaponConfig({ ...weaponConfig, refi });
-                }}
-                upgrade={(level) => {
-                  if (weaponConfig) setWeaponConfig({ ...weaponConfig, level });
-                }}
-              />
-            </div>
-
-            {weaponConfig ? (
-              <div className="mt-4 flex justify-center">
-                <Button
-                  variant="positive"
-                  onClick={() => {
-                    if (weaponConfig) {
-                      onForgeWeapon(weaponConfig);
-                      afterSelect(weaponConfig.code);
-                    }
-                  }}
-                >
-                  Forge
-                </Button>
-              </div>
-            ) : null}
-          </div>
+          <WeaponCard
+            wrapperCls="w-76 h-full"
+            mutable
+            weapon={weaponConfig}
+            refine={(refi, config) => {
+              setWeaponConfig({ ...config, refi });
+            }}
+            upgrade={(level, config) => {
+              setWeaponConfig({ ...config, level });
+            }}
+            actions={[
+              {
+                text: "Forge",
+                variant: "positive",
+                onClick: (_, config) => {
+                  onForgeWeapon(config);
+                  afterSelect(config.code);
+                },
+              },
+            ]}
+          />
         );
       }}
       onSelect={(mold, isConfigStep) => {

@@ -5,8 +5,7 @@ import { selectUserWps } from "@Store/userDatabaseSlice/selectors";
 import { useStoreSnapshot } from "@Src/features";
 
 // Component
-import { Button, Modal } from "@Src/pure-components";
-import { OwnerLabel } from "../OwnerLabel";
+import { Modal } from "@Src/pure-components";
 import { WeaponCard } from "../WeaponCard";
 import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
@@ -36,29 +35,21 @@ const WeaponInventoryCore = ({ weaponType, owner, buttonText, onClickButton, onC
               onChangeItem={setChosenWeapon}
             />
 
-            <div className="flex flex-col">
-              <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
-                <div className="w-68 grow hide-scrollbar">
-                  <WeaponCard weapon={chosenWeapon} />
-                </div>
-
-                {chosenWeapon && chosenWeapon.owner !== owner ? (
-                  <div className="mt-4 flex justify-center">
-                    <Button
-                      variant="positive"
-                      onClick={() => {
-                        onClickButton(chosenWeapon);
-                        onClose();
-                      }}
-                    >
-                      {buttonText}
-                    </Button>
-                  </div>
-                ) : null}
-              </div>
-
-              {chosenWeapon ? <OwnerLabel item={chosenWeapon} /> : null}
-            </div>
+            <WeaponCard
+              wrapperCls="w-76 shrink-0"
+              weapon={chosenWeapon}
+              withActions={chosenWeapon && chosenWeapon.owner !== owner}
+              actions={[
+                {
+                  text: buttonText,
+                  variant: "positive",
+                  onClick: (_, weapon) => {
+                    onClickButton(weapon);
+                    onClose();
+                  },
+                },
+              ]}
+            />
           </div>
         );
       }}

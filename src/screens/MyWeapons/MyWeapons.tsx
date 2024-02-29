@@ -17,7 +17,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
-import { OwnerLabel, WeaponCard, InventoryRack, Tavern, WeaponForge } from "@Src/components";
+import { OwnerLabel, WeaponView, InventoryRack, Tavern, WeaponForge } from "@Src/components";
 
 type ModalType = "ADD_WEAPON" | "SELECT_WEAPON_OWNER" | "REMOVE_WEAPON" | "";
 
@@ -123,7 +123,7 @@ export default function MyWeapons() {
             <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
               <div className="w-68 grow hide-scrollbar">
                 {chosenWeapon ? (
-                  <WeaponCard
+                  <WeaponView
                     mutable
                     weapon={chosenWeapon}
                     upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, level }))}

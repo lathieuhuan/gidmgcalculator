@@ -1,4 +1,4 @@
-import type { CalcWeapon, Level } from "@Src/types";
+import type { CalcWeapon, Level, UserWeapon } from "@Src/types";
 import { useMemo } from "react";
 
 import { LEVELS } from "@Src/constants";
@@ -11,13 +11,18 @@ import { BetaMark, Image } from "@Src/pure-components";
 
 const groupStyles = "bg-dark-700 px-3";
 
-interface WeaponCardProps {
-  weapon?: CalcWeapon;
+export interface WeaponViewProps<T extends CalcWeapon | UserWeapon> {
+  weapon?: T;
   mutable?: boolean;
-  upgrade?: (newLevel: Level) => void;
-  refine?: (newRefi: number) => void;
+  upgrade?: (newLevel: Level, weapon: T) => void;
+  refine?: (newRefi: number, weapon: T) => void;
 }
-export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
+export function WeaponView<T extends CalcWeapon | UserWeapon>({
+  weapon,
+  mutable,
+  upgrade,
+  refine,
+}: WeaponViewProps<T>) {
   const { t } = useTranslation();
   if (!weapon) return null;
 
@@ -46,7 +51,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
               <select
                 className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
                 value={level}
-                onChange={(e) => upgrade && upgrade(e.target.value as Level)}
+                onChange={(e) => upgrade && upgrade(e.target.value as Level, weapon)}
               >
                 {selectLevels.map((_, index) => (
                   <option key={index}>{selectLevels[selectLevels.length - 1 - index]}</option>
@@ -95,7 +100,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
                 <select
                   className={`text-lg text-rarity-${rarity} font-bold`}
                   value={refi}
-                  onChange={(e) => refine && refine(+e.target.value)}
+                  onChange={(e) => refine && refine(+e.target.value, weapon)}
                 >
                   {[1, 2, 3, 4, 5].map((level) => (
                     <option key={level}>{level}</option>
@@ -114,4 +119,4 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
       </div>
     </div>
   );
-};
+}

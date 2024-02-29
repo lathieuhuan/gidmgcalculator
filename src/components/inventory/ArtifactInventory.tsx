@@ -88,11 +88,9 @@ const ArtifactInventoryCore = ({
             <div className="h-full flex flex-col relative">
               <div ref={ref} className="grow">
                 <ArtifactCard
-                  wrapperCls="h-full"
-                  className="w-72"
-                  mutable={false}
-                  withActions={chosenArtifact && chosenArtifact.owner !== owner}
+                  wrapperCls="w-72 h-full"
                   artifact={chosenArtifact}
+                  withActions={chosenArtifact && chosenArtifact.owner !== owner}
                   actions={[
                     {
                       text: "Compare",

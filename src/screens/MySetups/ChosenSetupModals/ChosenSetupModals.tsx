@@ -14,14 +14,7 @@ import { removeSetup } from "@Store/userDatabaseSlice";
 
 // Component
 import { ConfirmModal, Modal } from "@Src/pure-components";
-import {
-  ArtifactCard,
-  AttributeTable,
-  OwnerLabel,
-  SetBonusesDisplay,
-  SetupExporter,
-  WeaponCard,
-} from "@Src/components";
+import { ArtifactCard, AttributeTable, SetBonusesDisplay, SetupExporter, WeaponCard } from "@Src/components";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
 
 interface ChosenSetupModalsProps {
@@ -65,12 +58,11 @@ export const ChosenSetupModals = ({ chosenSetup, weapon, artifacts, result }: Ch
         />
       )}
 
-      <Modal active={modalType === "WEAPON"} className="bg-dark-900" title="Weapon" onClose={closeModal}>
-        <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
-          {weapon && <WeaponCard weapon={weapon} />}
-        </div>
-        <OwnerLabel item={weapon ?? undefined} />
-      </Modal>
+      {weapon && (
+        <Modal active={modalType === "WEAPON"} className="bg-dark-900" title="Weapon" onClose={closeModal}>
+          <WeaponCard wrapperCls="w-76" style={{ height: "30rem" }} withGutter={false} withOwnerLabel weapon={weapon} />
+        </Modal>
+      )}
 
       <Modal active={modalType === "ARTIFACTS"} className="bg-dark-900" title="Artifacts" onClose={closeModal}>
         <div className="flex space-x-1 hide-scrollbar">
@@ -80,7 +72,8 @@ export const ChosenSetupModals = ({ chosenSetup, weapon, artifacts, result }: Ch
                 <ArtifactCard
                   key={i}
                   wrapperCls="shrink-0"
-                  className="p-0 w-60 rounded-none"
+                  className="w-60"
+                  withGutter={false}
                   withOwnerLabel
                   artifact={artifact}
                 />

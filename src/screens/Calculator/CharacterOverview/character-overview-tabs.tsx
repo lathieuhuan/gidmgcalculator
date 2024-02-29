@@ -16,7 +16,7 @@ import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
 
 // Component
 import { SharedSpace } from "@Src/pure-components";
-import { AttributeTable, SetBonusesDisplay, WeaponCard, TalentList, ConstellationList } from "@Src/components";
+import { AttributeTable, SetBonusesDisplay, WeaponView, TalentList, ConstellationList } from "@Src/components";
 
 export const AttributesTab = () => {
   const totalAttr = useSelector(selectTotalAttr);
@@ -32,7 +32,7 @@ export const WeaponTab = () => {
   const weapon = useSelector(selectWeapon);
   return (
     <div className="h-full hide-scrollbar">
-      <WeaponCard
+      <WeaponView
         mutable
         weapon={weapon}
         upgrade={(level) => dispatch(updateWeapon({ level }))}

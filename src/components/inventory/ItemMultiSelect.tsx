@@ -8,7 +8,7 @@ import { isUserWeapon } from "@Src/utils";
 import { Button, Modal } from "@Src/pure-components";
 import { ArtifactView } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
-import { WeaponCard } from "../WeaponCard";
+import { WeaponView } from "../WeaponCard";
 import { EntitySelectTemplate } from "../EntitySelectTemplate";
 import { InventoryRack } from "./InventoryRack";
 
@@ -83,7 +83,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
                 <div className="w-68 h-full hide-scrollbar">
                   {chosenItem ? (
                     isUserWeapon(chosenItem) ? (
-                      <WeaponCard weapon={chosenItem} />
+                      <WeaponView weapon={chosenItem} />
                     ) : (
                       <ArtifactView artifact={chosenItem} />
                     )

@@ -1,40 +1,36 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import type { CSSProperties, MouseEvent } from "react";
-import type { CalcArtifact, UserArtifact } from "@Src/types";
+import type { CalcWeapon, UserWeapon } from "@Src/types";
 import { ButtonGroup, ButtonGroupItem } from "@Src/pure-components";
 import { OwnerLabel } from "../OwnerLabel";
-import { ArtifactView, ArtifactViewProps } from "./ArtifactView";
+import { WeaponView, WeaponViewProps } from "./WeaponView";
 
-export type ArtifactCardAction<T extends CalcArtifact | UserArtifact = CalcArtifact> = Omit<
-  ButtonGroupItem,
-  "onClick"
-> & {
-  onClick: (e: MouseEvent<HTMLButtonElement>, artifact: T) => void;
+type WeaponCardAction<T extends CalcWeapon | UserWeapon = CalcWeapon> = Omit<ButtonGroupItem, "onClick"> & {
+  onClick: (e: MouseEvent<HTMLButtonElement>, weapon: T) => void;
 };
 
-interface ArtifactCardProps<T extends CalcArtifact | UserArtifact>
-  extends Omit<ArtifactViewProps<T>, "className" | "artifact"> {
+interface WeaponCardProps<T extends CalcWeapon | UserWeapon> extends Omit<WeaponViewProps<T>, "className" | "weapon"> {
   wrapperCls?: string;
-  className?: string;
+  className?: ClassValue;
   style?: CSSProperties;
   /** Default to true */
   withGutter?: boolean;
   withActions?: boolean;
   withOwnerLabel?: boolean;
-  artifact?: T;
-  actions?: ArtifactCardAction<T>[];
+  weapon?: T;
+  actions?: WeaponCardAction<T>[];
 }
-export function ArtifactCard<T extends CalcArtifact | UserArtifact>({
+export function WeaponCard<T extends CalcWeapon | UserWeapon>({
   wrapperCls = "",
-  className = "",
+  className,
   style,
-  artifact,
+  weapon,
   actions,
   withGutter = true,
   withActions = !!actions?.length,
   withOwnerLabel,
   ...viewProps
-}: ArtifactCardProps<T>) {
+}: WeaponCardProps<T>) {
   return (
     <div className={"flex flex-col " + wrapperCls}>
       <div
@@ -42,23 +38,23 @@ export function ArtifactCard<T extends CalcArtifact | UserArtifact>({
         style={style}
       >
         <div className="grow hide-scrollbar">
-          <ArtifactView artifact={artifact} {...viewProps} />
+          <WeaponView weapon={weapon} {...viewProps} />
         </div>
 
-        {artifact && withActions && actions?.length ? (
+        {weapon && withActions && actions?.length ? (
           <ButtonGroup
             className="mt-4"
             buttons={actions.map((action) => {
               return {
                 ...action,
-                onClick: (e) => action.onClick(e, artifact),
+                onClick: (e) => action.onClick(e, weapon),
               };
             })}
           />
         ) : null}
       </div>
 
-      {withOwnerLabel ? <OwnerLabel className="mt-4" item={artifact} /> : null}
+      {withOwnerLabel ? <OwnerLabel className="mt-4" item={weapon} /> : null}
     </div>
   );
 }

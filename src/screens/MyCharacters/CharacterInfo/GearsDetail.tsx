@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import { type CSSProperties, useEffect } from "react";
+import { useEffect } from "react";
 
 // Type
 import type { ArtifactAttribute, AttributeStat, ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
@@ -10,12 +9,9 @@ import { useDispatch } from "@Store/hooks";
 import { updateUserArtifactSubStat, updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
 // Component
-import { Button } from "@Src/pure-components";
-import { AttributeTable, SetBonusesDisplay, WeaponCard, ArtifactCard } from "@Src/components";
+import { AttributeTable, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Src/components";
 
 interface GearsDetailProps {
-  className: string;
-  style: CSSProperties;
   activeDetails: GearsDetailType;
   weapon: UserWeapon;
   artifacts: UserArtifacts;
@@ -27,8 +23,6 @@ interface GearsDetailProps {
   onCloseDetails: () => void;
 }
 export function GearsDetail({
-  className,
-  style,
   activeDetails,
   weapon,
   artifacts,
@@ -53,36 +47,33 @@ export function GearsDetail({
   switch (activeDetails) {
     case "weapon":
       return (
-        <div className={clsx("flex flex-col", className)} style={style}>
-          <div className="px-1 grow hide-scrollbar">
-            <WeaponCard
-              mutable
-              weapon={weapon}
-              upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
-              refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
-            />
-          </div>
-          <Button className="mt-4 mx-auto" variant="positive" onClick={onClickSwitchWeapon}>
-            Switch
-          </Button>
-        </div>
+        <WeaponCard
+          wrapperCls="h-full"
+          mutable
+          withGutter={false}
+          weapon={weapon}
+          upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
+          refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
+          actions={[
+            {
+              text: "Switch",
+              variant: "positive",
+              onClick: onClickSwitchWeapon,
+            },
+          ]}
+        />
       );
-
     case "setBonus":
       return (
-        <div className={clsx("flex", className)} style={style}>
-          <div className="px-1 hide-scrollbar">
-            <SetBonusesDisplay setBonuses={setBonuses} />
-          </div>
+        <div className="pr-1 h-full hide-scrollbar">
+          <SetBonusesDisplay setBonuses={setBonuses} />
         </div>
       );
 
     case "statsBonus":
       return (
-        <div className={clsx("flex", className)} style={style}>
-          <div className="custom-scrollbar">
-            <AttributeTable attributes={artAttr} />
-          </div>
+        <div className="h-full hide-scrollbar">
+          <AttributeTable attributes={artAttr} />
         </div>
       );
 
@@ -93,8 +84,7 @@ export function GearsDetail({
         return (
           <ArtifactCard
             wrapperCls="h-full"
-            className={className}
-            style={style}
+            withGutter={false}
             artifact={activeArtifact}
             mutable
             onEnhance={(level) => {

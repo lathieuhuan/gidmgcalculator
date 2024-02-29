@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useState } from "react";
 
 // Type
@@ -59,41 +58,45 @@ export default function Gears(props: GearsProps) {
     />
   );
 
-  const detailComponent = activeDetails !== -1 && (
-    <GearsDetail
-      className={clsx("h-full", isFromXmScreen && "border-l-2 border-dark-700 rounded-l-none bg-dark-900")}
-      style={{ width: isFromXmScreen ? hiddenSpaceWidth : undefined }}
-      activeDetails={activeDetails}
-      {...props}
-      setBonuses={setBonuses}
-      onClickSwitchWeapon={() => setInventoryCode(5)}
-      onClickSwitchArtifact={() => {
-        if (typeof activeDetails === "number") {
-          setInventoryCode(activeDetails);
-        }
-      }}
-      onClickUnequipArtifact={() => {
-        if (typeof activeDetails === "number") {
-          const activeArtifact = artifacts[activeDetails];
+  const renderDetail = (className = "") => {
+    if (activeDetails === -1) return null;
 
-          if (activeArtifact) {
-            setShowingDetail(false);
-            setTimeout(() => {
-              setActiveDetails(-1);
-              dispatch(
-                unequipArtifact({
-                  owner: activeArtifact.owner,
-                  artifactID: activeArtifact.ID,
-                  artifactIndex: activeDetails,
-                })
-              );
-            }, 200);
-          }
-        }
-      }}
-      onCloseDetails={() => toggleDetails(activeDetails)}
-    />
-  );
+    return (
+      <div className={`h-full ${className}`} style={{ width: isFromXmScreen ? hiddenSpaceWidth : undefined }}>
+        <GearsDetail
+          activeDetails={activeDetails}
+          {...props}
+          setBonuses={setBonuses}
+          onClickSwitchWeapon={() => setInventoryCode(5)}
+          onClickSwitchArtifact={() => {
+            if (typeof activeDetails === "number") {
+              setInventoryCode(activeDetails);
+            }
+          }}
+          onClickUnequipArtifact={() => {
+            if (typeof activeDetails === "number") {
+              const activeArtifact = artifacts[activeDetails];
+
+              if (activeArtifact) {
+                setShowingDetail(false);
+                setTimeout(() => {
+                  setActiveDetails(-1);
+                  dispatch(
+                    unequipArtifact({
+                      owner: activeArtifact.owner,
+                      artifactID: activeArtifact.ID,
+                      artifactIndex: activeDetails,
+                    })
+                  );
+                }, 200);
+              }
+            }
+          }}
+          onCloseDetails={() => toggleDetails(activeDetails)}
+        />
+      </div>
+    );
+  };
 
   return (
     <>
@@ -104,7 +107,7 @@ export default function Gears(props: GearsProps) {
             className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
             style={{ width: showingDetail ? hiddenSpaceWidth : 0 }}
           >
-            {detailComponent}
+            {renderDetail("p-4 border-l-2 border-dark-700 rounded-r-lg bg-dark-900")}
           </div>
         </div>
       ) : (
@@ -117,7 +120,7 @@ export default function Gears(props: GearsProps) {
                 <div className="flex justify-center">
                   <CloseButton size="small" onClick={() => toggleDetails(activeDetails)} />
                 </div>
-                <div className="pt-3 grow hide-scrollbar">{detailComponent}</div>
+                <div className="mt-4 grow hide-scrollbar">{renderDetail()}</div>
               </div>
             }
           />
