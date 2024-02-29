@@ -88,7 +88,7 @@ export default function MyArtifacts() {
     filter.stats.subs.some((s) => s !== "All");
 
   const actions = (
-    <>
+    <div className="flex items-center space-x-4">
       <ButtonGroup
         buttons={[
           { text: "Add", onClick: onClickAddArtifact },
@@ -122,7 +122,7 @@ export default function MyArtifacts() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 
   return (

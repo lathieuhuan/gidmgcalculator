@@ -184,7 +184,7 @@ function HighManagerCore() {
             <div className="mt-4 space-y-4">
               <Button
                 variant="custom"
-                className="w-full bg-blue-400 text-black"
+                className="w-full bg-mint-600 text-black"
                 icon={<FaPlus />}
                 onClick={addNewSetup}
               >

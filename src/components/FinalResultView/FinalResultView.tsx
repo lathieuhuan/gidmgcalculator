@@ -78,7 +78,7 @@ export const FinalResultView = ({
             {/* <div className="mx-auto mb-2 w-52 text-base text-black leading-none font-bold flex rounded-2xl overflow-hidden">
               <button
                 type="button"
-                className="grow py-1.5 pl-4 flex items-center space-x-2 bg-blue-400 overflow-hidden"
+                className="grow py-1.5 pl-4 flex items-center space-x-2 bg-mint-600 overflow-hidden"
                 onClick={() => toggleSection(index)}
               >
                 <FaChevronRight

@@ -92,7 +92,7 @@ export const TalentDetail = ({ appChar, detailIndex, onChangeDetailIndex, onClos
       <button
         className={
           "w-7 h-7 flex-center rounded border-2 border-dark-500 text-dark-500 text-1.5xl " +
-          (disabled ? "opacity-50" : "hover:border-blue-400 hover:text-blue-400")
+          (disabled ? "opacity-50" : "hover:border-mint-600 hover:text-mint-600")
         }
         disabled={disabled}
         onMouseDown={() => onMouseDownLevelButton(isLevelUp)}

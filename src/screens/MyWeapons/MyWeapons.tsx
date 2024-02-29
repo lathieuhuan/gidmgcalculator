@@ -95,7 +95,7 @@ export default function MyWeapons() {
   };
 
   const actions = (
-    <>
+    <div className="flex items-center">
       <ButtonGroup
         className="mr-4"
         buttons={[
@@ -106,22 +106,21 @@ export default function MyWeapons() {
           },
         ]}
       />
+
       {screenWatcher.isFromSize("sm") ? (
         renderWeaponTypeSelect()
       ) : (
         <>
-          <Button
-            variant={filterIsActive ? "active" : "default"}
-            icon={<FaEllipsisH />}
-            onClick={() => setFilterIsActive(!filterIsActive)}
-          />
+          <Button variant={filterIsActive ? "active" : "default"} onClick={() => setFilterIsActive(!filterIsActive)}>
+            Filter
+          </Button>
 
           <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
             <div className="px-4 py-6 shadow-common bg-dark-700">{renderWeaponTypeSelect()}</div>
           </CollapseSpace>
         </>
       )}
-    </>
+    </div>
   );
 
   return (

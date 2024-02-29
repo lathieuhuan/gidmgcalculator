@@ -49,26 +49,28 @@ export function useArtifactSetFilter(artifacts: CalcArtifact[], chosenCodes: num
   const renderArtifactSetFilter = (className?: ClassValue, setsWrapCls = "") => {
     return (
       <FilterTemplate
-        className={className}
+        className={["h-full flex flex-col", className]}
         title={title}
         disabledClearAll={setOptions.every((set) => !set.chosen)}
         onClickClearAll={clearFilter}
       >
-        <div className={setsWrapCls}>
-          {setOptions.map((set, i) => {
-            return (
-              <div key={i} className="p-2" onClick={() => toggleSet(i)}>
-                <div
-                  className={clsx(
-                    "rounded-circle",
-                    set.chosen ? "shadow-3px-2px shadow-green-300 bg-dark-900" : "bg-transparent"
-                  )}
-                >
-                  <Image src={set.icon} imgType="artifact" />
+        <div className="grow custom-scrollbar">
+          <div className={setsWrapCls}>
+            {setOptions.map((set, i) => {
+              return (
+                <div key={i} className="p-2" onClick={() => toggleSet(i)}>
+                  <div
+                    className={clsx(
+                      "rounded-circle",
+                      set.chosen ? "shadow-3px-2px shadow-green-300 bg-dark-900" : "bg-transparent"
+                    )}
+                  >
+                    <Image className="p-1" src={set.icon} imgType="artifact" />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </FilterTemplate>
     );

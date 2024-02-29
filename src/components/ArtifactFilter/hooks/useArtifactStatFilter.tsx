@@ -127,14 +127,14 @@ export const useArtifactStatFilter = (initialFilter: ArtifactStatFilterState, co
         onClickClearAll={clearFilter}
       >
         <div className="space-y-1">
-          <p className="text-lg text-blue-400 font-semibold">Main Stat</p>
+          <p className="text-lg text-mint-600 font-semibold">Main Stat</p>
           <div className="mt-1 flex justify-center">
             {renderSelect({ value: filter.main, options: mainStatOptions, onChange: changeMainStat })}
           </div>
         </div>
 
         <div className="mt-3 space-y-1">
-          <p className="text-lg text-blue-400 font-semibold">Sub Stats</p>
+          <p className="text-lg text-mint-600 font-semibold">Sub Stats</p>
           <div className="flex flex-col items-center space-y-2">
             {[1, 2, 3, 4].map((no, i) => {
               const prevValue = filter.subs[i - 1];

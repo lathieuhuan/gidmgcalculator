@@ -25,7 +25,7 @@ export function useTabs({ level = 1, defaultIndex = 0, configs }: UseTabArgs) {
               disabled={isDisabled}
               className={clsx(
                 "py-0.5 w-1/2 flex-center text-black font-bold",
-                index === activeIndex ? (level === 1 ? "bg-orange-500" : "bg-blue-400") : "bg-light-400 glow-on-hover",
+                index === activeIndex ? (level === 1 ? "bg-orange-500" : "bg-mint-600") : "bg-light-400 glow-on-hover",
                 isDisabled && "opacity-50"
               )}
               onClick={() => setActiveIndex(index)}

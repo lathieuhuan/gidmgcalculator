@@ -122,10 +122,10 @@ const ArtifactFilter = ({ forcedType, artifacts, initialFilter, onDone, onClose 
 
         <div className="h-full w-px bg-dark-300 hidden md:block" />
 
-        <div className={clsx([wrapperCls(activeIndex !== 2), "grow"])}>
+        <div className={clsx([wrapperCls(activeIndex !== 2), "grow custom-scrollbar"])}>
           {renderArtifactSetFilter(
             null,
-            "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-4 xm:grid-cols-6 lg:grid-cols-8"
+            "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-3 xm:grid-cols-5 lg:grid-cols-8"
           )}
         </div>
       </div>

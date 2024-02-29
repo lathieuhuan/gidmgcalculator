@@ -63,7 +63,7 @@ export const AbilityCarousel = ({
 }: AbilityCarouselProps) => {
   const renderCaret = (direction: "right" | "left", disabled: boolean) => {
     const caretCls = `absolute top-2 w-10 h-10 flex-center text-dark-500 flex-center ${
-      disabled ? "cursor-pointer opacity-50" : "hover:text-blue-400"
+      disabled ? "cursor-pointer opacity-50" : "hover:text-mint-600"
     }`;
 
     return direction === "right" ? (

@@ -68,9 +68,11 @@ module.exports = {
         300: "#62f98e", // bonus color (root)
       },
       blue: {
-        400: "#5ca8ff",
-        // 500: "#3392ff"
-        600: "#0075ff", // root
+        400: "#5ca8ff", // link
+        // 600: "#0075ff", // root
+      },
+      mint: {
+        600: "#09bcba", // root
       },
       orange: {
         // 400: "#fba64b",
@@ -85,7 +87,7 @@ module.exports = {
       hydro: "#2eaaff",
       dendro: "#49e03e",
       electro: "#cd77ff",
-      anemo: "#48ffce",
+      anemo: "#3effa2",
       cryo: "#75faff",
       geo: "#ffc558",
       rarity: {

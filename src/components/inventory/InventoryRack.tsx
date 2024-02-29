@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
-import { FaCaretRight, FaMinus } from "react-icons/fa";
+import { FaCaretRight, FaMinus, FaSquare } from "react-icons/fa";
 
 import type { BooleanRecord, UserArtifact, UserItem, UserWeapon } from "@Src/types";
 import type { ArtifactRackProps, InventoryRackProps, MixedRackProps, WeaponRackProps } from "./types";
@@ -159,16 +159,24 @@ export function InventoryRack<T extends UserItem>({
 
       {data.length && deadEnd ? (
         <div className="pt-2 flex-center space-x-2">
-          <button className="glow-on-hover disabled:opacity-50" disabled={pageNo <= 0} onClick={goBack}>
-            <FaCaretRight className="rotate-180" size="1.75rem" />
+          <button
+            className="w-7 h-7 flex-center glow-on-hover disabled:opacity-50"
+            disabled={pageNo <= 0}
+            onClick={goBack}
+          >
+            {pageNo > 0 ? <FaCaretRight className="rotate-180 text-2xl" /> : <FaSquare className="text-lg" />}
           </button>
 
           <p className="font-semibold">
             <span className="text-orange-500">{pageNo + 1}</span> / {deadEnd + 1}
           </p>
 
-          <button className="glow-on-hover disabled:opacity-50" disabled={pageNo >= deadEnd} onClick={goNext}>
-            <FaCaretRight size="1.75rem" />
+          <button
+            className="w-7 h-7 flex-center glow-on-hover disabled:opacity-50"
+            disabled={pageNo >= deadEnd}
+            onClick={goNext}
+          >
+            {pageNo < deadEnd ? <FaCaretRight className="text-2xl" /> : <FaSquare className="text-lg" />}
           </button>
         </div>
       ) : null}

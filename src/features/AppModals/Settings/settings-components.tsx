@@ -8,7 +8,7 @@ interface SectionProps {
 export const Section = ({ title, children }: SectionProps) => {
   return (
     <div className="px-4 py-2 bg-dark-900 rounded">
-      <p className="text-blue-400 text-lg font-semibold">{title}</p>
+      <p className="text-mint-600 text-lg font-semibold">{title}</p>
       <div className="mt-2 space-y-3">{children}</div>
     </div>
   );
