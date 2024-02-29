@@ -9,7 +9,7 @@ import type {
   TalentAttributeType,
   UserArtifact,
   UserWeapon,
-  Vision,
+  ElementType,
   WeaponType,
   Teammate,
   Party,
@@ -49,10 +49,10 @@ export const isGranted = ({ grantedAt }: { grantedAt?: CharacterMilestone }, cha
   return true;
 };
 
-export function countVision(partyData: PartyData, charData?: AppCharacter) {
-  const result: Partial<Record<Vision, number>> = {};
-  if (charData) {
-    result[charData.vision] = 1;
+export function countElements(partyData: PartyData, appChar?: AppCharacter) {
+  const result: Partial<Record<ElementType, number>> = {};
+  if (appChar) {
+    result[appChar.vision] = 1;
   }
   return partyData.reduce((count, teammateData) => {
     if (teammateData) {
@@ -91,7 +91,7 @@ export function calcItemToUserItem(item: CalcArtifact | CalcWeapon, options?: Op
 export const getTalentDefaultInfo = (
   key: "NAs" | "ES" | "EB",
   weaponType: WeaponType,
-  vision: Vision,
+  elementType: ElementType,
   attPatt: AttackPattern,
   config?: AppCharacter["multFactorConf"]
 ): {
@@ -100,7 +100,7 @@ export const getTalentDefaultInfo = (
   basedOn: TalentAttributeType;
   flatFactorScale: number;
 } => {
-  const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
+  const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : elementType;
   const defaultScale = attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2;
   const defaultBasedOn: TalentAttributeType = "atk";
   const { scale = defaultScale, basedOn = defaultBasedOn } = config?.[attPatt] || {};

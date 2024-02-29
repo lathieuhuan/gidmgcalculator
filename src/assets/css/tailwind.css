@@ -18,20 +18,13 @@
     background: transparent;
   }
   a {
-    @apply text-green-300;
+    @apply text-blue-400;
   }
 }
 
 @layer components {
   .styled-select {
     @apply px-2 py-1 bg-light-400 text-black rounded font-bold;
-  }
-  .small-modal {
-    @apply rounded-lg shadow-white-glow;
-    width: 22rem;
-  }
-  .h-large-modal {
-    @apply h-[90vh] lg:h-[85vh] max-h-[760px];
   }
   .load-option {
     @apply pt-2 pb-3 px-4 hover:bg-dark-900;

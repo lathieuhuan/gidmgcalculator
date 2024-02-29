@@ -3,7 +3,7 @@ import { selectCalcSetupsById, selectSetupManageInfos } from "@Store/calculatorS
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { CopySection } from "../../components";
+import { CopySection } from "../../components/CopySection";
 
 export function CopySelect() {
   const dispatch = useDispatch();

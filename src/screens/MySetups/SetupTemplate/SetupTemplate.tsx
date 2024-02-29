@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "react-icons/fa";
 
@@ -5,8 +6,9 @@ import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "reac
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { OpenModalFn } from "../types";
 
-import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { ARTIFACT_TYPE_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { $AppCharacter, $AppData } from "@Src/services";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch } from "@Store/hooks";
@@ -19,9 +21,9 @@ import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
 
 // Component
-import { Button, Image, Modal } from "@Src/pure-components";
+import { Button, ButtonGroup, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
-import { TeammateDetail } from "../modal-content";
+import { TeammateDetail } from "./TeammateDetail";
 import { GearIcon } from "./GearIcon";
 
 interface SetupLayoutProps {
@@ -34,8 +36,9 @@ interface SetupLayoutProps {
   openModal: OpenModalFn;
 }
 export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], allIDs, openModal }: SetupLayoutProps) {
-  const { type, char, party } = setup;
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
+  const { type, char, party } = setup;
 
   const [teammateDetail, setTeammateDetail] = useState({
     index: -1,
@@ -44,7 +47,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const teammateInfo = party[teammateDetail.index];
   const isOriginal = type === "original";
-  const isFetched = $AppData.getCharStatus(char.name) === "fetched";
+  const isFetched = $AppCharacter.getStatus(char.name) === "fetched";
 
   const closeTeammateDetail = () => {
     setTeammateDetail({
@@ -75,26 +78,26 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const charData = $AppData.getCharData(char.name);
-    const weaponData = weapon ? $AppData.getWeaponData(weapon.code) : undefined;
+    const appChar = $AppCharacter.get(char.name);
+    const appWeapon = weapon ? $AppData.getWeapon(weapon.code) : undefined;
 
-    if (charData) {
+    if (appChar) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
         return finalTalentLv({
           char,
-          charData,
+          appChar,
           talentType,
-          partyData: $AppData.getPartyData(party),
+          partyData: $AppCharacter.getPartyData(party),
         });
       });
 
       const renderSpan = (text: string | number) => (
-        <span className={`font-medium text-${charData.vision}`}>{text}</span>
+        <span className={`font-medium text-${appChar.vision}`}>{text}</span>
       );
 
       mainCharacter = (
-        <div className="mx-auto lg:mx-0 flex">
-          <Image size="w-20 h-20" src={charData.icon} imgType="character" />
+        <div className="flex">
+          <Image size="w-20 h-20" src={appChar.icon} imgType="character" />
 
           <div className="ml-4 flex-col justify-between">
             <p className="text-lg">Level {renderSpan(char.level)}</p>
@@ -107,10 +110,10 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
       );
     }
 
-    const teammate = (
-      <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
+    const teammate = party.filter(Boolean).length ? (
+      <div className="flex space-x-4">
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && $AppData.getCharData(teammate.name);
+          const dataTeammate = teammate && $AppCharacter.get(teammate.name);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];
@@ -118,10 +121,10 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           return (
             <div
               key={teammateIndex}
-              className={
-                "w-18 h-18 cursor-pointer" +
-                (isCalculated ? " rounded-circle shadow-3px-3px shadow-yellow-400 cursor-pointer" : "")
-              }
+              className={clsx(
+                "w-18 h-18 cursor-pointer",
+                isCalculated && " rounded-circle shadow-3px-3px shadow-yellow-400 cursor-pointer"
+              )}
             >
               <CharacterPortrait
                 code={dataTeammate.code}
@@ -137,26 +140,26 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           );
         })}
       </div>
-    );
+    ) : null;
 
     const gears = (
-      <div className="mt-4 mx-auto grid grid-cols-3 gap-2">
-        {weaponData ? (
-          <GearIcon item={weaponData} disabled={!isFetched} onClick={openModal("WEAPON")} />
+      <div className="grid grid-cols-3 gap-2">
+        {appWeapon ? (
+          <GearIcon item={appWeapon} disabled={!isFetched} onClick={openModal("WEAPON")} />
         ) : (
           <GearIcon item={{ icon: "7/7b/Icon_Inventory_Weapons" }} />
         )}
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
-            const artifactData = $AppData.getArtifactData(artifact);
+            const appArtifact = $AppData.getArtifact(artifact);
 
-            return artifactData ? (
+            return appArtifact ? (
               <GearIcon
                 key={i}
                 item={{
-                  icon: artifactData.icon,
-                  beta: artifactData.beta,
+                  icon: appArtifact.icon,
+                  beta: appArtifact.beta,
                   rarity: artifact.rarity || 5,
                 }}
                 disabled={!isFetched}
@@ -165,7 +168,12 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
             ) : null;
           }
 
-          return <GearIcon key={i} item={{ icon: ARTIFACT_ICONS[ARTIFACT_TYPES[i]] }} />;
+          return (
+            <GearIcon
+              key={i}
+              item={{ icon: ARTIFACT_TYPE_ICONS.find((item) => item.type === ARTIFACT_TYPES[i])?.icon || "" }}
+            />
+          );
         })}
       </div>
     );
@@ -176,10 +184,10 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
   return (
     <>
       <div className="pr-1 flex justify-between flex-col lg:flex-row" onDoubleClick={() => console.log(setup)}>
-        <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
-          {isOriginal ? null : window.innerWidth > 1025 ? (
+        <div className="flex items-center">
+          {isOriginal ? null : screenWatcher.isFromSize("lg") ? (
             <Button
-              className="hover:text-red-400 group"
+              className="hover:text-red-200 group shadow-none"
               variant="custom"
               icon={
                 <>
@@ -190,14 +198,13 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               onClick={uncombine}
             />
           ) : (
-            <Button variant="negative" boneOnly icon={<FaUnlink />} onClick={uncombine} />
+            <Button variant="custom" className="text-red-200" boneOnly icon={<FaUnlink />} onClick={uncombine} />
           )}
           <p className="px-1 text-xl text-orange-500 font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
-        <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">
+        <div className="mt-2 lg:mt-0 pb-2 flex space-x-3 justify-end">
           <Button
-            variant="positive"
             icon={<FaWrench />}
             disabled={!weapon}
             onClick={() => {
@@ -216,13 +223,12 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
             }}
           />
 
-          <Button variant="neutral" icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP")} />
+          <Button icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP")} />
 
           {isOriginal ? (
-            <Button variant="negative" icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP")} />
+            <Button icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP")} />
           ) : (
             <Button
-              variant="neutral"
               icon={<FaPlus />}
               disabled={!allIDs || Object.keys(allIDs).length >= 4}
               onClick={openModal("COMBINE_MORE")}
@@ -231,37 +237,46 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         </div>
       </div>
 
-      <div className="px-4 pt-4 pb-3 rounded-lg bg-dark-900 flex flex-col lg:flex-row">
-        <div className="flex flex-col">
+      <div className="px-4 pt-4 pb-3 rounded-lg bg-dark-900 flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col gap-4">
           {display.mainCharacter}
           {display.teammate}
         </div>
 
-        <div className="hidden lg:block w-0.5 mx-4 bg-dark-500" />
+        <div className="hidden lg:block w-0.5 bg-dark-500" />
 
-        <div className="mt-4 lg:mt-0 flex flex-col">
-          <div className="flex justify-center space-x-4">
-            <button
-              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
-              disabled={!isFetched}
-              onClick={openModal("STATS")}
-            >
-              Stats
-            </button>
-            <button
-              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
-              disabled={!isFetched}
-              onClick={openModal("MODIFIERS")}
-            >
-              Modifiers
-            </button>
-          </div>
+        <div className="flex flex-col gap-4">
+          <ButtonGroup
+            justify="start"
+            buttons={[
+              {
+                text: "Stats",
+                variant: "custom",
+                className: "bg-dark-500",
+                disabled: !isFetched,
+                onClick: openModal("STATS"),
+              },
+              {
+                text: "Modifiers",
+                variant: "custom",
+                className: "bg-dark-500",
+                disabled: !isFetched,
+                onClick: openModal("MODIFIERS"),
+              },
+            ]}
+          />
 
           {display.gears}
         </div>
       </div>
 
-      <Modal active={teammateDetail.index !== -1} onClose={closeTeammateDetail}>
+      <Modal.Core
+        active={teammateDetail.index !== -1}
+        className="rounded-lg shadow-white-glow"
+        onClose={closeTeammateDetail}
+      >
+        <Modal.CloseButton onClick={closeTeammateDetail} />
+
         {teammateInfo && (
           <TeammateDetail
             teammate={teammateInfo}
@@ -280,10 +295,9 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               }
             }}
             onCalculateTeammateSetup={onCalculateTeammateSetup}
-            onClose={closeTeammateDetail}
           />
         )}
-      </Modal>
+      </Modal.Core>
     </>
   );
 }

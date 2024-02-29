@@ -7,10 +7,10 @@ import type { InitNewSessionPayload } from "./calculatorSlice/reducer-types";
 import type { AppThunk } from "./index";
 
 import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_WEAPONS } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 
 // Action
-import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
+import { initNewSession, updateMessage } from "./calculatorSlice";
 import { updateSetupImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
@@ -26,7 +26,7 @@ import {
 } from "@Src/utils";
 import { cleanupCalcSetup, isUserSetup } from "@Src/utils/setup";
 import {
-  createArtDebuffCtrls,
+  createArtifactDebuffCtrls,
   createArtifact,
   createArtifactBuffCtrls,
   createCharInfo,
@@ -35,7 +35,7 @@ import {
   createWeapon,
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import { parseUserCharacter, type PickedChar } from "./utils";
+import { parseUserCharacter, CharacterForInit } from "./utils";
 
 type Option = {
   onSuccess?: () => void;
@@ -45,13 +45,13 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
     const { char } = payload.calcSetup;
     const { onSuccess } = options || {};
 
-    if ($AppData.getCharStatus(char.name) === "fetched") {
+    if ($AppCharacter.getStatus(char.name) === "fetched") {
       dispatch(initNewSession(payload));
       onSuccess?.();
     } else {
       dispatch(updateUI({ loading: true }));
 
-      const response = await $AppData.fetchCharacter(char.name);
+      const response = await $AppCharacter.fetch(char.name);
 
       if (response.code === 200) {
         dispatch(initNewSession(payload));
@@ -70,17 +70,17 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
   };
 };
 
-export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
+export const initNewSessionWithCharacter = (character: CharacterForInit): AppThunk => {
   return (dispatch, getState) => {
     const { userWps, userArts } = getState().database;
 
     const ID = Date.now();
-    const charData = $AppData.getCharData(pickedChar.name);
+    const appChar = $AppCharacter.get(character.name);
     const data = parseUserCharacter({
-      pickedChar,
+      character,
       userWps,
       userArts,
-      weaponType: charData.weaponType,
+      weaponType: appChar.weaponType,
       seedID: ID + 1,
     });
     const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
@@ -96,7 +96,7 @@ export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
           wpBuffCtrls: data.wpBuffCtrls,
           artifacts: data.artifacts,
           artBuffCtrls: data.artBuffCtrls,
-          artDebuffCtrls: createArtDebuffCtrls(),
+          artDebuffCtrls: createArtifactDebuffCtrls(),
           party: [null, null, null],
           elmtModCtrls: createElmtModCtrls(),
           customBuffCtrls: [],
@@ -105,18 +105,6 @@ export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
         },
       })
     );
-  };
-};
-
-export const pickEquippedArtSet = (artifactIDs: (number | null)[]): AppThunk => {
-  return (dispatch, getState) => {
-    const { userArts } = getState().database;
-    const artifacts = artifactIDs.map((id) => {
-      const artifact = id ? findById(userArts, id) : undefined;
-      return artifact ? userItemToCalcItem(artifact) : null;
-    });
-
-    dispatch(updateAllArtifact(artifacts));
   };
 };
 
@@ -325,7 +313,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
       let artifacts: CalcArtifacts = [null, null, null, null, null];
 
       if (artifact.code) {
-        const { variants = [] } = $AppData.getArtifactSetData(artifact.code) || {};
+        const { variants = [] } = $AppData.getArtifactSet(artifact.code) || {};
         const maxRarity = variants[variants.length - 1];
 
         if (maxRarity) {
@@ -375,7 +363,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
             wpBuffCtrls: createWeaponBuffCtrls(true, actualWeapon),
             artifacts,
             artBuffCtrls: createArtifactBuffCtrls(true, { code: artifact.code }),
-            artDebuffCtrls: createArtDebuffCtrls(),
+            artDebuffCtrls: createArtifactDebuffCtrls(),
             party,
             elmtModCtrls: createElmtModCtrls(),
             customBuffCtrls: [],

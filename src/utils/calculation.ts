@@ -39,11 +39,11 @@ export const getArtifactSetBonuses = (artifacts: CalcArtifacts = []): ArtifactSe
 
 interface TotalXtraTalentArgs {
   char: CharInfo;
-  charData: AppCharacter;
+  appChar: AppCharacter;
   talentType: Talent;
   partyData?: PartyData;
 }
-export const totalXtraTalentLv = ({ char, charData, talentType, partyData }: TotalXtraTalentArgs) => {
+export const totalXtraTalentLv = ({ char, appChar, talentType, partyData }: TotalXtraTalentArgs) => {
   let result = 0;
 
   if (talentType === "NAs") {
@@ -52,7 +52,7 @@ export const totalXtraTalentLv = ({ char, charData, talentType, partyData }: Tot
     }
   }
   if (talentType !== "altSprint") {
-    const consLv = charData.talentLvBonus?.[talentType];
+    const consLv = appChar.talentLvBonus?.[talentType];
 
     if (consLv && char.cons >= consLv) {
       result += 3;

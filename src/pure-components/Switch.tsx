@@ -4,11 +4,11 @@ type Case<T> = {
   value: T;
   element: ReactNode;
 };
-interface SwitchProps<T> {
+export interface SwitchProps<T extends string | number> {
   value: T;
   cases: Case<T>[];
   default?: ReactNode;
 }
-export function Switch<T>(props: SwitchProps<T>): ReactElement {
+export function Switch<T extends string | number>(props: SwitchProps<T>): ReactElement {
   return <>{props.cases.find((item) => item.value === props.value)?.element ?? props.default}</>;
 }

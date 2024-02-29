@@ -4,7 +4,7 @@ import type { CalcSetup, Target } from "@Src/types";
 import { encodeSetup } from "./utils";
 
 // Component
-import { withModal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
 interface SetupExporterProps {
@@ -38,15 +38,6 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
       }
       moreButtons={[
         {
-          text: "Copy",
-          onClick: () => {
-            navigator.clipboard.writeText(encodedData).then(
-              () => setStatus("SUCCESS"),
-              () => setStatus("NOT_SUPPORT")
-            );
-          },
-        },
-        {
           text: "Copy URL",
           onClick: () => {
             navigator.clipboard.writeText(`${window.location.origin}?importCode=${encodedData}`).then(
@@ -55,11 +46,21 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
             );
           },
         },
+        {
+          text: "Copy",
+          variant: "positive",
+          autoFocus: true,
+          onClick: () => {
+            navigator.clipboard.writeText(encodedData).then(
+              () => setStatus("SUCCESS"),
+              () => setStatus("NOT_SUPPORT")
+            );
+          },
+        },
       ]}
-      autoFocusButtonIndex={1}
       onClose={onClose}
     />
   );
 };
 
-export const SetupExporter = withModal(SetupExporterCore);
+export const SetupExporter = Modal.coreWrap(SetupExporterCore, { preset: "small" });

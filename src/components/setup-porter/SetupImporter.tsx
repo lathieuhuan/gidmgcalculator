@@ -5,7 +5,7 @@ import { useDispatch } from "@Store/hooks";
 import { decodeSetup } from "./utils";
 
 // Component
-import { withModal } from "@Src/pure-components";
+import { Modal } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
 const SetupImporterCore = (props: { onClose: () => void }) => {
@@ -35,6 +35,8 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
       moreButtons={[
         {
           text: "Paste",
+          variant: "positive",
+          autoFocus: true,
           onClick: () => {
             navigator.clipboard.readText().then(setCode, () => setError("NOT_SUPPORT"));
           },
@@ -57,10 +59,9 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
           },
         },
       ]}
-      autoFocusButtonIndex={1}
       onClose={props.onClose}
     />
   );
 };
 
-export const SetupImporter = withModal(SetupImporterCore);
+export const SetupImporter = Modal.coreWrap(SetupImporterCore, { preset: "small" });

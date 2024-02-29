@@ -16,19 +16,20 @@ import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
-import { useCharData } from "@Src/hooks";
+import { useScreenWatcher } from "@Src/features";
+import { useAppCharacter } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Component
 import { Button, WarehouseLayout, LoadingIcon } from "@Src/pure-components";
-import { DamageDisplay } from "@Src/components";
-import { ChosenSetupModalCluster, MySetupsModalCluster } from "./modal-cluster";
+import { FinalResultView } from "@Src/components";
 import { SetupTemplate } from "./SetupTemplate";
-
-import styles from "../styles.module.scss";
+import { ChosenSetupModals } from "./ChosenSetupModals";
+import { MySetupsModals } from "./MySetupsModals";
 
 export default function MySetups() {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const userSetups = useSelector(selectUserSetups);
   const chosenSetupID = useSelector(selectChosenSetupID);
 
@@ -38,7 +39,7 @@ export default function MySetups() {
   })();
 
   const { itemsBySetupID } = useSetupItems(userSetups);
-  const { isLoading, error } = useCharData(chosenSetup?.char.name);
+  const { isLoading, error } = useAppCharacter(chosenSetup?.char.name);
   // const isLoading = true;
   // const error = null;
 
@@ -52,11 +53,7 @@ export default function MySetups() {
 
   const setupList = (() => {
     if (!userSetups.length) {
-      return (
-        <div className="pt-8 flex-center" style={{ minWidth: 320 }}>
-          <p className="text-xl font-bold text-red-100">No setups to display</p>
-        </div>
-      );
+      return <p className="w-full py-4 text-light-800 text-lg text-center">No setups found</p>;
     }
 
     return userSetups.map((setup: UserSetup | UserComplexSetup, index: number) => {
@@ -87,11 +84,11 @@ export default function MySetups() {
       }
 
       return setupDisplay ? (
-        <div key={key} id={`setup-${setup.ID}`} className="p-1">
+        <div key={key} id={`setup-${setup.ID}`} className="w-full p-1">
           <div
             className={clsx(
               "px-2 pt-3 pb-2 rounded-lg bg-dark-500",
-              setup.ID === chosenSetupID ? "shadow-green-300 shadow-5px-1px" : "shadow-common"
+              setup.ID === chosenSetupID ? "shadow-5px-1px shadow-green-200" : "shadow-common"
             )}
             onClick={() => dispatch(chooseUserSetup(setup.ID))}
           >
@@ -117,7 +114,7 @@ export default function MySetups() {
 
       const { weapon, artifacts } = itemsBySetupID[chosenSetup.ID] || {};
 
-      const calcResult = calculateChosenSetup(chosenSetup, weapon, artifacts);
+      const result = calculateChosenSetup(chosenSetup, weapon, artifacts);
 
       return (
         <div className="h-full flex flex-col">
@@ -125,12 +122,12 @@ export default function MySetups() {
             <p className="text-sm text-center truncate">{chosenSetup.name}</p>
           </div>
           <div className="mt-2 grow hide-scrollbar">
-            {calcResult?.damage && (
-              <DamageDisplay char={chosenSetup.char} party={chosenSetup.party} damageResult={calcResult.damage} />
+            {result?.finalResult && (
+              <FinalResultView char={chosenSetup.char} party={chosenSetup.party} finalResult={result.finalResult} />
             )}
           </div>
 
-          <ChosenSetupModalCluster {...{ chosenSetup, weapon, artifacts, calcResult }} />
+          <ChosenSetupModals {...{ chosenSetup, weapon, artifacts, result }} />
         </div>
       );
     }
@@ -138,32 +135,34 @@ export default function MySetups() {
   })();
 
   return (
-    <WarehouseLayout.Wrapper>
-      <WarehouseLayout className={styles["setup-WarehouseLayout"]}>
-        <WarehouseLayout.ButtonBar>
-          <Button className="mr-4" variant="positive" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
-          <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
-            Combine
-          </Button>
-        </WarehouseLayout.ButtonBar>
+    <WarehouseLayout
+      bodyStyle={{
+        width: screenWatcher.isFromSize("xm") ? "auto" : undefined,
+      }}
+      actions={
+        <div className="flex items-center space-x-4">
+          <Button size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
+          <Button onClick={openModal("FIRST_COMBINE")}>Combine</Button>
+        </div>
+      }
+    >
+      <div
+        className={clsx(
+          userSetups.length && "p-1 xm:pr-3",
+          "shrink-0 flex flex-col items-start custom-scrollbar scroll-smooth space-y-3"
+        )}
+        style={{
+          minWidth: screenWatcher.isFromSize("lg") ? "541px" : "",
+        }}
+      >
+        {setupList}
+      </div>
 
-        <WarehouseLayout.Body className="pb-2 custom-scrollbar">
-          <div
-            className={clsx(
-              userSetups.length && "p-1 pr-3",
-              "lg:grow shrink-0 flex flex-col items-start hide-scrollbar scroll-smooth space-y-3"
-            )}
-          >
-            {setupList}
-          </div>
+      <div className="shrink-0 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
+        {chosenSetupInfo}
+      </div>
 
-          <div className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
-            {chosenSetupInfo}
-          </div>
-        </WarehouseLayout.Body>
-      </WarehouseLayout>
-
-      <MySetupsModalCluster combineMoreId={chosenSetupID} />
-    </WarehouseLayout.Wrapper>
+      <MySetupsModals combineMoreId={chosenSetupID} />
+    </WarehouseLayout>
   );
 }

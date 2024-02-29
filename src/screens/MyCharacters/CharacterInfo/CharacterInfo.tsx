@@ -4,7 +4,8 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { useCharData } from "@Src/hooks";
+import { useAppCharacter } from "@Src/hooks";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -16,8 +17,8 @@ import { getCalculationStats } from "@Src/calculation";
 import { findById, findByName, getImgSrc } from "@Src/utils";
 
 // Component
-import { StarLine, Button, ConfirmModal, LoadingIcon } from "@Src/pure-components";
-import { AttributeTable, TalentList, ConsList } from "@Src/components";
+import { Button, ConfirmModal, LoadingIcon, RarityStars } from "@Src/pure-components";
+import { AttributeTable, TalentList, ConstellationList } from "@Src/components";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(
@@ -38,17 +39,22 @@ const selectChosenInfo = createSelector(
 
 const CharacterInfo = () => {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
-  const { isLoading, error, charData } = useCharData(char.name);
+  const { isLoading, error, appChar } = useAppCharacter(char.name);
 
   const [removing, setRemoving] = useState(false);
 
+  const wrapperProps = {
+    className: "py-4 flex h-98/100 space-x-2 custom-scrollbar",
+    style: {
+      width: screenWatcher.isFromSize("sm") ? "88%" : "calc(100% - 2rem)",
+    },
+  };
+
   if (isLoading || error) {
     return (
-      <div
-        className="py-4 flex h-98/100 space-x-2 overflow-auto"
-        style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
-      >
+      <div {...wrapperProps}>
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="p-4 rounded-lg bg-dark-900 shrink-0" style={{ width: 332 }}>
             {error ? (
@@ -64,42 +70,33 @@ const CharacterInfo = () => {
     );
   }
 
-  if (!charData || !weapon) {
-    return null;
-  }
-  const { name, icon, rarity, vision } = charData;
+  if (!appChar || !weapon) return null;
+  const { name, icon, rarity, vision: elementType } = appChar;
 
   const { totalAttr, artAttr } = getCalculationStats({
     char,
-    charData,
+    appChar,
     weapon,
     artifacts,
   });
-  const isMobile = window.innerWidth <= 700;
+  const isFromXmSize = screenWatcher.isFromSize("md");
 
   return (
-    <div
-      className="py-4 flex h-98/100 space-x-2 overflow-auto"
-      style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
-    >
+    <div {...wrapperProps}>
       <div className="p-4 rounded-lg bg-dark-900 flex flex-col relative">
-        <Button
-          className="absolute top-4 right-4 hover:text-red-600"
-          boneOnly
-          icon={<FaUserSlash />}
-          onClick={() => setRemoving(true)}
-        />
+        <Button className="absolute top-4 right-4" boneOnly icon={<FaUserSlash />} onClick={() => setRemoving(true)} />
 
         <div className="flex" onDoubleClick={() => console.log(char, weapon, artifacts)}>
-          {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
+          {!isFromXmSize && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
+
           <div>
-            {!isMobile && <p className={`text-2.5xl text-${vision} font-black`}>{name}</p>}
-            <StarLine className="mt-1" rarity={rarity} />
+            {isFromXmSize && <p className={`text-2.5xl text-${elementType} font-black`}>{name}</p>}
+            <RarityStars className="mt-1" rarity={rarity} />
 
             <div className="mt-1 flex text-lg">
               <p className="mr-1">Level</p>
               <select
-                className={`text-right text-last-right text-${vision} font-semibold`}
+                className={`text-right text-last-right text-${elementType} font-semibold`}
                 value={char.level}
                 onChange={(e) => dispatch(updateUserCharacter({ name, level: e.target.value as Level }))}
               >
@@ -120,7 +117,7 @@ const CharacterInfo = () => {
 
       <div className="p-4 rounded-lg bg-dark-900">
         <div className="h-full w-75">
-          <ConsList
+          <ConstellationList
             char={char}
             onClickIcon={(i) => {
               dispatch(
@@ -148,12 +145,14 @@ const CharacterInfo = () => {
 
       <ConfirmModal
         active={removing}
+        danger
         message={
           <>
             Remove <b>{name}</b>?
           </>
         }
-        buttons={[undefined, { onClick: () => dispatch(removeUserCharacter(name)) }]}
+        focusConfirm
+        onConfirm={() => dispatch(removeUserCharacter(name))}
         onClose={() => setRemoving(false)}
       />
     </div>

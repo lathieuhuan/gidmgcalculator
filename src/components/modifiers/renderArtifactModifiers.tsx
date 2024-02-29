@@ -30,7 +30,7 @@ export const renderArtifactModifiers = ({
   ctrls,
   getHanlders,
 }: RenderArtifactBuffsArgs) => {
-  const data = $AppData.getArtifactSetData(code);
+  const data = $AppData.getArtifactSet(code);
   if (!data) return [];
   const { buffs = [] } = data;
 

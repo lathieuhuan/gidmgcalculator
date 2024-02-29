@@ -1,6 +1,6 @@
 import type { ArtifactBonus, BuffInfoWrap } from "@Src/types";
-import { VISION_TYPES } from "@Src/constants";
-import { countVision, toArray } from "@Src/utils";
+import { ELEMENT_TYPES } from "@Src/constants";
+import { countElements, toArray } from "@Src/utils";
 import { applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
 
@@ -12,7 +12,7 @@ const isUsableBonus = (
   if (condition.checkInput !== undefined && inputs[0] !== condition.checkInput) {
     return false;
   }
-  if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
+  if (condition.forWeapons && !condition.forWeapons.includes(info.appChar.weaponType)) {
     return false;
   }
   return true;
@@ -25,13 +25,13 @@ const getStackValue = (stack: NonNullable<ArtifactBonus["stacks"]>, info: BuffIn
     case "attribute":
       return info.totalAttr[stack.field];
     case "vision":
-      const { [info.charData.vision]: sameCount = 0, ...others } = countVision(info.partyData);
+      const { [info.appChar.vision]: sameCount = 0, ...others } = countElements(info.partyData);
 
       switch (stack.element) {
         case "same_excluded":
           return sameCount;
         case "different":
-          return Object.values(others as ReturnType<typeof countVision>).reduce((total, item) => total + item, 0);
+          return Object.values(others as ReturnType<typeof countElements>).reduce((total, item) => total + item, 0);
       }
   }
 };
@@ -70,8 +70,16 @@ interface ApplyArtifactBuffArgs {
   infoWrap: BuffInfoWrap;
   inputs: number[];
   isFinal?: boolean;
+  isStackable?: (effectTargets: string | string[]) => boolean;
 }
-const applyArtifactBuff = ({ description, buff, infoWrap: info, inputs, isFinal }: ApplyArtifactBuffArgs) => {
+const applyArtifactBuff = ({
+  description,
+  buff,
+  infoWrap: info,
+  inputs,
+  isFinal,
+  isStackable,
+}: ApplyArtifactBuffArgs) => {
   const noIsFinal = isFinal === undefined;
 
   for (const bonus of toArray(buff.effects)) {
@@ -80,6 +88,7 @@ const applyArtifactBuff = ({ description, buff, infoWrap: info, inputs, isFinal 
 
       if (bonusValue) {
         for (const [key, value] of Object.entries(bonus.targets)) {
+          // isStackable
           const mixed = value as any;
 
           switch (key) {
@@ -93,8 +102,8 @@ const applyArtifactBuff = ({ description, buff, infoWrap: info, inputs, isFinal 
               applyModifier(description, info.rxnBonus, mixed, bonusValue, info.tracker);
               break;
             case "INP_ELMT":
-              const visionIndex = inputs[mixed ?? 0];
-              applyModifier(description, info.totalAttr, VISION_TYPES[visionIndex], bonusValue, info.tracker);
+              const elmtIndex = inputs[mixed ?? 0];
+              applyModifier(description, info.totalAttr, ELEMENT_TYPES[elmtIndex], bonusValue, info.tracker);
               break;
           }
         }

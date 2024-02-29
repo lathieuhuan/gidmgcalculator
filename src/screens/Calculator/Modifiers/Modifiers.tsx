@@ -1,5 +1,5 @@
 import { selectParty } from "@Store/calculatorSlice/selectors";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -17,17 +17,16 @@ import { CustomModifiers } from "./custom";
 
 export default function Modifiers() {
   const party = useSelector(selectParty);
-  const partyData = $AppData.getPartyData(party);
+  const partyData = $AppCharacter.getPartyData(party);
 
-  const { activeIndex, tabsElmt } = useTabs({
-    className: "text-lg shrink-0",
+  const { activeIndex, renderTabs } = useTabs({
     defaultIndex: 1,
     configs: [{ text: "Debuffs" }, { text: "Buffs" }],
   });
 
   return (
     <div className="h-full flex flex-col">
-      {tabsElmt}
+      {renderTabs("text-lg shrink-0")}
 
       <div className="mt-4 grow custom-scrollbar">
         {activeIndex ? (

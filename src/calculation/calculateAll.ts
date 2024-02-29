@@ -1,8 +1,8 @@
 import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 import getCalculationStats from "./getCalculationStats";
-import getDamage from "./getDamage";
+import getFinalResult from "./getFinalResult";
 
 const calculateAll = (
   {
@@ -24,8 +24,8 @@ const calculateAll = (
   tracker?: Tracker
 ) => {
   // console.time();
-  const charData = $AppData.getCharData(char.name);
-  const partyData = $AppData.getPartyData(party);
+  const appChar = $AppCharacter.get(char.name);
+  const partyData = $AppCharacter.getPartyData(party);
   let infusedElement = customInfusion.element;
   let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];
   let isCustomInfusion = true;
@@ -34,10 +34,10 @@ const calculateAll = (
   /** false = overwritable infusion. true = unoverwritable. undefined = no infusion */
   let selfInfused: boolean | undefined = undefined;
 
-  if (charData.buffs) {
+  if (appChar.buffs) {
     for (const { activated, index } of selfBuffCtrls) {
       if (activated) {
-        const buff = findByIndex(charData.buffs, index);
+        const buff = findByIndex(appChar.buffs, index);
 
         if (buff && buff.infuseConfig) {
           if (!selfInfused) {
@@ -52,19 +52,19 @@ const calculateAll = (
   }
 
   if (infusedElement === "phys" && selfInfused !== undefined) {
-    infusedElement = charData.vision;
+    infusedElement = appChar.vision;
     isCustomInfusion = false;
-  } else if (infusedElement === charData.vision) {
+  } else if (infusedElement === appChar.vision) {
     isCustomInfusion = false;
   }
 
-  if (charData.weaponType === "bow") {
+  if (appChar.weaponType === "bow") {
     infusedAttacks = ["NA"];
   }
 
   const { artAttr, ...rest } = getCalculationStats({
     char,
-    charData,
+    appChar,
     selfBuffCtrls,
     weapon,
     wpBuffCtrls,
@@ -77,9 +77,9 @@ const calculateAll = (
     infusedElement,
     tracker,
   });
-  const dmgResult = getDamage({
+  const finalResult = getFinalResult({
     char,
-    charData,
+    appChar,
     selfDebuffCtrls,
     artDebuffCtrls,
     party,
@@ -103,7 +103,7 @@ const calculateAll = (
     totalAttr: rest.totalAttr,
     artAttr,
     rxnBonus: rest.rxnBonus,
-    dmgResult,
+    finalResult,
   };
 };
 

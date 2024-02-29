@@ -1,7 +1,7 @@
 import type {
   CalcSetup,
   CalcSetupManageInfo,
-  DamageResult,
+  CalculationFinalResult,
   ReactionBonus,
   Target,
   TotalAttribute,
@@ -17,13 +17,13 @@ export type CalculatorState = {
 
   setupManageInfos: CalcSetupManageInfo[];
   setupsById: Record<string, CalcSetup>;
-  statsById: Record<
+  resultById: Record<
     string,
     {
       infusedElement: AttackElement;
       totalAttrs: TotalAttribute;
       rxnBonuses: ReactionBonus;
-      dmgResult: DamageResult;
+      finalResult: CalculationFinalResult;
     }
   >;
   target: Target;

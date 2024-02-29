@@ -24,9 +24,9 @@ import { cleanupCalcSetup } from "@Src/utils/setup";
 // Component
 import { ComplexSelect, Modal, ConfirmModal } from "@Src/pure-components";
 import { SetupExporter, SetupImporter } from "@Src/components";
-import { SaveSetup } from "../modal-content";
+import { SaveSetup } from "./SaveSetup";
 
-type ModalInfo = {
+type ModalState = {
   type: "SAVE_SETUP" | "REMOVE_SETUP" | "SHARE_SETUP" | "IMPORT_SETUP" | "";
   setupIndex: number;
 };
@@ -63,7 +63,7 @@ export function SetupSelect() {
   const standardId = useSelector(selectStandardId);
   const comparedIds = useSelector(selectComparedIds);
 
-  const [modal, setModal] = useState<ModalInfo>({
+  const [modal, setModal] = useState<ModalState>({
     type: "",
     setupIndex: 0,
   });
@@ -196,8 +196,11 @@ export function SetupSelect() {
 
       <Modal
         active={modal.type === "SAVE_SETUP"}
-        className="rounded-lg"
-        style={{ width: "30rem" }}
+        preset="small"
+        className="bg-dark-900"
+        title="Save setup"
+        withActions
+        formId="save-calc-setup"
         onClose={closeModal}
       >
         <SaveSetup manageInfo={setupManageInfos[modal.setupIndex]} onClose={closeModal} />
@@ -213,17 +216,14 @@ export function SetupSelect() {
 
       <ConfirmModal
         active={modal.type === "REMOVE_SETUP"}
+        danger
         message={
           <>
             Remove <b>{setupManageInfos[modal.setupIndex]?.name}</b>?
           </>
         }
-        buttons={[
-          undefined,
-          {
-            onClick: () => dispatch(removeCalcSetup(setupManageInfos[modal.setupIndex]?.ID)),
-          },
-        ]}
+        focusConfirm
+        onConfirm={() => dispatch(removeCalcSetup(setupManageInfos[modal.setupIndex]?.ID))}
         onClose={closeModal}
       />
     </>

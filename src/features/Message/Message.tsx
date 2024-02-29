@@ -22,9 +22,11 @@ export const Message = () => {
       message={
         <span className={"text-xl " + (message.type ? COLOR_BY_TYPE[message.type] : "")}>{message.content}</span>
       }
-      bgColor="bg-dark-700"
-      buttons={message.closable ? [undefined] : []}
-      closeOnMaskClick={message.closable}
+      bgColorCls="bg-dark-700"
+      // buttons={message.closable ? undefined : []}
+      // closeOnMaskClick={message.closable}
+      showCancel={false}
+      focusConfirm
       onClose={onClose}
     />
   );

@@ -1,19 +1,19 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
+
 import type { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
+import { useTranslation } from "@Src/pure-hooks";
+import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@Store/calculatorSlice/selectors";
 import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";
 
-import { useTranslation } from "@Src/pure-hooks";
-import { percentSign, toCustomBuffLabel } from "@Src/utils";
-
 // Component
-import { ToggleButton, CloseButton, Input, Modal } from "@Src/pure-components";
-import { CopySection } from "../../components";
+import { CloseButton, Input, Modal, Button } from "@Src/pure-components";
+import { CopySection } from "../../components/CopySection";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 
@@ -73,22 +73,14 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
   return (
     <div className="flex flex-col">
       <div className="mt-3 flex justify-between">
-        <ToggleButton
+        <Button
           icon={<FaTrashAlt />}
-          variant="negative"
-          active={modCtrls.length !== 0}
           disabled={modCtrls.length === 0}
           onClick={() => {
             dispatch(updateCustomModCtrls({ actionType: "replace", ctrls: [] }));
           }}
         />
-        <ToggleButton
-          icon={<FaPlus />}
-          variant="positive"
-          active={modCtrls.length <= 9}
-          disabled={modCtrls.length > 9}
-          onClick={() => setModalOn(true)}
-        />
+        <Button icon={<FaPlus />} variant="positive" disabled={modCtrls.length > 9} onClick={() => setModalOn(true)} />
       </div>
 
       {copyOptions.length ? <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} /> : null}
@@ -147,14 +139,31 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
         })}
       </div>
 
-      <Modal
-        active={modalOn}
-        className="p-4 rounded-lg flex flex-col bg-dark-900 shadow-white-glow"
-        style={{ minWidth: isBuffs ? 302 : "auto" }}
-        onClose={closeModal}
-      >
-        {isBuffs ? <BuffCtrlCreator onClose={closeModal} /> : <DebuffCtrlCreator onClose={closeModal} />}
-      </Modal>
+      {isBuffs ? (
+        <Modal
+          active={modalOn}
+          title="Add custom buffs"
+          className="bg-dark-900"
+          style={{ minWidth: 304 }}
+          withActions
+          withHeaderDivider={false}
+          formId="buff-creator"
+          onClose={closeModal}
+        >
+          <BuffCtrlCreator onClose={closeModal} />
+        </Modal>
+      ) : (
+        <Modal
+          active={modalOn && !isBuffs}
+          title="Add custom debuffs"
+          className="bg-dark-900"
+          withActions
+          formId="debuff-creator"
+          onClose={closeModal}
+        >
+          <DebuffCtrlCreator onClose={closeModal} />
+        </Modal>
+      )}
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   AppMessage,
   AttackElement,
-  CalcArtifact,
   CalcSetupManageInfo,
   CalcWeapon,
   CharInfo,
@@ -32,14 +31,14 @@ import type {
   InitNewSessionPayload,
 } from "./reducer-types";
 
-import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
-import { $AppData, $AppSettings } from "@Src/services";
+import { ATTACK_ELEMENTS, RESONANCE_ELEMENT_TYPES } from "@Src/constants";
+import { $AppData, $AppCharacter, $AppSettings } from "@Src/services";
 
-import { bareLv, deepCopy, findById, toArray, countVision, getCopyName } from "@Src/utils";
+import { bareLv, deepCopy, findById, toArray, countElements, getCopyName } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
-  createArtDebuffCtrls,
+  createArtifactDebuffCtrls,
   createArtifactBuffCtrls,
   createCharModCtrls,
   createElmtModCtrls,
@@ -61,7 +60,7 @@ const initialState: CalculatorState = {
   comparedIds: [],
   setupManageInfos: [],
   setupsById: {},
-  statsById: {},
+  resultById: {},
   target: createTarget(),
   message: {
     active: false,
@@ -94,8 +93,8 @@ export const calculatorSlice = createSlice({
       state.setupsById = {
         [ID]: calcSetup,
       };
-      // calculate will repopulate statsById
-      state.statsById = {};
+      // calculate will repopulate resultById
+      state.resultById = {};
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
@@ -111,8 +110,9 @@ export const calculatorSlice = createSlice({
       const { importInfo, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
       const { setupsById } = state;
+      const { charInfoIsSeparated } = $AppSettings.get();
 
-      if (shouldOverwriteChar && $AppSettings.get().charInfoIsSeparated) {
+      if (shouldOverwriteChar && charInfoIsSeparated) {
         for (const setup of Object.values(setupsById)) {
           setup.char = calcSetup.char;
         }
@@ -213,40 +213,44 @@ export const calculatorSlice = createSlice({
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
-      const { name, vision, weaponType, teammateIndex } = action.payload;
-      const charData = getCharDataFromState(state);
+      const { name, elementType, weaponType, teammateIndex } = action.payload;
+      const appChar = getCharDataFromState(state);
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldVisionCount = countVision($AppData.getPartyData(party), charData);
+      const oldElmtCount = countElements($AppCharacter.getPartyData(party), appChar);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newVisionCount = countVision($AppData.getPartyData(party), charData);
+      const newElmtCount = countElements($AppCharacter.getPartyData(party), appChar);
 
       if (oldTeammate) {
-        const { vision: oldVision } = $AppData.getCharData(oldTeammate.name) || {};
+        const { vision: oldElement } = $AppCharacter.get(oldTeammate.name) || {};
         // lose a resonance
         if (
-          oldVision &&
-          RESONANCE_VISION_TYPES.includes(oldVision) &&
-          oldVisionCount[oldVision] === 2 &&
-          newVisionCount[oldVision] === 1
+          oldElement &&
+          RESONANCE_ELEMENT_TYPES.includes(oldElement) &&
+          oldElmtCount[oldElement] === 2 &&
+          newElmtCount[oldElement] === 1
         ) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
-            return resonance.vision !== oldVision;
+            return resonance.vision !== oldElement;
           });
         }
       }
       // new teammate form new resonance
-      if (RESONANCE_VISION_TYPES.includes(vision) && oldVisionCount[vision] === 1 && newVisionCount[vision] === 2) {
+      if (
+        RESONANCE_ELEMENT_TYPES.includes(elementType) &&
+        oldElmtCount[elementType] === 1 &&
+        newElmtCount[elementType] === 2
+      ) {
         const newResonance = {
-          vision,
-          activated: ["pyro", "hydro", "dendro"].includes(vision),
+          vision: elementType,
+          activated: ["pyro", "hydro", "dendro"].includes(elementType),
         } as Resonance;
 
-        if (vision === "dendro") {
+        if (elementType === "dendro") {
           newResonance.inputs = [0, 0];
         }
         elmtModCtrls.resonances.push(newResonance);
@@ -256,18 +260,18 @@ export const calculatorSlice = createSlice({
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const teammateIndex = action.payload;
-      const charData = getCharDataFromState(state);
+      const appChar = getCharDataFromState(state);
       const { party, elmtModCtrls } = state.setupsById[state.activeId];
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = $AppData.getCharData(teammate.name);
+        const { vision: elementType } = $AppCharacter.get(teammate.name);
         party[teammateIndex] = null;
-        const newVisionCount = countVision($AppData.getPartyData(party), charData);
+        const newElmtCount = countElements($AppCharacter.getPartyData(party), appChar);
 
-        if (newVisionCount[vision] === 1) {
+        if (newElmtCount[elementType] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
-            return resonance.vision !== vision;
+            return resonance.vision !== elementType;
           });
         }
         calculate(state);
@@ -406,15 +410,6 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
-    updateAllArtifact: (state, action: PayloadAction<(CalcArtifact | null)[]>) => {
-      const pieces = action.payload;
-      const setBonuses = getArtifactSetBonuses(pieces);
-      const setup = state.setupsById[state.activeId];
-      setup.artifacts = pieces;
-      setup.artBuffCtrls = setBonuses[0]?.bonusLv ? createArtifactBuffCtrls(true, setBonuses[0]) : [];
-
-      calculate(state);
-    },
     // MOD CTRLS
     updateResonance: (state, action: PayloadAction<PartiallyOptional<Resonance, "activated">>) => {
       const { vision, ...newInfo } = action.payload;
@@ -508,13 +503,13 @@ export const calculatorSlice = createSlice({
 
       const { target } = state;
       const { variantType, inputs = [] } = target;
-      const monsData = $AppData.getMonsData(target);
+      const monster = $AppData.getMonster(target);
 
       // not update target if monster code === 0 (custom target)
-      if (monsData?.code) {
-        const { resistance, variant } = monsData;
+      if (monster?.code) {
+        const { resistance, variant } = monster;
         const { base, ...otherResistances } = resistance;
-        const inputConfigs = monsData.inputConfigs ? toArray(monsData.inputConfigs) : [];
+        const inputConfigs = monster.inputConfigs ? toArray(monster.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
           target.resistances[atkElmt] = base;
@@ -576,14 +571,14 @@ export const calculatorSlice = createSlice({
     },
     updateSetups: (state, action: UpdateSetupsAction) => {
       const { newSetupManageInfos, newStandardId } = action.payload;
-      const charData = getCharDataFromState(state);
+      const appChar = getCharDataFromState(state);
       const { setupManageInfos, setupsById, activeId } = state;
       const removedIds = [];
       // Reset comparedIds before repopulate with newSetupManageInfos
       state.comparedIds = [];
 
-      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, charData.name);
-      const newWeapon = createWeapon({ type: charData.weaponType });
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, appChar.name);
+      const newWeapon = createWeapon({ type: appChar.weaponType });
       const wpBuffCtrls = createWeaponBuffCtrls(true, newWeapon);
       const elmtModCtrls = createElmtModCtrls();
       const tempManageInfos: CalcSetupManageInfo[] = [];
@@ -636,7 +631,7 @@ export const calculatorSlice = createSlice({
               wpBuffCtrls,
               artifacts: [null, null, null, null, null],
               artBuffCtrls: [],
-              artDebuffCtrls: createArtDebuffCtrls(),
+              artDebuffCtrls: createArtifactDebuffCtrls(),
               party: [null, null, null],
               elmtModCtrls,
               customBuffCtrls: [],
@@ -650,7 +645,7 @@ export const calculatorSlice = createSlice({
 
       for (const ID of removedIds) {
         delete setupsById[ID];
-        delete state.statsById[ID];
+        delete state.resultById[ID];
       }
 
       const activeSetup = findById(tempManageInfos, activeId);
@@ -703,7 +698,6 @@ export const {
   updateWeapon,
   updateArtifact,
   changeArtifact,
-  updateAllArtifact,
   updateResonance,
   toggleModCtrl,
   changeModCtrlInput,

@@ -1,0 +1,44 @@
+.item-case {
+  --active-color: #fff;
+
+  .item-body .item-img {
+    transition: transform 150ms ease-in-out;
+  }
+
+  &:hover {
+    .item-body {
+      box-shadow: 0 0 0 2.5px var(--active-color);
+    }
+
+    &:not(.clicked) .item-body {
+      .item-img {
+        transform: scale(1.15);
+      }
+    }
+  }
+
+  &:hover:not(.clicked),
+  &.chosen:not(.clicked) {
+    transform: scale(1.02);
+  }
+
+  &.chosen {
+    .item-body {
+      -webkit-animation: glow 0.5s ease-in-out infinite alternate;
+      -moz-animation: glow 0.5s ease-in-out infinite alternate;
+      animation: glow 0.5s ease-in-out infinite alternate;
+    }
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 0 1px var(--active-color), 0 0 1px 1px var(--active-color), 0 0 2px 1px var(--active-color);
+  }
+  to {
+    box-shadow: 0 0 2px 1px var(--active-color), 0 0 3px 2px var(--active-color), 0 0 4px 3px var(--active-color);
+  }
+}
+
+// box-shadow: 0 0 0 1px #fff, 0 0 1px 1px #fff, 0 0 2px 1px #fff, 0 0 3px 1px #fff;
+// box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;

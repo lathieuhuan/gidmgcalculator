@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 import { CSSProperties, useState } from "react";
 import { FaUser, FaQuestion } from "react-icons/fa";
 import { RiSwordFill } from "react-icons/ri";
@@ -11,9 +11,10 @@ const ICONS_BY_TYPE = {
 };
 
 interface ImageProps {
-  src: string;
+  src?: string;
   size?: string;
-  className?: string;
+  alt?: string;
+  className?: ClassValue;
   style?: CSSProperties;
   placeholderCls?: string;
   imgCls?: string;
@@ -23,6 +24,7 @@ interface ImageProps {
 export const Image = ({
   src,
   size = "w-full h-full",
+  alt = "",
   className,
   style,
   placeholderCls,
@@ -37,12 +39,13 @@ export const Image = ({
   return (
     <>
       {isError && PlaceholderIcon && (
-        <div className={clsx("p-3", className)} style={style}>
+        <div className={clsx("p-2", className)} style={style}>
           <PlaceholderIcon className={clsx(size, placeholderCls)} />
         </div>
       )}
       <img
-        src={getImgSrc(src)}
+        src={src ? getImgSrc(src) : ""}
+        alt={alt}
         className={clsx(size, className, imgCls, isError && "hidden")}
         style={style}
         draggable={false}

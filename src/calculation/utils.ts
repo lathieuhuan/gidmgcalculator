@@ -11,11 +11,11 @@ import {
   TotalAttribute,
   TotalAttributeStat,
   Tracker,
-  Vision,
+  ElementType,
   UsableCondition_Character,
   ExtendedUsableCondition_Character,
 } from "@Src/types";
-import { countVision, isGranted, toArray } from "@Src/utils";
+import { countElements, isGranted, toArray } from "@Src/utils";
 import { AttackElementPath, AttackPatternPath, ReactionBonusPath, finalTalentLv } from "@Src/utils/calculation";
 import { CalcUltilInfo } from "./types";
 
@@ -77,24 +77,24 @@ export class CharacterCal {
     }
     const { partyElmtCount, partyOnlyElmts } = condition;
 
-    if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
+    if (condition.forWeapons && !condition.forWeapons.includes(info.appChar.weaponType)) {
       return false;
     }
-    if (condition.forElmts && !condition.forElmts.includes(info.charData.vision)) {
+    if (condition.forElmts && !condition.forElmts.includes(info.appChar.vision)) {
       return false;
     }
-    const visions = countVision(info.partyData, info.charData);
+    const elementCount = countElements(info.partyData, info.appChar);
 
     if (partyElmtCount) {
       for (const key in partyElmtCount) {
-        const currentCount = visions[key as Vision] ?? 0;
-        const requiredCount = partyElmtCount[key as Vision] ?? 0;
+        const currentCount = elementCount[key as ElementType] ?? 0;
+        const requiredCount = partyElmtCount[key as ElementType] ?? 0;
         if (currentCount < requiredCount) return false;
       }
     }
     if (partyOnlyElmts) {
-      for (const vision in visions) {
-        if (!partyOnlyElmts.includes(vision as Vision)) return false;
+      for (const type in elementCount) {
+        if (!partyOnlyElmts.includes(type as ElementType)) return false;
       }
     }
     return true;
@@ -112,7 +112,7 @@ export class CharacterCal {
         ? finalTalentLv({
             talentType: talent,
             char: info.char,
-            charData: info.charData,
+            appChar: info.appChar,
             partyData: info.partyData,
           })
         : inputs[alterIndex] ?? 0;

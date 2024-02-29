@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtifact,
   ArtifactSubStat,
-  Vision,
+  ElementType,
   WeaponType,
   CalcSetupManageInfo,
   AttributeStat,
@@ -30,7 +30,7 @@ export type ImportSetupAction = PayloadAction<{
 
 export type AddTeammateAction = PayloadAction<{
   name: string;
-  vision: Vision;
+  elementType: ElementType;
   weaponType: WeaponType;
   teammateIndex: number;
 }>;

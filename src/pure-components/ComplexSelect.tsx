@@ -3,15 +3,13 @@ import { useState, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { useClickOutside } from "@Src/pure-hooks";
 
-type RenderJXS = (args: { closeSelect: () => void }) => JSX.Element;
-
 interface ComplexSelectProps {
   selectId: string;
   value?: string | number;
   options?: Array<{
     label: string;
     value?: string | number;
-    renderActions?: RenderJXS;
+    renderActions?: (args: { closeSelect: () => void }) => JSX.Element;
   }>;
   onChange?: (value: string | number) => void;
   onToggleDropdown?: (shouldDrop: boolean) => void;
@@ -62,7 +60,7 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
         onClick={() => toggleDropdown(!isDropped)}
       >
         <span className="w-full text-lg font-bold text-center relative z-10">{label}</span>
-        <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
+        <FaCaretDown className="absolute top-1/2 right-4 text-2xl -translate-y-1/2" />
       </button>
 
       <div

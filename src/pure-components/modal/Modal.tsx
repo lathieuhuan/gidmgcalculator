@@ -1,113 +1,127 @@
-import clsx from "clsx";
-import ReactDOM from "react-dom";
-import { CSSProperties, ReactNode, useEffect, useState } from "react";
+import clsx, { ClassValue } from "clsx";
+import { ModalCore, ModalCoreProps } from "./ModalCore";
+import { ModalActions, ModalActionsProps, ModalCloseButton, ModalHeader } from "./modal-components";
 
-import { ModalBody } from "./ModalBody";
-import { CloseButton, type CloseButtonProps } from "../button";
-
-export interface ModalControl {
-  active?: boolean;
-  closable?: boolean;
-  closeOnMaskClick?: boolean;
-  state?: "open" | "close" | "hidden";
-  onClose: () => void;
+export interface ModalProps
+  extends ModalCoreProps,
+    Omit<ModalActionsProps, "className" | "justify" | "withDivider" | "onCancel"> {
+  title?: React.ReactNode;
+  /** Default to true */
+  withCloseButton?: boolean;
+  withHeaderDivider?: boolean;
+  withFooterDivider?: boolean;
+  withActions?: boolean;
+  bodyCls?: ClassValue;
 }
-
-interface ModalProps extends ModalControl {
-  className?: string;
-  style?: CSSProperties;
-  withDefaultStyle?: boolean;
-  children: ReactNode;
-}
-export const Modal = ({
-  active,
+const Modal = ({
+  className,
+  title,
+  withCloseButton = true,
+  withHeaderDivider = true,
+  withActions,
   closable = true,
-  closeOnMaskClick = true,
-  state: stateProp,
-  onClose,
-  ...rest
+  bodyCls,
+  children,
+  //
+  disabledConfirm,
+  focusConfirm,
+  withFooterDivider = true,
+  showCancel,
+  cancelText,
+  confirmText,
+  formId,
+  cancelButtonProps,
+  confirmButtonProps,
+  moreActions = [],
+  onConfirm,
+  ...coreProps
 }: ModalProps) => {
-  const [state, setState] = useState({
-    active: false,
-    animate: false,
-    visible: true,
-  });
-  const modalState = stateProp || (active ? "open" : "close");
+  return (
+    <ModalCore
+      {...coreProps}
+      className={clsx(
+        "flex flex-col",
+        withActions && "pb-4",
+        !coreProps.preset && "rounded-lg shadow-white-glow",
+        className
+      )}
+      closable={closable}
+    >
+      <ModalHeader withDivider={withHeaderDivider}>{title}</ModalHeader>
 
-  const closeModal = () => {
-    if (closable) {
-      setState((prev) => ({ ...prev, animate: false }));
+      <div className={clsx("p-4 grow overflow-auto", bodyCls)}>
+        {typeof children === "function" ? children() : children}
+      </div>
 
-      setTimeout(() => {
-        setState((prev) => ({ ...prev, active: false }));
-        onClose();
-      }, 150);
-    }
-  };
-
-  useEffect(() => {
-    if (modalState === "open") {
-      setState((prev) => ({
-        ...prev,
-        active: true,
-        visible: true,
-      }));
-
-      setTimeout(() => {
-        setState((prev) => ({ ...prev, animate: true }));
-      }, 50);
-    } //
-    else if (state.active) {
-      if (modalState === "close") {
-        closeModal();
-      } else if (modalState === "hidden") {
-        setState((prev) => ({ ...prev, animate: false }));
-
-        setTimeout(() => {
-          setState((prev) => ({ ...prev, visible: false }));
-        }, 150);
-      }
-    }
-  }, [modalState]);
-
-  useEffect(() => {
-    const handlePressEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && modalState === "open") {
-        closeModal();
-      }
-    };
-    document.addEventListener("keydown", handlePressEsc, true);
-    return () => document.removeEventListener("keydown", handlePressEsc, true);
-  }, [modalState]);
-
-  return state.active
-    ? ReactDOM.createPortal(
-        <div className={"fixed full-stretch z-50" + (state.visible ? "" : " invisible")}>
-          <div
-            className={clsx(
-              "w-full h-full bg-black transition duration-150 ease-linear",
-              state.animate ? "opacity-60" : "opacity-20"
-            )}
-            onClick={closeOnMaskClick ? closeModal : undefined}
+      {withActions && (
+        <div className="px-4">
+          <ModalActions
+            {...{
+              withDivider: withFooterDivider,
+              disabledConfirm,
+              focusConfirm,
+              showCancel,
+              cancelText,
+              confirmText,
+              formId,
+              cancelButtonProps,
+              confirmButtonProps,
+              moreActions,
+              onCancel: coreProps.onClose,
+              onConfirm,
+            }}
           />
-          <ModalBody animate={state.animate} {...rest} />
-        </div>,
-        document.querySelector("#root")!
-      )
-    : null;
+        </div>
+      )}
+
+      {withCloseButton ? <ModalCloseButton disabled={!closable} onClick={coreProps.onClose} /> : null}
+    </ModalCore>
+  );
 };
 
-export function withModal<T>(
+type WithModalPropsKey =
+  | "preset"
+  | "title"
+  | "className"
+  | "bodyCls"
+  | "formId"
+  | "withActions"
+  | "withCloseButton"
+  | "withHeaderDivider"
+  | "withFooterDivider";
+
+function withModal<T>(
   Component: (props: T) => JSX.Element | null,
-  modalProps?: Partial<Omit<ModalProps, "active" | "onClose">>,
-  closeButton?: Partial<Omit<CloseButtonProps, "onClick">>
+  modalProps?: Partial<Pick<ModalProps, WithModalPropsKey>>
 ) {
-  return (props: ModalControl & T): JSX.Element => {
+  return (props: Pick<ModalProps, "active" | "closable" | "closeOnMaskClick" | "onClose"> & T): JSX.Element => {
     return (
-      <Modal active={props.active} onClose={props.onClose} closeOnMaskClick={props.closeOnMaskClick} {...modalProps}>
-        {closeButton ? <CloseButton {...closeButton} onClick={props.onClose} /> : null}
+      <Modal active={props.active} onClose={props.onClose} {...modalProps}>
         <Component {...props} />
       </Modal>
     );
   };
 }
+
+function withCoreModal<T>(
+  Component: (props: T) => JSX.Element | null,
+  modalProps?: Partial<Pick<ModalCoreProps, "preset" | "className">>
+) {
+  return (props: Pick<ModalProps, "active" | "closable" | "closeOnMaskClick" | "onClose"> & T): JSX.Element => {
+    return (
+      <ModalCore active={props.active} onClose={props.onClose} {...modalProps}>
+        <Component {...props} />
+      </ModalCore>
+    );
+  };
+}
+
+Modal.LARGE_HEIGHT_CLS = "large-modal-height";
+Modal.Core = ModalCore;
+Modal.Header = ModalHeader;
+Modal.Actions = ModalActions;
+Modal.CloseButton = ModalCloseButton;
+Modal.wrap = withModal;
+Modal.coreWrap = withCoreModal;
+
+export { Modal };

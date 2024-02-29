@@ -29,16 +29,18 @@ export class AppSettingsService {
     artLevel: 0,
   };
 
-  get = (): AppSettings => {
-    let savedSettings = localStorage.getItem("settings");
-
-    return savedSettings
+  get<T extends keyof AppSettings>(key: T): AppSettings[T];
+  get(): AppSettings;
+  get<T extends keyof AppSettings>(key?: T): AppSettings | AppSettings[T] {
+    const savedSettings = localStorage.getItem("settings");
+    const settings = savedSettings
       ? {
           ...this.DEFAULT_SETTINGS,
           ...(JSON.parse(savedSettings) as AppSettings),
         }
       : this.DEFAULT_SETTINGS;
-  };
+    return key ? settings[key] : settings;
+  }
 
   set = (newSettings: Partial<AppSettings>) => {
     localStorage.setItem(

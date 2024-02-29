@@ -1,4 +1,4 @@
-import type { AttributeStat, ModInputConfig, Rarity, WeaponType } from "./global";
+import type { AttributeStat, ModInputConfig, WeaponType } from "./global";
 import type { ResistanceReductionKey } from "./calculator";
 import { EModAffect } from "@Src/constants";
 import { AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
@@ -13,7 +13,7 @@ export type AppArtifact = {
   code: number;
   beta?: boolean;
   name: string;
-  variants: Rarity[];
+  variants: number[];
   flower: ArtTypeData;
   plume: ArtTypeData;
   sands: ArtTypeData;

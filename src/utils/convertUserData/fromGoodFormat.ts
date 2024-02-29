@@ -1,5 +1,5 @@
 import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
-import { $AppData } from "@Src/services";
+import { $AppCharacter, $AppData } from "@Src/services";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
 import { findByName } from "../pure-utils";
@@ -28,7 +28,7 @@ const convertName = (str: string) => {
 };
 
 const searchCharacterByKey = (key: any) => {
-  return key ? $AppData.getAllCharacters().find(({ name, GOOD }) => name === key || GOOD === key)?.name : undefined;
+  return key ? $AppCharacter.getAll().find(({ name, GOOD }) => name === key || GOOD === key)?.name : undefined;
 };
 
 const searchWeaponByKey = (key: any) => {
@@ -154,7 +154,7 @@ export function convertFromGoodFormat(data: any) {
 
   for (const char of result.characters) {
     if (!char.weaponID) {
-      const { weaponType } = $AppData.getCharData(char.name)! || {};
+      const { weaponType } = $AppCharacter.get(char.name)! || {};
       const weaponID = seedID++;
       const newWeapon = createWeapon({ type: weaponType });
 

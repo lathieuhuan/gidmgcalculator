@@ -35,7 +35,7 @@ export const parseAbilityDescription = (
   },
   obj: {
     char: CharInfo;
-    charData: AppCharacter;
+    appChar: AppCharacter;
     partyData: PartyData;
   },
   inputs: number[],

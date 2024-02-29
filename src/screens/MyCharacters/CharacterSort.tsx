@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { FaChevronDown, FaSort, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaSort } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
 
 import { findByIndex, splitLv } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
+import { useStoreSnapshot } from "@Src/features";
 
 // Store
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
 import { sortCharacters } from "@Store/userDatabaseSlice";
 import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ButtonGroup, Popover, SharedSpace, withModal, Button } from "@Src/pure-components";
+import { Popover, SharedSpace, Modal } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
-    const { name, rarity } = $AppData.getCharData(char.name);
+    const { name, rarity } = $AppCharacter.get(char.name);
     return { name, level: char.level, rarity, index };
   })
 );
@@ -35,7 +36,7 @@ const Line = ({ char, marker, visiblePlot, ...rest }: LineProps) => {
         <div className="w-8 h-8 mr-2 flex-center text-light-400 pointer-events-none">{marker}</div>
 
         <p className="pointer-events-none text-light-400">
-          <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv. {char.level})
+          <span className={`text-rarity-${char.rarity}`}>{char.name}</span> (Lv. {char.level})
         </p>
       </div>
     </div>
@@ -45,7 +46,7 @@ const Line = ({ char, marker, visiblePlot, ...rest }: LineProps) => {
 function SortInner({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
 
-  const toBeSorted = useSelector(selectCharacterToBeSorted);
+  const toBeSorted = useStoreSnapshot(selectCharacterToBeSorted);
 
   const [list, setList] = useState(toBeSorted);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -171,21 +172,19 @@ function SortInner({ onClose }: { onClose: () => void }) {
   ];
 
   return (
-    <div className="px-2 py-4 rounded-lg bg-dark-900">
-      <Button
-        className="absolute top-1 right-1 text-xl hover:text-red-600"
-        boneOnly
-        icon={<FaTimes />}
-        onClick={onClose}
-      />
-
-      <p className="text-1.5xl text-orange-500 text-center">Sort characters</p>
-
-      <div className="mt-1 h-8 flex justify-between">
+    <form
+      id="sort-characters-form"
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onConfirmOrder();
+      }}
+    >
+      <div className="h-8 flex justify-between">
         <div className="px-4 flex group relative cursor-default">
           <p className="h-full flex items-center space-x-2">
             <span>Quick sort</span>
-            <FaChevronDown />
+            <FaChevronDown className="text-sm" />
           </p>
           <Popover
             as="div"
@@ -223,7 +222,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      <div className="mt-4 custom-scrollbar" style={{ height: "60vh" }}>
+      <div className="custom-scrollbar" style={{ height: "60vh" }}>
         <div>
           {inMarkingMode &&
             markedList.map((index, i) => {
@@ -259,19 +258,14 @@ function SortInner({ onClose }: { onClose: () => void }) {
               })}
         </div>
       </div>
-
-      <ButtonGroup
-        className="mt-4 flex justify-center"
-        space="space-x-4"
-        buttons={[
-          {
-            text: "Confirm",
-            onClick: onConfirmOrder,
-          },
-        ]}
-      />
-    </div>
+    </form>
   );
 }
 
-export default withModal(SortInner, { className: "small-modal" });
+export default Modal.wrap(SortInner, {
+  preset: "small",
+  title: "Sort characters",
+  className: "bg-dark-900",
+  withActions: true,
+  formId: "sort-characters-form",
+});

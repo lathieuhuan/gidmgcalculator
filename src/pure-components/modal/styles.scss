@@ -1,0 +1,37 @@
+.modal-transition {
+  transition-property: opacity, transform;
+  transition-timing-function: linear;
+  transition-duration: 150ms;
+}
+
+.small-modal {
+  width: 22rem;
+}
+.large-modal {
+  width: 360px;
+}
+.large-modal-height {
+  height: 90vh;
+  max-height: 760px;
+}
+
+@media (min-width: 480px) {
+  .large-modal {
+    width: 448px;
+  }
+}
+@media (min-width: 640px) {
+  .large-modal {
+    width: 592px;
+  }
+}
+@media (min-width: 768px) {
+  .large-modal {
+    width: 720px;
+  }
+}
+@media (min-width: 1024px) {
+  .large-modal {
+    width: 944px;
+  }
+}

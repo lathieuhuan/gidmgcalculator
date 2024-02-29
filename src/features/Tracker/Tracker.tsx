@@ -21,22 +21,20 @@ export const Tracker = () => {
   };
 
   return (
-    <Modal state={trackerState} className="p-4 flex flex-col" withDefaultStyle onClose={() => setTrackerState("close")}>
+    <Modal.Core state={trackerState} preset="large" className="flex flex-col" onClose={() => setTrackerState("close")}>
       <div className="absolute top-1 right-1 flex">
-        <Button
-          className="hover:text-yellow-400"
-          boneOnly
-          icon={<FaMinus />}
-          onClick={() => setTrackerState("hidden")}
-        />
+        <Button boneOnly icon={<FaMinus />} onClick={() => setTrackerState("hidden")} />
         <CloseButton boneOnly onClick={() => setTrackerState("close")} />
       </div>
-      <p className="flex items-center md1:justify-center">
-        <span className="md1:text-xl md2:text-2xl text-orange-500 font-bold">Tracking Results</span>{" "}
-        <span className="ml-2 text-light-800">({activeSetupName})</span>
-      </p>
 
-      <TrackerContainer trackerState={trackerState} />
-    </Modal>
+      <Modal.Header className="flex items-center">
+        Tracking Results
+        <span className="ml-2 font-normal text-base text-light-800">({activeSetupName})</span>
+      </Modal.Header>
+
+      <div className="grow px-4 pb-4 overflow-auto">
+        <TrackerContainer trackerState={trackerState} />
+      </div>
+    </Modal.Core>
   );
 };
