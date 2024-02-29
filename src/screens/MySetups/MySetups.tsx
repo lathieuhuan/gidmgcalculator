@@ -53,11 +53,7 @@ export default function MySetups() {
 
   const setupList = (() => {
     if (!userSetups.length) {
-      return (
-        <div className="pt-8 flex-center" style={{ minWidth: 320 }}>
-          <p className="text-xl font-bold text-red-100">No setups to display</p>
-        </div>
-      );
+      return <p className="w-full py-4 text-light-800 text-lg text-center">No setups found</p>;
     }
 
     return userSetups.map((setup: UserSetup | UserComplexSetup, index: number) => {
@@ -139,33 +135,34 @@ export default function MySetups() {
   })();
 
   return (
-    <WarehouseLayout.Wrapper>
-      <WarehouseLayout>
-        <WarehouseLayout.ButtonBar>
+    <WarehouseLayout
+      bodyStyle={{
+        width: screenWatcher.isFromSize("xm") ? "auto" : undefined,
+      }}
+      actions={
+        <>
           <Button className="mr-4" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
           <Button onClick={openModal("FIRST_COMBINE")}>Combine</Button>
-        </WarehouseLayout.ButtonBar>
+        </>
+      }
+    >
+      <div
+        className={clsx(
+          userSetups.length && "p-1 xm:pr-3",
+          "shrink-0 flex flex-col items-start custom-scrollbar scroll-smooth space-y-3"
+        )}
+        style={{
+          minWidth: screenWatcher.isFromSize("lg") ? "541px" : "",
+        }}
+      >
+        {setupList}
+      </div>
 
-        <WarehouseLayout.Body className="gap-2 custom-scrollbar">
-          <div
-            className={clsx(
-              userSetups.length && "p-1 xm:pr-3",
-              "shrink-0 flex flex-col items-start custom-scrollbar scroll-smooth space-y-3"
-            )}
-            // style={{
-            //   minWidth: screenWatcher.isFromSize("md") ? "544px" : "",
-            // }}
-          >
-            {setupList}
-          </div>
-
-          <div className="shrink-0 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
-            {chosenSetupInfo}
-          </div>
-        </WarehouseLayout.Body>
-      </WarehouseLayout>
+      <div className="shrink-0 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
+        {chosenSetupInfo}
+      </div>
 
       <MySetupsModals combineMoreId={chosenSetupID} />
-    </WarehouseLayout.Wrapper>
+    </WarehouseLayout>
   );
 }

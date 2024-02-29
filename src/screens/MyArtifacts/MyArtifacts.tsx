@@ -87,57 +87,55 @@ export default function MyArtifacts() {
     filter.stats.main !== "All" ||
     filter.stats.subs.some((s) => s !== "All");
 
-  return (
-    <WarehouseLayout.Wrapper>
-      <WarehouseLayout>
-        <WarehouseLayout.ButtonBar className="space-x-4">
-          <ButtonGroup
-            buttons={[
-              { text: "Add", onClick: onClickAddArtifact },
-              { text: "Sort", onClick: onClickSortArtifact },
-            ]}
-          />
+  const actions = (
+    <>
+      <ButtonGroup
+        buttons={[
+          { text: "Add", onClick: onClickAddArtifact },
+          { text: "Sort", onClick: onClickSortArtifact },
+        ]}
+      />
 
-          {screenWatcher.isFromSize("md") ? renderArtifactTypeSelect() : null}
+      {screenWatcher.isFromSize("md") ? renderArtifactTypeSelect() : null}
 
-          <div className="flex cursor-pointer">
-            <button
-              className={clsx(
-                "pl-4 py-1 text-black glow-on-hover",
-                isFiltered ? "pr-2 bg-green-200 rounded-l-2xl" : "pr-4 bg-light-600 rounded-2xl"
-              )}
-              onClick={() => setModalType("FITLER")}
-            >
-              <p className="font-bold">Filter</p>
-            </button>
+      <div className="flex cursor-pointer">
+        <button
+          className={clsx(
+            "pl-4 py-1 text-black glow-on-hover",
+            isFiltered ? "pr-2 bg-green-200 rounded-l-2xl" : "pr-4 bg-light-600 rounded-2xl"
+          )}
+          onClick={() => setModalType("FITLER")}
+        >
+          <p className="font-bold">Filter</p>
+        </button>
 
-            {isFiltered && (
-              <div
-                className="pl-2 pr-3 rounded-r-2xl text-black bg-light-400 flex-center glow-on-hover"
-                onClick={() => {
-                  const { DEFAULT_FILTER } = ArtifactFilter;
-                  setFilter(DEFAULT_FILTER);
-                  updateArtifactTypes(DEFAULT_FILTER.types);
-                }}
-              >
-                <FaTimes />
-              </div>
-            )}
+        {isFiltered && (
+          <div
+            className="pl-2 pr-3 rounded-r-2xl text-black bg-light-400 flex-center glow-on-hover"
+            onClick={() => {
+              const { DEFAULT_FILTER } = ArtifactFilter;
+              setFilter(DEFAULT_FILTER);
+              updateArtifactTypes(DEFAULT_FILTER.types);
+            }}
+          >
+            <FaTimes />
           </div>
-        </WarehouseLayout.ButtonBar>
+        )}
+      </div>
+    </>
+  );
 
-        <WarehouseLayout.Body className="hide-scrollbar gap-2">
-          <InventoryRack
-            data={filteredArtifacts}
-            emptyText="No artifacts found"
-            itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
-            chosenID={chosenArtifact?.ID}
-            onChangeItem={setChosenArtifact}
-          />
+  return (
+    <WarehouseLayout actions={actions}>
+      <InventoryRack
+        data={filteredArtifacts}
+        emptyText="No artifacts found"
+        itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
+        chosenID={chosenArtifact?.ID}
+        onChangeItem={setChosenArtifact}
+      />
 
-          <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
-        </WarehouseLayout.Body>
-      </WarehouseLayout>
+      <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
 
       <Modal
         active={modalType === "FITLER"}
@@ -175,6 +173,6 @@ export default function MyArtifacts() {
         }}
         onClose={closeModal}
       />
-    </WarehouseLayout.Wrapper>
+    </WarehouseLayout>
   );
 }

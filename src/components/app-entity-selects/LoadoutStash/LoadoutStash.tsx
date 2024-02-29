@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type { CalcArtifact, UserArtifact } from "@Src/types";
-import { EquippedSetSelect } from "./EquippedSetSelect";
+import { EquippedSetStash } from "./EquippedSetStash";
 import { userItemToCalcItem } from "@Src/utils";
 
 // Component
@@ -14,11 +14,11 @@ const LOADOUT_TYPE_OPTIONS: Array<{ label: string; value: LoadoutType }> = [
   { label: "Equipped Set", value: "EQUIPPED" },
 ];
 
-interface LoadoutSelectCoreProps {
+interface LoadoutStashCoreProps {
   keyword?: string;
   onSelect?: (set: CalcArtifact[]) => void;
 }
-export const LoadoutSelectCore = ({ keyword, onSelect }: LoadoutSelectCoreProps) => {
+export const LoadoutStashCore = ({ keyword, onSelect }: LoadoutStashCoreProps) => {
   const [chosenType, setChosenType] = useState<LoadoutType>("EQUIPPED");
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
 
@@ -60,7 +60,7 @@ export const LoadoutSelectCore = ({ keyword, onSelect }: LoadoutSelectCoreProps)
               {
                 value: "EQUIPPED",
                 element: (
-                  <EquippedSetSelect
+                  <EquippedSetStash
                     keyword={keyword}
                     onChangeArtifact={setChosenArtifact}
                     onSelectSet={onSelectEquippedSet}
@@ -71,18 +71,18 @@ export const LoadoutSelectCore = ({ keyword, onSelect }: LoadoutSelectCoreProps)
           />
         </div>
 
-        <ArtifactCard className="w-72 shrink-0" artifact={chosenArtifact} />
+        <ArtifactCard className="w-68 shrink-0" artifact={chosenArtifact} />
       </div>
     </div>
   );
 };
 
-export const LoadoutSelect = Modal.coreWrap(
-  (props: Omit<LoadoutSelectCoreProps, "keyword"> & ModalControl) => {
+export const LoadoutStash = Modal.coreWrap(
+  (props: Omit<LoadoutStashCoreProps, "keyword"> & ModalControl) => {
     return (
       <EntitySelectTemplate title="Artifact Loadouts" hasSearch onClose={props.onClose}>
         {({ keyword }) => {
-          return <LoadoutSelectCore keyword={keyword} onSelect={props.onSelect} />;
+          return <LoadoutStashCore keyword={keyword} onSelect={props.onSelect} />;
         }}
       </EntitySelectTemplate>
     );

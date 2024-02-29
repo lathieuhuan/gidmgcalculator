@@ -36,7 +36,7 @@ export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => 
     <div className="space-y-2">
       {!options.length && (
         <div className="h-40 flex-center">
-          <p className="pr-2 text-lg text-light-800 text-center">No Setups available for choosing...</p>
+          <p className="pr-2 text-lg text-light-800 text-center">No setups available for choosing...</p>
         </div>
       )}
       {options.map((setup) => {

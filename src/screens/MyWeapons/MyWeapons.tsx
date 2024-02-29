@@ -17,7 +17,7 @@ import { selectUserWps } from "@Store/userDatabaseSlice/selectors";
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
-import { ButtonGroup, CollapseSpace, WarehouseLayout, Button, ConfirmModal } from "@Src/pure-components";
+import { ButtonGroup, CollapseSpace, Button, ConfirmModal, WarehouseLayout } from "@Src/pure-components";
 import { InventoryRack, Tavern, WeaponForge, WeaponCard } from "@Src/components";
 
 type ModalType = "ADD_WEAPON" | "SELECT_WEAPON_OWNER" | "REMOVE_WEAPON" | "";
@@ -94,66 +94,64 @@ export default function MyWeapons() {
     }
   };
 
+  const actions = (
+    <>
+      <ButtonGroup
+        className="mr-4"
+        buttons={[
+          { text: "Add", onClick: onClickAddWeapon },
+          {
+            text: "Sort",
+            onClick: () => dispatch(sortWeapons()),
+          },
+        ]}
+      />
+      {screenWatcher.isFromSize("sm") ? (
+        renderWeaponTypeSelect()
+      ) : (
+        <>
+          <Button
+            variant={filterIsActive ? "active" : "default"}
+            icon={<FaEllipsisH />}
+            onClick={() => setFilterIsActive(!filterIsActive)}
+          />
+
+          <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
+            <div className="px-4 py-6 shadow-common bg-dark-700">{renderWeaponTypeSelect()}</div>
+          </CollapseSpace>
+        </>
+      )}
+    </>
+  );
+
   return (
-    <WarehouseLayout.Wrapper>
-      <WarehouseLayout>
-        <WarehouseLayout.ButtonBar>
-          <ButtonGroup
-            className="mr-4"
-            buttons={[
-              { text: "Add", onClick: onClickAddWeapon },
-              {
-                text: "Sort",
-                onClick: () => dispatch(sortWeapons()),
-              },
-            ]}
-          />
-          {screenWatcher.isFromSize("sm") ? (
-            renderWeaponTypeSelect()
-          ) : (
-            <>
-              <Button
-                variant={filterIsActive ? "active" : "default"}
-                icon={<FaEllipsisH />}
-                onClick={() => setFilterIsActive(!filterIsActive)}
-              />
+    <WarehouseLayout actions={actions}>
+      <InventoryRack
+        data={filteredWeapons}
+        emptyText="No weapons found"
+        itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
+        chosenID={chosenWeapon?.ID}
+        onChangeItem={setChosenWeapon}
+      />
 
-              <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
-                <div className="px-4 py-6 shadow-common bg-dark-700">{renderWeaponTypeSelect()}</div>
-              </CollapseSpace>
-            </>
-          )}
-        </WarehouseLayout.ButtonBar>
-
-        <WarehouseLayout.Body className="hide-scrollbar gap-2">
-          <InventoryRack
-            data={filteredWeapons}
-            emptyText="No weapons found"
-            itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
-            chosenID={chosenWeapon?.ID}
-            onChangeItem={setChosenWeapon}
-          />
-
-          <WeaponCard
-            wrapperCls="w-76 shrink-0"
-            mutable
-            weapon={chosenWeapon}
-            withOwnerLabel
-            upgrade={(level, weapon) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
-            refine={(refi, weapon) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
-            actions={[
-              {
-                text: "Remove",
-                onClick: (_, weapon) => onClickRemoveWeapon(weapon),
-              },
-              {
-                text: "Equip",
-                onClick: () => setModalType("SELECT_WEAPON_OWNER"),
-              },
-            ]}
-          />
-        </WarehouseLayout.Body>
-      </WarehouseLayout>
+      <WeaponCard
+        wrapperCls="w-76 shrink-0"
+        mutable
+        weapon={chosenWeapon}
+        withOwnerLabel
+        upgrade={(level, weapon) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
+        refine={(refi, weapon) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
+        actions={[
+          {
+            text: "Remove",
+            onClick: (_, weapon) => onClickRemoveWeapon(weapon),
+          },
+          {
+            text: "Equip",
+            onClick: () => setModalType("SELECT_WEAPON_OWNER"),
+          },
+        ]}
+      />
 
       <WeaponForge
         active={modalType === "ADD_WEAPON"}
@@ -207,6 +205,6 @@ export default function MyWeapons() {
           onClose={closeModal}
         />
       ) : null}
-    </WarehouseLayout.Wrapper>
+    </WarehouseLayout>
   );
 }

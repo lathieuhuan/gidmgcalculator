@@ -8,6 +8,7 @@ import { findById } from "@Src/utils";
 import { useIntersectionObserver } from "@Src/pure-hooks";
 
 import { Button, Image, ItemCase } from "@Src/pure-components";
+import { CharacterPortrait } from "../../CharacterPortrait";
 
 type EquippedSetOption = {
   character: {
@@ -19,12 +20,12 @@ type EquippedSetOption = {
   artifacts: UserArtifact[];
 };
 
-interface EquippedSetSelectProps {
+interface EquippedSetStashProps {
   keyword?: string;
   onChangeArtifact: (artifact?: UserArtifact) => void;
   onSelectSet: (artifacts: UserArtifact[]) => void;
 }
-export const EquippedSetSelect = ({ keyword, onChangeArtifact, onSelectSet }: EquippedSetSelectProps) => {
+export const EquippedSetStash = ({ keyword, onChangeArtifact, onSelectSet }: EquippedSetStashProps) => {
   const [chosen, setChosen] = useState({
     characterCode: 0,
     artifactId: 0,
@@ -109,10 +110,10 @@ export const EquippedSetSelect = ({ keyword, onChangeArtifact, onSelectSet }: Eq
                 Select
               </Button>
 
-              <div className="px-2 py-3 rounded-lg bg-dark-900">
-                <div className="flex items-start space-x-2">
+              <div className="p-3 rounded-lg bg-dark-900">
+                <div className="flex items-start space-x-3">
                   <div className={`w-14 h-14 ${opacityCls}`}>
-                    {visible && <Image src={character.icon} imgType="character" />}
+                    {visible ? <CharacterPortrait {...character} /> : null}
                   </div>
                   <p className={`text-lg text-${character.elementType} font-bold`}>{character.name}</p>
                 </div>

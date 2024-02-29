@@ -20,10 +20,15 @@ import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 
 // Component
 import { Button, CollapseSpace, Modal } from "@Src/pure-components";
-import { ArtifactForge, ArtifactForgeProps, ArtifactInventory, ArtifactInventoryProps } from "@Src/components";
+import {
+  ArtifactForge,
+  ArtifactForgeProps,
+  ArtifactInventory,
+  ArtifactInventoryProps,
+  LoadoutStash,
+} from "@Src/components";
 import { ArtifactInfo, ArtifactSourceType } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
-import { LoadoutSelect } from "./LoadoutSelect";
 
 import styles from "../styles.module.scss";
 
@@ -324,7 +329,7 @@ export default function SectionArtifacts() {
         </div>
       </Modal>
 
-      <LoadoutSelect active={modalType === "ARTIFACT_LOADOUT"} onSelect={onSelectLoadout} onClose={closeModal} />
+      <LoadoutStash active={modalType === "ARTIFACT_LOADOUT"} onSelect={onSelectLoadout} onClose={closeModal} />
     </div>
   );
 }
