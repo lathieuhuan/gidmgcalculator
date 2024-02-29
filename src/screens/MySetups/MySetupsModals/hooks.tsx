@@ -33,7 +33,7 @@ export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => 
   };
 
   const combineMenu = (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {!options.length && (
         <div className="h-40 flex-center">
           <p className="pr-2 text-lg text-light-800 text-center">No setups available for choosing...</p>
