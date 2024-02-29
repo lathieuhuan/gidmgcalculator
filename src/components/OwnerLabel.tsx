@@ -73,7 +73,7 @@ export const OwnerLabel = ({ className = "", style, item }: OwnerLabelProps) => 
     }
   };
 
-  const cls = `pl-4 rounded-sm font-bold bg-yellow-200 text-black flex justify-between relative ${className}`;
+  const cls = `pl-4 rounded-sm font-bold bg-yellow-300 text-black flex justify-between relative ${className}`;
 
   if (!item) {
     return <div className={`h-8 ${cls}`} style={style} />;

@@ -140,10 +140,10 @@ export default function MySetups() {
         width: screenWatcher.isFromSize("xm") ? "auto" : undefined,
       }}
       actions={
-        <>
-          <Button className="mr-4" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
+        <div className="flex items-center space-x-4">
+          <Button size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
           <Button onClick={openModal("FIRST_COMBINE")}>Combine</Button>
-        </>
+        </div>
       }
     >
       <div

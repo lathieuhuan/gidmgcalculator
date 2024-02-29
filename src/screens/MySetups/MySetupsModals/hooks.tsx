@@ -48,7 +48,7 @@ export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => 
           <div
             key={ID}
             className={clsx(
-              "p-4 rounded-lg bg-dark-900 flex flex-col md:flex-row md:items-center",
+              "p-4 rounded-lg bg-dark-900 flex flex-col md:flex-row",
               !picked && !notFull && "opacity-50",
               picked && "shadow-green-300"
             )}
@@ -56,11 +56,12 @@ export const useCombineManager = ({ options, limit }: UseCombineManagerArgs) => 
             onClick={() => onClickOption(ID, picked)}
           >
             <div className="md:w-40 md:mr-4">
-              <p className="text-lg font-bold text-orange-500 cursor-default">{setup.name}</p>
+              <p className="text-lg font-semibold text-mint-600 cursor-default">{setup.name}</p>
             </div>
+
             <div className="mt-2 md:mt-0 flex space-x-4">
               <div className="w-16">
-                <CharacterPortrait className="shadow-3px-2px shadow-orange-500" {...{ code, icon }} />
+                <CharacterPortrait className="shadow-3px-2px shadow-light-400" {...{ code, icon }} />
               </div>
               {setup.party.map((teammate, j) => {
                 if (teammate) {

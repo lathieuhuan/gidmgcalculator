@@ -17,7 +17,7 @@ interface TeammateItemsProps {
   onClickRemoveArtifact?: () => void;
 }
 export const TeammateItems = ({
-  className,
+  className = "",
   mutable,
   teammate,
   onClickWeapon,
@@ -31,7 +31,7 @@ export const TeammateItems = ({
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (
-    <div className={className}>
+    <div className={`space-y-3 ${className}`}>
       {appWeapon && (
         <div className="flex space-x-2">
           <button
@@ -72,7 +72,7 @@ export const TeammateItems = ({
         </div>
       )}
 
-      <div className="mt-2 flex items-start space-x-2">
+      <div className="flex items-start space-x-2">
         <button className="w-14 h-14 shrink-0" disabled={!mutable} onClick={onClickArtifact}>
           {artifactSetIcon ? (
             <img className="bg-dark-500 rounded" src={getImgSrc(artifactSetIcon)} alt="artifact" draggable={false} />

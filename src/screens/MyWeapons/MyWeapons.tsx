@@ -1,10 +1,8 @@
-import clsx from "clsx";
-import { useState } from "react";
-import { FaEllipsisH } from "react-icons/fa";
+import { useState, useMemo } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
-import { indexById } from "@Src/utils";
+import { findById, indexById } from "@Src/utils";
 import { useWeaponTypeSelect } from "@Src/hooks";
 import { $AppData } from "@Src/services";
 import { UserWeapon, WeaponType } from "@Src/types";
@@ -35,7 +33,7 @@ export default function MyWeapons() {
   const dispatch = useDispatch();
   const screenWatcher = useScreenWatcher();
 
-  const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
+  const [chosenId, setChosenId] = useState<number>();
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
 
@@ -43,6 +41,7 @@ export default function MyWeapons() {
     multiple: true,
   });
   const { filteredWeapons, totalCount } = useSelector((state) => selectWeaponInventory(state, weaponTypes));
+  const chosenWeapon = useMemo(() => findById(filteredWeapons, chosenId), [filteredWeapons, chosenId]);
 
   const checkIfMaxWeaponsReached = () => {
     if (totalCount + 1 > MAX_USER_WEAPONS) {
@@ -87,9 +86,9 @@ export default function MyWeapons() {
       if (filteredWeapons.length > 1) {
         const move = removedIndex === filteredWeapons.length - 1 ? -1 : 1;
 
-        setChosenWeapon(filteredWeapons[removedIndex + move]);
+        setChosenId(filteredWeapons[removedIndex + move]?.ID);
       } else {
-        setChosenWeapon(undefined);
+        setChosenId(undefined);
       }
     }
   };
@@ -130,7 +129,7 @@ export default function MyWeapons() {
         emptyText="No weapons found"
         itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
         chosenID={chosenWeapon?.ID}
-        onChangeItem={setChosenWeapon}
+        onChangeItem={(weapon) => setChosenId(weapon?.ID)}
       />
 
       <WeaponCard
@@ -166,7 +165,7 @@ export default function MyWeapons() {
           };
 
           dispatch(addUserWeapon(newUserWeapon));
-          setChosenWeapon(newUserWeapon);
+          setChosenId(newUserWeapon.ID);
         }}
         onClose={closeModal}
       />

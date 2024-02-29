@@ -187,7 +187,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         <div className="flex items-center">
           {isOriginal ? null : screenWatcher.isFromSize("lg") ? (
             <Button
-              className="hover:text-red-400 group"
+              className="hover:text-red-200 group shadow-none"
               variant="custom"
               icon={
                 <>
@@ -198,7 +198,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               onClick={uncombine}
             />
           ) : (
-            <Button variant="negative" boneOnly icon={<FaUnlink />} onClick={uncombine} />
+            <Button variant="custom" className="text-red-200" boneOnly icon={<FaUnlink />} onClick={uncombine} />
           )}
           <p className="px-1 text-xl text-orange-500 font-semibold truncate">{setupName || setup.name}</p>
         </div>

@@ -96,7 +96,7 @@ export function NavBar() {
 
                 <NavTabs
                   className="px-4 py-2 xm:hidden font-bold"
-                  activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
+                  activeClassName="border-l-4 border-red-600 bg-dark-900 text-light-400"
                   ready={appReady}
                   onClickTab={(tab) => {
                     onClickTab(tab);
