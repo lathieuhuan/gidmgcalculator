@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import isEqual from "react-fast-compare";
-import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
+import { FaSave, FaTrashAlt, FaChevronDown, FaToolbox } from "react-icons/fa";
+import { MdInventory } from "react-icons/md";
+import { GiAnvil } from "react-icons/gi";
 
 import type { CalcArtifact, AttributeStat } from "@Src/types";
 import { calcItemToUserItem, findById, percentSign, userItemToCalcItem } from "@Src/utils";
@@ -15,20 +17,23 @@ import { addUserArtifact, updateUserArtifact } from "@Store/userDatabaseSlice";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/pure-hooks";
+import { useStoreSnapshot } from "@Src/features";
 
 // Component
 import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
+export type ArtifactSourceType = "LOADOUT" | "INVENTORY" | "FORGE";
+
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
   pieceIndex: number;
-  onClickRemovePiece: () => void;
-  onClickChangePiece: () => void;
+  onRemove: () => void;
+  onRequestChange: (source: ArtifactSourceType) => void;
 }
-export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClickChangePiece }: ArtifactInfoProps) {
+export function ArtifactInfo({ artifact, pieceIndex, onRemove, onRequestChange }: ArtifactInfoProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -36,12 +41,15 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
 
   const { type, rarity = 5, level, mainStatType } = artifact;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
-  const mainStatValues = availableMainStatTypes[mainStatType]![rarity];
-  const maxLevel = rarity === 5 ? 20 : 16;
+  const mainStatValue = availableMainStatTypes[mainStatType]?.[rarity]?.[level] ?? 0;
+
+  const closeModal = () => {
+    setIsSaving(false);
+  };
 
   return (
-    <div className="pt-4" onDoubleClick={() => console.log(artifact)}>
-      <div className="pl-6 flex items-start">
+    <div className="pt-4 px-2 space-y-2" onDoubleClick={() => console.log(artifact)}>
+      <div className="pl-2 flex items-start">
         <ArtifactLevelSelect
           mutable
           rarity={rarity}
@@ -54,12 +62,12 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
 
         <div className="ml-4">
           {type === "flower" || type === "plume" ? (
-            <p className="pl-8 py-1 text-lg">{t(mainStatType)}</p>
+            <p className="pl-6 py-1 text-lg">{t(mainStatType)}</p>
           ) : (
             <div className="py-1 relative">
-              <FaChevronDown className="absolute top-2 left-1 scale-110" />
+              <FaChevronDown className="absolute top-1/2 -translate-y-1/2 left-0" />
               <select
-                className="pl-8 text-lg text-light-400 appearance-none"
+                className="pl-6 text-lg text-light-400 appearance-none relative z-10"
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(
@@ -78,109 +86,102 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
               </select>
             </div>
           )}
-          <p className={`pl-8 text-2xl leading-7 text-rarity-${rarity} font-bold`}>
-            {mainStatValues[level] + percentSign(mainStatType)}
+          <p className={`pl-6 text-2xl leading-7 text-rarity-${rarity} font-bold`}>
+            {mainStatValue + percentSign(mainStatType)}
           </p>
         </div>
       </div>
 
-      <div className="px-2 pb-1">
-        <ArtifactSubstatsControl
-          key={artifact.ID}
-          mutable
-          rarity={rarity}
-          mainStatType={mainStatType}
-          subStats={artifact.subStats}
-          space="mx-4"
-          onChangeSubStat={(subStatIndex, changeInfo) => {
-            dispatch(
-              updateArtifact({
-                pieceIndex,
-                subStat: {
-                  index: subStatIndex,
-                  newInfo: changeInfo,
-                },
-              })
-            );
-          }}
-        />
-      </div>
+      <ArtifactSubstatsControl
+        key={artifact.ID}
+        mutable
+        rarity={rarity}
+        mainStatType={mainStatType}
+        subStats={artifact.subStats}
+        onChangeSubStat={(subStatIndex, changeInfo) => {
+          dispatch(
+            updateArtifact({
+              pieceIndex,
+              subStat: {
+                index: subStatIndex,
+                newInfo: changeInfo,
+              },
+            })
+          );
+        }}
+      />
 
-      <div className="pt-4 pb-1 flex justify-evenly items-center">
+      <div className="px-2 pt-4 pb-1 flex justify-end items-center gap-4">
         <Button
-          variant="negative"
+          title="Remove"
           icon={<FaTrashAlt />}
           onClick={() => {
             dispatch(changeArtifact({ pieceIndex, newPiece: null }));
-            onClickRemovePiece();
+            onRemove();
           }}
         />
-
-        <Button variant="neutral" icon={<FaSave />} onClick={() => setIsSaving(true)} />
-
-        <Button
-          className="w-8 h-8"
-          disabled={level === maxLevel}
-          variant="neutral"
-          onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
-        >
-          {maxLevel}
-        </Button>
-
-        <Button variant="positive" icon={<FaSyncAlt />} onClick={onClickChangePiece} />
+        <Button title="Save" icon={<FaSave />} onClick={() => setIsSaving(true)} />
+        <Button title="Loadout" icon={<FaToolbox />} onClick={() => onRequestChange("LOADOUT")} />
+        <Button title="Inventory" icon={<MdInventory />} onClick={() => onRequestChange("INVENTORY")} />
+        <Button title="New" icon={<GiAnvil className="text-lg" />} onClick={() => onRequestChange("FORGE")} />
       </div>
 
-      <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>
-        <ConfirmSaving artifact={artifact} pieceIndex={pieceIndex} onClose={() => setIsSaving(false)} />
-      </Modal>
+      <Modal.Core active={isSaving} preset="small" onClose={closeModal}>
+        <ConfirmSaving artifact={artifact} onClose={closeModal} />
+      </Modal.Core>
     </div>
   );
 }
 
 interface ConfirmSavingProps {
   artifact: CalcArtifact;
-  pieceIndex: number;
   onClose: () => void;
 }
-function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
+function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
   const dispatch = useDispatch();
-  const [state, setState] = useState<"SUCCESS" | "PENDING" | "EXCEED_MAX" | "">("");
+  const state = useRef<"SUCCESS" | "PENDING" | "EXCEED_MAX" | "">("");
 
-  const userArts = useSelector(selectUserArts);
-  const existedArtifact = findById(userArts, artifact.ID);
+  const userArtifacts = useStoreSnapshot(selectUserArts);
+  const existedArtifact = findById(userArtifacts, artifact.ID);
 
-  useEffect(() => {
-    if (userArts.length + 1 > MAX_USER_ARTIFACTS) {
-      setState("EXCEED_MAX");
+  if (state.current === "") {
+    if (userArtifacts.length + 1 > MAX_USER_ARTIFACTS) {
+      state.current = "EXCEED_MAX";
     } else if (existedArtifact) {
-      setState("PENDING");
+      state.current = "PENDING";
     } else {
       dispatch(addUserArtifact(calcItemToUserItem(artifact)));
-      setState("SUCCESS");
+      state.current = "SUCCESS";
     }
-  }, []);
+  }
 
-  switch (state) {
+  switch (state.current) {
     case "SUCCESS":
     case "EXCEED_MAX":
       return (
         <ConfirmModalBody
           message={
-            state === "SUCCESS"
+            state.current === "SUCCESS"
               ? "Successfully saved to My Artifacts."
               : "You're having to many Artifacts. Please remove some of them first."
           }
-          buttons={[undefined]}
-          onClose={onClose}
+          focusConfirm
+          showCancel={false}
+          onConfirm={onClose}
         />
       );
     case "PENDING":
-      const ownerInfo = existedArtifact?.owner ? (
+      const inform = (
         <>
-          , and currently used by <b>{existedArtifact.owner}</b>
+          This artifact is already saved
+          {existedArtifact?.owner ? (
+            <>
+              , and currently used by <b>{existedArtifact.owner}</b>
+            </>
+          ) : null}
+          .
         </>
-      ) : null;
-
+      );
       const noChange = existedArtifact
         ? isEqual(artifact, {
             ...userItemToCalcItem(existedArtifact),
@@ -188,33 +189,45 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
           })
         : false;
 
-      const buttons = [
-        undefined,
-        {
-          text: "Duplicate",
-          onClick: () => {
-            dispatch(addUserArtifact(calcItemToUserItem(artifact, { ID: Date.now() })));
-          },
-        },
-      ];
+      const addNew = () => {
+        dispatch(addUserArtifact(calcItemToUserItem(artifact, { ID: Date.now() })));
+        onClose();
+      };
 
-      if (!noChange) {
-        buttons.push({
-          text: "Confirm",
-          onClick: () => dispatch(updateUserArtifact(calcItemToUserItem(artifact))),
-        });
+      if (noChange) {
+        return (
+          <ConfirmModalBody
+            message={<>{inform} Nothing has changed.</>}
+            showCancel={false}
+            focusConfirm
+            moreActions={[
+              {
+                text: "Duplicate",
+                onClick: addNew,
+              },
+            ]}
+            onConfirm={onClose}
+          />
+        );
       }
+
+      const overwrite = () => {
+        dispatch(updateUserArtifact(calcItemToUserItem(artifact)));
+        onClose();
+      };
 
       return (
         <ConfirmModalBody
-          message={
-            <>
-              This artifact is already saved{ownerInfo}.{" "}
-              {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite"}
-            </>
-          }
-          buttons={buttons}
-          onClose={onClose}
+          message={<>{inform} Their stats are different. Do you want to overwrite?</>}
+          moreActions={[
+            {
+              text: "Add new",
+              onClick: addNew,
+            },
+          ]}
+          confirmText="Overwrite"
+          onConfirm={overwrite}
+          onCancel={onClose}
         />
       );
     default:

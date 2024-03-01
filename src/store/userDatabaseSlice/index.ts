@@ -221,8 +221,8 @@ export const userDatabaseSlice = createSlice({
     },
     sortWeapons: (state) => {
       state.userWps.sort((a, b) => {
-        const rA = $AppData.getWeaponData(a.code)?.rarity || 4;
-        const rB = $AppData.getWeaponData(b.code)?.rarity || 4;
+        const rA = $AppData.getWeapon(a.code)?.rarity || 4;
+        const rB = $AppData.getWeapon(b.code)?.rarity || 4;
         if (rA !== rB) {
           return rB - rA;
         }
@@ -339,8 +339,8 @@ export const userDatabaseSlice = createSlice({
           };
           return type[b.type] - type[a.type];
         }
-        const aName = $AppData.getArtifactSetData(a.code)?.name || "";
-        const bName = $AppData.getArtifactSetData(b.code)?.name || "";
+        const aName = $AppData.getArtifactSet(a.code)?.name || "";
+        const bName = $AppData.getArtifactSet(b.code)?.name || "";
         return bName.localeCompare(aName);
       });
     },

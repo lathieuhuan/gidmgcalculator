@@ -1,6 +1,6 @@
 import { FaChevronDown } from "react-icons/fa";
 
-import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
+import type { AttributeStat, ArtifactSubStat } from "@Src/types";
 import { useTranslation } from "@Src/pure-hooks";
 import { percentSign } from "@Src/utils";
 
@@ -11,20 +11,20 @@ import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 // Component
 import { Input } from "@Src/pure-components";
 
-export interface ArtifactSubstatsControlProps {
+interface ArtifactSubstatsControlProps {
+  className?: string;
   mutable?: boolean;
-  space?: string;
-  rarity: Rarity;
+  rarity: number;
   mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];
   onChangeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;
 }
 export const ArtifactSubstatsControl = ({
+  className = "",
   mutable,
   mainStatType,
   subStats,
   rarity,
-  space,
   onChangeSubStat,
 }: ArtifactSubstatsControlProps) => {
   const { t } = useTranslation();
@@ -36,30 +36,32 @@ export const ArtifactSubstatsControl = ({
   }
 
   return (
-    <>
+    <div className={"space-y-2 " + className}>
       {subStats.map(({ type, value }, i) => {
         const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
 
         return mutable ? (
-          <div key={i} className="mt-2 h-9 flex items-center bg-dark-700 relative">
-            <FaChevronDown className="absolute left-3 top-2.5" />
+          <div key={i} className="h-9 flex-center bg-dark-700 relative">
+            <div className="relative">
+              <FaChevronDown className="absolute top-3 left-1 text-sm" />
 
-            <select
-              className={
-                "pt-2 pb-1 pr-2 pl-10 leading-base relative z-10 appearance-none " +
-                (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")
-              }
-              value={type}
-              onChange={(e) => {
-                onChangeSubStat?.(i, { type: e.target.value as AttributeStat });
-              }}
-            >
-              {ARTIFACT_SUBSTAT_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {t(type)}
-                </option>
-              ))}
-            </select>
+              <select
+                className={
+                  "pt-2 pb-1 pr-3 pl-6 leading-base relative z-10 appearance-none " +
+                  (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")
+                }
+                value={type}
+                onChange={(e) => {
+                  onChangeSubStat?.(i, { type: e.target.value as AttributeStat });
+                }}
+              >
+                {ARTIFACT_SUBSTAT_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {t(type)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <span>+</span>
 
@@ -74,13 +76,15 @@ export const ArtifactSubstatsControl = ({
               value={value}
               onChange={(value) => onChangeSubStat?.(i, { value })}
             />
-            <span className="pt-2 pb-1">{percentSign(type)}</span>
+            <span className="w-4 pt-2 pb-1">{percentSign(type)}</span>
           </div>
         ) : (
           <div key={i} className={`mt-2 pt-2 pb-1 flex items-center bg-dark-700`}>
-            <p className={space}>•</p>
+            <p className="mx-3">•</p>
             <p>
-              <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")}>{t(type)}</span>
+              <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")}>
+                {t(type)}
+              </span>
               <span className={isValid ? "text-green-300" : "text-red-200"}>
                 +{value}
                 {percentSign(type)}
@@ -89,6 +93,6 @@ export const ArtifactSubstatsControl = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };

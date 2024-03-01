@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { MdInventory } from "react-icons/md";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-
-import { getImgSrc } from "@Src/utils";
 import { $AppData } from "@Src/services";
+import { userItemToCalcItem } from "@Src/utils";
 
 // Store
 import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
@@ -13,30 +13,37 @@ import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { PickerWeapon } from "@Src/components";
-import { BetaMark } from "@Src/pure-components";
+import { BetaMark, Button, Image } from "@Src/pure-components";
+import { WeaponForge, WeaponInventory } from "@Src/components";
+
+import styles from "./styles.module.scss";
+
+type ModalType = "MAKE_NEW_WEAPON" | "SELECT_USER_WEAPON" | "";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
-  const [pickerOn, setPickerOn] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>("");
 
-  const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeaponData(weapon.code) || {};
+  const { beta, name = "", icon = "", rarity = 5 } = $AppData.getWeapon(weapon.code) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
+  const closeModal = () => setModalType("");
+
   return (
-    <div className="px-2 py-3 border-2 border-lesser rounded-xl bg-dark-900 flex items-start">
+    <div className={"px-2 py-3 bg-dark-900 flex items-start relative " + styles.section}>
       <div
         className={`w-20 h-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
-        onClick={() => setPickerOn(true)}
+        onClick={() => setModalType("MAKE_NEW_WEAPON")}
       >
-        <img src={getImgSrc(icon)} alt={name} draggable={false} />
-        {beta && <BetaMark className="absolute -top-1 -left-1" />}
+        <Image src={icon} alt={name} imgType="weapon" />
+        <BetaMark active={beta} className="absolute -top-1 -left-1" />
       </div>
 
-      <div className="ml-2 overflow-hidden">
+      <div className="ml-2 overflow-hidden space-y-1">
         <p className={`text-xl text-rarity-${rarity} font-bold text-ellipsis`}>{name}</p>
-        <div className="mt-1 pl-1 flex flex-wrap">
+
+        <div className="pl-1 flex flex-wrap">
           <p className="mr-1">Level</p>
           <select
             className={`text-rarity-${rarity} text-right`}
@@ -54,9 +61,10 @@ export default function SectionWeapon() {
             })}
           </select>
         </div>
+
         {rarity >= 3 && (
-          <div className="mt-1 pl-1 flex flex-wrap">
-            <p className="mr-2">Refinement rank</p>
+          <div className="pl-1 flex flex-wrap">
+            <p className="mr-1">Refinement rank</p>
             <select
               className={`text-rarity-${rarity}`}
               value={weapon.refi}
@@ -73,18 +81,37 @@ export default function SectionWeapon() {
         )}
       </div>
 
-      <PickerWeapon
-        active={pickerOn}
-        weaponType={weapon.type}
-        onPickWeapon={(item) => {
+      <Button
+        title="Inventory"
+        className="absolute bottom-1 right-1"
+        size="large"
+        boneOnly
+        icon={<MdInventory />}
+        onClick={() => setModalType("SELECT_USER_WEAPON")}
+      />
+
+      <WeaponForge
+        active={modalType === "MAKE_NEW_WEAPON"}
+        forcedType={weapon.type}
+        onForgeWeapon={(weapon) => {
           dispatch(
             changeWeapon({
+              ...weapon,
               ID: Date.now(),
-              ...item,
             })
           );
         }}
-        onClose={() => setPickerOn(false)}
+        onClose={closeModal}
+      />
+
+      <WeaponInventory
+        active={modalType === "SELECT_USER_WEAPON"}
+        weaponType={weapon.type}
+        buttonText="Select"
+        onClickButton={(weapon) => {
+          dispatch(changeWeapon(userItemToCalcItem(weapon)));
+        }}
+        onClose={closeModal}
       />
     </div>
   );

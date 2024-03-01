@@ -1,0 +1,19 @@
+.styled-radio-visual {
+  &:before {
+    content: "";
+    @apply w-full h-full rounded-circle opacity-0 transition-opacity duration-200;
+  }
+}
+
+.peer:checked ~ .styled-radio-visual {
+  &.size-small {
+    border-width: 4px;
+  }
+  &.size-large {
+    border-width: 6px;
+  }
+
+  &:before {
+    @apply opacity-100;
+  }
+}

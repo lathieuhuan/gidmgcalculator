@@ -1,0 +1,35 @@
+.styled-checkbox {
+  .styled-checkbox-visual::before {
+    content: "";
+    @apply absolute border-3 border-t-0 border-black opacity-0 transition-opacity duration-150 ease-linear;
+    inset-inline-start: 25%;
+    border-inline-start: 0;
+  }
+
+  &.size-small {
+    width: 16px;
+    height: 16px;
+
+    .styled-checkbox-visual::before {
+      top: 45%;
+      width: 7px;
+      height: 10px;
+      transform: rotate(40deg) translate(-50%, -50%);
+    }
+  }
+  &.size-medium {
+    width: 18px;
+    height: 18px;
+
+    .styled-checkbox-visual::before {
+      top: 45%;
+      width: 7px;
+      height: 11px;
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+  }
+
+  .peer:checked ~ .styled-checkbox-visual::before {
+    @apply opacity-100;
+  }
+}

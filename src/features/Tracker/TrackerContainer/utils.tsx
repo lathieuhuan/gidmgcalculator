@@ -14,7 +14,7 @@ import {
 import { round } from "@Src/utils";
 import { Green } from "@Src/pure-components";
 
-export const recordListStyles = "columns-1 md2:columns-2 space-y-1";
+export const recordListStyles = "columns-1 md:columns-2 space-y-1";
 
 export function initTracker() {
   const tracker = {

@@ -1,11 +1,11 @@
-import type { AttackElement, Vision } from "@Src/types";
+import type { AttackElement, ElementType } from "@Src/types";
 
 type MonsterResistance = Partial<Record<AttackElement, number>> & {
   base: number;
 };
 
 type MonsterVariant = {
-  types: Vision[] | Array<{ label: string; value: Vision }>;
+  types: ElementType[] | Array<{ label: string; value: ElementType }>;
   change?: number;
 };
 
@@ -16,7 +16,7 @@ type MonsterInputConfig = {
   type?: "check" | "select";
   changes?: MonsterInputChanges;
   options?:
-    | Vision[]
+    | ElementType[]
     | Array<{
         label: string;
         changes: MonsterInputChanges;

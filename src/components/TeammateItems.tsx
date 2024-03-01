@@ -1,11 +1,11 @@
-import { FaTimes } from "react-icons/fa";
+import clsx from "clsx";
 
 import type { Teammate } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 import { $AppData } from "@Src/services";
 
 // Component
-import { Button } from "@Src/pure-components";
+import { CloseButton } from "@Src/pure-components";
 
 interface TeammateItemsProps {
   className?: string;
@@ -17,7 +17,7 @@ interface TeammateItemsProps {
   onClickRemoveArtifact?: () => void;
 }
 export const TeammateItems = ({
-  className,
+  className = "",
   mutable,
   teammate,
   onClickWeapon,
@@ -26,30 +26,30 @@ export const TeammateItems = ({
   onClickRemoveArtifact,
 }: TeammateItemsProps) => {
   const { weapon, artifact } = teammate;
-  const weaponData = $AppData.getWeaponData(weapon.code);
-  const { name: artifactSetName, flower } = $AppData.getArtifactSetData(artifact.code) || {};
+  const appWeapon = $AppData.getWeapon(weapon.code);
+  const { name: artifactSetName, flower } = $AppData.getArtifactSet(artifact.code) || {};
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (
-    <div className={className}>
-      {weaponData && (
-        <div className="flex">
+    <div className={`space-y-3 ${className}`}>
+      {appWeapon && (
+        <div className="flex space-x-2">
           <button
-            className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
+            className={`w-14 h-14 rounded bg-gradient-${appWeapon.rarity} shrink-0`}
             disabled={!mutable}
             onClick={onClickWeapon}
           >
-            <img src={getImgSrc(weaponData.icon)} alt="weapon" draggable={false} />
+            <img src={getImgSrc(appWeapon.icon)} alt="weapon" draggable={false} />
           </button>
 
           <div className="overflow-hidden">
-            <p className={`text-rarity-${weaponData.rarity} text-lg font-semibold truncate`}>{weaponData.name}</p>
+            <p className={`text-rarity-${appWeapon.rarity} text-base font-semibold truncate`}>{appWeapon.name}</p>
             {mutable ? (
-              weaponData.rarity >= 3 && (
+              appWeapon.rarity >= 3 && (
                 <div className="flex items-center">
                   <span>Refinement</span>
                   <select
-                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
+                    className={`ml-2 pr-1 text-rarity-${appWeapon.rarity} text-right`}
                     value={weapon.refi}
                     onChange={(e) => onChangeWeaponRefinement?.(+e.target.value)}
                   >
@@ -65,14 +65,14 @@ export const TeammateItems = ({
               )
             ) : (
               <p>
-                Refinement <span className={`ml-1 text-rarity-${weaponData.rarity} font-semibold`}>{weapon.refi}</span>
+                Refinement <span className={`ml-1 text-rarity-${appWeapon.rarity} font-semibold`}>{weapon.refi}</span>
               </p>
             )}
           </div>
         </div>
       )}
 
-      <div className="mt-2 flex space-x-2">
+      <div className="flex items-start space-x-2">
         <button className="w-14 h-14 shrink-0" disabled={!mutable} onClick={onClickArtifact}>
           {artifactSetIcon ? (
             <img className="bg-dark-500 rounded" src={getImgSrc(artifactSetIcon)} alt="artifact" draggable={false} />
@@ -81,17 +81,16 @@ export const TeammateItems = ({
           )}
         </button>
 
-        <p className={"mt-1 grow font-medium truncate " + (artifactSetName ? "text-light-400 text-lg" : "text-light-800")}>
+        <p
+          className={clsx(
+            "mt-1 grow font-semibold text-base truncate",
+            artifactSetName ? "text-light-400" : "text-light-800"
+          )}
+        >
           {artifactSetName || "No artifact buff / debuff"}
         </p>
-        {artifactSetName && mutable && (
-          <Button
-            className="mt-1 self-start hover:text-red-400"
-            boneOnly
-            icon={<FaTimes />}
-            onClick={onClickRemoveArtifact}
-          />
-        )}
+
+        {artifactSetName && mutable ? <CloseButton boneOnly onClick={onClickRemoveArtifact} /> : null}
       </div>
     </div>
   );

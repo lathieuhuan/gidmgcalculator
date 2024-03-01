@@ -1,2 +1,2 @@
-export * from "./ConsList";
+export * from "./ConstellationList";
 export * from "./TalentList";

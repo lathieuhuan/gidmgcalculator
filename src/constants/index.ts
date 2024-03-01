@@ -43,19 +43,13 @@ export enum EModAffect {
   ACTIVE_UNIT = "active unit",
 }
 
-export enum EStatDamageKey {
-  NON_CRIT = "nonCrit",
-  CRIT = "crit",
-  AVERAGE = "average",
-}
-
 /** Don't change the items order of any array below */
 
 export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] as const;
 
 export const ARTIFACT_TYPES = ["flower", "plume", "sands", "goblet", "circlet"] as const;
 
-export const VISION_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
+export const ELEMENT_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
 
 export const LEVELS = [
   "1/20",
@@ -78,7 +72,7 @@ export const NORMAL_ATTACKS = ["NA", "CA", "PA"] as const;
 
 export const ATTACK_PATTERNS = [...NORMAL_ATTACKS, "ES", "EB"] as const;
 
-export const ATTACK_ELEMENTS = [...VISION_TYPES, "phys"] as const;
+export const ATTACK_ELEMENTS = [...ELEMENT_TYPES, "phys"] as const;
 
 export const TALENT_TYPES = ["NAs", "ES", "EB", "altSprint"] as const;
 
@@ -122,7 +116,7 @@ export const ATTACK_ELEMENT_INFO_KEYS = ["flat", "cRate_", "cDmg_"] as const;
 
 export const REACTION_BONUS_INFO_KEYS = ["pct_", "cRate_", "cDmg_"] as const;
 
-// export const VISION_ICONS = {
+// export const ELEMENT_ICONS = {
 //   pyro: "e/e8/Element_Pyro",
 //   cryo: "8/88/Element_Cryo",
 //   hydro: "3/35/Element_Hydro",
@@ -132,21 +126,21 @@ export const REACTION_BONUS_INFO_KEYS = ["pct_", "cRate_", "cDmg_"] as const;
 //   dendro: "f/f4/Element_Dendro",
 // };
 
-export const WEAPON_ICONS: Record<(typeof WEAPON_TYPES)[number], string> = {
-  bow: "9/97/Weapon-class-bow-icon",
-  catalyst: "0/02/Weapon-class-catalyst-icon",
-  claymore: "5/51/Weapon-class-claymore-icon",
-  polearm: "9/91/Weapon-class-polearm-icon",
-  sword: "9/95/Weapon-class-sword-icon",
-};
+export const WEAPON_TYPE_ICONS: Array<{ type: (typeof WEAPON_TYPES)[number]; icon: string }> = [
+  { type: "bow", icon: "9/97/Weapon-class-bow-icon" },
+  { type: "catalyst", icon: "0/02/Weapon-class-catalyst-icon" },
+  { type: "claymore", icon: "5/51/Weapon-class-claymore-icon" },
+  { type: "polearm", icon: "9/91/Weapon-class-polearm-icon" },
+  { type: "sword", icon: "9/95/Weapon-class-sword-icon" },
+];
 
-export const ARTIFACT_ICONS: Record<(typeof ARTIFACT_TYPES)[number], string> = {
-  flower: "2/2d/Icon_Flower_of_Life",
-  plume: "8/8b/Icon_Plume_of_Death",
-  sands: "9/9f/Icon_Sands_of_Eon",
-  goblet: "3/37/Icon_Goblet_of_Eonothem",
-  circlet: "6/64/Icon_Circlet_of_Logos",
-};
+export const ARTIFACT_TYPE_ICONS: Array<{ type: (typeof ARTIFACT_TYPES)[number]; icon: string }> = [
+  { type: "flower", icon: "2/2d/Icon_Flower_of_Life" },
+  { type: "plume", icon: "8/8b/Icon_Plume_of_Death" },
+  { type: "sands", icon: "9/9f/Icon_Sands_of_Eon" },
+  { type: "goblet", icon: "3/37/Icon_Goblet_of_Eonothem" },
+  { type: "circlet", icon: "6/64/Icon_Circlet_of_Logos" },
+];
 
 export const TRANSFORMATIVE_REACTIONS = [
   "bloom",
@@ -177,7 +171,7 @@ export const BASE_REACTION_DAMAGE: Record<number, number> = {
   90: 1446.85,
 };
 
-export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"];
+export const RESONANCE_ELEMENT_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"];
 
 export const DEFAULT_WEAPON_CODE = {
   bow: 11,

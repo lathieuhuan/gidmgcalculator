@@ -5,7 +5,7 @@ import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
 
 // Component
-import { Input, Green } from "@Src/pure-components";
+import { Input, Green, Checkbox } from "@Src/pure-components";
 
 export type ModSelectOption = {
   label: string | number;
@@ -118,15 +118,7 @@ export const ModifierTemplate = ({
         }
         return <p className="text-orange-500 capitalize">{input}</p>;
       case "check":
-        return (
-          <input
-            type="checkbox"
-            className="mr-1 scale-150 lg:scale-180"
-            checked={input === 1}
-            readOnly={!mutable}
-            onChange={() => onToggleCheck?.(input, index)}
-          />
-        );
+        return <Checkbox checked={input === 1} readOnly={!mutable} onChange={() => onToggleCheck?.(input, index)} />;
       default:
         let options: ModSelectOption[] = [];
 
@@ -173,8 +165,8 @@ export const ModifierTemplate = ({
     <div>
       <div className="mb-1 flex">
         <label className="flex items-center">
-          {mutable && <input type="checkbox" className="ml-1 mr-2 scale-150" checked={checked} onChange={onToggle} />}
-          <span className="pl-1 font-semibold text-yellow-400">
+          {mutable && <Checkbox className="mr-2" checked={checked} onChange={onToggle} />}
+          <span className="font-semibold text-yellow-400">
             {mutable ? "" : "+"} {heading}
           </span>
         </label>

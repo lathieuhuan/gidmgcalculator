@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
-import type { AmplifyingReaction, CalcItem, ModInputConfig, Vision } from "@Src/types";
+import type { AmplifyingReaction, CalcItem, ModInputConfig, ElementType } from "@Src/types";
 
-import { VISION_TYPES } from "@Src/constants";
+import { ELEMENT_TYPES } from "@Src/constants";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -27,12 +27,10 @@ const hasAbsorbingAttackIn = (items: CalcItem[]) => {
 export const ElementBuffs = () => {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const { vision, weaponType, calcList } = $AppData.getCharData(char.name);
+  const { vision: elementType, weaponType, calcList } = $AppCharacter.get(char.name);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
-  const customInfusion = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].customInfusion;
-  });
+  const customInfusion = useSelector((state) => state.calculator.setupsById[state.calculator.activeId].customInfusion);
 
   const { element: infusedElement } = customInfusion;
   const isInfused = infusedElement !== "phys";
@@ -45,7 +43,11 @@ export const ElementBuffs = () => {
   const renderedElmts: JSX.Element[] = [];
 
   // ===== Reaction renderers =====
-  const renderMeltVaporize = (element: Vision, field: "reaction" | "infuse_reaction", reaction: AmplifyingReaction) => {
+  const renderMeltVaporize = (
+    element: ElementType,
+    field: "reaction" | "infuse_reaction",
+    reaction: AmplifyingReaction
+  ) => {
     const activated = elmtModCtrls[field] === reaction;
 
     return (
@@ -69,7 +71,7 @@ export const ElementBuffs = () => {
   };
 
   const renderSpreadAggravate = (
-    element: Vision,
+    element: ElementType,
     field: "reaction" | "infuse_reaction",
     reaction: "spread" | "aggravate"
   ) => {
@@ -95,8 +97,9 @@ export const ElementBuffs = () => {
     );
   };
 
-  const renderAttackReaction = (attReaction: "reaction" | "infuse_reaction", forceElement?: Vision | null) => {
-    const element = forceElement === undefined ? (attReaction === "reaction" ? vision : infusedElement) : forceElement;
+  const renderAttackReaction = (attReaction: "reaction" | "infuse_reaction", forceElement?: ElementType | null) => {
+    const element =
+      forceElement === undefined ? (attReaction === "reaction" ? elementType : infusedElement) : forceElement;
 
     switch (element) {
       case "pyro":
@@ -191,7 +194,7 @@ export const ElementBuffs = () => {
             value={absorbedValue}
             disabled={!isAbsorbing}
             onChange={(e) => {
-              const absorption = e.target.value as Vision;
+              const absorption = e.target.value as ElementType;
               setAbsorbedValue(absorption);
 
               dispatch(
@@ -264,7 +267,7 @@ export const ElementBuffs = () => {
             value={infusedValue}
             disabled={!isInfused}
             onChange={(e) => {
-              setInfusedValue(e.target.value as Vision);
+              setInfusedValue(e.target.value as ElementType);
 
               dispatch(
                 updateCalcSetup({
@@ -274,13 +277,13 @@ export const ElementBuffs = () => {
                   },
                   customInfusion: {
                     ...customInfusion,
-                    element: e.target.value as Vision,
+                    element: e.target.value as ElementType,
                   },
                 })
               );
             }}
           >
-            {VISION_TYPES.map((opt, i) => (
+            {ELEMENT_TYPES.map((opt, i) => (
               <option key={i} value={opt}>
                 {opt}
               </option>
@@ -288,7 +291,7 @@ export const ElementBuffs = () => {
           </select>
         </div>
 
-        {infusedElement !== vision && infusedElement !== "phys" ? (
+        {infusedElement !== elementType && infusedElement !== "phys" ? (
           <div className="mt-3">{renderAttackReaction("infuse_reaction")}</div>
         ) : null}
       </div>
@@ -300,7 +303,7 @@ export const ElementBuffs = () => {
       {renderedElmts.map((item, i) => {
         return (
           <Fragment key={i}>
-            {i ? <div className="mx-auto my-3 w-1/2 h-px bg-rarity-1" /> : null}
+            {i ? <div className="mx-auto my-3 w-1/2 h-px bg-dark-500" /> : null}
             {item}
           </Fragment>
         );

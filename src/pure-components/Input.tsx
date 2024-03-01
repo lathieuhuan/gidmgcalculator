@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { ForwardedRef, forwardRef, useState, useEffect } from "react";
 import type { ChangeEventHandler, InputHTMLAttributes, KeyboardEventHandler } from "react";
 import { round } from "@Src/utils";
@@ -127,10 +128,10 @@ export const Input = forwardRef(
         ref={ref}
         {...props}
         type="text"
-        className={
-          (noDefaultStyle ? "" : "rounded leading-tight bg-light-400 focus:bg-light-100 text-black ") +
-          (className || "")
-        }
+        className={clsx(
+          !noDefaultStyle && "rounded leading-tight bg-light-400 focus:bg-light-100 disabled:bg-light-800 text-black ",
+          className
+        )}
         value={value}
         onKeyDown={onKeyDown}
         onFocus={(e) => {

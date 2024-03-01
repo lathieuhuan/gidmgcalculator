@@ -3,7 +3,7 @@ import { SiTarget } from "react-icons/si";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Component
-import { Button, Input, ToggleButton } from "@Src/pure-components";
+import { Button, Input } from "@Src/pure-components";
 
 interface SetupControlProps {
   setup: NewSetupManageInfo;
@@ -38,31 +38,24 @@ export function SetupControl({
       />
       <div className="mt-4 flex justify-between">
         <div className="ml-1 flex space-x-4">
-          <Button variant="negative" icon={<FaTrashAlt />} onClick={onRemoveSetup} />
-          <Button
-            variant="positive"
-            icon={<FaCopy />}
-            disabled={!copiable || setup.status === "NEW"}
-            onClick={onCopySetup}
-          />
+          <Button icon={<FaTrashAlt />} onClick={onRemoveSetup} />
+          <Button icon={<FaCopy />} disabled={!copiable || setup.status === "NEW"} onClick={onCopySetup} />
         </div>
 
         <div className="flex space-x-3">
-          <ToggleButton
+          <Button
             className="w-8 h-8"
             size="custom"
-            variant="neutral"
-            active={isStandard}
+            variant={isStandard ? "active" : "default"}
             disabled={!choosableAsStandard}
             icon={<SiTarget className="text-2xl" />}
             onClick={onChooseStandard}
           />
 
-          <ToggleButton
+          <Button
             className="w-8 h-8"
             size="custom"
-            variant="neutral"
-            active={setup.isCompared}
+            variant={setup.isCompared ? "active" : "default"}
             icon={<FaBalanceScaleLeft className="text-xl" />}
             onClick={onToggleCompared}
           />

@@ -1,5 +1,5 @@
 import {
-  VISION_TYPES,
+  ELEMENT_TYPES,
   WEAPON_TYPES,
   ARTIFACT_TYPES,
   LEVELS,
@@ -15,15 +15,13 @@ import {
 
 export type Nation = "outland" | "mondstadt" | "liyue" | "inazuma" | "sumeru" | "natlan" | "fontaine" | "snezhnaya";
 
-export type Rarity = 1 | 2 | 3 | 4 | 5;
-
 export type Level = (typeof LEVELS)[number];
 
 export type WeaponType = (typeof WEAPON_TYPES)[number];
 
 export type ArtifactType = (typeof ARTIFACT_TYPES)[number];
 
-export type Vision = (typeof VISION_TYPES)[number];
+export type ElementType = (typeof ELEMENT_TYPES)[number];
 
 export type NormalAttack = (typeof NORMAL_ATTACKS)[number];
 
@@ -91,7 +89,7 @@ export type Artifact = {
   ID: number;
   code: number;
   type: ArtifactType;
-  rarity: Rarity;
+  rarity: number;
   level: number;
   mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];

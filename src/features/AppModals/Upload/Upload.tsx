@@ -12,6 +12,9 @@ import { addUserDatabase } from "@Store/userDatabaseSlice";
 import { ItemMultiSelect } from "@Src/components";
 import { FileUpload } from "./FileUpload";
 
+// const MAX_USER_ARTIFACTS = 3;
+// const MAX_USER_WEAPONS = 3;
+
 const UploadCore = (props: ModalControl) => {
   const dispatch = useDispatch();
   const uploadSteps = useRef<UploadStep[]>(["SELECT_OPTION"]);
@@ -55,7 +58,6 @@ const UploadCore = (props: ModalControl) => {
   const toNextStep = () => {
     if (notiId.current !== undefined) {
       notification.destroy(notiId.current);
-
       notiId.current = undefined;
     }
 
@@ -113,8 +115,8 @@ const UploadCore = (props: ModalControl) => {
         onClose={onClose("SELECT_OPTION")}
       />
       <ItemMultiSelect
+        title="Weapons"
         active={props.active && currentStep === "CHECK_WEAPONS"}
-        itemType="weapon"
         items={filteredWeapons}
         max={weapons.length - MAX_USER_WEAPONS}
         onConfirm={(data) => {
@@ -124,8 +126,8 @@ const UploadCore = (props: ModalControl) => {
         onClose={onClose("CHECK_WEAPONS")}
       />
       <ItemMultiSelect
+        title="Artifacts"
         active={props.active && currentStep === "CHECK_ARTIFACTS"}
-        itemType="artifact"
         items={filteredArtifacts}
         max={artifacts.length - MAX_USER_ARTIFACTS}
         onConfirm={(data) => {

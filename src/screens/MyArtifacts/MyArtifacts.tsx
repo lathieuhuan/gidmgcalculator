@@ -1,76 +1,53 @@
 import clsx from "clsx";
-import { useState } from "react";
-import { createSelector } from "@reduxjs/toolkit";
+import { useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 
-import type { ArtifactType, UserArtifact } from "@Src/types";
-import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
-import { useTypeFilter } from "@Src/components/inventory/hooks";
-
-// Action
-import { addUserArtifact, sortArtifacts } from "@Store/userDatabaseSlice";
-import { updateMessage } from "@Store/calculatorSlice";
+import type { UserArtifact } from "@Src/types";
+import { MAX_USER_ARTIFACTS } from "@Src/constants";
+import { useArtifactTypeSelect } from "@Src/hooks";
+import { findById, indexById } from "@Src/utils";
+import { useScreenWatcher } from "@Src/features";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-
-// Util
-import { findById, indexById } from "@Src/utils";
-import {
-  filterArtifactsBySetsAndStats,
-  initArtifactStatsFilter,
-  type StatsFilter,
-} from "@Src/components/inventory/utils";
+// Action
+import { addUserArtifact, sortArtifacts } from "@Store/userDatabaseSlice";
+import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
-import { ButtonGroup, WarehouseLayout } from "@Src/pure-components";
-import { TypeSelect, InventoryRack, PickerArtifact } from "@Src/components";
+import { ButtonGroup, Modal, WarehouseLayout } from "@Src/pure-components";
+import { InventoryRack, ArtifactForge, ArtifactFilter, ArtifactFilterState } from "@Src/components";
 import { ChosenArtifactView } from "./ChosenArtifactView";
-import { Filter } from "./Filter";
 
-import styles from "../styles.module.scss";
-
-const selectArtifactInventory = createSelector(
-  selectUserArts,
-  (_: unknown, types: ArtifactType[]) => types,
-  (_: unknown, __: unknown, codes: number[]) => codes,
-  (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
-  (userArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
-    const result = types.length ? userArts.filter((p) => types.includes(p.type)) : userArts;
-    return {
-      filteredArtifacts: filterArtifactsBySetsAndStats(result, codes, stats),
-      totalCount: userArts.length,
-    };
-  }
-);
+type ModalType = "ADD_ARTIFACT" | "FITLER" | "";
 
 export default function MyArtifacts() {
   const dispatch = useDispatch();
+  const screenWatcher = useScreenWatcher();
+  const userArts = useSelector(selectUserArts);
 
-  const [chosenID, setChosenID] = useState(0);
-  const [codes, setCodes] = useState<number[]>([]);
-  const [stats, setStats] = useState(initArtifactStatsFilter());
+  const [chosenId, setChosenId] = useState<number>();
+  const [modalType, setModalType] = useState<ModalType>("");
+  const [filter, setFilter] = useState<ArtifactFilterState>(ArtifactFilter.DEFAULT_FILTER);
 
-  const [modalType, setModalType] = useState<"PICK_ARTIFACT_TYPE" | "FITLER" | "">("");
-  const [artifactPicker, setArtifactPicker] = useState<{ active: boolean; type: ArtifactType }>({
-    active: false,
-    type: "flower",
+  const { updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(null, {
+    multiple: true,
+    onChange: (selectedTypes) => {
+      setFilter((prev) => ({
+        ...prev,
+        types: selectedTypes,
+      }));
+    },
   });
 
-  const { filteredTypes, setFilteredType, renderTypeFilter } = useTypeFilter({
-    itemType: "artifact",
-  });
-
-  const { filteredArtifacts, totalCount } = useSelector((state) =>
-    selectArtifactInventory(state, filteredTypes as ArtifactType[], codes, stats)
-  );
-  const chosenArtifact = findById(filteredArtifacts, chosenID);
+  const filteredArtifacts = useMemo(() => ArtifactFilter.filterArtifacts(userArts, filter), [userArts, filter]);
+  const chosenArtifact = useMemo(() => findById(userArts, chosenId), [filteredArtifacts, chosenId]);
 
   const closeModal = () => setModalType("");
 
   const isMaxArtifactsReached = () => {
-    if (totalCount + 1 > MAX_USER_ARTIFACTS) {
+    if (userArts.length >= MAX_USER_ARTIFACTS) {
       dispatch(
         updateMessage({
           type: "error",
@@ -83,7 +60,7 @@ export default function MyArtifacts() {
 
   const onClickAddArtifact = () => {
     if (!isMaxArtifactsReached()) {
-      setModalType("PICK_ARTIFACT_TYPE");
+      setModalType("ADD_ARTIFACT");
     }
   };
 
@@ -91,130 +68,112 @@ export default function MyArtifacts() {
     dispatch(sortArtifacts());
   };
 
-  const onRemoveArtifact = () => {
-    const removedIndex = indexById(filteredArtifacts, chosenID);
+  const onRemoveArtifact = (artifact: UserArtifact) => {
+    const removedIndex = indexById(filteredArtifacts, artifact.ID);
 
     if (removedIndex !== -1) {
       if (filteredArtifacts.length > 1) {
         const move = removedIndex === filteredArtifacts.length - 1 ? -1 : 1;
 
-        setChosenID(filteredArtifacts[removedIndex + move].ID);
+        setChosenId(filteredArtifacts[removedIndex + move]?.ID);
       } else {
-        setChosenID(0);
+        setChosenId(undefined);
       }
     }
   };
 
   const isFiltered =
-    filteredTypes.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");
+    filter.types.length ||
+    filter.codes.length ||
+    filter.stats.main !== "All" ||
+    filter.stats.subs.some((s) => s !== "All");
+
+  const actions = (
+    <div className="flex items-center space-x-4">
+      <ButtonGroup
+        buttons={[
+          { text: "Add", onClick: onClickAddArtifact },
+          { text: "Sort", onClick: onClickSortArtifact },
+        ]}
+      />
+
+      {screenWatcher.isFromSize("md") ? renderArtifactTypeSelect() : null}
+
+      <div className="flex cursor-pointer">
+        <button
+          className={clsx(
+            "pl-4 py-1 text-black glow-on-hover",
+            isFiltered ? "pr-2 bg-green-200 rounded-l-2xl" : "pr-4 bg-light-600 rounded-2xl"
+          )}
+          onClick={() => setModalType("FITLER")}
+        >
+          <p className="font-bold">Filter</p>
+        </button>
+
+        {isFiltered && (
+          <div
+            className="pl-2 pr-3 rounded-r-2xl text-black bg-light-400 flex-center glow-on-hover"
+            onClick={() => {
+              const { DEFAULT_FILTER } = ArtifactFilter;
+              setFilter(DEFAULT_FILTER);
+              updateArtifactTypes(DEFAULT_FILTER.types);
+            }}
+          >
+            <FaTimes />
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   return (
-    <WarehouseLayout.Wrapper>
-      <WarehouseLayout>
-        <WarehouseLayout.ButtonBar>
-          <ButtonGroup
-            className="mr-4"
-            space="space-x-4"
-            buttons={[
-              {
-                text: "Add",
-                variant: "positive",
-                onClick: onClickAddArtifact,
-              },
-              {
-                text: "Sort",
-                onClick: onClickSortArtifact,
-              },
-            ]}
-          />
+    <WarehouseLayout actions={actions}>
+      <InventoryRack
+        data={filteredArtifacts}
+        emptyText="No artifacts found"
+        itemCls="max-w-1/3 basis-1/3 xm:max-w-1/4 xm:basis-1/4 lg:max-w-1/6 lg:basis-1/6 xl:max-w-1/8 xl:basis-1/8"
+        chosenID={chosenId}
+        onChangeItem={(artifact) => setChosenId(artifact?.ID)}
+      />
 
-          {window.innerWidth >= 600 && renderTypeFilter()}
+      <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
 
-          <div className="flex cursor-pointer">
-            <button
-              className={clsx(
-                "pl-4 py-1 bg-yellow-400 glow-on-hover",
-                isFiltered ? "pr-2 rounded-l-2xl" : "pr-4 rounded-2xl"
-              )}
-              onClick={() => setModalType("FITLER")}
-            >
-              <p className="text-black font-bold">Filter</p>
-            </button>
-
-            {isFiltered && (
-              <div
-                className="pl-2 pr-3 rounded-r-2xl bg-red-600 flex-center glow-on-hover"
-                onClick={() => {
-                  setFilteredType([]);
-                  setCodes([]);
-                  setStats(initArtifactStatsFilter());
-                }}
-              >
-                <FaTimes />
-              </div>
-            )}
-          </div>
-        </WarehouseLayout.ButtonBar>
-
-        <WarehouseLayout.Body className="hide-scrollbar">
-          <InventoryRack
-            listClassName={styles.list}
-            itemClassName={styles.item}
-            chosenID={chosenID || 0}
-            itemType="artifact"
-            items={filteredArtifacts}
-            onClickItem={(item) => setChosenID(item.ID)}
-          />
-          <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
-        </WarehouseLayout.Body>
-      </WarehouseLayout>
-
-      <Filter
+      <Modal
         active={modalType === "FITLER"}
-        types={filteredTypes as ArtifactType[]}
-        codes={codes}
-        stats={stats}
-        setTypes={setFilteredType}
-        setCodes={setCodes}
-        setStats={setStats}
+        preset="large"
+        title="Artifact Filter"
+        bodyCls="grow hide-scrollbar"
         onClose={closeModal}
-      />
+      >
+        <ArtifactFilter
+          artifacts={userArts}
+          initialFilter={filter}
+          onDone={(newFilter) => {
+            setFilter(newFilter);
+            updateArtifactTypes(newFilter.types);
+          }}
+          onClose={closeModal}
+        />
+      </Modal>
 
-      <TypeSelect
-        active={modalType === "PICK_ARTIFACT_TYPE"}
-        options={ARTIFACT_ICONS}
-        onSelect={(artifactType) => {
-          setArtifactPicker({
-            active: true,
-            type: artifactType as ArtifactType,
-          });
-          closeModal();
-        }}
-        onClose={closeModal}
-      />
+      <ArtifactForge
+        active={modalType === "ADD_ARTIFACT"}
+        hasMultipleMode
+        hasConfigStep
+        onForgeArtifact={(artifact) => {
+          if (isMaxArtifactsReached()) return;
 
-      <PickerArtifact
-        active={artifactPicker.active}
-        needMassAdd
-        artifactType={artifactPicker.type}
-        onPickArtifact={(item) => {
-          if (isMaxArtifactsReached()) {
-            return {
-              isValid: false,
-            };
-          }
-
-          const newArtifact: UserArtifact = {
+          const newUserArtifact: UserArtifact = {
+            ...artifact,
             ID: Date.now(),
-            ...item,
             owner: null,
           };
 
-          dispatch(addUserArtifact(newArtifact));
-          setChosenID(newArtifact.ID);
+          dispatch(addUserArtifact(newUserArtifact));
+          setChosenId(newUserArtifact.ID);
         }}
-        onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
+        onClose={closeModal}
       />
-    </WarehouseLayout.Wrapper>
+    </WarehouseLayout>
   );
 }

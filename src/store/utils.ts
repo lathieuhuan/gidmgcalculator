@@ -12,19 +12,19 @@ import { findById, userItemToCalcItem } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { createArtifactBuffCtrls, createCharInfo, createWeapon, createWeaponBuffCtrls } from "@Src/utils/creators";
 
-export type PickedChar = Partial<UserCharacter> & {
+export type CharacterForInit = Partial<UserCharacter> & {
   name: string;
 };
 
 type ParseUserCharacterArgs = {
-  pickedChar: PickedChar;
+  character: CharacterForInit;
   userWps: UserWeapon[];
   userArts: UserArtifact[];
   weaponType: WeaponType;
   seedID: number;
 };
 export function parseUserCharacter({
-  pickedChar: { name, weaponID, artifactIDs = [null, null, null, null, null], ...info },
+  character: { name, weaponID, artifactIDs = [null, null, null, null, null], ...info },
   userWps,
   userArts,
   weaponType,

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { LoadingIcon, Modal } from "@Src/pure-components";
+import { LoadingMask } from "@Src/pure-components";
 import { Introduction } from "./Introduction";
 import { Guides } from "./Guides";
 import { Settings } from "./Settings";
@@ -12,7 +12,7 @@ import { Download } from "./DownLoad";
 import { Upload } from "./Upload";
 import { Donate } from "./Donate";
 
-const LoadingMask = () => {
+const AppLoadingMask = () => {
   const loading = useSelector((state) => state.ui.loading);
   let mask = document.getElementById("app-mask");
 
@@ -21,13 +21,7 @@ const LoadingMask = () => {
     mask.id = "app-mask";
     document.body.appendChild(mask);
   }
-
-  return createPortal(
-    <Modal active={loading} closeOnMaskClick={false} onClose={() => {}}>
-      <LoadingIcon size="large" />
-    </Modal>,
-    mask
-  );
+  return createPortal(<LoadingMask active={loading} />, mask);
 };
 
 export const AppModals = () => {
@@ -44,7 +38,7 @@ export const AppModals = () => {
       <Download active={appModalType === "DOWNLOAD"} onClose={closeModal} />
       <Upload active={appModalType === "UPLOAD"} onClose={closeModal} />
       <Donate active={appModalType === "DONATE"} onClose={closeModal} />
-      <LoadingMask />
+      <AppLoadingMask />
     </>
   );
 };

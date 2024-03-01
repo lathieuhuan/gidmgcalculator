@@ -3,15 +3,15 @@ import { FaInfo } from "react-icons/fa";
 
 // Type
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
-import type { DetailsType } from "./types";
+import type { GearsDetailType } from "./types";
 
-import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { Button, CloseButton } from "@Src/pure-components";
-import { ItemThumb } from "@Src/components";
+import { Button, CloseButton, ItemCase } from "@Src/pure-components";
+import { ItemThumbnail } from "@Src/components";
 
 const bonusStyles = (active: boolean) => {
   return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-dark-700"];
@@ -21,8 +21,8 @@ interface GearsOverviewProps {
   weapon: UserWeapon;
   artifacts: UserArtifacts;
   setBonuses: ArtifactSetBonus[];
-  activeDetails: DetailsType;
-  toggleDetails: (newDetailsType: DetailsType) => void;
+  activeDetails: GearsDetailType;
+  toggleDetails: (newDetailsType: GearsDetailType) => void;
   onClickEmptyArtIcon: (artifactIndex: number) => void;
 }
 export function GearsOverview({
@@ -36,7 +36,7 @@ export function GearsOverview({
   //
   const renderWeaponThumb = () => {
     const { type, code, ...rest } = weapon;
-    const dataWeapon = $AppData.getWeaponData(weapon.code);
+    const dataWeapon = $AppData.getWeapon(weapon.code);
 
     if (!dataWeapon) {
       return null;
@@ -45,12 +45,15 @@ export function GearsOverview({
 
     return (
       <div className="p-1 w-1/3">
-        <div onClick={() => toggleDetails("weapon")}>
-          <ItemThumb
-            item={{ beta, icon, rarity, ...rest, owner: undefined }}
-            chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
-          />
-        </div>
+        <ItemCase chosen={activeDetails === "weapon"} onClick={() => toggleDetails("weapon")}>
+          {(className, imgCls) => (
+            <ItemThumbnail
+              className={className}
+              imgCls={imgCls}
+              item={{ beta, icon, rarity, ...rest, owner: undefined }}
+            />
+          )}
+        </ItemCase>
       </div>
     );
   };
@@ -63,17 +66,19 @@ export function GearsOverview({
         {artifacts.map((artifact, i) =>
           artifact ? (
             <div key={i} className="p-1 w-1/3">
-              <div onClick={() => toggleDetails(i)}>
-                <ItemThumb
-                  item={{
-                    rarity: artifact.rarity,
-                    level: artifact.level,
-                    icon: $AppData.getArtifactData(artifact)?.icon || "",
-                    setupIDs: artifact.setupIDs,
-                  }}
-                  chosen={window.innerWidth < 686 ? false : activeDetails === i}
-                />
-              </div>
+              <ItemCase chosen={activeDetails === i} onClick={() => toggleDetails(i)}>
+                {(className) => (
+                  <ItemThumbnail
+                    className={className}
+                    item={{
+                      rarity: artifact.rarity,
+                      level: artifact.level,
+                      icon: $AppData.getArtifact(artifact)?.icon || "",
+                      setupIDs: artifact.setupIDs,
+                    }}
+                  />
+                )}
+              </ItemCase>
             </div>
           ) : (
             <div key={i} className="p-1 w-1/3" style={{ minHeight: 124 }}>
@@ -81,7 +86,12 @@ export function GearsOverview({
                 className="p-4 w-full h-full flex-center rounded bg-dark-500 glow-on-hover"
                 onClick={() => onClickEmptyArtIcon(i)}
               >
-                <img className="w-full" src={getImgSrc(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])} alt="" draggable={false} />
+                <img
+                  className="w-full"
+                  src={getImgSrc(ARTIFACT_TYPE_ICONS.find((item) => item.type === ARTIFACT_TYPES[i])?.icon)}
+                  alt=""
+                  draggable={false}
+                />
               </button>
             </div>
           )
@@ -100,11 +110,11 @@ export function GearsOverview({
             {setBonuses.length ? (
               <>
                 <p className="text-green-300 font-medium">
-                  {$AppData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
+                  {$AppData.getArtifactSet(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
                   <p className="mt-1 text-green-300 font-medium">
-                    {$AppData.getArtifactSetData(setBonuses[1].code)?.name} (2)
+                    {$AppData.getArtifactSet(setBonuses[1].code)?.name} (2)
                   </p>
                 ) : null}
               </>

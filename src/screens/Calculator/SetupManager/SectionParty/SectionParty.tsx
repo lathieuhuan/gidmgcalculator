@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaSyncAlt, FaUserSlash } from "react-icons/fa";
 
 import { findById } from "@Src/utils";
-import { $AppData } from "@Src/services";
+import { $AppCharacter } from "@Src/services";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -18,8 +18,10 @@ import {
 
 // Component
 import { Image, CollapseSpace } from "@Src/pure-components";
-import { TeammateItems, PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/components";
+import { TeammateItems, Tavern, WeaponForge, ArtifactForge } from "@Src/components";
 import { CopySelect } from "./CopySelect";
+
+import styles from "../styles.module.scss";
 
 interface ModalState {
   type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";
@@ -33,7 +35,7 @@ export default function SectionParty() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
 
-  const charData = $AppData.getCharData(char.name);
+  const appChar = $AppCharacter.get(char.name);
 
   const [modal, setModal] = useState<ModalState>({
     type: "",
@@ -41,7 +43,7 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
-  const partyData = useMemo(() => $AppData.getPartyData(party), [party]);
+  const partyData = useMemo(() => $AppCharacter.getPartyData(party), [party]);
 
   const isCombined = findById(setupManageInfos, activeId)?.type === "combined";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];
@@ -60,7 +62,7 @@ export default function SectionParty() {
     dispatch(
       updateMessage({
         type: "info",
-        content: "This setup is marked as part of a Complex setup, thus teammates cannot be changed",
+        content: "This setup is marked as part of a Complex setup, thus teammates cannot be changed.",
       })
     );
   };
@@ -85,7 +87,7 @@ export default function SectionParty() {
   };
 
   return (
-    <div className="pb-3 border-2 border-lesser rounded-xl bg-dark-700">
+    <div className={"pb-3 bg-dark-700 " + styles.section}>
       {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
       <div className="flex">
@@ -120,13 +122,13 @@ export default function SectionParty() {
                 )}
               >
                 <button
-                  className={"w-10 h-10 text-red-400 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
+                  className={"w-10 h-10 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickRemoveTeammate}
                 >
                   <FaUserSlash />
                 </button>
                 <button
-                  className={"w-10 h-10 text-yellow-400 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
+                  className={"w-10 h-10 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickChangeTeammate(teammateIndex)}
                 >
                   <FaSyncAlt />
@@ -144,7 +146,7 @@ export default function SectionParty() {
           <div className="bg-dark-700 pt-2">
             <TeammateItems
               mutable
-              className="bg-dark-900 pt-10 px-2 pb-2"
+              className="bg-dark-900 pt-12 px-2 pb-3"
               teammate={detailTeammate}
               onClickWeapon={() => setModal({ type: "WEAPON", teammateIndex: detailSlot })}
               onChangeWeaponRefinement={(refi: number) => {
@@ -173,17 +175,22 @@ export default function SectionParty() {
         )}
       </CollapseSpace>
 
-      <PickerCharacter
+      <Tavern
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="app"
-        filter={({ name }) => {
-          return name !== charData.name && party.every((tm) => name !== tm?.name);
-        }}
-        onPickCharacter={({ name, vision, weaponType }) => {
+        filter={(character) => character.name !== appChar.name && party.every((tm) => tm?.name !== character.name)}
+        onSelectCharacter={(character) => {
           const { teammateIndex } = modal;
 
           if (teammateIndex !== null) {
-            dispatch(addTeammate({ name, vision, weaponType, teammateIndex }));
+            dispatch(
+              addTeammate({
+                name: character.name,
+                elementType: character.vision,
+                weaponType: character.weaponType,
+                teammateIndex,
+              })
+            );
             setDetailSlot(teammateIndex);
           }
         }}
@@ -191,39 +198,37 @@ export default function SectionParty() {
       />
 
       {detailSlot !== null && (
-        <PickerWeapon
+        <WeaponForge
           active={modal.type === "WEAPON" && modal.teammateIndex !== null}
-          weaponType={partyData[detailSlot]?.weaponType || "sword"}
-          onPickWeapon={({ code }) => {
-            if (detailSlot !== null) {
-              dispatch(
-                updateTeammateWeapon({
-                  teammateIndex: detailSlot,
-                  code,
-                })
-              );
-            }
+          forcedType={partyData[detailSlot]?.weaponType}
+          onForgeWeapon={(weapon) => {
+            dispatch(
+              updateTeammateWeapon({
+                teammateIndex: detailSlot,
+                code: weapon.code,
+              })
+            );
           }}
           onClose={closeModal}
         />
       )}
 
-      <PickerArtifact
-        active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
-        artifactType="flower"
-        forFeature="TEAMMATE_MODIFIERS"
-        onPickArtifact={({ code }) => {
-          if (detailSlot !== null) {
+      {detailSlot !== null && (
+        <ArtifactForge
+          active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
+          forcedType="flower"
+          forFeature="TEAMMATE_MODIFIERS"
+          onForgeArtifact={(artifact) => {
             dispatch(
               updateTeammateArtifact({
                 teammateIndex: detailSlot,
-                code,
+                code: artifact.code,
               })
             );
-          }
-        }}
-        onClose={closeModal}
-      />
+          }}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }

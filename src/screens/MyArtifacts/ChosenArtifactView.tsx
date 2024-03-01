@@ -13,17 +13,17 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Component
-import { ButtonGroup, ConfirmModal } from "@Src/pure-components";
-import { ArtifactCard, ItemRemoveConfirm, OwnerLabel, PickerCharacter } from "@Src/components";
+import { ConfirmModal } from "@Src/pure-components";
+import { ArtifactCard, Tavern } from "@Src/components";
 
 interface ChosenArtifactViewProps {
   artifact?: UserArtifact;
-  onRemoveArtifact?: () => void;
+  onRemoveArtifact?: (artifact: UserArtifact) => void;
 }
 export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifactViewProps) => {
   const dispatch = useDispatch();
   const [modalType, setModalType] = useState<"REMOVE_ARTIFACT" | "EQUIP_CHARACTER" | "">("");
-  const [newOwner, setNewOwner] = useState<string | null>(null);
+  const [newOwner, setNewOwner] = useState("");
 
   const closeModal = () => setModalType("");
 
@@ -35,93 +35,85 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
 
   return (
     <Fragment>
-      <div>
-        <div className="p-4 rounded-lg bg-dark-900 flex flex-col">
-          <div className="w-75 hide-scrollbar" style={{ height: "26rem" }}>
-            {artifact ? (
-              <ArtifactCard
-                artifact={artifact}
-                mutable
-                onEnhance={(level) => {
-                  dispatch(updateUserArtifact({ ID: artifact.ID, level }));
-                }}
-                onChangeMainStatType={(type) => {
-                  dispatch(
-                    updateUserArtifact({
-                      ID: artifact.ID,
-                      mainStatType: type as AttributeStat,
-                    })
-                  );
-                }}
-                onChangeSubStat={(subStatIndex, changes) => {
-                  dispatch(
-                    updateUserArtifactSubStat({
-                      ID: artifact.ID,
-                      subStatIndex,
-                      ...changes,
-                    })
-                  );
-                }}
-              />
-            ) : null}
-          </div>
+      <ArtifactCard
+        wrapperCls="w-76 shrink-0"
+        artifact={artifact}
+        mutable
+        withOwnerLabel
+        onEnhance={(level, artifact) => {
+          dispatch(updateUserArtifact({ ID: artifact.ID, level }));
+        }}
+        onChangeMainStatType={(type, artifact) => {
+          dispatch(
+            updateUserArtifact({
+              ID: artifact.ID,
+              mainStatType: type as AttributeStat,
+            })
+          );
+        }}
+        onChangeSubStat={(subStatIndex, changes, artifact) => {
+          dispatch(
+            updateUserArtifactSubStat({
+              ID: artifact.ID,
+              subStatIndex,
+              ...changes,
+            })
+          );
+        }}
+        actions={[
+          { text: "Remove", onClick: () => setModalType("REMOVE_ARTIFACT") },
+          { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },
+        ]}
+      />
 
-          {artifact ? (
-            <ButtonGroup
-              className="mt-4"
-              buttons={[
-                {
-                  text: "Remove",
-                  onClick: () => setModalType("REMOVE_ARTIFACT"),
-                },
-                {
-                  text: "Equip",
-                  onClick: () => setModalType("EQUIP_CHARACTER"),
-                },
-              ]}
-            />
-          ) : null}
-        </div>
-
-        <OwnerLabel key={artifact?.ID} className="mt-4" item={artifact} />
-      </div>
-
-      <PickerCharacter
+      <Tavern
         active={modalType === "EQUIP_CHARACTER" && !!artifact}
         sourceType="user"
-        filter={({ name }) => name !== artifact?.owner}
-        onPickCharacter={({ name }) => {
-          artifact?.owner ? setNewOwner(name) : swapOwner(name);
+        filter={(character) => character.name !== artifact?.owner}
+        onSelectCharacter={(character) => {
+          artifact?.owner ? setNewOwner(character.name) : swapOwner(character.name);
         }}
         onClose={closeModal}
       />
 
-      {artifact && (
+      {artifact ? (
         <ConfirmModal
-          active={!!newOwner}
+          active={newOwner !== ""}
           message={
             <>
               <b>{artifact.owner}</b> is currently using "
-              <b>{$AppData.getArtifactData(artifact)?.name || "<name missing>"}</b>
+              <b>{$AppData.getArtifact(artifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }
-          buttons={[undefined, { onClick: () => swapOwner(newOwner!) }]}
-          onClose={() => setNewOwner(null)}
+          focusConfirm
+          onConfirm={() => swapOwner(newOwner)}
+          onClose={() => setNewOwner("")}
         />
-      )}
+      ) : null}
 
-      {artifact && (
-        <ItemRemoveConfirm
+      {artifact ? (
+        <ConfirmModal
           active={modalType === "REMOVE_ARTIFACT"}
-          item={artifact}
+          danger
+          message={
+            <>
+              Remove "<b>{$AppData.getArtifactSet(artifact.code)?.name}</b>" ({artifact.type})?{" "}
+              {artifact.owner ? (
+                <>
+                  It is currently used by <b>{artifact.owner}</b>.
+                </>
+              ) : null}
+            </>
+          }
+          focusConfirm
           onConfirm={() => {
             dispatch(removeArtifact(artifact));
-            onRemoveArtifact?.();
+            onRemoveArtifact?.(artifact);
           }}
           onClose={closeModal}
         />
-      )}
+      ) : null}
     </Fragment>
   );
 };

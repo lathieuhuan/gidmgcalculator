@@ -10,16 +10,16 @@ import type {
   UserCharacter,
   UserSetup,
   UserWeapon,
-  Vision,
+  ElementType,
 } from "@Src/types";
 
-import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
-import { $AppData } from "@Src/services";
+import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, ELEMENT_TYPES } from "@Src/constants";
+import { $AppData, $AppCharacter } from "@Src/services";
 import { mapVerson3_0 } from "./constants";
 
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
-import { createArtDebuffCtrls, createWeapon } from "../creators";
+import { createArtifactDebuffCtrls, createWeapon } from "../creators";
 
 type ConvertUserDataArgs = {
   version: number;
@@ -129,7 +129,7 @@ const convertCharacter = (
 
   if (!weaponID || !findById(weapons, weaponID)) {
     finalWeaponID = seedID++;
-    const { weaponType = "sword" } = $AppData.getCharData(char.name) || {};
+    const { weaponType = "sword" } = $AppCharacter.get(char.name) || {};
 
     xtraWeapon = {
       ID: finalWeaponID,
@@ -183,7 +183,7 @@ const cleanModifiers = (mods: OldModifierCtrl[], refs: CleanModifiersRef[]): Mod
         if (type === "select" && options) {
           inputIndex = options.indexOf(input);
         } else if (type === "anemoable" || type === "dendroable") {
-          inputIndex = VISION_TYPES.indexOf(input.toLowerCase() as Vision);
+          inputIndex = ELEMENT_TYPES.indexOf(input.toLowerCase() as ElementType);
         }
 
         if (inputIndex !== -1) {
@@ -216,7 +216,7 @@ const convertSetup = (
   seedID: number
 ): ConvertSetupResult => {
   const { weapon, art } = setup;
-  const { buffs = [], debuffs = [] } = $AppData.getCharData(setup.char.name) || {};
+  const { buffs = [], debuffs = [] } = $AppCharacter.get(setup.char.name) || {};
   let weaponID: number;
   let xtraWeapon: UserWeapon | undefined;
   const artifactIDs: (number | null)[] = [];
@@ -225,10 +225,10 @@ const convertSetup = (
 
   const resonances =
     setup.elmtMCs.resonance?.reduce((result: Resonance[], { name, ...rest }: any) => {
-      const vision = mapVerson3_0[name];
+      const elementType = mapVerson3_0[name];
 
-      if (vision) {
-        result.push({ vision, ...rest });
+      if (elementType) {
+        result.push({ vision: elementType, ...rest });
       }
 
       return result;
@@ -242,7 +242,7 @@ const convertSetup = (
 
   if (weaponInfo.ID && existedWeapon) {
     weaponID = weaponInfo.ID;
-    dataWeapon = $AppData.getWeaponData(existedWeapon.code);
+    dataWeapon = $AppData.getWeapon(existedWeapon.code);
 
     if (!existedWeapon.setupIDs?.includes(setup.ID)) {
       existedWeapon.setupIDs = (existedWeapon.setupIDs || []).concat(setup.ID);
@@ -256,7 +256,7 @@ const convertSetup = (
       owner: null,
       setupIDs: [setup.ID],
     };
-    dataWeapon = $AppData.getWeaponData(xtraWeapon.code);
+    dataWeapon = $AppData.getWeapon(xtraWeapon.code);
   }
 
   // ARTIFACTS
@@ -294,14 +294,14 @@ const convertSetup = (
     }
   }
   const { code: setBonusesCode = 0 } = getArtifactSetBonuses(finalArtifacts)[0] || {};
-  const { buffs: artifactBuffs = [] } = $AppData.getArtifactSetData(setBonusesCode) || {};
+  const { buffs: artifactBuffs = [] } = $AppData.getArtifactSet(setBonusesCode) || {};
 
   // PARTY
   for (const teammate of setup.party) {
     if (!teammate) {
       party.push(null);
     } else {
-      const dataTeammate = $AppData.getCharData(teammate);
+      const dataTeammate = $AppCharacter.get(teammate);
 
       if (!dataTeammate) {
         party.push(null);
@@ -354,13 +354,13 @@ const convertSetup = (
         reaction: null,
         resonances,
         superconduct: !!setup.elmtMCs?.superconduct,
-        absorption: null
+        absorption: null,
       },
       selfBuffCtrls: cleanModifiers(setup.selfMCs?.BCs || [], buffs),
       selfDebuffCtrls: cleanModifiers(setup.selfMCs?.DCs || [], debuffs),
       wpBuffCtrls: cleanModifiers(wpBuffCtrls, dataWeapon?.buffs || []),
       artBuffCtrls: cleanModifiers(setup.art?.BCs || [], artifactBuffs),
-      artDebuffCtrls: createArtDebuffCtrls(),
+      artDebuffCtrls: createArtifactDebuffCtrls(),
       customBuffCtrls: [],
       customDebuffCtrls: [],
 

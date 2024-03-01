@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { BiImport } from "react-icons/bi";
 
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
@@ -17,7 +17,7 @@ import { updateSetups } from "@Store/calculatorSlice";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { Button, Popover, CollapseAndMount } from "@Src/pure-components";
+import { Button, Popover, CollapseAndMount, CloseButton } from "@Src/pure-components";
 import { SetupImporter } from "@Src/components";
 import { SetupControl } from "./SetupControl";
 
@@ -147,12 +147,11 @@ function HighManagerCore() {
 
   return (
     <div className="p-4 h-full flex flex-col">
-      <button
-        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-red-400"
+      <CloseButton
+        className="absolute top-2 right-2"
+        boneOnly
         onClick={() => dispatch(updateUI({ highManagerActive: false }))}
-      >
-        <FaTimes />
-      </button>
+      />
 
       <p className="my-2 text-1.5xl text-center text-orange-500 font-bold">Setups Management</p>
 
@@ -185,15 +184,14 @@ function HighManagerCore() {
             <div className="mt-4 space-y-4">
               <Button
                 variant="custom"
-                className="w-full bg-blue-400 text-black"
+                className="w-full bg-mint-600 text-black"
                 icon={<FaPlus />}
                 onClick={addNewSetup}
               >
                 Add
               </Button>
               <Button
-                variant="custom"
-                className="w-full bg-blue-400 text-black"
+                className="w-full text-black"
                 icon={<BiImport className="text-xl" />}
                 onClick={() => setImportManageOn(true)}
               >
@@ -232,7 +230,7 @@ export default function HighManager({ height }: HighManagerProps) {
       active={highManagerActive}
       className={clsx("absolute bottom-0 left-0 bg-dark-500 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
-      duration={200}
+      moveDuration={200}
     >
       <HighManagerCore />
     </CollapseAndMount>

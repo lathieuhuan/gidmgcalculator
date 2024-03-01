@@ -1,4 +1,4 @@
 export * from "./InventoryRack";
-export * from "./InventoryArtifact";
-export * from "./InventoryWeapon";
+export * from "./ArtifactInventory";
+export * from "./WeaponInventory";
 export * from "./ItemMultiSelect";

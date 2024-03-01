@@ -1,25 +1,24 @@
 import clsx, { ClassValue } from "clsx";
-import { ButtonHTMLAttributes, ReactNode } from "react";
-import { FaTimes } from "react-icons/fa";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type ButtonVariant = "default" | "positive" | "negative" | "neutral" | "custom";
+type ButtonVariant = "default" | "positive" | "negative" | "active" | "custom";
 
 type ButtonShape = "rounded" | "square";
 
-type ButtonSize = "small" | "medium" | "custom";
+type ButtonSize = "small" | "medium" | "large" | "custom";
 
 const colorCls: Partial<Record<ButtonVariant, string>> = {
-  default: "bg-light-400 text-black",
+  default: "bg-light-600 text-black",
   positive: "bg-yellow-400 text-black",
-  negative: "bg-red-600 text-light-400",
-  neutral: "bg-green-300 text-black",
+  negative: "bg-red-600 text-light-100",
+  active: "bg-green-200 text-black",
 };
 
 const boneColorCls: Partial<Record<ButtonVariant, string>> = {
   default: "text-light-400",
   positive: "text-yellow-400",
   negative: "text-red-600",
-  neutral: "text-green-300",
+  active: "text-green-200",
 };
 
 const shapeCls: Record<ButtonShape, string> = {
@@ -30,20 +29,26 @@ const shapeCls: Record<ButtonShape, string> = {
 const sizeCls: Partial<Record<ButtonSize, string>> = {
   small: "px-2 py-0.5",
   medium: "px-3 py-1.5",
+  // large: "px-4 ",
 };
 
 const iconSizeCls: Partial<Record<ButtonSize, string>> = {
-  small: "p-[5px]",
-  medium: "p-2",
+  small: "w-6 h-6 text-sm",
+  medium: "w-8 h-8 text-base",
+  large: "w-9 h-9 text-xl",
 };
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
   className?: ClassValue;
+  /** Default to 'default' */
   variant?: ButtonVariant;
+  /** Default to 'rounded' */
   shape?: ButtonShape;
+  /** Default to 'medium' */
   size?: ButtonSize;
   boneOnly?: boolean;
   icon?: ReactNode;
+  /** Default to 'start' */
   iconPosition?: "start" | "end";
 }
 export const Button = ({
@@ -58,41 +63,67 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   const classes = [
-    "text-sm font-bold flex-center",
-    iconPosition === "end" && "flex-row-reverse",
-    boneOnly ? boneColorCls[variant] : colorCls[variant],
+    "flex-center font-bold whitespace-nowrap",
+    boneOnly ? boneColorCls[variant] : [colorCls[variant], "shadow-common"],
     shapeCls[shape],
     rest.disabled ? "opacity-50" : "glow-on-hover",
     className,
-  ].concat(children ? [size === "small" ? "space-x-1" : "space-x-1.5", sizeCls[size]] : iconSizeCls[size]);
+  ];
+
+  if (icon && !children) {
+    return (
+      <button type="button" className={clsx("shrink-0", classes, iconSizeCls[size])} {...rest}>
+        {icon}
+      </button>
+    );
+  }
 
   return (
-    <button type="button" className={clsx(classes)} {...rest}>
-      {icon ? <span className={clsx("shrink-0", !children && size === "medium" && "text-base")}>{icon}</span> : null}
+    <button
+      type="button"
+      className={clsx(
+        "text-sm",
+        classes,
+        iconPosition === "end" && "flex-row-reverse",
+        size === "small" ? "space-x-1" : "space-x-1.5",
+        sizeCls[size]
+      )}
+      {...rest}
+    >
+      {icon ? <span className="shrink-0">{icon}</span> : null}
       {children ? <span>{children}</span> : null}
     </button>
   );
 };
 
-interface ToggleButtonProps extends Omit<ButtonProps, "boneOnly"> {
-  active?: boolean;
-  variant?: Exclude<ButtonVariant, "custom">;
+interface CloseIconProps {
+  className?: string;
 }
-export const ToggleButton = ({ active, variant = "default", className, ...rest }: ToggleButtonProps) => {
-  return <Button {...rest} variant="custom" className={[className, active && colorCls[variant]]} />;
+const CloseIcon = (props: CloseIconProps) => {
+  return (
+    <svg {...props} viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
+      <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+    </svg>
+  );
 };
 
-export interface CloseButtonProps
-  extends Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled"> {
-  //
-}
-export const CloseButton = ({ boneOnly, className, ...rest }: CloseButtonProps) => {
+const closeIconSizeCls: Partial<Record<ButtonSize, string>> = {
+  small: "text-base",
+  medium: "text-1.5xl",
+  large: "text-2xl",
+};
+
+export const CloseButton = ({
+  boneOnly,
+  size = "medium",
+  ...rest
+}: Pick<ButtonProps, "className" | "boneOnly" | "size" | "onClick" | "disabled">) => {
   return (
     <Button
       variant={boneOnly ? "default" : "negative"}
-      icon={<FaTimes />}
+      icon={<CloseIcon className={closeIconSizeCls[size]} />}
       boneOnly={boneOnly}
-      className={clsx(className, boneOnly && "hover:text-red-600")}
+      size={size}
       {...rest}
     />
   );
