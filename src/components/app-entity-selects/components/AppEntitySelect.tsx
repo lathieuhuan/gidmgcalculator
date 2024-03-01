@@ -55,7 +55,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   const shouldCheckKeyword = keyword && keyword.length >= 1;
   const lowerKeyword = keyword?.toLowerCase() ?? "";
 
-  const { observedAreaRef, visibleItems, getObservedItemProps, queryAllObservedItems } = useIntersectionObserver();
+  const { observedAreaRef, visibleMap, itemUtils } = useIntersectionObserver();
 
   useLayoutEffect(() => {
     const handleEnter = (e: KeyboardEvent) => {
@@ -65,12 +65,10 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
         document.activeElement === inputRef.current &&
         inputRef.current.value.length
       ) {
-        const itemElmts = queryAllObservedItems() || [];
-
-        for (const elmt of itemElmts) {
-          if (window.getComputedStyle(elmt).display !== "none") {
-            const code = elmt.getAttribute("data-id");
-            const foundItem = code ? data.find((item) => item.code === +code) : undefined;
+        for (const item of itemUtils.queryAll()) {
+          if (item.isVisible()) {
+            const code = item.getId();
+            const foundItem = code ? data.find((entity) => entity.code === +code) : undefined;
 
             if (foundItem) selectOption(foundItem);
             return;
@@ -88,25 +86,19 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
 
   useLayoutEffect(() => {
     // check if no item visible
-    const itemElmts = queryAllObservedItems() || [];
-    let visibleElmts: Element[] = [];
+    const visibleItems = itemUtils.queryAll().filter((item) => item.isVisible());
 
-    for (const elmt of itemElmts) {
-      if (window.getComputedStyle(elmt).display !== "none") {
-        visibleElmts.push(elmt);
-      }
-    }
-    setEmpty(!visibleElmts.length);
+    setEmpty(!visibleItems.length);
 
     // select first visible item
-    const firstElmtCode = visibleElmts[0]?.getAttribute("data-id");
+    const firstVisibleId = visibleItems[0]?.getId();
 
-    if (hasConfigStep && visibleElmts.length && firstElmtCode && +firstElmtCode !== chosenCode) {
-      const firstItem = data.find((item) => item.code === +firstElmtCode);
+    if (hasConfigStep && firstVisibleId && firstVisibleId !== `${chosenCode}`) {
+      const firstVisible = data.find((entity) => `${entity.code}` === firstVisibleId);
 
-      if (firstItem) {
-        onSelect?.(firstItem, true);
-        setChosenCode(firstItem.code);
+      if (firstVisible) {
+        onSelect?.(firstVisible, true);
+        setChosenCode(firstVisible.code);
       }
     }
 
@@ -189,7 +181,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
             return (
               <div
                 key={item.code}
-                {...getObservedItemProps(item.code, ["grow-0 p-2 relative", itemWidthCls, hidden && "hidden"])}
+                {...itemUtils.getProps(item.code, ["grow-0 p-2 relative", itemWidthCls, hidden && "hidden"])}
               >
                 <ItemCase
                   chosen={item.code === chosenCode}
@@ -200,7 +192,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
                     <AppEntityOption
                       className={className}
                       imgCls={imgCls}
-                      visible={visibleItems[item.code]}
+                      visible={visibleMap[item.code]}
                       item={item}
                       selectedAmount={itemCounts[item.code] || 0}
                     />

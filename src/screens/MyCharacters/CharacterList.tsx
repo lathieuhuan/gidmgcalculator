@@ -26,12 +26,12 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
   const dispatch = useDispatch();
 
   const [gridviewOn, setGridviewOn] = useState(false);
-  const { observedAreaRef, visibleItems, getObservedItemProps, queryObservedItem } = useIntersectionObserver([
-    characters,
-  ]);
+  const { observedAreaRef, visibleMap, itemUtils } = useIntersectionObserver({
+    dependecies: [characters],
+  });
 
   const scrollList = (name: string) => {
-    queryObservedItem(name)?.scrollIntoView();
+    itemUtils.queryById(name)?.element.scrollIntoView();
   };
 
   useEffect(() => {
@@ -70,12 +70,12 @@ export default function CharacterList({ characters, chosenChar, onCliceSort, onC
             {characters.map(({ name }) => {
               const appChar = $AppCharacter.get(name);
               if (!appChar) return null;
-              const visible = visibleItems[name];
+              const visible = visibleMap[name];
 
               return (
                 <div
                   key={name}
-                  {...getObservedItemProps(name, [
+                  {...itemUtils.getProps(name, [
                     "mx-1 border-b-3 border-transparent cursor-pointer",
                     name === chosenChar && styles["active-cell"],
                   ])}
