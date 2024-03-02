@@ -82,7 +82,7 @@ export type WeaponBonus = {
   incre?: number;
   stacks?: WeaponBonusStack | WeaponBonusStack[];
   /** Apply after stacks */
-  sufExtra?: number;
+  sufExtra?: number | Omit<WeaponBonus, "targets">;
   targets: {
     /** totalAttr */
     ATTR?: "own_elmt" | AttributeStat | AttributeStat[];
@@ -116,6 +116,8 @@ export type WeaponBonus = {
 };
 
 export type WeaponBuff = {
+  /** id to track stackable. Effects under the same buff id and have the same targets cannot be stacked */
+  trackId?: string;
   /** This is id */
   index: number;
   affect: EModAffect;

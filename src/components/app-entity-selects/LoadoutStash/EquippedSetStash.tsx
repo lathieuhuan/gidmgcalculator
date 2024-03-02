@@ -30,11 +30,12 @@ export const EquippedSetStash = ({ keyword, onChangeArtifact, onSelectSet }: Equ
     characterCode: 0,
     artifactId: 0,
   });
+  const [empty, setEmpty] = useState(false);
 
   const characters = useSelector(selectUserChars);
   const artifacts = useSelector(selectUserArts);
 
-  const { observedAreaRef, visibleItems, getObservedItemProps, queryObservedItem } = useIntersectionObserver();
+  const { observedAreaRef, visibleMap, itemUtils } = useIntersectionObserver();
 
   const shouldCheckKeyword = keyword && keyword.length >= 1;
   const lowerKeyword = keyword?.toLowerCase() ?? "";
@@ -76,22 +77,36 @@ export const EquippedSetStash = ({ keyword, onChangeArtifact, onSelectSet }: Equ
   }, []);
 
   useEffect(() => {
-    const chosenElmt = queryObservedItem(chosen.characterCode);
+    // Check if any item visible
+    let visibleCount = 0;
+    let shouldCheckChosen = !!chosen.characterCode;
 
-    if (chosenElmt && window.getComputedStyle(chosenElmt).display === "none") {
-      setChosen({
-        characterCode: 0,
-        artifactId: 0,
-      });
-      onChangeArtifact(undefined);
+    for (const item of itemUtils.queryAll()) {
+      if (item.isVisible()) {
+        visibleCount++;
+      }
+      // Unselect if not visible
+      else if (shouldCheckChosen && item.getId() === `${chosen.characterCode}`) {
+        setChosen({
+          characterCode: 0,
+          artifactId: 0,
+        });
+        onChangeArtifact(undefined);
+
+        shouldCheckChosen = false;
+      }
     }
+
+    setEmpty(!visibleCount);
   }, [keyword]);
 
   return (
     <div ref={observedAreaRef} className="pr-2 h-full custom-scrollbar">
+      {empty ? <p className="py-4 text-light-800 text-lg text-center">No Loadouts found</p> : null}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {options.map(({ character, artifacts }, i) => {
-          const visible = visibleItems[character.code];
+          const visible = visibleMap[character.code];
           const hidden = shouldCheckKeyword && !character.name.toLowerCase().includes(lowerKeyword);
           const opacityCls = `transition-opacity duration-400 ${visible ? "opacity-100" : "opacity-0"}`;
 
@@ -99,7 +114,7 @@ export const EquippedSetStash = ({ keyword, onChangeArtifact, onSelectSet }: Equ
             <div
               key={i}
               style={{ height: "8.75rem" }}
-              {...getObservedItemProps(character.code, ["break-inside-avoid relative", hidden && "hidden"])}
+              {...itemUtils.getProps(character.code, ["break-inside-avoid relative", hidden && "hidden"])}
             >
               <Button
                 className="absolute top-3 right-3"

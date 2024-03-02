@@ -26,7 +26,7 @@ interface SelectOptionsProps<T> {
   shouldHideSelected?: boolean;
   /** Remember to handle case shouldHideSelected */
   renderOptionConfig?: (afterSelect: AfterSelectAppEntity) => ReactNode;
-  onSelect?: (entity: T, isConfigStep: boolean) => OptionValidity;
+  onChange?: (entity: T | undefined, isConfigStep: boolean) => OptionValidity;
   onClose: () => void;
 }
 function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
@@ -37,7 +37,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   hasConfigStep,
   hiddenCodes,
   renderOptionConfig,
-  onSelect,
+  onChange,
   onClose,
   isMultiSelect,
   keyword,
@@ -55,7 +55,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   const shouldCheckKeyword = keyword && keyword.length >= 1;
   const lowerKeyword = keyword?.toLowerCase() ?? "";
 
-  const { observedAreaRef, visibleItems, getObservedItemProps, queryAllObservedItems } = useIntersectionObserver();
+  const { observedAreaRef, visibleMap, itemUtils } = useIntersectionObserver();
 
   useLayoutEffect(() => {
     const handleEnter = (e: KeyboardEvent) => {
@@ -65,12 +65,10 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
         document.activeElement === inputRef.current &&
         inputRef.current.value.length
       ) {
-        const itemElmts = queryAllObservedItems() || [];
-
-        for (const elmt of itemElmts) {
-          if (window.getComputedStyle(elmt).display !== "none") {
-            const code = elmt.getAttribute("data-id");
-            const foundItem = code ? data.find((item) => item.code === +code) : undefined;
+        for (const item of itemUtils.queryAll()) {
+          if (item.isVisible()) {
+            const code = item.getId();
+            const foundItem = code ? data.find((entity) => entity.code === +code) : undefined;
 
             if (foundItem) selectOption(foundItem);
             return;
@@ -88,26 +86,25 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
 
   useLayoutEffect(() => {
     // check if no item visible
-    const itemElmts = queryAllObservedItems() || [];
-    let visibleElmts: Element[] = [];
+    const visibleItems = itemUtils.queryAll().filter((item) => item.isVisible());
 
-    for (const elmt of itemElmts) {
-      if (window.getComputedStyle(elmt).display !== "none") {
-        visibleElmts.push(elmt);
+    setEmpty(!visibleItems.length);
+
+    if (visibleItems.length) {
+      // select first visible item
+      const firstVisibleId = visibleItems[0]?.getId();
+
+      if (hasConfigStep && firstVisibleId && firstVisibleId !== `${chosenCode}`) {
+        const firstVisible = data.find((entity) => `${entity.code}` === firstVisibleId);
+
+        if (firstVisible) {
+          onChange?.(firstVisible, true);
+          setChosenCode(firstVisible.code);
+        }
       }
-    }
-    setEmpty(!visibleElmts.length);
-
-    // select first visible item
-    const firstElmtCode = visibleElmts[0]?.getAttribute("data-id");
-
-    if (hasConfigStep && visibleElmts.length && firstElmtCode && +firstElmtCode !== chosenCode) {
-      const firstItem = data.find((item) => item.code === +firstElmtCode);
-
-      if (firstItem) {
-        onSelect?.(firstItem, true);
-        setChosenCode(firstItem.code);
-      }
+    } else if (hasConfigStep) {
+      onChange?.(undefined, true);
+      setChosenCode(0);
     }
 
     // check if container overflow to add padding right
@@ -138,26 +135,26 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   };
 
   const selectOption = async (item: T) => {
-    if (!onSelect) return;
+    if (!onChange) return;
 
     if (hasConfigStep) {
       if (item.code !== chosenCode) {
-        await onSelect(item, true);
+        await onChange(item, true);
         setChosenCode(item.code);
         if (bodyRef.current) bodyRef.current.scrollLeft = 999;
       }
       return;
     }
 
-    if (await onSelect(item, false)) {
+    if (await onChange(item, false)) {
       afterSelect(item.code);
     }
   };
 
   // const onDoubleClickPickerItem = async (item: T) => {
-  //   if (!onSelect || !hasConfigStep) return;
+  //   if (!onChange || !hasConfigStep) return;
 
-  //   if (await onSelect(item, false)) {
+  //   if (await onChange(item, false)) {
   //     afterSelect(item.code);
   //   }
   // };
@@ -189,7 +186,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
             return (
               <div
                 key={item.code}
-                {...getObservedItemProps(item.code, ["grow-0 p-2 relative", itemWidthCls, hidden && "hidden"])}
+                {...itemUtils.getProps(item.code, ["grow-0 p-2 relative", itemWidthCls, hidden && "hidden"])}
               >
                 <ItemCase
                   chosen={item.code === chosenCode}
@@ -200,7 +197,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
                     <AppEntityOption
                       className={className}
                       imgCls={imgCls}
-                      visible={visibleItems[item.code]}
+                      visible={visibleMap[item.code]}
                       item={item}
                       selectedAmount={itemCounts[item.code] || 0}
                     />
@@ -221,7 +218,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
 
 export interface AppEntitySelectProps<T extends AppEntityOptionModel = AppEntityOptionModel>
   extends SelectOptionsProps<T> {
-  title: string;
+  title: ReactNode;
   hasMultipleMode?: boolean;
   hasSearch?: boolean;
   hasFilter?: boolean;
@@ -240,7 +237,7 @@ export const AppEntitySelect = <T extends AppEntityOptionModel = AppEntityOption
   hasConfigStep,
   shouldHideSelected,
   renderOptionConfig,
-  onSelect,
+  onChange,
   onClose,
   ...restProps
 }: AppEntitySelectProps<T>) => {
@@ -251,7 +248,7 @@ export const AppEntitySelect = <T extends AppEntityOptionModel = AppEntityOption
           <AppEntityOptions
             onClose={onClose}
             {...arg}
-            {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHideSelected, renderOptionConfig, onSelect }}
+            {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHideSelected, renderOptionConfig, onChange }}
           />
         );
       }}

@@ -2,12 +2,13 @@ import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 import { FaCaretRight, FaMinus, FaSquare } from "react-icons/fa";
 
-import type { BooleanRecord, UserArtifact, UserItem, UserWeapon } from "@Src/types";
+import type { UserArtifact, UserItem, UserWeapon } from "@Src/types";
 import type { ArtifactRackProps, InventoryRackProps, MixedRackProps, WeaponRackProps } from "./types";
 
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { isUserWeapon } from "@Src/utils";
+import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
 import { ItemCase } from "@Src/pure-components";
@@ -35,13 +36,16 @@ export function InventoryRack<T extends UserItem>({
   onUnselectItem,
   onChangeItem,
 }: InventoryRackProps<T>): JSX.Element {
-  const observeArea = useRef<HTMLDivElement>(null);
   const pioneerRef = useRef<HTMLDivElement>(null);
   const heightRef = useRef(0);
 
   const [ready, setReady] = useState(false);
-  const [itemsVisible, setItemsVisible] = useState<BooleanRecord>({});
   const [pageNo, setPageNo] = useState(0);
+
+  const { observedAreaRef, visibleMap, itemUtils } = useIntersectionObserver({
+    ready,
+    dependecies: [ready, data, pageNo],
+  });
 
   useEffect(() => {
     if (pioneerRef.current) {
@@ -50,41 +54,13 @@ export function InventoryRack<T extends UserItem>({
     }
   }, []);
 
-  useEffect(() => {
-    if (ready) {
-      const handleIntersection: IntersectionObserverCallback = (entries) => {
-        entries.forEach((entry) => {
-          const dataId = entry.target.getAttribute("data-id");
-
-          if (entry.isIntersecting && dataId) {
-            setItemsVisible((prevItemsVisible) => {
-              const newItemVisible = { ...prevItemsVisible };
-              newItemVisible[dataId] = true;
-              return newItemVisible;
-            });
-          }
-        });
-      };
-
-      const observer = new IntersectionObserver(handleIntersection, {
-        root: observeArea.current,
-      });
-
-      observeArea.current?.querySelectorAll(".inventory-item").forEach((item) => {
-        observer.observe(item);
-      });
-
-      return () => observer.disconnect();
-    }
-  }, [ready, data, pageNo]);
-
   const deadEnd = Math.ceil(data.length / INVENTORY_PAGE_SIZE) - 1;
   const firstIndex = INVENTORY_PAGE_SIZE * pageNo;
   const nextFirstIndex = firstIndex + INVENTORY_PAGE_SIZE;
 
   const resetScroll = () => {
-    if (observeArea.current) {
-      observeArea.current.scrollTop = 0;
+    if (observedAreaRef.current) {
+      observedAreaRef.current.scrollTop = 0;
     }
   };
 
@@ -100,7 +76,7 @@ export function InventoryRack<T extends UserItem>({
 
   return (
     <div className="w-full flex flex-col" style={{ minWidth: "21rem" }}>
-      <div ref={observeArea} className="grow custom-scrollbar xm:pr-2" style={{ overflowX: "hidden" }}>
+      <div ref={observedAreaRef} className="grow custom-scrollbar xm:pr-2" style={{ overflowX: "hidden" }}>
         {!ready && (
           <div ref={pioneerRef} className={clsx("opacity-0", itemCls)}>
             <ItemThumbnail item={{ icon: "", level: "1/20", rarity: 5 }} />
@@ -111,18 +87,17 @@ export function InventoryRack<T extends UserItem>({
           <div className="flex flex-wrap">
             {data.map((item, index) => {
               const isOnPage = index >= firstIndex && index < nextFirstIndex;
-              const visible = itemsVisible[item.code];
+              const visible = visibleMap[item.code];
 
               return (
                 <div
                   key={item.ID}
-                  data-id={item.code}
-                  className={clsx(
+                  {...itemUtils.getProps(item.code, [
                     "p-2 transition-opacity duration-400 relative",
                     isOnPage && "inventory-item",
                     isOnPage && visible ? "opacity-100" : "opacity-0 !p-0",
-                    itemCls
-                  )}
+                    itemCls,
+                  ])}
                   style={{
                     height: isOnPage ? (visible ? "auto" : heightRef.current) : 0,
                   }}

@@ -1,4 +1,5 @@
 import type { ArtifactBonus, BuffInfoWrap } from "@Src/types";
+import type { StackableCheckCondition } from "../types";
 import { ELEMENT_TYPES } from "@Src/constants";
 import { countElements, toArray } from "@Src/utils";
 import { applyModifier } from "../utils";
@@ -43,7 +44,7 @@ const getBonusValue = (bonus: Omit<ArtifactBonus, "targets">, info: BuffInfoWrap
     bonusValue += bonus.value;
 
     if (bonus.stacks) {
-      if (!info.partyData.length && bonus.stacks.type === "vision") {
+      if (bonus.stacks.type === "vision" && !info.partyData.length) {
         return 0;
       }
       bonusValue *= getStackValue(bonus.stacks, info, inputs);
@@ -66,11 +67,14 @@ const getBonusValue = (bonus: Omit<ArtifactBonus, "targets">, info: BuffInfoWrap
 
 interface ApplyArtifactBuffArgs {
   description: string;
-  buff: { effects: ArtifactBonus | ArtifactBonus[] };
+  buff: {
+    trackId?: string;
+    effects: ArtifactBonus | ArtifactBonus[];
+  };
   infoWrap: BuffInfoWrap;
   inputs: number[];
   isFinal?: boolean;
-  isStackable?: (effectTargets: string | string[]) => boolean;
+  isStackable?: (effect: StackableCheckCondition) => boolean;
 }
 const applyArtifactBuff = ({
   description,
@@ -78,7 +82,7 @@ const applyArtifactBuff = ({
   infoWrap: info,
   inputs,
   isFinal,
-  isStackable,
+  isStackable = () => true,
 }: ApplyArtifactBuffArgs) => {
   const noIsFinal = isFinal === undefined;
 
@@ -88,22 +92,27 @@ const applyArtifactBuff = ({
 
       if (bonusValue) {
         for (const [key, value] of Object.entries(bonus.targets)) {
-          // isStackable
           const mixed = value as any;
+
+          const apply = (recipient: any, targets: any) => {
+            if (isStackable({ trackId: buff.trackId, targets })) {
+              applyModifier(description, recipient, targets, bonusValue, info.tracker);
+            }
+          };
 
           switch (key) {
             case "ATTR":
-              applyModifier(description, info.totalAttr, mixed, bonusValue, info.tracker);
+              apply(info.totalAttr, mixed);
               break;
             case "PATT":
-              applyModifier(description, info.attPattBonus, mixed, bonusValue, info.tracker);
+              apply(info.attPattBonus, mixed);
               break;
             case "RXN":
-              applyModifier(description, info.rxnBonus, mixed, bonusValue, info.tracker);
+              apply(info.rxnBonus, mixed);
               break;
             case "INP_ELMT":
               const elmtIndex = inputs[mixed ?? 0];
-              applyModifier(description, info.totalAttr, ELEMENT_TYPES[elmtIndex], bonusValue, info.tracker);
+              apply(info.totalAttr, ELEMENT_TYPES[elmtIndex]);
               break;
           }
         }

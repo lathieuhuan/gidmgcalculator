@@ -1,9 +1,10 @@
 import type { WeaponBonus, BuffInfoWrap, WeaponBonusStack, WeaponBuff } from "@Src/types";
+import type { StackableCheckCondition } from "../types";
 import { countElements, toArray } from "@Src/utils";
 import { applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
 
-const isUsableBonus = (bonus: WeaponBonus, info: BuffInfoWrap, inputs: number[]) => {
+const isUsableBonus = (bonus: Pick<WeaponBonus, "checkInput">, info: BuffInfoWrap, inputs: number[]) => {
   if (typeof bonus.checkInput === "number") {
     if (inputs[0] !== bonus.checkInput) {
       return false;
@@ -84,7 +85,7 @@ const getStackValue = (stack: WeaponBonusStack, { appChar, partyData, totalAttr 
 };
 
 const getBonusValue = (
-  bonus: WeaponBonus,
+  bonus: Omit<WeaponBonus, "targets">,
   info: BuffInfoWrap,
   inputs: number[],
   refi: number,
@@ -118,7 +119,11 @@ const getBonusValue = (
   }
 
   // ========== ADD SUF-EXTRA ==========
-  bonusValue += bonus.sufExtra ? scaleRefi(bonus.sufExtra) : 0;
+  if (typeof bonus.sufExtra === "number") {
+    bonusValue += scaleRefi(bonus.sufExtra);
+  } else if (bonus.sufExtra && isUsableBonus(bonus.sufExtra, info, inputs)) {
+    bonusValue += getBonusValue(bonus.sufExtra, info, inputs, refi, preCalcStacks);
+  }
 
   // ========== APPLY MAX ==========
   let max = 0;
@@ -138,12 +143,12 @@ const isTrulyFinalBonus = (bonus: WeaponBonus, cmnStacks: WeaponBonus["stacks"])
 
 interface ApplyWeaponBuffArgs {
   description: string;
-  buff: Pick<WeaponBuff, "cmnStacks" | "effects">;
+  buff: Pick<WeaponBuff, "trackId" | "cmnStacks" | "effects">;
   infoWrap: BuffInfoWrap;
   inputs: number[];
   refi: number;
   isFinal?: boolean;
-  isStackable?: (effectTargets: string | string[]) => boolean;
+  isStackable?: (effect: StackableCheckCondition) => boolean;
 }
 const applyWeaponBuff = ({
   description,
@@ -152,7 +157,7 @@ const applyWeaponBuff = ({
   inputs,
   refi,
   isFinal,
-  isStackable,
+  isStackable = () => true,
 }: ApplyWeaponBuffArgs) => {
   const cmnStacks = buff.cmnStacks ? toArray(buff.cmnStacks) : [];
   const commonStacks = cmnStacks.map((cmnStack) => getStackValue(cmnStack, info, inputs));
@@ -166,11 +171,12 @@ const applyWeaponBuff = ({
         const { ATTR, PATT } = bonus.targets;
         if (ATTR) {
           const attributeKey = ATTR === "own_elmt" ? info.appChar.vision : ATTR;
-          // isStackable
-          applyModifier(description, info.totalAttr, attributeKey, bonusValue, info.tracker);
+
+          if (isStackable({ trackId: buff.trackId, targets: attributeKey })) {
+            applyModifier(description, info.totalAttr, attributeKey, bonusValue, info.tracker);
+          }
         }
-        if (PATT) {
-          // isStackable
+        if (PATT && isStackable({ trackId: buff.trackId, targets: PATT })) {
           applyModifier(description, info.attPattBonus, PATT, bonusValue, info.tracker);
         }
       }

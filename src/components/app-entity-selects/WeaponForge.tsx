@@ -75,10 +75,11 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
 
   return (
     <AppEntitySelect
-      title="Weapon Forge"
+      title={<p className="text-base sm:text-xl leading-7">Weapon Forge</p>}
       data={allWeapons}
       hiddenCodes={hiddenCodes}
       emptyText="No weapons found"
+      hasSearch
       hasFilter
       initialFilterOn={!forcedType}
       filterToggleable={ready}
@@ -123,16 +124,20 @@ function WeaponSmith({ forcedType, onForgeWeapon, onClose, ...templateProps }: W
           />
         );
       }}
-      onSelect={(mold, isConfigStep) => {
-        const weapon = createWeapon(mold);
+      onChange={(mold, isConfigStep) => {
+        if (mold) {
+          const weapon = createWeapon(mold);
 
-        if (isConfigStep) {
-          setWeaponConfig({
-            ID: 0,
-            ...weapon,
-          });
+          if (isConfigStep) {
+            setWeaponConfig({
+              ID: 0,
+              ...weapon,
+            });
+          } else {
+            onForgeWeapon(weapon);
+          }
         } else {
-          onForgeWeapon(weapon);
+          setWeaponConfig(undefined);
         }
 
         return true;
