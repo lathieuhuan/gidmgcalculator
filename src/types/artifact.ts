@@ -81,6 +81,8 @@ export type ArtifactModifier = {
 };
 
 type ArtifactBuff = ArtifactModifier & {
+  /** id to track stackable. Effects under the same buff id and have the same targets cannot be stacked */
+  trackId?: string;
   affect: EModAffect;
   effects: ArtifactBonus | ArtifactBonus[];
 };

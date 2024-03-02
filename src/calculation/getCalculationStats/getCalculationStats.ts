@@ -8,7 +8,7 @@ import type {
   ReactionBonusInfoKey,
   Teammate,
 } from "@Src/types";
-import type { GetCalculationStatsArgs } from "../types";
+import type { GetCalculationStatsArgs, StackableCheckCondition } from "../types";
 
 import { $AppCharacter, $AppData } from "@Src/services";
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
@@ -57,6 +57,30 @@ export const getCalculationStats = ({
     rxnBonus,
     infusedElement,
     tracker,
+  };
+
+  const usedMods: NonNullable<StackableCheckCondition>[] = [];
+
+  const isStackable = (condition: StackableCheckCondition) => {
+    if (condition.trackId) {
+      const isUsed = usedMods.some((usedMod) => {
+        if (condition.trackId === usedMod.trackId && typeof condition.targets === typeof usedMod.targets) {
+          if (Array.isArray(condition.targets)) {
+            return (
+              condition.targets.length === usedMod.targets.length &&
+              condition.targets.every((target, i) => target === usedMod.targets[i])
+            );
+          }
+          return condition.targets === usedMod.targets;
+        }
+        return false;
+      });
+
+      if (isUsed) return false;
+
+      usedMods.push(condition);
+    }
+    return true;
   };
 
   const APPLY_SELF_BUFFS = (isFinal: boolean) => {
@@ -229,7 +253,7 @@ export const getCalculationStats = ({
               infoWrap,
               inputs: ctrl.inputs ?? [],
               refi,
-              // isStackable
+              isStackable,
             });
           }
         }
@@ -248,7 +272,7 @@ export const getCalculationStats = ({
               buff,
               infoWrap,
               inputs: ctrl.inputs ?? [],
-              // isStackable
+              isStackable,
             });
           }
         }
@@ -270,7 +294,7 @@ export const getCalculationStats = ({
           infoWrap,
           inputs: ctrl.inputs ?? [],
           isFinal,
-          // isStackable
+          isStackable,
         });
       }
     }

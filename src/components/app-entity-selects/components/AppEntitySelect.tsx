@@ -26,7 +26,7 @@ interface SelectOptionsProps<T> {
   shouldHideSelected?: boolean;
   /** Remember to handle case shouldHideSelected */
   renderOptionConfig?: (afterSelect: AfterSelectAppEntity) => ReactNode;
-  onSelect?: (entity: T, isConfigStep: boolean) => OptionValidity;
+  onChange?: (entity: T | undefined, isConfigStep: boolean) => OptionValidity;
   onClose: () => void;
 }
 function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>({
@@ -37,7 +37,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   hasConfigStep,
   hiddenCodes,
   renderOptionConfig,
-  onSelect,
+  onChange,
   onClose,
   isMultiSelect,
   keyword,
@@ -90,16 +90,21 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
 
     setEmpty(!visibleItems.length);
 
-    // select first visible item
-    const firstVisibleId = visibleItems[0]?.getId();
+    if (visibleItems.length) {
+      // select first visible item
+      const firstVisibleId = visibleItems[0]?.getId();
 
-    if (hasConfigStep && firstVisibleId && firstVisibleId !== `${chosenCode}`) {
-      const firstVisible = data.find((entity) => `${entity.code}` === firstVisibleId);
+      if (hasConfigStep && firstVisibleId && firstVisibleId !== `${chosenCode}`) {
+        const firstVisible = data.find((entity) => `${entity.code}` === firstVisibleId);
 
-      if (firstVisible) {
-        onSelect?.(firstVisible, true);
-        setChosenCode(firstVisible.code);
+        if (firstVisible) {
+          onChange?.(firstVisible, true);
+          setChosenCode(firstVisible.code);
+        }
       }
+    } else if (hasConfigStep) {
+      onChange?.(undefined, true);
+      setChosenCode(0);
     }
 
     // check if container overflow to add padding right
@@ -130,26 +135,26 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
   };
 
   const selectOption = async (item: T) => {
-    if (!onSelect) return;
+    if (!onChange) return;
 
     if (hasConfigStep) {
       if (item.code !== chosenCode) {
-        await onSelect(item, true);
+        await onChange(item, true);
         setChosenCode(item.code);
         if (bodyRef.current) bodyRef.current.scrollLeft = 999;
       }
       return;
     }
 
-    if (await onSelect(item, false)) {
+    if (await onChange(item, false)) {
       afterSelect(item.code);
     }
   };
 
   // const onDoubleClickPickerItem = async (item: T) => {
-  //   if (!onSelect || !hasConfigStep) return;
+  //   if (!onChange || !hasConfigStep) return;
 
-  //   if (await onSelect(item, false)) {
+  //   if (await onChange(item, false)) {
   //     afterSelect(item.code);
   //   }
   // };
@@ -213,7 +218,7 @@ function AppEntityOptions<T extends AppEntityOptionModel = AppEntityOptionModel>
 
 export interface AppEntitySelectProps<T extends AppEntityOptionModel = AppEntityOptionModel>
   extends SelectOptionsProps<T> {
-  title: string;
+  title: ReactNode;
   hasMultipleMode?: boolean;
   hasSearch?: boolean;
   hasFilter?: boolean;
@@ -232,7 +237,7 @@ export const AppEntitySelect = <T extends AppEntityOptionModel = AppEntityOption
   hasConfigStep,
   shouldHideSelected,
   renderOptionConfig,
-  onSelect,
+  onChange,
   onClose,
   ...restProps
 }: AppEntitySelectProps<T>) => {
@@ -243,7 +248,7 @@ export const AppEntitySelect = <T extends AppEntityOptionModel = AppEntityOption
           <AppEntityOptions
             onClose={onClose}
             {...arg}
-            {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHideSelected, renderOptionConfig, onSelect }}
+            {...{ data, hiddenCodes, emptyText, hasConfigStep, shouldHideSelected, renderOptionConfig, onChange }}
           />
         );
       }}
