@@ -139,9 +139,10 @@ const ArtifactSmith = ({
 
   return (
     <AppEntitySelect
-      title="Artifact Forge"
+      title={<p className="text-base sm:text-xl leading-7">Artifact Forge</p>}
       data={allArtifactSets}
       emptyText="No artifacts found"
+      hasSearch
       renderOptionConfig={(afterSelect) => {
         return (
           <ArtifactConfig
@@ -170,21 +171,25 @@ const ArtifactSmith = ({
           />
         );
       }}
-      onSelect={(mold, isConfigStep) => {
-        const artifact = createArtifact({
-          ...mold,
-          type: artifactTypes[0],
-        });
-
-        if (isConfigStep) {
-          setArtifactConfig({
-            ID: 0,
-            ...artifact,
-            ...(forcedType ? { type: forcedType } : undefined),
+      onChange={(mold, isConfigStep) => {
+        if (mold) {
+          const artifact = createArtifact({
+            ...mold,
+            type: artifactTypes[0],
           });
-          setMaxRarity(mold.rarity);
+
+          if (isConfigStep) {
+            setArtifactConfig({
+              ID: 0,
+              ...artifact,
+              ...(forcedType ? { type: forcedType } : undefined),
+            });
+            setMaxRarity(mold.rarity);
+          } else {
+            onForgeArtifact(artifact);
+          }
         } else {
-          onForgeArtifact(artifact);
+          setArtifactConfig(undefined);
         }
         return true;
       }}

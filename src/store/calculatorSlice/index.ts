@@ -34,7 +34,7 @@ import type {
 import { ATTACK_ELEMENTS, RESONANCE_ELEMENT_TYPES } from "@Src/constants";
 import { $AppData, $AppCharacter, $AppSettings } from "@Src/services";
 
-import { bareLv, deepCopy, findById, toArray, countElements, getCopyName } from "@Src/utils";
+import { bareLv, deepCopy, findById, toArray, countElements, getCopyName, findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
@@ -332,7 +332,7 @@ export const calculatorSlice = createSlice({
     },
     toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = findByIndex(state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName] || [], ctrlIndex);
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -341,7 +341,7 @@ export const calculatorSlice = createSlice({
     },
     changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = findByIndex(state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName] || [], ctrlIndex);
 
       if (ctrl && ctrl.inputs) {
         ctrl.inputs[inputIndex] = value;
@@ -426,7 +426,7 @@ export const calculatorSlice = createSlice({
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
+      const ctrl = findByIndex(state.setupsById[state.activeId][modCtrlName], ctrlIndex);
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -435,7 +435,7 @@ export const calculatorSlice = createSlice({
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
+      const ctrl = findByIndex(state.setupsById[state.activeId][modCtrlName], ctrlIndex);
 
       if (ctrl?.inputs) {
         ctrl.inputs[inputIndex] = value;

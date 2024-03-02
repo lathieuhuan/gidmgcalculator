@@ -109,8 +109,8 @@ const TavernRooms = ({ sourceType, filter: filterFn, onSelectCharacter, onClose,
           />
         );
       }}
-      onSelect={(character) => {
-        onSelectCharacter(character);
+      onChange={(character) => {
+        if (character) onSelectCharacter(character);
         return true;
       }}
       onClose={onClose}

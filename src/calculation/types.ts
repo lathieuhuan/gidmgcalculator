@@ -23,6 +23,11 @@ import type {
   ElementType,
 } from "@Src/types";
 
+export type StackableCheckCondition = {
+  trackId?: string;
+  targets: string | string[];
+};
+
 export type CalcUltilInfo = {
   char: CharInfo;
   appChar: AppCharacter;
