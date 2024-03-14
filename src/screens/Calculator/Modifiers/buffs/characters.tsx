@@ -40,14 +40,14 @@ export function SelfBuffs() {
     }
   });
 
-  selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
+  selfBuffCtrls.forEach((ctrl) => {
     const buff = findByIndex(buffs, ctrl.index);
 
     if (buff && isGranted(buff, char)) {
       const { inputs = [] } = ctrl;
       const path: ToggleModCtrlPath = {
         modCtrlName: "selfBuffCtrls",
-        ctrlIndex,
+        ctrlIndex: ctrl.index,
       };
       const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "team");
 
