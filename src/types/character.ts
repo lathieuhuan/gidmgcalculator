@@ -314,6 +314,7 @@ export type Buff_Character = InnateBuff_Character & {
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
   infuseConfig?: {
+    checkInput?: number | InputCheck;
     overwritable: boolean;
     range?: ("NA" | "CA" | "PA")[];
     disabledNAs?: boolean;

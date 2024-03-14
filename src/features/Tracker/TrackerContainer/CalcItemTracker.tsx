@@ -20,13 +20,7 @@ interface CalcItemTrackerProps {
   defMultDisplay?: ReactNode;
   infusion?: Infusion;
 }
-export function CalcItemTracker({
-  inHealB_,
-  records = {},
-  result,
-  defMultDisplay,
-  infusion,
-}: CalcItemTrackerProps) {
+export function CalcItemTracker({ inHealB_, records = {}, result, defMultDisplay, infusion }: CalcItemTrackerProps) {
   const { t } = useTranslation();
 
   function renderPart({ label, value, sign = "*", nullValue = 0, processor }: RenderPartArgs) {
@@ -76,12 +70,14 @@ export function CalcItemTracker({
                   <p className="text-yellow-400">Exclusive</p>
                   {record.exclusives.map((bonus, i) => {
                     return Object.entries(bonus).map(([key, record]) => {
+                      const percent = percentSign(key);
+
                       return (
                         <p key={i}>
                           + {t(key)}: {record.desc}{" "}
                           <Green>
-                            {record.value}
-                            {percentSign(key)}
+                            {round(record.value, percent ? 3 : 0)}
+                            {percent}
                           </Green>
                         </p>
                       );

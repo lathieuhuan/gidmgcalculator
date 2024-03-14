@@ -9,7 +9,7 @@ import { ARTIFACT_TYPES, ARTIFACT_TYPE_ICONS } from "@Src/constants";
 import { $AppData, $AppSettings } from "@Src/services";
 
 // Util
-import { getImgSrc, userItemToCalcItem } from "@Src/utils";
+import { userItemToCalcItem } from "@Src/utils";
 import { notification } from "@Src/utils/notification";
 import { createArtifact } from "@Src/utils/creators";
 
@@ -19,7 +19,7 @@ import { changeArtifact } from "@Store/calculatorSlice";
 import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, CollapseSpace, Modal } from "@Src/pure-components";
+import { Button, CollapseSpace, Image, Modal } from "@Src/pure-components";
 import {
   ArtifactForge,
   ArtifactForgeProps,
@@ -269,7 +269,7 @@ export default function SectionArtifacts() {
                 )}
                 onClick={() => onClickTab(index)}
               >
-                <img src={getImgSrc(icon)} alt={type} draggable={false} />
+                <Image src={icon} imgType="artifact" />
               </div>
             </div>
           );

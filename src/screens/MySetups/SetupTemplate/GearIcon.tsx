@@ -1,4 +1,4 @@
-import { getImgSrc } from "@Src/utils";
+import { Image } from "@Src/pure-components";
 
 interface GearIconProps {
   item: { beta?: boolean; icon: string; rarity?: number };
@@ -15,7 +15,7 @@ export const GearIcon = ({ item: { beta, icon, rarity }, disabled, onClick }: Ge
       disabled={disabled}
       onClick={onClick}
     >
-      <img src={getImgSrc(icon)} alt="" />
+      <Image className="w-full h-full" src={icon} imgType="unknown" />
     </button>
   );
 };

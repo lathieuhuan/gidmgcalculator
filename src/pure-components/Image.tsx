@@ -7,7 +7,8 @@ import { getImgSrc } from "@Src/utils";
 const ICONS_BY_TYPE = {
   character: FaUser,
   weapon: RiSwordFill,
-  artifact: RiSwordFill,
+  artifact: FaQuestion,
+  unknown: FaQuestion,
 };
 
 interface ImageProps {
@@ -18,7 +19,7 @@ interface ImageProps {
   style?: CSSProperties;
   placeholderCls?: string;
   imgCls?: string;
-  imgType?: "character" | "weapon" | "artifact";
+  imgType?: "character" | "weapon" | "artifact" | "unknown";
   Placeholder?: (props: { className?: string }) => JSX.Element;
 }
 export const Image = ({
@@ -39,8 +40,8 @@ export const Image = ({
   return (
     <>
       {isError && PlaceholderIcon && (
-        <div className={clsx("p-2", className)} style={style}>
-          <PlaceholderIcon className={clsx(size, placeholderCls)} />
+        <div className={clsx(className)} style={style}>
+          <PlaceholderIcon className={clsx("p-[15%]", size, placeholderCls)} />
         </div>
       )}
       <img
