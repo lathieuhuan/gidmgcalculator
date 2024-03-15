@@ -104,7 +104,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const modifierElmts: JSX.Element[] = [];
   const teammateData = $AppCharacter.get(teammate.name);
 
-  teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
+  teammate.buffCtrls.forEach((ctrl) => {
     const { inputs = [] } = ctrl;
     const buff = findByIndex(teammateData.buffs || [], ctrl.index);
     if (!buff) return;
@@ -112,7 +112,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
     const path: ToggleTeammateModCtrlPath = {
       teammateIndex,
       modCtrlName: "buffCtrls",
-      ctrlIndex,
+      ctrlIndex: ctrl.index,
     };
 
     const updateBuffCtrlInput = (value: number, inputIndex: number) => {

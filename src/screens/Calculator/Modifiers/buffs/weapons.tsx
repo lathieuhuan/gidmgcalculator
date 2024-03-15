@@ -28,10 +28,10 @@ export const WeaponBuffs = () => {
       keyPrefix: "main",
       weapon,
       ctrls: weaponBuffCtrls,
-      getHanlders: (ctrl, ctrlIndex) => {
+      getHanlders: (ctrl) => {
         const path: ToggleModCtrlPath = {
           modCtrlName: "wpBuffCtrls",
-          ctrlIndex,
+          ctrlIndex: ctrl.index,
         };
         const updateBuffCtrlInput = (value: number, inputIndex: number) => {
           dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));
