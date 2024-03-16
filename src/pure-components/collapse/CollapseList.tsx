@@ -3,15 +3,16 @@ import { useState, type ReactNode } from "react";
 import { CollapseSpace } from "./CollapseSpace";
 
 interface CollapseListProps {
+  className?: string;
   list: Array<{
     heading: ReactNode | ((expanded?: boolean) => ReactNode);
     body: ReactNode;
   }>;
 }
-export const CollapseList = ({ list }: CollapseListProps) => {
+export const CollapseList = ({ className, list }: CollapseListProps) => {
   const [expanded, setExpanded] = useState<(boolean | undefined)[]>([]);
   return (
-    <div>
+    <div className={className}>
       {list.map(({ heading, body }, i) => (
         <div key={i} className={expanded[i] ? "mb-4" : "mb-1"}>
           <div

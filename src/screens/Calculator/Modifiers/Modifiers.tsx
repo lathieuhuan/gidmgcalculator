@@ -29,57 +29,57 @@ export default function Modifiers() {
       {renderTabs("text-lg shrink-0")}
 
       <div className="mt-4 grow custom-scrollbar">
-        {activeIndex ? (
-          <CollapseList
-            key="buff"
-            list={[
-              { heading: "Resonance & Reactions", body: <ElementBuffs /> },
-              {
-                heading: "Self",
-                body: <SelfBuffs />,
-              },
-              {
-                heading: "Party",
-                body: <PartyBuffs />,
-              },
-              {
-                heading: "Weapons",
-                body: <WeaponBuffs />,
-              },
-              {
-                heading: "Artifacts",
-                body: <ArtifactBuffs />,
-              },
-              {
-                heading: "Custom",
-                body: <CustomModifiers isBuffs />,
-              },
-            ]}
-          />
-        ) : (
-          <CollapseList
-            key="debuff"
-            list={[
-              { heading: "Resonance & Reactions", body: <ElementDebuffs /> },
-              {
-                heading: "Self",
-                body: <SelfDebuffs partyData={partyData} />,
-              },
-              {
-                heading: "Party",
-                body: <PartyDebuffs partyData={partyData} />,
-              },
-              {
-                heading: "Artifacts",
-                body: <ArtifactDebuffs />,
-              },
-              {
-                heading: "Custom",
-                body: <CustomModifiers isBuffs={false} />,
-              },
-            ]}
-          />
-        )}
+        <CollapseList
+          key="buff"
+          className={activeIndex ? "" : "hidden"}
+          list={[
+            { heading: "Resonance & Reactions", body: <ElementBuffs /> },
+            {
+              heading: "Self",
+              body: <SelfBuffs />,
+            },
+            {
+              heading: "Party",
+              body: <PartyBuffs />,
+            },
+            {
+              heading: "Weapons",
+              body: <WeaponBuffs />,
+            },
+            {
+              heading: "Artifacts",
+              body: <ArtifactBuffs />,
+            },
+            {
+              heading: "Custom",
+              body: <CustomModifiers isBuffs />,
+            },
+          ]}
+        />
+
+        <CollapseList
+          key="debuff"
+          className={activeIndex ? "hidden" : ""}
+          list={[
+            { heading: "Resonance & Reactions", body: <ElementDebuffs /> },
+            {
+              heading: "Self",
+              body: <SelfDebuffs partyData={partyData} />,
+            },
+            {
+              heading: "Party",
+              body: <PartyDebuffs partyData={partyData} />,
+            },
+            {
+              heading: "Artifacts",
+              body: <ArtifactDebuffs />,
+            },
+            {
+              heading: "Custom",
+              body: <CustomModifiers isBuffs={false} />,
+            },
+          ]}
+        />
       </div>
     </div>
   );
