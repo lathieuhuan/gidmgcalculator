@@ -1,24 +1,15 @@
+import { Fragment } from "react";
 import type {
-  ArtifactSetBonus,
-  CalcWeapon,
-  CharInfo,
   CustomBuffCtrl,
   ElementModCtrl,
-  ModifierCtrl,
-  Party,
-  PartyData,
   ReactionBonus,
   ElementType,
   Level,
   AttackElement,
-  AppCharacter,
+  AttackReaction,
 } from "@Src/types";
-
 import { useTranslation } from "@Src/pure-hooks";
-import { $AppCharacter } from "@Src/services";
-
-// Util
-import { findByIndex, parseAbilityDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
+import { percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 
 // Component
@@ -30,8 +21,6 @@ import {
   renderModifiers,
   renderQuickenDescription,
   renderQuickenHeading,
-  renderArtifactModifiers,
-  renderWeaponModifiers,
 } from "@Src/components";
 
 interface ElementBuffsDetailProps {
@@ -48,221 +37,79 @@ export function ElementBuffsDetail({
   rxnBonus,
   elementType,
 }: ElementBuffsDetailProps) {
-  const content = [];
-  const { resonances, reaction, infuse_reaction } = elmtModCtrls;
+  const content: JSX.Element[] = [];
+  const { resonances, reaction, infuse_reaction, absorption } = elmtModCtrls;
 
-  for (const { vision: resonanceType } of resonances) {
-    const { name, description } = resonanceRenderInfo[resonanceType];
-    content.push(<ModifierTemplate key={resonanceType} mutable={false} heading={name} description={description} />);
+  if (resonances.length) {
+    content.push(
+      <div>
+        <p className="text-mint-600">Resonance</p>
+        {resonances.map(({ vision: resonanceType }) => {
+          const { name, description } = resonanceRenderInfo[resonanceType];
+          return <ModifierTemplate key={resonanceType} mutable={false} heading={name} description={description} />;
+        })}
+      </div>
+    );
+  }
+
+  const renderReaction = (reaction: AttackReaction, element: ElementType) => {
+    if (reaction === "melt" || reaction === "vaporize") {
+      return (
+        <ModifierTemplate
+          mutable={false}
+          heading={renderVapMeltHeading(element, reaction)}
+          description={renderVapMeltDescription(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
+        />
+      );
+    } else if (reaction === "spread" || reaction === "aggravate") {
+      return (
+        <ModifierTemplate
+          mutable={false}
+          heading={renderQuickenHeading(element, reaction)}
+          description={renderQuickenDescription(element, getQuickenBuffDamage(charLv, rxnBonus)[reaction])}
+        />
+      );
+    }
+    return null;
+  };
+
+  if (absorption) {
+    content.push(
+      <div>
+        <p className="text-mint-600">Reaction by Element-absorbing attacks</p>
+        {renderReaction(reaction, absorption)}
+      </div>
+    );
+  } else if (reaction) {
+    content.push(
+      <div>
+        <p>Reaction</p>
+        {renderReaction(reaction, elementType)}
+      </div>
+    );
   }
 
   if (infusedElement !== "phys") {
     content.push(
-      <ModifierTemplate
-        key="infusion"
-        mutable={false}
-        heading="Custom Infusion"
-        description={
-          <>
-            Infused with <span className={`capitalize text-${infusedElement}`}>{infusedElement}.</span>
-          </>
-        }
-      />
+      <div>
+        <p className="text-mint-600">Reaction by Infused attacks</p>
+        {renderReaction(infuse_reaction, infusedElement)}
+      </div>
     );
   }
 
-  const addAttackReaction = (attReaction: "reaction" | "infuse_reaction") => {
-    const reation = attReaction === "reaction" ? reaction : infuse_reaction;
-    const element = attReaction === "reaction" ? elementType : infusedElement;
-
-    if (element === "phys") {
-      return;
-    }
-
-    if (reation === "melt" || reation === "vaporize") {
-      content.push(
-        <ModifierTemplate
-          key={"amp-" + attReaction}
-          mutable={false}
-          heading={renderVapMeltHeading(element, reation)}
-          description={renderVapMeltDescription(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
-        />
-      );
-    } else if (reation === "spread" || reation === "aggravate") {
-      <ModifierTemplate
-        key={"quicken-" + attReaction}
-        mutable={false}
-        heading={renderQuickenHeading(element, reation)}
-        description={renderQuickenDescription(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
-      />;
-    }
-  };
-
-  addAttackReaction("reaction");
-  addAttackReaction("infuse_reaction");
-
-  return renderModifiers(content, "buffs", false);
-}
-
-interface SelfBuffsDetailProps {
-  char: CharInfo;
-  appChar: AppCharacter;
-  selfBuffCtrls: ModifierCtrl[];
-  partyData: PartyData;
-}
-export function SelfBuffsDetail({ char, appChar, selfBuffCtrls, partyData }: SelfBuffsDetailProps) {
-  const { innateBuffs = [], buffs = [] } = appChar;
-  const content: JSX.Element[] = [];
-
-  innateBuffs.forEach((buff, index) => {
-    content.push(
-      <ModifierTemplate
-        key={"innate-" + index}
-        mutable={false}
-        heading={buff.src}
-        description={parseAbilityDescription(buff, { char, appChar, partyData }, [], true)}
-      />
-    );
-  });
-
-  selfBuffCtrls.forEach((ctrl) => {
-    const buff = findByIndex(buffs, ctrl.index);
-
-    if (buff) {
-      const { inputs = [] } = ctrl;
-
-      content.push(
-        <ModifierTemplate
-          key={ctrl.index}
-          mutable={false}
-          heading={buff.src}
-          description={parseAbilityDescription(buff, { char, appChar, partyData }, inputs, true)}
-          inputs={inputs}
-          inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "team")}
-        />
-      );
-    }
-  });
-
-  return renderModifiers(content, "buffs", false);
-}
-
-interface PartyBuffsDetailProps {
-  char: CharInfo;
-  party: Party;
-  partyData: PartyData;
-}
-export function PartyBuffsDetail({ char, party, partyData }: PartyBuffsDetailProps) {
-  const content: JSX.Element[] = [];
-
-  party.forEach((teammate) => {
-    if (!teammate || !teammate.buffCtrls.length) return;
-
-    const teammateData = $AppCharacter.get(teammate.name);
-    if (!teammateData) return;
-
-    const { name, buffs = [] } = teammateData;
-
-    if (buffs.length) {
-      content.push(
-        <p key={name} className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>
-          {name}
-        </p>
-      );
-    }
-
-    teammate.buffCtrls.forEach((ctrl) => {
-      const buff = findByIndex(buffs, ctrl.index);
-
-      if (buff) {
-        const { inputs = [] } = ctrl;
-
-        content.push(
-          <ModifierTemplate
-            key={`${name}-${ctrl.index}`}
-            mutable={false}
-            heading={buff.src}
-            description={parseAbilityDescription(buff, { char, appChar: teammateData, partyData }, inputs, false)}
-            inputs={inputs}
-            inputConfigs={buff.inputConfigs}
-          />
+  return (
+    <div className="space-y-2">
+      {content.map((item, index) => {
+        return (
+          <Fragment key={index}>
+            {index ? <div className="mx-auto my-3 w-1/2 h-px bg-dark-500" /> : null}
+            {item}
+          </Fragment>
         );
-      }
-    });
-  });
-
-  return renderModifiers(content, "buffs", false);
-}
-
-interface WeaponBuffsDetailProps {
-  weapon: CalcWeapon;
-  wpBuffCtrls: ModifierCtrl[];
-  party: Party;
-}
-export function WeaponBuffsDetail({ weapon, wpBuffCtrls, party }: WeaponBuffsDetailProps) {
-  const content = [];
-
-  content.push(
-    ...renderWeaponModifiers({
-      fromSelf: true,
-      keyPrefix: "main",
-      mutable: false,
-      weapon,
-      ctrls: wpBuffCtrls,
-    })
+      })}
+    </div>
   );
-
-  party.forEach((teammate) => {
-    if (teammate) {
-      content.push(
-        ...renderWeaponModifiers({
-          keyPrefix: teammate.name,
-          fromSelf: false,
-          weapon: teammate.weapon,
-          ctrls: teammate.weapon.buffCtrls,
-        })
-      );
-    }
-  });
-
-  return renderModifiers(content, "buffs", false);
-}
-
-interface ArtifactBuffsDetailProps {
-  setBonuses: ArtifactSetBonus[];
-  artBuffCtrls: ModifierCtrl[];
-  party: Party;
-}
-export function ArtifactBuffsDetail({ setBonuses, artBuffCtrls, party }: ArtifactBuffsDetailProps) {
-  const content = [];
-  const mainCode = setBonuses[0]?.code;
-
-  if (mainCode) {
-    content.push(
-      ...renderArtifactModifiers({
-        fromSelf: true,
-        keyPrefix: "main",
-        mutable: false,
-        code: mainCode,
-        ctrls: artBuffCtrls,
-      })
-    );
-  }
-
-  party.forEach((teammate) => {
-    if (teammate) {
-      content.push(
-        ...renderArtifactModifiers({
-          mutable: false,
-          keyPrefix: teammate.name,
-          code: teammate.artifact.code,
-          ctrls: teammate.artifact.buffCtrls,
-        })
-      );
-    }
-  });
-
-  return renderModifiers(content, "buffs", false);
 }
 
 interface CustomBuffsDetailProps {

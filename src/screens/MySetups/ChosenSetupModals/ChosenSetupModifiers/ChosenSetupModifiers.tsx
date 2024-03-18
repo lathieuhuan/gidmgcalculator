@@ -6,20 +6,16 @@ import { calculateChosenSetup } from "../../utils";
 // Component
 import { Yellow, CollapseList } from "@Src/pure-components";
 import {
-  ArtifactBuffsDetail,
-  CustomBuffsDetail,
-  ElementBuffsDetail,
-  PartyBuffsDetail,
-  SelfBuffsDetail,
-  WeaponBuffsDetail,
-} from "./buffs";
-import {
-  ArtifactDebuffsDetail,
-  CustomDebuffsDetail,
-  ElementDebuffsDetail,
-  PartyDebuffsDetail,
-  SelfDebuffsDetail,
-} from "./debuffs";
+  WeaponBuffsView,
+  ArtifactBuffsView,
+  ArtifactDebuffsView,
+  SelfBuffsView,
+  SelfDebuffsView,
+  PartyBuffsView,
+  PartyDebuffsView,
+} from "@Src/components";
+import { CustomBuffsDetail, ElementBuffsDetail } from "./buffs";
+import { CustomDebuffsDetail, ElementDebuffsDetail } from "./debuffs";
 
 interface ModifierWrapperProps {
   className?: string;
@@ -75,15 +71,15 @@ export const ChosenSetupModifiers = ({ chosenSetup, result, weapon, setBonuses }
             },
             {
               heading: "Self",
-              body: <SelfDebuffsDetail {...{ char, selfDebuffCtrls, appChar, partyData }} />,
+              body: <SelfDebuffsView mutable={false} {...{ char, selfDebuffCtrls, appChar, partyData }} />,
             },
             {
               heading: "Party",
-              body: <PartyDebuffsDetail {...{ char, party, partyData }} />,
+              body: <PartyDebuffsView mutable={false} {...{ char, party, partyData }} />,
             },
             {
               heading: "Artifacts",
-              body: <ArtifactDebuffsDetail artDebuffCtrls={artDebuffCtrls} />,
+              body: <ArtifactDebuffsView mutable={false} artDebuffCtrls={artDebuffCtrls} />,
             },
             {
               heading: "Custom",
@@ -108,19 +104,19 @@ export const ChosenSetupModifiers = ({ chosenSetup, result, weapon, setBonuses }
             },
             {
               heading: "Self",
-              body: <SelfBuffsDetail {...{ char, appChar, selfBuffCtrls, partyData }} />,
+              body: <SelfBuffsView mutable={false} {...{ char, appChar, selfBuffCtrls, partyData }} />,
             },
             {
               heading: "Party",
-              body: <PartyBuffsDetail {...{ char, party, partyData }} />,
+              body: <PartyBuffsView mutable={false} {...{ char, party, partyData }} />,
             },
             {
               heading: "Weapons",
-              body: weapon ? <WeaponBuffsDetail {...{ weapon, wpBuffCtrls, party }} /> : null,
+              body: weapon ? <WeaponBuffsView mutable={false} {...{ weapon, wpBuffCtrls, party }} /> : null,
             },
             {
               heading: "Artifacts",
-              body: <ArtifactBuffsDetail {...{ setBonuses, artBuffCtrls, party }} />,
+              body: <ArtifactBuffsView mutable={false} {...{ setBonuses, artBuffCtrls, party }} />,
             },
             {
               heading: "Custom",

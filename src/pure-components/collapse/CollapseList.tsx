@@ -31,7 +31,7 @@ export const CollapseList = ({ className, list }: CollapseListProps) => {
             {typeof heading === "function" ? heading(expanded[i]) : heading}
           </div>
           <CollapseSpace active={!!expanded[i]}>
-            <div className="pr-4 pl-2">{body}</div>
+            <div className="pr-4 pt-2 pl-2">{body}</div>
           </CollapseSpace>
         </div>
       ))}

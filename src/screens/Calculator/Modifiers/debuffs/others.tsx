@@ -1,18 +1,12 @@
 import { useEffect } from "react";
 
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
-import { $AppData } from "@Src/services";
-import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-
-// Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
 import { changeModCtrlInput, toggleModCtrl, updateResonance, updateCalcSetup } from "@Store/calculatorSlice";
-
-// Component
 import { Green } from "@Src/pure-components";
-import { getArtifactDescription, ModifierTemplate, renderModifiers } from "@Src/components";
+import { ArtifactDebuffsView, ModifierTemplate } from "@Src/components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -93,33 +87,21 @@ export function ArtifactDebuffs() {
     });
   }, [JSON.stringify(usedArtCodes)]);
 
-  const modifierElmts: JSX.Element[] = [];
+  return (
+    <ArtifactDebuffsView
+      mutable
+      artDebuffCtrls={artDebuffCtrls.filter((ctrl) => usedArtCodes.includes(ctrl.code))}
+      getHanlders={({ ctrlIndex }) => {
+        const path: ToggleModCtrlPath = {
+          modCtrlName: "artDebuffCtrls",
+          ctrlIndex,
+        };
 
-  artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
-    if (!usedArtCodes.includes(ctrl.code)) return;
-    const data = $AppData.getArtifactSet(ctrl.code);
-    if (!data) return;
-
-    const { debuffs = [] } = data;
-    const debuff = findByIndex(debuffs, ctrl.index);
-
-    if (debuff) {
-      const path: ToggleModCtrlPath = {
-        modCtrlName: "artDebuffCtrls",
-        ctrlIndex,
-      };
-      modifierElmts.push(
-        <ModifierTemplate
-          key={ctrlIndex}
-          heading={data.name}
-          description={getArtifactDescription(data, debuff)}
-          inputs={ctrl.inputs}
-          inputConfigs={debuff.inputConfigs}
-          checked={ctrl.activated}
-          onToggle={() => {
+        return {
+          onToggle: () => {
             dispatch(toggleModCtrl(path));
-          }}
-          onSelectOption={(value, inputIndex) => {
+          },
+          onSelectOption: (value, inputIndex) => {
             dispatch(
               changeModCtrlInput({
                 ...path,
@@ -127,11 +109,9 @@ export function ArtifactDebuffs() {
                 value,
               })
             );
-          }}
-        />
-      );
-    }
-  });
-
-  return renderModifiers(modifierElmts, "debuffs", true);
+          },
+        };
+      }}
+    />
+  );
 }

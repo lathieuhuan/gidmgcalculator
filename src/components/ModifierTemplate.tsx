@@ -74,6 +74,7 @@ export const resonanceRenderInfo: Record<string, { name: string; description: JS
 };
 
 export interface ModifierTemplateProps {
+  /** Default to true */
   mutable?: boolean;
   checked?: boolean;
   heading: ReactNode;
