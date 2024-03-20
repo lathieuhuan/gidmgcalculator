@@ -91,10 +91,10 @@ export function ArtifactDebuffs() {
     <ArtifactDebuffsView
       mutable
       artDebuffCtrls={artDebuffCtrls.filter((ctrl) => usedArtCodes.includes(ctrl.code))}
-      getHanlders={({ ctrlIndex }) => {
+      getHanlders={({ ctrl }) => {
         const path: ToggleModCtrlPath = {
           modCtrlName: "artDebuffCtrls",
-          ctrlIndex,
+          ctrlIndex: artDebuffCtrls.findIndex((debuffCtrl) => debuffCtrl.code === ctrl.code),
         };
 
         return {

@@ -1,8 +1,8 @@
 import type { ModifierCtrl, Teammate } from "@Src/types";
 import type { ModifierTemplateProps } from "../ModifierTemplate";
 
-export type GetModifierHanldersArgs = {
-  ctrl: ModifierCtrl;
+export type GetModifierHanldersArgs<T extends ModifierCtrl = ModifierCtrl> = {
+  ctrl: T;
   ctrlIndex: number;
   ctrls: ModifierCtrl[];
 };
