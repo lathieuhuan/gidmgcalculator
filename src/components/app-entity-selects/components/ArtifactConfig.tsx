@@ -10,7 +10,6 @@ interface ArtifactConfigProps {
   config?: Artifact;
   typeSelect?: ReactNode;
   maxRarity?: number;
-  batchConfigNode?: ReactNode;
   moreButtons?: ArtifactCardAction[];
   onChangeRarity?: (rarity: number) => void;
   onUpdateConfig?: (properties: Partial<Artifact>) => void;
@@ -20,7 +19,6 @@ export const ArtifactConfig = ({
   config,
   typeSelect,
   maxRarity = 5,
-  batchConfigNode,
   moreButtons = [],
   onChangeRarity,
   onUpdateConfig,
@@ -73,32 +71,30 @@ export const ArtifactConfig = ({
       ) : null}
 
       <div className="grow hide-scrollbar" style={{ width: "19.5rem" }}>
-        {batchConfigNode ?? (
-          <ArtifactCard
-            wrapperCls="h-full"
-            mutable
-            artifact={config}
-            onEnhance={(level) => {
-              onUpdateConfig?.({ level });
-            }}
-            onChangeMainStatType={(mainStatType) => {
-              onUpdateConfig?.({ mainStatType });
-            }}
-            onChangeSubStat={(index, changes, artifact) => {
-              const subStats = deepCopy(artifact.subStats);
-              subStats[index] = Object.assign(subStats[index], changes);
-              onUpdateConfig?.({ subStats });
-            }}
-            actions={[
-              ...moreButtons,
-              {
-                text: "Forge",
-                variant: "positive",
-                onClick: (_, config) => onSelect?.(config),
-              },
-            ]}
-          />
-        )}
+        <ArtifactCard
+          wrapperCls="h-full"
+          mutable
+          artifact={config}
+          onEnhance={(level) => {
+            onUpdateConfig?.({ level });
+          }}
+          onChangeMainStatType={(mainStatType) => {
+            onUpdateConfig?.({ mainStatType });
+          }}
+          onChangeSubStat={(index, changes, artifact) => {
+            const subStats = deepCopy(artifact.subStats);
+            subStats[index] = Object.assign(subStats[index], changes);
+            onUpdateConfig?.({ subStats });
+          }}
+          actions={[
+            ...moreButtons,
+            {
+              text: "Forge",
+              variant: "positive",
+              onClick: (_, config) => onSelect?.(config),
+            },
+          ]}
+        />
       </div>
     </div>
   );

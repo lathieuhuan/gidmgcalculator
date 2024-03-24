@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { RiArrowGoBackLine } from "react-icons/ri";
-import { FaInfoCircle } from "react-icons/fa";
 
-import type { AppArtifact, Artifact, ArtifactType } from "@Src/types";
+import type { Artifact, ArtifactType } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
 import { pickProps } from "@Src/utils";
@@ -10,27 +9,23 @@ import { useArtifactTypeSelect } from "@Src/hooks";
 import { createArtifact } from "@Src/utils/creators";
 
 // Component
-import { ButtonGroup, Modal } from "@Src/pure-components";
-import { AppEntitySelect, AppEntitySelectProps, AfterSelectAppEntity } from "./components/AppEntitySelect";
+import { Modal } from "@Src/pure-components";
+import { AppEntitySelect, AppEntitySelectProps } from "./components/AppEntitySelect";
 import { ArtifactConfig } from "./components/ArtifactConfig";
 
 export interface ArtifactForgeProps extends Pick<AppEntitySelectProps, "hasMultipleMode" | "hasConfigStep"> {
-  allowBatchForging?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
   forcedType?: ArtifactType;
   /** Default to 'flower' */
   initialTypes?: ArtifactType | ArtifactType[];
   onForgeArtifact: (info: ReturnType<typeof createArtifact>) => void;
-  onForgeArtifactBatch?: (code: AppArtifact["code"], types: ArtifactType[], rarity: number) => void;
   onClose: () => void;
 }
 const ArtifactSmith = ({
-  allowBatchForging,
   forFeature,
   forcedType,
   initialTypes = "flower",
   onForgeArtifact,
-  onForgeArtifactBatch,
   onClose,
   ...templateProps
 }: ArtifactForgeProps) => {
@@ -44,19 +39,16 @@ const ArtifactSmith = ({
     }
   };
 
-  const { artifactTypes, updateArtifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(
-    forcedType || initialTypes,
-    {
-      multiple: batchForging,
-      required: batchForging,
-      onChange: (types) => {
-        updateConfig((prevConfig) => {
-          const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
-          return Object.assign(newConfig, pickProps(prevConfig, ["ID", "level", "subStats"]));
-        });
-      },
-    }
-  );
+  const { artifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(forcedType || initialTypes, {
+    multiple: batchForging,
+    required: batchForging,
+    onChange: (types) => {
+      updateConfig((prevConfig) => {
+        const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
+        return Object.assign(newConfig, pickProps(prevConfig, ["ID", "level", "subStats"]));
+      });
+    },
+  });
 
   const allArtifactSets = useMemo(() => {
     const artifacts =
@@ -88,78 +80,26 @@ const ArtifactSmith = ({
     });
   };
 
-  const renderBatchConfigNode = (afterSelect: AfterSelectAppEntity) => {
-    if (!batchForging || !artifactConfig) return;
-    const { name } = $AppData.getArtifactSet(artifactConfig.code) || {};
-
-    const onStopBatchForging = () => {
-      const newArtifactType = artifactTypes[0] ?? "flower";
-      setBatchForging(false);
-      updateArtifactTypes([newArtifactType]);
-    };
-
-    const onBatchForge = () => {
-      onForgeArtifactBatch?.(artifactConfig.code, artifactTypes, artifactConfig.rarity);
-      afterSelect(artifactConfig.code, artifactTypes.length);
-    };
-
-    return (
-      <div className="pt-4 px-2 border-t border-light-900">
-        <div className="flex items-start">
-          <FaInfoCircle className="mr-1.5 text-mint-600 text-lg" />
-
-          <div>
-            <h5 className="text-mint-600 text-sm font-semibold">Batch Forging</h5>
-            <p className="text-sm">You now can select multiple Artifact types.</p>
-          </div>
-        </div>
-
-        <div className="mt-2 ">
-          <p className={`text-rarity-${artifactConfig.rarity} text-lg font-semibold`}>{name}</p>
-          <p className="capitalize">{artifactTypes.join(", ")}</p>
-        </div>
-
-        <ButtonGroup
-          className="mt-4"
-          buttons={[
-            {
-              icon: <RiArrowGoBackLine className="text-lg" />,
-              onClick: onStopBatchForging,
-            },
-            {
-              text: "Forge",
-              variant: "positive",
-              onClick: onBatchForge,
-            },
-          ]}
-        />
-      </div>
-    );
-  };
-
   return (
     <AppEntitySelect
       title={<p className="text-base sm:text-xl leading-7">Artifact Forge</p>}
       data={allArtifactSets}
       emptyText="No artifacts found"
       hasSearch
-      renderOptionConfig={(afterSelect) => {
+      renderOptionConfig={(afterSelect, selectBody) => {
         return (
           <ArtifactConfig
             config={artifactConfig}
             maxRarity={maxRarity}
             typeSelect={forcedType ? null : renderArtifactTypeSelect()}
-            batchConfigNode={renderBatchConfigNode(afterSelect)}
-            moreButtons={
-              allowBatchForging
-                ? [
-                    {
-                      text: "Batch Forging",
-                      onClick: () => setBatchForging(true),
-                    },
-                  ]
-                : undefined
-            }
+            moreButtons={[
+              {
+                icon: <RiArrowGoBackLine className="text-lg" />,
+                onClick: () => {
+                  if (selectBody) selectBody.scrollLeft = 0;
+                },
+              },
+            ]}
             onChangeRarity={onChangeRarity}
             onUpdateConfig={(properties) => {
               updateConfig((prevConfig) => ({ ...prevConfig, ...properties }));

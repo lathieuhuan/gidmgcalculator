@@ -11,7 +11,6 @@ import { $AppData, $AppSettings } from "@Src/services";
 // Util
 import { userItemToCalcItem } from "@Src/utils";
 import { notification } from "@Src/utils/notification";
-import { createArtifact } from "@Src/utils/creators";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -157,6 +156,7 @@ export default function SectionArtifacts() {
     const artifactSet = $AppData.getArtifactSet(artifact.code);
 
     if (artifactSet) {
+      notification.destroy("all");
       notification.success({
         content: `Selected ${artifactSet.name} (${artifact.type})`,
       });
@@ -177,33 +177,14 @@ export default function SectionArtifacts() {
       ...artifact,
       ID: Date.now(),
     };
+    const artifactSet = $AppData.getArtifactSet(artifact.code);
+
     replaceArtifact(artifact.type, newPiece, $AppSettings.get("doKeepArtStatsOnSwitch"));
-  };
-
-  const onForgeArtifactBatch: ArtifactForgeProps["onForgeArtifactBatch"] = (code, types, rarity) => {
-    let rootID = Date.now();
-
-    for (const type of types) {
-      const newPiece = createArtifact({ code, type, rarity });
-
-      dispatch(
-        changeArtifact({
-          pieceIndex: ARTIFACT_TYPES.indexOf(type),
-          newPiece: { ...newPiece, ID: rootID++ },
-          shouldKeepStats: $AppSettings.get("doKeepArtStatsOnSwitch"),
-        })
-      );
-    }
-
-    const artifactSet = $AppData.getArtifactSet(code);
 
     if (artifactSet) {
+      notification.destroy("all");
       notification.success({
-        content: (
-          <>
-            Forged {artifactSet.name}: <span className="capitalize">{types.join(", ")}</span>
-          </>
-        ),
+        content: `Forged ${artifactSet.name} (${artifact.type})`,
       });
     }
   };
@@ -300,9 +281,7 @@ export default function SectionArtifacts() {
         initialTypes={forge.initialType}
         hasConfigStep
         hasMultipleMode
-        allowBatchForging
         onForgeArtifact={onForgeArtifact}
-        onForgeArtifactBatch={onForgeArtifactBatch}
         onClose={() => setForge({ active: false })}
       />
 
