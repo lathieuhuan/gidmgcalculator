@@ -4,6 +4,7 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import type { Artifact, ArtifactType } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { $AppData } from "@Src/services";
+import { useScreenWatcher } from "@Src/features";
 import { pickProps } from "@Src/utils";
 import { useArtifactTypeSelect } from "@Src/hooks";
 import { createArtifact } from "@Src/utils/creators";
@@ -29,9 +30,9 @@ const ArtifactSmith = ({
   onClose,
   ...templateProps
 }: ArtifactForgeProps) => {
+  const screenWatcher = useScreenWatcher();
   const [artifactConfig, setArtifactConfig] = useState<Artifact>();
   const [maxRarity, setMaxRarity] = useState(5);
-  const [batchForging, setBatchForging] = useState(false);
 
   const updateConfig = (update: (prevConfig: Artifact) => Artifact) => {
     if (artifactConfig) {
@@ -40,8 +41,6 @@ const ArtifactSmith = ({
   };
 
   const { artifactTypes, renderArtifactTypeSelect } = useArtifactTypeSelect(forcedType || initialTypes, {
-    multiple: batchForging,
-    required: batchForging,
     onChange: (types) => {
       updateConfig((prevConfig) => {
         const newConfig = createArtifact({ ...prevConfig, type: types[0] as ArtifactType });
@@ -92,14 +91,18 @@ const ArtifactSmith = ({
             config={artifactConfig}
             maxRarity={maxRarity}
             typeSelect={forcedType ? null : renderArtifactTypeSelect()}
-            moreButtons={[
-              {
-                icon: <RiArrowGoBackLine className="text-lg" />,
-                onClick: () => {
-                  if (selectBody) selectBody.scrollLeft = 0;
-                },
-              },
-            ]}
+            moreButtons={
+              screenWatcher.isFromSize("sm")
+                ? undefined
+                : [
+                    {
+                      icon: <RiArrowGoBackLine className="text-lg" />,
+                      onClick: () => {
+                        if (selectBody) selectBody.scrollLeft = 0;
+                      },
+                    },
+                  ]
+            }
             onChangeRarity={onChangeRarity}
             onUpdateConfig={(properties) => {
               updateConfig((prevConfig) => ({ ...prevConfig, ...properties }));
